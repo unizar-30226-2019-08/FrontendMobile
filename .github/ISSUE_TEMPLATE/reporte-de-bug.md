@@ -3,7 +3,7 @@ name: Reporte de bug
 about: Reporte de detección de error
 title: ''
 labels: bug
-assignees: Pitazzo, elenamv13
+assignees: elenamv13, Pitazzo
 
 ---
 
