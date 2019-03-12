@@ -19,5 +19,5 @@ Alta/Media/Baja
 Citar con # o 'Ninguna'
 
 
-**Relacionado con otros widgets**
-Citar con # o 'Ninguna'
+**Widgets de Flutter útiles**
+Citar con '-'
