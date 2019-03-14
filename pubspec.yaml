@@ -1,0 +1,29 @@
+name: bookalo
+description: A new Flutter project.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  flutter_localizations:
+    sdk: flutter
+  flutter_launcher_icons: ^0.7.0    
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - locale/i18n_en.json
+    - locale/i18n_es.json  
+    - assets/images/
+
+flutter_icons:
+  image_path: "assets/images/bookalo_icon.png" 
+  android: true 
