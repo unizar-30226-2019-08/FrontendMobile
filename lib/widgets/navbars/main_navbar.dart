@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/my_chats.dart';
 import 'package:bookalo/my_profile.dart';
+import 'package:bookalo/widgets/mini_product.dart';
+import 'package:bookalo/objects/product.dart';
 
 class MainNavbar extends StatelessWidget {
 
@@ -73,7 +75,8 @@ class MainNavbar extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Icon(Icons.ac_unit),
+            //Icon(Icons.ac_unit),
+            MiniProduct(new Product('Libro', 10, false, 'assets/images/product_picture')),
             Icon(Icons.access_alarms),
           ],
         ),

@@ -56,20 +56,7 @@ class ProfileNavbar extends StatelessWidget {
                             ),                              
                             ],
                           ),
-                          //MOCKUP mientras no esté el visor de estrellas
-
-                         /* Container(
-                            margin: EdgeInsets.only(top: 10.0),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.star, color: Colors.white),
-                                Icon(Icons.star, color: Colors.white),
-                                Icon(Icons.star, color: Colors.white),
-                                Icon(Icons.star, color: Colors.white)
-                              ],
-                            )
-                          ),*/
-                         StaticStars(3,Colors.white)
+                          StaticStars(1,Colors.white)
                         ],
                       ),
                     )
