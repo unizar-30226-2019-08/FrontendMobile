@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/widgets/static_stars.dart';
 
 class ProfileNavbar extends StatelessWidget {
 
@@ -56,7 +57,8 @@ class ProfileNavbar extends StatelessWidget {
                             ],
                           ),
                           //MOCKUP mientras no esté el visor de estrellas
-                          Container(
+
+                         /* Container(
                             margin: EdgeInsets.only(top: 10.0),
                             child: Row(
                               children: <Widget>[
@@ -66,7 +68,8 @@ class ProfileNavbar extends StatelessWidget {
                                 Icon(Icons.star, color: Colors.white)
                               ],
                             )
-                          ),
+                          ),*/
+                         StaticStars(3,Colors.white)
                         ],
                       ),
                     )
