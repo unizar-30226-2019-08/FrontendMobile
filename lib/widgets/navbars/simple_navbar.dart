@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class SimpleNavbar extends StatefulWidget implements PreferredSizeWidget {
     SimpleNavbar({Key key, this.preferredSize}) : super(key: key);
 
