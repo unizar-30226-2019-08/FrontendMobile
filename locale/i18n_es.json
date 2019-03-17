@@ -3,5 +3,12 @@
     "sell_tab": "VENDER",
     "reviews_tab": "OPINIONES",
     "on_sale_tab": "EN VENTA",
-    "online": "En línea"
+    "online": "En línea",
+    "share_profile": "Échale un vistazo al perfil de {{param}} en Bookalo: ",
+    "buys": "quiere",
+    "offers": "ofrece",
+    "filter": "Filtrar",
+    "search": "Buscar",
+    "max_distance": "Distancia máxima",
+    "price_range": "Rango de precios" 
 }

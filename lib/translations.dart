@@ -16,8 +16,14 @@ class Translations {
     return Localizations.of<Translations>(context, Translations);
   }
 
-  String text(String key) {
-    return _localizedValues[key] ?? '** $key not found';
+  String text(String key, {String param1}){
+    if(param1 != null){
+      String value = _localizedValues[key] ?? '** $key not found';
+      value = value.replaceAll(RegExp(r'{{param}}'), param1);
+      return value;
+    }else{
+      return _localizedValues[key] ?? '** $key not found';
+    }
   }
 
   static Future<Translations> load(Locale locale) async {
@@ -30,7 +36,7 @@ class Translations {
   get currentLanguage => locale.languageCode;
 }
 
-class TranslationsDelegate extends LocalizationsDelegate<Translations> {
+class TranslationsDelegate extends LocalizationsDelegate<Translations>{
   const TranslationsDelegate();
 
   @override
