@@ -3,9 +3,10 @@ import 'package:bookalo/objects/product.dart';
 
 class MiniProduct extends StatelessWidget{
   final Product producto;
-
+  //TODO: no necesario width
+  //TODO: listile
   MiniProduct(this.producto);
-
+//Transalations.of(context).text("sold")
  @override
   Widget build(BuildContext context) {
    double height = MediaQuery.of(context).size.height;
@@ -26,7 +27,7 @@ class MiniProduct extends StatelessWidget{
               )
             ),
           ),
-          Container(
+          Container(  //Nombre producto
             width: (width/5)*2,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -38,7 +39,7 @@ class MiniProduct extends StatelessWidget{
               ),
             ),
           ),
-        DecoratedBox(
+        DecoratedBox( //vendido
             decoration: BoxDecoration(color: Theme.of(context).canvasColor),
             child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -50,6 +51,18 @@ class MiniProduct extends StatelessWidget{
                 ),
             ),
         ),
+          Container(  //Nombre producto
+            width: (width/5),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('precio',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
 

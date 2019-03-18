@@ -56,7 +56,7 @@ class ProfileNavbar extends StatelessWidget {
                             ),                              
                             ],
                           ),
-                          StaticStars(1,Colors.white)
+                          StaticStars(2,Colors.white,7)
                         ],
                       ),
                     )
