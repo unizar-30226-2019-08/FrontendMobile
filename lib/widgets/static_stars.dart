@@ -5,6 +5,7 @@ class StaticStars extends StatelessWidget {
  // final double width;
   final Color color;
   final int reviews;
+  //TODO: sin margenes, definir cuando se use
 
   StaticStars(this.rating, this.color,this.reviews);//,this.width);
 
@@ -40,23 +41,19 @@ class StaticStars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return Container(
-     //  width: width,
-       margin: EdgeInsets.all(10.0),
+      // margin: EdgeInsets.all(10.0),
         child:Row(
-
           children: <Widget>[
             Row(
                 children: new List.generate(5, (index) => buildStars(context, index))
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 3),
-              child: Text( this.reviews!=null ? getReviews() : '',
+             Text( this.reviews!=null ? getReviews() : '',
                   style: TextStyle(
                   color: this.color,
               ),
               )
 
-            )
+
           ],
 
         )

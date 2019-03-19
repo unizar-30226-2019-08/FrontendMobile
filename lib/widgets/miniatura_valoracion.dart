@@ -6,7 +6,8 @@ import 'package:bookalo/widgets/static_stars.dart';
 
 class MiniaturaValoracion extends StatelessWidget{
   final Usuario _usuario;
-  final int _fechaValoracion;
+  //final int _fechaValoracion;
+   var _fechaValoracion;
   final bool _vendio;//Falso:compró
   //TODO: numero de valoraciones en usuario??
   final Product _producto;
@@ -17,10 +18,9 @@ class MiniaturaValoracion extends StatelessWidget{
   MiniaturaValoracion(this._usuario, this._fechaValoracion, this._vendio,
       this._producto, this._valoracion, this._estrellas);
 
-  String accion(){
-    if(this._vendio){
-      return "vendió";
-    }else{return "compró";}
+  String fecha(DateTime f){
+    String res=(f.day).toString()+'/'+(f.month).toString()+'/'+(f.year).toString();
+    return res;
   }
 
   @override
@@ -41,7 +41,7 @@ class MiniaturaValoracion extends StatelessWidget{
                     fontSize: 21,
                   )
                 ),
-              subtitle: Text(this._vendio ? "vendió" : "compró", //TODO: no funciona comprar/vender
+              subtitle: Text(this._vendio == true ? "vendió" : "compró",
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 17,
@@ -50,28 +50,54 @@ class MiniaturaValoracion extends StatelessWidget{
               trailing:CircleAvatar(backgroundImage: NetworkImage(_producto.getImagen())),
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children :[
                 Container(
-                  margin:EdgeInsets.only(left: 20),
-                  child: Text('FECHA',
+                  margin:EdgeInsets.only(left: 16),
+                  child: Text(fecha(_fechaValoracion),  //fecha
                     style:TextStyle(
                       color: Colors.grey[400],
                       fontSize: 19,
-                    )),),
-                StaticStars(this._estrellas, Colors.black,null),
+                    )
+                  ),
+                ),
+               Container(
+                 padding: EdgeInsets.only(right: 16),
+                 child: StaticStars(this._estrellas, Colors.black,null),
+               )
+
               ]
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+            //-----------------------------------------------
+
+            /*Row(
+             children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(left: 20,right: 20,bottom: 20),
-                   child: Text(this._valoracion, //TODO: como poner parrafos??s
-                      textAlign: TextAlign.left,
-                    )
+                  margin: EdgeInsets.only(left: 20,right: 20, bottom: 20,top: 10),
+                      child:  Text(this._valoracion, //TODO: como poner parrafos??
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                      ),
+
                 )
               ],
+            )*/
+            //-----------------------------------------------
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(left: 20,right: 20, bottom: 20,top: 10),
+                    child:  Text(this._valoracion, //TODO: como poner parrafos??
+                      textAlign: TextAlign.justify,
+                      maxLines: 5,    //TODO: ver maximo de lineas
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                  )
+                ],
             )
 
           ],

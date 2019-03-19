@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/navbars/main_navbar.dart';
+import 'package:flutter/rendering.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
+void main(){
+  debugPaintSizeEnabled = true; //
+  runApp(MyApp());}
 
 class MyApp extends StatelessWidget {
   @override
