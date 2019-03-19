@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-//Camiar a español
-//TODO: añadir parentesis con numero valoraciones
+//TODO:Cambiar a español
 class StaticStars extends StatelessWidget {
-  final int rating;
+  final double rating;
  // final double width;
   final Color color;
   final int reviews;

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/static_stars.dart';
+import 'package:bookalo/widgets/mini_product.dart';
+import 'package:bookalo/widgets/miniatura_valoracion.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/usuario.dart';
 
 class ProfileNavbar extends StatelessWidget {
 
@@ -56,7 +60,7 @@ class ProfileNavbar extends StatelessWidget {
                             ),                              
                             ],
                           ),
-                          StaticStars(2,Colors.white,7)
+                          StaticStars(1,Colors.white,7)
                         ],
                       ),
                     )
@@ -110,8 +114,29 @@ class ProfileNavbar extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Icon(Icons.ac_unit),
-            Icon(Icons.access_alarms),
+            //Icon(Icons.ac_unit),
+            Column(
+              children: <Widget>[
+                MiniProduct(new Product('Libro', 9.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')),
+                MiniProduct(new Product('Lápiz', 0.75, false, 'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg')),
+              ],
+            ),
+
+            //Icon(Icons.access_alarms),
+            Column(
+              children: <Widget>[
+                MiniaturaValoracion(new Usuario('Silvia M.','https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'),160219,false,
+                    new Product('Libro', 9.5, true,
+                        'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg'),
+                    'Muy buena compradora', 8.4),
+                MiniaturaValoracion(new Usuario('Laura P.','https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'),160219,false,
+                    new Product('Libro', 9.5, false,
+                        'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg'),
+                    'No fue puntual', 2)
+              ],
+
+            )
+
           ],
         ),
       ),

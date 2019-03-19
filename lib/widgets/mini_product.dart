@@ -3,71 +3,95 @@ import 'package:bookalo/objects/product.dart';
 
 class MiniProduct extends StatelessWidget{
   final Product producto;
-  //TODO: no necesario width
-  //TODO: listile
+
   MiniProduct(this.producto);
-//Transalations.of(context).text("sold")
- @override
-  Widget build(BuildContext context) {
-   double height = MediaQuery.of(context).size.height;
-   double width = MediaQuery.of(context).size.width;
-    return Container(
-      height: height/10,
-      width: width,
-      child: Row(
-        children:[
-          Container( //Imagen producto
-            width: width/5,
-            padding: const EdgeInsets.all(8.0),
-            //padding: EdgeInsets.fromLTRB(width*0.05, (height/10)*0.05, width*0.05, (height/10)*0.05),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fitWidth,
-                  image: AssetImage(producto.getImagen()),
-              )
-            ),
-          ),
-          Container(  //Nombre producto
-            width: (width/5)*2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(producto.getNombre(),
+
+  String precio(){
+    String r=(this.producto.getPrecio()).toStringAsFixed(1)+'€';
+    return r;
+  }
+
+  Widget cuerpo(BuildContext context){
+    Widget b;
+    if(producto.getVendido()){
+      b=new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          DecoratedBox(
+          decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          child: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text('VENDIDO',//TODO:Translations.of(context).text("sold")
                 style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        DecoratedBox( //vendido
-            decoration: BoxDecoration(color: Theme.of(context).canvasColor),
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('VENDIDO',
-                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                  ),
-                ),
+                    fontSize: 20,
+                )
             ),
-        ),
-          Container(  //Nombre producto
-            width: (width/5),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('precio',
+           ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20),
+            child: Text(
+              precio(),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          )
+
+        ],
+      );
+    }else{
+          b=new Container(
+            margin: EdgeInsets.only(left: 20),
+              child: Text(
+                precio(),
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
+              )
+          );
+    }
+    return b;
+  }
 
-    )
-    ;
+ @override
+  Widget build(BuildContext context) {
+   return Container(
+       padding: const EdgeInsets.all(4.0),
+       decoration: new BoxDecoration(
+           border: new Border.all(color: Colors.grey[400],width: 0.4)
+       ),
+       child: ListTile(
+     leading:CircleAvatar(backgroundImage: NetworkImage(this.producto.getImagen())),
+     title:Container(
+       margin: EdgeInsets.all(10),
+       child: Row(
+         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         children: <Widget>[
+           Text(
+             this.producto.getNombre(),
+             style: TextStyle(
+               color: Colors.black,
+               fontSize: 19,
+             ),
+           ),
+           cuerpo(context),
+         ],
+       ),
+     ),
+     isThreeLine: false,
+     enabled: true,
+     //trailing:cuerpo(context),
+     dense:true,
+   )
+   );
+
   }
 
 }
