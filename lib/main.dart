@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/widgets/navbars/main_navbar.dart';
+import 'package:bookalo/screens/buy_and_sell.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,15 +22,7 @@ class MyApp extends StatelessWidget {
           //const Locale('en', 'US'),
           const Locale('es', 'ES'),
       ],      
-      home: Prueba()
+      home: BuyAndSell()
     );
-  }
-}
-
-class Prueba extends StatelessWidget {
-  Prueba();
-  @override
-  Widget build(BuildContext context) {
-    return MainNavbar();
   }
 }

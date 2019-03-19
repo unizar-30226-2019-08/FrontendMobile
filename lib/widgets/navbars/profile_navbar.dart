@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bookalo/translations.dart';
 import 'package:share/share.dart';
+import 'package:bookalo/translations.dart';
 
 class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
     ProfileNavbar({Key key, this.preferredSize, }) : super(key: key);

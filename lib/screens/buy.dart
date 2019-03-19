@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/screens/filter.dart';
+import 'package:bookalo/widgets/radial_button.dart';
 
 class Buy extends StatefulWidget {
 
@@ -18,7 +19,7 @@ class _BuyState extends State<Buy> {
     for(int i = 0; i<15; i++){
       products.add(
         Card(
-          child: Container(child: Center(child: Icon(Icons.shopping_cart)), height: 200.0,),
+          child: RadialButton()
         )
       );
     }
@@ -27,7 +28,6 @@ class _BuyState extends State<Buy> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton.extended(
-            heroTag: "uniq1",
             icon: Icon(Icons.search),
             label: Text(Translations.of(context).text('search')),
             onPressed: () {
@@ -41,7 +41,6 @@ class _BuyState extends State<Buy> {
             height: 16.0,
           ),
           FloatingActionButton.extended(
-            heroTag: "uniq2",
             icon: Icon(Icons.sort),
             label: Text(Translations.of(context).text('filter')),
             onPressed: () {
