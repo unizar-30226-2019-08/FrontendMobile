@@ -50,8 +50,7 @@ class StaticStars extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 3),
-              child: Text(
-                  getReviews(),
+              child: Text( this.reviews!=null ? getReviews() : '',
                   style: TextStyle(
                   color: this.color,
               ),

@@ -59,7 +59,7 @@ class MiniaturaValoracion extends StatelessWidget{
                       color: Colors.grey[400],
                       fontSize: 19,
                     )),),
-                StaticStars(this._estrellas, Colors.black, 39),
+                StaticStars(this._estrellas, Colors.black,null),
               ]
             ),
             Row(
