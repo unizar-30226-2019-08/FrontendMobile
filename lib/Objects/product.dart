@@ -18,4 +18,9 @@ class Product{
   double getPrecio(){return this.precio;}
   bool getVendido(){return this.vendido;}
   String getImagen(){return this.imagen;}
+
+  String precioToString(){
+    String r=(this.precio).toStringAsFixed(1)+'€';
+    return r;
+  }
 }

@@ -4,6 +4,7 @@ import 'package:bookalo/my_chats.dart';
 import 'package:bookalo/my_profile.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/widgets/visor_producto.dart';
 
 class MainNavbar extends StatelessWidget {
 
@@ -75,7 +76,16 @@ class MainNavbar extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Icon(Icons.ac_unit),
+            //Icon(Icons.ac_unit),
+            Column(
+              children: <Widget>[
+                VisorProducto(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')
+                    ,6.1,39),
+                VisorProducto(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')
+                    ,6.1,39),
+              ],
+            ),
+
             Icon(Icons.access_alarms),
           ],
         ),

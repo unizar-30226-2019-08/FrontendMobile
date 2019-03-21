@@ -6,10 +6,7 @@ class MiniProduct extends StatelessWidget{
 
   MiniProduct(this.producto);
 
-  String precio(){
-    String r=(this.producto.getPrecio()).toStringAsFixed(1)+'€';
-    return r;
-  }
+
 
   Widget cuerpo(BuildContext context){
     Widget b;
@@ -33,7 +30,7 @@ class MiniProduct extends StatelessWidget{
           Container(
             margin: EdgeInsets.only(left: 20),
             child: Text(
-              precio(),
+              producto.precioToString(),
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -48,7 +45,7 @@ class MiniProduct extends StatelessWidget{
           b=new Container(
             margin: EdgeInsets.only(left: 20),
               child: Text(
-                precio(),
+                producto.precioToString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

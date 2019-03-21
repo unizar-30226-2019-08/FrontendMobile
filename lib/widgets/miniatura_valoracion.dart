@@ -69,28 +69,13 @@ class MiniaturaValoracion extends StatelessWidget{
 
               ]
             ),
-            //-----------------------------------------------
-
-            /*Row(
-             children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(left: 20,right: 20, bottom: 20,top: 10),
-                      child:  Text(this._valoracion, //TODO: como poner parrafos??
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                      ),
-
-                )
-              ],
-            )*/
-            //-----------------------------------------------
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.only(left: 20,right: 20, bottom: 20,top: 10),
-                    child:  Text(this._valoracion, //TODO: como poner parrafos??
+                    margin: EdgeInsets.only(left: 16,right: 16, bottom: 20,top: 10),
+                    child:  Text(this._valoracion,
                       textAlign: TextAlign.justify,
                       maxLines: 5,    //TODO: ver maximo de lineas
                       overflow: TextOverflow.ellipsis,
