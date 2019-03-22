@@ -1,6 +1,13 @@
+/*
+ * AUTOR:               Malo Perisé, Pedro
+ * CREACIÓN:            12/03/2019
+ * ÚLTIMA MODIFICACIÓN: 
+ * DESCRIPCIÓN:         
+ */
+
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/buy_and_sell_navbar.dart';
-import 'package:bookalo/screens/buy.dart';
+import 'package:bookalo/pages/buy.dart';
 
 class BuyAndSell extends StatelessWidget {
 

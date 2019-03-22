@@ -1,8 +1,19 @@
+/*
+ * FICHERO:     radial_button.dart
+ * DESCRIPCIÓN: clases relativas al widget de botón radial animado
+ * CREACIÓN:    19/03/2019
+ */
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+ *  CLASE:        RadialButton
+ *  DESCRIPCIÓN:  widget para botón radial. Al ser pulsado, se expande y ofrece hasta
+ *                tres opciones que se reparten en el espacio disponible y la opción
+ *                de cerrarse de nuevo
+ */
 class RadialButton extends StatefulWidget {
 
   RadialButton();
@@ -15,6 +26,10 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
   AnimationController _animationController;
   Animation<Color> _colorAnimation;
 
+  /*
+   * Pre:   ---
+   * Post:  comparte un perfil de usuario de prueba
+   */
   void share(){
     Share.share(
       Translations.of(context).text('share_profile', param1: 'Juan') + 'https://bookalo.es/user=123'
@@ -61,6 +76,11 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
     );
   }
 
+  /*
+   * Pre:   expandedSize y hiddenSize son el tamaño final e inicial del botón
+   *        en píxeles
+   * Post:  ha devuelto el widget base del botón radial
+   */ 
   Widget _buildExpandedBackground(double expandedSize, double hiddenSize){
     double size = hiddenSize + (expandedSize - hiddenSize) * _animationController.value;
     return new Container(
@@ -70,6 +90,11 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
     );
   }
 
+  /*
+   * Pre:   icon es un icono, angle su posición relativa al botón en radianes
+   *        y onClick la función e ejecutar al ser pulsado
+   * Post:  ha devuelto un botón simple con las características especificadas
+   */ 
   Widget _buildOption(IconData icon, double angle, VoidCallback onClick){
     double iconSize = 0.0;
     if (_animationController.value > 0.8) {
@@ -101,9 +126,14 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
     );
   }
 
+  /*
+   * Pre:   ---
+   * Post:  ha establecido la lógica de expansión del widget
+   */ 
   Widget _buildFabCore(){
     double scaleFactor = 2*(_animationController.value -0.5).abs();
     return FloatingActionButton(
+      heroTag: "radialFAB",
       onPressed: _onFabTap,
       child: Transform(
         alignment: Alignment.center,
@@ -118,18 +148,30 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
     );
   }
 
+  /*
+   * Pre:   ---
+   * Post:  ha expandido el botón radial
+   */ 
   open() {
     if (_animationController.isDismissed){
       _animationController.forward();
     }
   }
 
+  /*
+   * Pre:   ---
+   * Post:  ha cerrado el botón radial
+   */ 
   close() {
     if (_animationController.isCompleted){
       _animationController.reverse();
     }
   }
 
+  /*
+   * Pre:   ---
+   * Post:  ha establecido la lógica de apertura del botón radial
+   */ 
   _onFabTap() {
     if (_animationController.isDismissed){
       open();

@@ -10,5 +10,9 @@
     "filter": "Filtrar",
     "search": "Buscar",
     "max_distance": "Distancia máxima",
-    "price_range": "Rango de precios"
+    "price_range": "Rango de precios",
+    "no_products_available": "No hay productos disponibles",
+    "add_tags": "Añade tags",
+    "tag_example": "p.e. universidad",
+    "min_rating": "Calificación mínima"
 }

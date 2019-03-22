@@ -1,8 +1,26 @@
+/*
+ * FICHERO:     profile_navbar.dart
+ * DESCRIPCIÓN: clases relativas al widget de barra de navegación 
+ *              del perfil de usuario
+ * CREACIÓN:    13/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+ *  CLASE:        ProfileNavbar
+ *  DESCRIPCIÓN:  widget para barra de navegación del perfil de usuario. Muestra
+ *                el nombre de usuario, su ubicación, si está en línea, opciones 
+ *                de compartición, su valoración media y su foto
+ */
 class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
+    /*
+     * Pre:   preferredSize es un objeto tipo Size del que se debe construir
+     *        el parámetro height y que especifica la altura de la barra de
+     *        navegación
+     * Post:  ha construido el widget
+     */  
     ProfileNavbar({Key key, this.preferredSize, }) : super(key: key);
 
     @override
