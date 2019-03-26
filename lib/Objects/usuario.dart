@@ -6,7 +6,7 @@ class Usuario{
 
   Usuario(this.nombre, this.imagenPerfil);
 
-  String getNombre(){return this.nombre;}
+  String getName(){return this.nombre;}
   String getImagenPerfil(){return this.imagenPerfil;}
 
 }

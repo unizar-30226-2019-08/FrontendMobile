@@ -1,24 +1,35 @@
+/*
+ * FICHERO:     review_card.dart
+ * DESCRIPCIÓN: miniatura de valoracion de transacción
+ * CREACIÓN:    15/03/2019
+ *
+ */
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/usuario.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 
+/*
+  CLASE: ReviewCard
+  DESCRIPCIÓN: widget de miniatura de transaccion
+ */
+class ReviewCard extends StatelessWidget{
+  final Usuario _user;
+  //final int _reviewDate;
+   var _reviewDate;
+  final bool _seller; //true: vendió, false: compró
 
-class MiniaturaValoracion extends StatelessWidget{
-  final Usuario _usuario;
-  //final int _fechaValoracion;
-   var _fechaValoracion;
-  final bool _vendio;//Falso:compró
   //TODO: numero de valoraciones en usuario??
-  final Product _producto;
-  final String _valoracion;
-  final double _estrellas;
+  final Product _product;
+  final String _review;
+  final double _stars;
 
 
-  MiniaturaValoracion(this._usuario, this._fechaValoracion, this._vendio,
-      this._producto, this._valoracion, this._estrellas);
+  ReviewCard(this._user, this._reviewDate, this._seller,
+      this._product, this._review, this._stars);
 
-  String fecha(DateTime f){
+  //TODO: pasar a utils
+  String DateToString(DateTime f){
     String res=(f.day).toString()+'/'+(f.month).toString()+'/'+(f.year).toString();
     return res;
   }
@@ -34,20 +45,20 @@ class MiniaturaValoracion extends StatelessWidget{
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: CircleAvatar(backgroundImage: NetworkImage(_usuario.getImagenPerfil())),
-              title: Text(_usuario.getNombre(),
+              leading: CircleAvatar(backgroundImage: NetworkImage(_user.getImagenPerfil())),
+              title: Text(_user.getName(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 21,
                   )
                 ),
-              subtitle: Text(this._vendio == true ? "vendió" : "compró",
+              subtitle: Text(this._seller == true ? "vendió" : "compró",
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 17,
                 ),
               ),
-              trailing:CircleAvatar(backgroundImage: NetworkImage(_producto.getImagen())),
+              trailing:CircleAvatar(backgroundImage: NetworkImage(_product.getImage())),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +66,7 @@ class MiniaturaValoracion extends StatelessWidget{
               children :[
                 Container(
                   margin:EdgeInsets.only(left: 16),
-                  child: Text(fecha(_fechaValoracion),  //fecha
+                  child: Text(DateToString(_reviewDate),  //DateToString
                     style:TextStyle(
                       color: Colors.grey[400],
                       fontSize: 19,
@@ -64,7 +75,7 @@ class MiniaturaValoracion extends StatelessWidget{
                 ),
                Container(
                  padding: EdgeInsets.only(right: 16),
-                 child: StaticStars(this._estrellas, Colors.black,null),
+                 child: StaticStars(this._stars, Colors.black,null),
                )
 
               ]
@@ -75,7 +86,7 @@ class MiniaturaValoracion extends StatelessWidget{
                   Container(
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.only(left: 16,right: 16, bottom: 20,top: 10),
-                    child:  Text(this._valoracion,
+                    child:  Text(this._review,
                       textAlign: TextAlign.justify,
                       maxLines: 5,    //TODO: ver maximo de lineas
                       overflow: TextOverflow.ellipsis,
@@ -84,7 +95,6 @@ class MiniaturaValoracion extends StatelessWidget{
                   )
                 ],
             )
-
           ],
         ),
       );

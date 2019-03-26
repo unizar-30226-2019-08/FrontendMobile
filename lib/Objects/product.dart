@@ -1,26 +1,32 @@
-
 /*
-  Clase provisional para producto. Usada para realizar las pruebas de
-  los widgets de visualizaciond e productos (miniaturas y producto general)
-
+ * FICHERO:     product.dart
+ * DESCRIPCIÓN: clase Procduct
+ * CREACIÓN:    15/03/2019
  */
 
+
+
+/*
+  CLASE: Product
+  DESCRIPCIÓN: clase objeto que recoge todos los datos asociados a un producto
+                de la aplicacion
+ */
 class Product{
-  String nombre;
-  double precio;
-  bool vendido;
-  String imagen;//almacena el directorio de la imagen, solo para puebas
+  String _name;
+  double _price;
+  bool _sold;
+  String _image; //url de la imagen
 
-  Product(this.nombre, this.precio, this.vendido,
-      this.imagen);
+  Product(this._name, this._price, this._sold,
+      this._image);
 
-  String getNombre(){return this.nombre;}
-  double getPrecio(){return this.precio;}
-  bool getVendido(){return this.vendido;}
-  String getImagen(){return this.imagen;}
+  String getName(){return this._name;}
+  double getPrice(){return this._price;}
+  bool getSold(){return this._sold;}
+  String getImage(){return this._image;}
 
-  String precioToString(){
-    String r=(this.precio).toStringAsFixed(1)+'€';
+  String priceToString(){
+    String r=(this._price).toStringAsFixed(1)+'€';
     return r;
   }
 }

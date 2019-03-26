@@ -1,16 +1,34 @@
+/*
+ * FICHERO:     mini_product.dart
+ * DESCRIPCIÓN: visor de miniatura del producto
+ * CREACIÓN:    15/03/2019
+ */
+
+import 'package:bookalo/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
 
+
+/*
+  CLASE: MiniProduct
+  DESCRIPCIÓN: widget de miniatura de producto
+ */
+
 class MiniProduct extends StatelessWidget{
-  final Product producto;
+  //TODO: cambiar nombre fichero??
+  final Product _product;
 
-  MiniProduct(this.producto);
+  MiniProduct(this._product);
 
+/*
+  Pre:---
+  Post: devuelve un Widget con el precio del producto y el tag de vendido
+        si el producto se ha vendido
+ */
 
-
-  Widget cuerpo(BuildContext context){
+  Widget PriceBody(BuildContext context){
     Widget b;
-    if(producto.getVendido()){
+    if(_product.getSold()){
       b=new Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -18,7 +36,7 @@ class MiniProduct extends StatelessWidget{
           decoration: BoxDecoration(color: Theme.of(context).primaryColor),
           child: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text('VENDIDO',//TODO:Translations.of(context).text("sold")
+              child: Text(Translations.of(context).text("sold_tab"),
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -30,7 +48,7 @@ class MiniProduct extends StatelessWidget{
           Container(
             margin: EdgeInsets.only(left: 20),
             child: Text(
-              producto.precioToString(),
+              _product.priceToString(),
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -45,7 +63,7 @@ class MiniProduct extends StatelessWidget{
           b=new Container(
             margin: EdgeInsets.only(left: 20),
               child: Text(
-                producto.precioToString(),
+                _product.priceToString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -65,26 +83,26 @@ class MiniProduct extends StatelessWidget{
            border: new Border.all(color: Colors.grey[400],width: 0.4)
        ),
        child: ListTile(
-     leading:CircleAvatar(backgroundImage: NetworkImage(this.producto.getImagen())),
+     leading:CircleAvatar(backgroundImage: NetworkImage(this._product.getImage())),
      title:Container(
        margin: EdgeInsets.all(10),
        child: Row(
          mainAxisAlignment: MainAxisAlignment.spaceBetween,
          children: <Widget>[
            Text(
-             this.producto.getNombre(),
+             this._product.getName(),
              style: TextStyle(
                color: Colors.black,
                fontSize: 19,
              ),
            ),
-           cuerpo(context),
+           PriceBody(context),
          ],
        ),
      ),
      isThreeLine: false,
      enabled: true,
-     //trailing:cuerpo(context),
+     //trailing:PriceBody(context),
      dense:true,
    )
    );
