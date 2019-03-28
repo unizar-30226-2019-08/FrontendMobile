@@ -60,7 +60,7 @@ class ProfileNavbar extends StatelessWidget {
                             ),                              
                             ],
                           ),
-                          StaticStars(4.3,Colors.white,7)
+                          StaticStars(6.1,Colors.white,32)
                         ],
                       ),
                     )
@@ -117,7 +117,7 @@ class ProfileNavbar extends StatelessWidget {
             //Icon(Icons.ac_unit),
             Column(
               children: <Widget>[
-                MiniProduct(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')),
+                MiniProduct(new Product('Libroqwertyuiopqwertyuiopasdasdasdasdasd', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')),
                 MiniProduct(new Product('Lápiz', 0.75, false, 'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg')),
               ],
             ),

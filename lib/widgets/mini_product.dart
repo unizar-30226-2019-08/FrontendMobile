@@ -89,11 +89,14 @@ class MiniProduct extends StatelessWidget{
        child: Row(
          mainAxisAlignment: MainAxisAlignment.spaceBetween,
          children: <Widget>[
-           Text(
-             this._product.getName(),
-             style: TextStyle(
-               color: Colors.black,
-               fontSize: 19,
+           Flexible(
+             child: Text(
+               this._product.getName(),
+               overflow: TextOverflow.ellipsis,
+               style: TextStyle(
+                 color: Colors.black,
+                 fontSize: 19,
+               ),
              ),
            ),
            PriceBody(context),

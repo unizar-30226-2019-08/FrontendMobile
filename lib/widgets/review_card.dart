@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/usuario.dart';
 import 'package:bookalo/widgets/static_stars.dart';
+import 'package:bookalo/translations.dart';
+import 'package:bookalo/translations.dart';
 
 /*
   CLASE: ReviewCard
@@ -28,7 +30,7 @@ class ReviewCard extends StatelessWidget{
   ReviewCard(this._user, this._reviewDate, this._seller,
       this._product, this._review, this._stars);
 
-  //TODO: pasar a utils
+  //  TODO: pasar a utils
   String DateToString(DateTime f){
     String res=(f.day).toString()+'/'+(f.month).toString()+'/'+(f.year).toString();
     return res;
@@ -45,20 +47,23 @@ class ReviewCard extends StatelessWidget{
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: CircleAvatar(backgroundImage: NetworkImage(_user.getImagenPerfil())),
+              leading: CircleAvatar(backgroundImage:
+                NetworkImage(_user.getImagenPerfil())),
               title: Text(_user.getName(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 21,
                   )
                 ),
-              subtitle: Text(this._seller == true ? "vendió" : "compró",
+              subtitle: Text(this._seller == true ? Translations.of(context).text("seller_tab")
+                  : Translations.of(context).text("buyer_tab"),
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 17,
                 ),
               ),
-              trailing:CircleAvatar(backgroundImage: NetworkImage(_product.getImage())),
+              trailing:CircleAvatar(backgroundImage:
+                            NetworkImage(_product.getImage())),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +93,7 @@ class ReviewCard extends StatelessWidget{
                     margin: EdgeInsets.only(left: 16,right: 16, bottom: 20,top: 10),
                     child:  Text(this._review,
                       textAlign: TextAlign.justify,
-                      maxLines: 5,    //TODO: ver maximo de lineas
+                      maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                     ),
 

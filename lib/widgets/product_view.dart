@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
-//TODO: transalations json
+
 
 
 /*
@@ -65,7 +65,7 @@ class ProductView extends StatelessWidget{
               ),
             ),
           ),
-          Container(
+         Container(
             padding: EdgeInsets.only(left: 16, bottom: 8),
             child: StaticStars(this._stars, Colors.black,this._reviews),
           )
@@ -91,8 +91,8 @@ class ProductView extends StatelessWidget{
             flex: 8,
             child: Container(
               margin: EdgeInsets.all(20),
-              child: Image.asset( //TODO:network no funciona
-                'assets/images/product_picture.jpg',
+              child: Image.network(
+                _product.getImage(),
                 //this._product.getImage(),
                 fit: BoxFit.fitHeight,
               ),

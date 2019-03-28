@@ -17,6 +17,7 @@ class StaticStars extends StatelessWidget {
   final Color _color;
   final int _reviews;
 
+    // 0.0 <= _rating <= 10.0, 0 <= reviews
   StaticStars(this._rating, this._color,this._reviews);
 
   /*
@@ -24,6 +25,7 @@ class StaticStars extends StatelessWidget {
     Post: devuelve el icono correspondiente según su posición en la lista
           determinada por 'index'
  */
+  @override
   Widget buildStars(BuildContext context, int index) {
     double decimal_r=_rating/2;
     Icon icon;
@@ -50,7 +52,6 @@ class StaticStars extends StatelessWidget {
   Pre: ---
   Post: devuelve el número de valoraciones formateado
  */
-
   String getReviews(){
     String number=(this._reviews).toString();
     String r="("+number+")";
@@ -59,28 +60,23 @@ class StaticStars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Container(
+    return Container(
         child:Row(
           children: <Widget>[
             Row(
                 children: new List.generate(5, (index) => buildStars(context, index))
             ),
-             Padding(
-               child: Text( this._reviews!=null ? getReviews() : '',
-                    style: TextStyle(
+            Padding(
+                padding: const EdgeInsets.only(left: 3),
+                child: Text(this._reviews!=null ? getReviews() : '',
+                  style: TextStyle(
                     color: this._color,
-                ),
-                ),
-             )
-
-
+                  ),
+                )
+            )
           ],
-
         )
-
-
-
-      );
+    );
 
   }
 

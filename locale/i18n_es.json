@@ -4,5 +4,7 @@
     "reviews_tab": "OPINIONES",
     "on_sale_tab": "EN VENTA",
     "online": "En línea",
-    "sold_tab":"VENDIDO"
+    "sold_tab":"VENDIDO",
+    "seller_tab": "vendió",
+    "buyer_tab": "compró"
 }

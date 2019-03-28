@@ -77,12 +77,16 @@ class MainNavbar extends StatelessWidget {
         body: TabBarView(
           children: [
             //Icon(Icons.ac_unit),
-            Column(
+            ListView(
               children: <Widget>[
-                ProductView(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')
-                    ,6.1,39),
-                ProductView(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')
-                    ,6.1,39),
+                Column(
+                  children: <Widget>[
+                    ProductView(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')
+                        ,6.1,39),
+                    ProductView(new Product('Libro', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')
+                        ,6.1,39),
+                  ],
+                ),
 
               ],
             ),
