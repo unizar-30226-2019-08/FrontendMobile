@@ -1,12 +1,29 @@
+/*
+ * FICHERO:     tag_selector.dart
+ * DESCRIPCIÓN: clases relativas al widget de selección de tags para filtrado
+ *              de artículos
+ * CREACIÓN:    20/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+ *  CLASE:        TagsSelector
+ *  DESCRIPCIÓN:  widget para la selección de tags en el filtrado. Muestra inicialmente
+ *                algunos y permite la adición de nuevos
+ */
 class TagsSelector extends StatefulWidget {
   final List<Tag> suggestedTags; 
   final Function(Tag) onTagsChanged;
 
+  /*
+   * Pre:   suggestedTags es una lista de cero o más tags y onTagsChanged es una
+   *        función void
+   * Post:  ha generado el widget de tal forma que al modificarse la lista de tags
+   *        activos, ha ejecutado la callack onTagsChanged
+   */ 
   TagsSelector({Key key, this.onTagsChanged, this.suggestedTags}) : super(key: key);
 
   _TagsSelectorState createState() => _TagsSelectorState();

@@ -1,7 +1,18 @@
+/*
+ * FICHERO:     buy.dart
+ * DESCRIPCIÓN: clases relativas al la pestaña de compra
+ * CREACIÓN:    13/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/filter.dart';
 
+/*
+ *  CLASE:        Buy
+ *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
+ *                de compra. Contiene una lista con los productos
+ *                obtenidos según las opciones de filtrado.
+ */
 class Buy extends StatefulWidget {
 
   Buy({Key key}) : super(key: key);

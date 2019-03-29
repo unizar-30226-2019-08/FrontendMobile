@@ -1,10 +1,26 @@
+/*
+ * FICHERO:     price_slider.dart
+ * DESCRIPCIÓN: clases relativas al widget DistanceSlider
+ * CREACIÓN:    17/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:flutter_range_slider/flutter_range_slider.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+ *  CLASE:        PriceSlider
+ *  DESCRIPCIÓN:  widget para la selección del rango de precios en
+ *                el que se desea obtener productos en el filtrado
+ */
 class PriceSlider extends StatefulWidget {
   final Function(double, double) onPriceChanged; 
 
+  /*
+   * Pre:   onPriceChanged es una función void
+   * Post:  ha construido el widget de tal forma que en cada
+   *        cambio en el rango de precios, ha ejecutado
+   *        la callback onPriceChanged
+   */ 
   PriceSlider({Key key, this.onPriceChanged}) : super(key: key);
 
   _PriceSliderState createState() => _PriceSliderState();

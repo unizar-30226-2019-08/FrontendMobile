@@ -1,9 +1,25 @@
+/*
+ * FICHERO:     distance_slider.dart
+ * DESCRIPCIÓN: clases relativas al widget DistanceSlider
+ * CREACIÓN:    18/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+ *  CLASE:        DistanceSlider
+ *  DESCRIPCIÓN:  widget para la selección de la máxima distancia
+ *                a la que se desea obtener productos en el filtrado
+ */
 class DistanceSlider extends StatefulWidget {
   final Function(double) onMaxDistanceChange;  
   
+  /*
+   * Pre:   onMaxDistanceChange es una función void
+   * Post:  ha construido el widget de tal forma que en cada
+   *        cambio en la distancia seleccionada, ha ejecutado
+   *        la callback onMaxDistanceChange
+   */ 
   DistanceSlider({Key key, this.onMaxDistanceChange}) : super(key: key);
 
   _DistanceSliderState createState() => _DistanceSliderState();

@@ -1,9 +1,25 @@
+/*
+ * FICHERO:     rating_slider.dart
+ * DESCRIPCIÓN: clases relativas al widget DistanceSlider
+ * CREACIÓN:    17/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+*  CLASE:        RatingSlider
+*  DESCRIPCIÓN:  widget para la selección de la mínima calificación de
+*                usuarios de los que se desea obtener productos en el filtrado
+*/
 class RatingSlider extends StatefulWidget {
   final Function(double) onMinRatingChanged;  
   
+  /*
+   * Pre:   onMinRatingChanged es una función void
+   * Post:  ha construido el widget de tal forma que en cada
+   *        cambio en la calificacción seleccionada, ha ejecutado
+   *        la callback onMinRatingChanged
+   */   
   RatingSlider({Key key, this.onMinRatingChanged}) : super(key: key);
 
   _RatingSliderSate createState() => _RatingSliderSate();

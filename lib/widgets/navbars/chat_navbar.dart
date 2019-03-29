@@ -6,7 +6,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/my_profile.dart';
+import 'package:bookalo/pages/user_profile.dart';
 
 enum Interest {
   buys, offers
@@ -59,7 +59,7 @@ class _ChatNavbarState extends State<ChatNavbar>{
             onTap: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyProfile()),
+                MaterialPageRoute(builder: (context) => UserProfile()),
               );
             }
           )

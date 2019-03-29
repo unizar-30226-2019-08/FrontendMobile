@@ -1,10 +1,21 @@
+/*
+ * FICHERO:     MyChats.dart
+ * DESCRIPCIÓN: clases relativas al la página de chats
+ * CREACIÓN:    15/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/chat_navbar.dart';
 
+/*
+ *  CLASE:        MyChats
+ *  DESCRIPCIÓN:  widget para el cuerpo principal de la página de filtrado.
+ *                Consiste en dos listas diferenciadas de chats con compradores
+ *                y vendedores.
+ *                TEMPORALMENTE CONTIENE NAVBAR DE CHAT CONCRETO. NO SERÁ ASÍ.
+ */
 class MyChats extends StatefulWidget {
 
   MyChats();
-  //MyChats({Key key, this.child}) : super(key: key);
 
   _MyChatsState createState() => _MyChatsState();
 }

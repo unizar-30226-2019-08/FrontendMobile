@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/my_chats.dart';
-import 'package:bookalo/pages/my_profile.dart';
+import 'package:bookalo/pages/user_profile.dart';
 
 /*
  *  CLASE:        BuyAndSellNavbar
@@ -44,7 +44,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar>{
         child: AppBar(
           actions: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: topMargin, right: width/30),
+              margin: EdgeInsets.only(top: topMargin*0.7, right: width/30),
               child: IconButton(
                 icon: Icon(Icons.chat_bubble_outline, color: Colors.white, size: 35.0),
                 onPressed: (){
@@ -68,7 +68,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar>{
               onTap: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyProfile()),
+                  MaterialPageRoute(builder: (context) => UserProfile()),
                 );
               }
             )

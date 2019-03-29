@@ -1,12 +1,30 @@
+/*
+ * FICHERO:     distance_map.dart
+ * DESCRIPCIÓN: clases relativas al widget DistanceMap
+ * CREACIÓN:    19/03/2019
+ */
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 
+/*
+ *  CLASE:        DistanceMap
+ *  DESCRIPCIÓN:  widget para la visualización de la máxima distancia
+ *                de búsqueda en la página de filtrado
+ */
 class DistanceMap extends StatelessWidget {
   final double distanceRadius;
   final double height;
+
+  /*
+   * Pre:   distanceRadius es la distancia en metros que se desea dibujar entorno
+   *        a la localización de actual del usuario. height es la altura en píxeles
+   *        del widget. REQUIERE PERMISOS DE INTERNET Y LOCALIZACIÓN
+   * Post:  ha construido el widget haciendo uso de OpenStreetMap
+   */ 
   DistanceMap({Key key, this.distanceRadius, this.height}) : super(key: key);
 
   @override
@@ -41,7 +59,7 @@ class DistanceMap extends StatelessWidget {
               ]
             );
           }else{
-            return Center(child: CircularProgressIndicator());
+            return Center(child: BookaloProgressIndicator());
           }
         },
       ),

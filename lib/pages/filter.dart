@@ -1,3 +1,8 @@
+/*
+ * FICHERO:     filter.dart
+ * DESCRIPCIÓN: clases relativas al la página de filtrado
+ * CREACIÓN:    15/03/2019
+ */
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/filter/distance_map.dart';
 import 'package:bookalo/widgets/filter/sliders/distance_slider.dart';
@@ -5,6 +10,13 @@ import 'package:bookalo/widgets/filter/sliders/price_slider.dart';
 import 'package:bookalo/widgets/filter/sliders/rating_slider.dart';
 import 'package:bookalo/widgets/filter/tags_loader.dart';
 
+
+/*
+ *  CLASE:        Filter
+ *  DESCRIPCIÓN:  widget para el cuerpo principal de la página de filtrado.
+ *                Permite el ajuste de varios widgets de selección dispuestos
+ *                en una lista
+ */
 class Filter extends StatefulWidget {
 
   Filter({Key key}) : super(key: key);
