@@ -42,7 +42,9 @@ class _FilterState extends State<Filter>{
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.done),
-            onPressed: (){},
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
           )
         ],
       ),

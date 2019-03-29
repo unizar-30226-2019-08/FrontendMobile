@@ -50,7 +50,7 @@ class DistanceMap extends StatelessWidget {
                     circles: [
                       CircleMarker(
                         point: LatLng(snapshot.data.latitude, snapshot.data.longitude),
-                        color: Colors.pink.withOpacity(0.7),
+                        color: Colors.pink.withOpacity(0.5),
                         useRadiusInMeter: true,
                         radius: distanceRadius
                       )

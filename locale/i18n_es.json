@@ -14,7 +14,7 @@
     "no_products_available": "No hay productos disponibles",
     "add_tags": "Añade tags",
     "tag_example": "p.e. universidad",
-    "min_rating": "Calificación mínima",
+    "min_rating": "Calificación mínima del vendedor",
     "jan" : "enero",
     "feb" : "febrero",
     "mar" : "marzo",
@@ -32,5 +32,6 @@
     "full_date" : "{{param1}} de {{param2}} de {{param3}}",
     "number_date": "{{param1}}/{{param2}}/{{param3}}",
     "last_time": "últ. vez",
-    "filter_title": "Filtrado"
+    "filter_title": "Filtrado",
+    "very_close": "muy cerca"
 }
