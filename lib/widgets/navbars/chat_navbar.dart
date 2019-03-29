@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/user_profile.dart';
+import 'package:bookalo/utils/dates_utils.dart';
 
 enum Interest {
   buys, offers
@@ -75,7 +76,9 @@ class _ChatNavbarState extends State<ChatNavbar>{
         ],
         flexibleSpace: Center(
           child: Container(
-            child: Text('últ. vez hoy a las 18:12', style: TextStyle(color: Colors.white),),
+            child: Text(
+              Translations.of(context).text("last_time") + ' ' + dateToFullString(DateTime.now(), context),
+              style: TextStyle(color: Colors.white),),
             margin: EdgeInsets.only(top:topMargin*3),
           ),
         ),

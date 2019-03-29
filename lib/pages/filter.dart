@@ -9,7 +9,7 @@ import 'package:bookalo/widgets/filter/sliders/distance_slider.dart';
 import 'package:bookalo/widgets/filter/sliders/price_slider.dart';
 import 'package:bookalo/widgets/filter/sliders/rating_slider.dart';
 import 'package:bookalo/widgets/filter/tags_loader.dart';
-
+import 'package:bookalo/translations.dart';
 
 /*
  *  CLASE:        Filter
@@ -33,7 +33,7 @@ class _FilterState extends State<Filter>{
       appBar: AppBar(
         elevation: 0.0,
         title: Text(
-          'Filtrado',
+          Translations.of(context).text("filter_title"),
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.w300

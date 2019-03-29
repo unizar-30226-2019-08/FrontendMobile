@@ -36,14 +36,17 @@ class Translations {
    *        idioma del usuario y, en caso de haberse especificado param1
    *        y contener una etiqueta param1 dicha cadena, la ha sustituido
    */
-  String text(String key, {String param1}){
-    if(param1 != null){
-      String value = _localizedValues[key] ?? '** $key not found';
-      value = value.replaceAll(RegExp(r'{{param}}'), param1);
-      return value;
-    }else{
+  String text(String key, {List<String> params}){
+    if(params == null){
       return _localizedValues[key] ?? '** $key not found';
     }
+    String output = _localizedValues[key] ?? '** $key not found';
+    int counter = 1;
+    params.forEach((param){
+      output = output.replaceAll(RegExp(r"{{param" + counter.toString() + "}}"), param);
+      counter++;
+    });
+    return output;
   }
 
   static Future<Translations> load(Locale locale) async {

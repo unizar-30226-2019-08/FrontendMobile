@@ -32,7 +32,7 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
    */
   void share(){
     Share.share(
-      Translations.of(context).text('share_profile', param1: 'Juan') + 'https://bookalo.es/user=123'
+      Translations.of(context).text('share_profile', params: ['Juan']) + 'https://bookalo.es/user=123'
     );
     close();
   }

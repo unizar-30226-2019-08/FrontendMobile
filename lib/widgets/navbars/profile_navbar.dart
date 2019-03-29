@@ -147,7 +147,7 @@ class _ProfileNavbarState extends State<ProfileNavbar>{
                     icon: Icon(Icons.share, size: 30.0),
                     onPressed: () {
                       Share.share(
-                        Translations.of(context).text('share_profile', param1: 'Juan') + 'https://bookalo.es/user=123'
+                        Translations.of(context).text('share_profile', params: ['Juan']) + 'https://bookalo.es/user=123'
                       );
                     },
                   )              
