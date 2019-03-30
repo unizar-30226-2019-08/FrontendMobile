@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:bookalo/Objects/usuario.dart';
 
 class Bubble extends StatelessWidget {
   Bubble({this.message,this.usuario, this.time, this.sent, this.isMe});
 
   final String message; //mensaje del usuario
   final String time; //tiempo de ultimo mensaje
-  final String usuario; //nombre de usuario
+  final User usuario; //nombre de usuario
   final bool sent;//vale true si el mensaje se ha enviado 
   final bool  isMe;//vale true si el mensajelo envío yo
 
@@ -47,7 +48,7 @@ class Bubble extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Row(children: <Widget>[
-                  Text(isMe ? "Tu" :usuario,
+                  Text(isMe ? Translations.of(context).text("user_chat") :usuario.getName(),
                         style: TextStyle(
                           color: Colors.black38,
                           fontSize: 8.0,

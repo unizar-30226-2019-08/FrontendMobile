@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:holii/Objects/usuario.dart';
-import 'package:holii/Objects/product.dart';
+import 'package:bookalo/Objects/usuario.dart';
+import 'package:bookalo/Objects/product.dart';
 import 'package:intl/intl.dart';
 
 
