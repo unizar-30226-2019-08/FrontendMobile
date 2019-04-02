@@ -5,8 +5,9 @@
  */
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show  rootBundle;
+import 'package:flutter/services.dart';
 
 /*
  *  CLASE:        Translations
@@ -16,17 +17,32 @@ import 'package:flutter/services.dart' show  rootBundle;
  *                el método .text() ya que es el único que se usa desde el exterior de la clase
  */
 
-class Translations {
-  Translations(Locale locale) {
-    this.locale = locale;
-    _localizedValues = null;
+class Translations{
+  Translations(this._locale, {
+    this.isTest = false,
+  });
+  final Locale _locale;
+  bool isTest;
+  Map<String, String> _sentences;
+
+  static Translations of(BuildContext context) {
+    return Localizations.of<Translations>(context, Translations);
   }
 
-  Locale locale;
-  static Map<dynamic, dynamic> _localizedValues;
+  Future<Translations> loadTest(Locale locale) async {
+    return Translations(locale);
+  }
 
-  static Translations of(BuildContext context){
-    return Localizations.of<Translations>(context, Translations);
+  Future<Translations> load() async {
+    String data = await rootBundle
+        .loadString('res/langs/${_locale.languageCode}.json');
+
+    Map<String, dynamic> _result = json.decode(data);
+    _sentences = new Map();
+    _result.forEach((String key, dynamic value) {
+      _sentences[key] = value.toString();
+    });
+    return Translations(_locale);
   }
 
   /*
@@ -37,10 +53,13 @@ class Translations {
    *        y contener una etiqueta param1 dicha cadena, la ha sustituido
    */
   String text(String key, {List<String> params}){
-    if(params == null){
-      return _localizedValues[key] ?? '** $key not found';
+    if(isTest){
+      return key;
     }
-    String output = _localizedValues[key] ?? '** $key not found';
+    if(params == null){
+      return _sentences[key] ?? '** $key not found';
+    }
+    String output = _sentences[key] ?? '** $key not found';
     int counter = 1;
     params.forEach((param){
       output = output.replaceAll(RegExp(r"{{param" + counter.toString() + "}}"), param);
@@ -48,26 +67,28 @@ class Translations {
     });
     return output;
   }
-
-  static Future<Translations> load(Locale locale) async {
-    Translations translations = new Translations(locale);
-    String jsonContent = await rootBundle.loadString("locale/i18n_${locale.languageCode}.json");
-    _localizedValues = json.decode(jsonContent);
-    return translations;
-  }
-
-  get currentLanguage => locale.languageCode;
 }
 
-class TranslationsDelegate extends LocalizationsDelegate<Translations>{
-  const TranslationsDelegate();
+class TranslationsDelegate extends LocalizationsDelegate<Translations> {
+  const TranslationsDelegate({
+    this.isTest = false,
+  });
+  final bool isTest;
 
   @override
-  //bool isSupported(Locale locale) => ['en','es'].contains(locale.languageCode);
-  bool isSupported(Locale locale) => ['es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => ['en'].contains(locale.languageCode);
 
   @override
-  Future<Translations> load(Locale locale) => Translations.load(locale);
+  Future<Translations> load(Locale locale) async {
+    Translations localizations = new Translations(locale, isTest: isTest);
+    if (isTest) {
+      await localizations.loadTest(locale);
+    } else {
+      await localizations.load();
+    }
+
+    return localizations;
+  }
 
   @override
   bool shouldReload(TranslationsDelegate old) => false;

@@ -4,6 +4,8 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geo/geo.dart';
 import 'package:bookalo/translations.dart';
 
@@ -18,8 +20,11 @@ class DistanceChip extends StatelessWidget {
   final LatLng targetPosition;
 
   /*
-   * Pre: 
-   * Post:
+   * Pre:   p1 y p2 son dos objetos LatLng representando respectivamente
+   *        la posición actual del usuario y la del producto; context
+   *        es el contexto actual de ejecución
+   * Post:  ha devuelto una cadena de texto con la distancia en el formato
+   *        adecuado
    */ 
   String distanceToString(LatLng p1, LatLng p2, BuildContext context){
     double distance = computeDistanceBetween(p1, p2);
@@ -44,7 +49,7 @@ class DistanceChip extends StatelessWidget {
   DistanceChip({Key key, this.userPosition, this.targetPosition}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Chip(
       label: Text(
         distanceToString(userPosition, targetPosition, context),
