@@ -1,7 +1,23 @@
+/*
+ * FICHERO:     simple_navbar.dart
+ * DESCRIPCIÓN: clases relativas al widget de barra de navegación simple
+ * CREACIÓN:    12/03/2019
+ */
 import 'package:flutter/material.dart';
 
-
+/*
+ *  CLASE:        SimpleNavbar
+ *  DESCRIPCIÓN:  widget para barra de navegación simple, mostrando únicamente
+ *                el logo de Bookalo y el avatar clickable del usuario
+ */
 class SimpleNavbar extends StatefulWidget implements PreferredSizeWidget {
+
+    /*
+     * Pre:   preferredSize es un objeto tipo Size del que se debe construir
+     *        el parámetro height y que especifica la altura de la barra de
+     *        navegación
+     * Post:  ha construido el widget
+     */ 
     SimpleNavbar({Key key, this.preferredSize}) : super(key: key);
 
     @override

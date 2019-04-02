@@ -1,19 +1,43 @@
+/*
+ * FICHERO:     profile_navbar.dart
+ * DESCRIPCIÓN: clases relativas al widget de barra de navegación 
+ *              del perfil de usuario
+ * CREACIÓN:    13/03/2019
+ */
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 
-class ProfileNavbar extends StatelessWidget {
+/*
+ *  CLASE:        ProfileNavbar
+ *  DESCRIPCIÓN:  widget para barra de navegación del perfil de usuario. Muestra
+ *                el nombre de usuario, su ubicación, si está en línea, opciones 
+ *                de compartición, su valoración media y su foto
+ */
+class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
+    /*
+     * Pre:   preferredSize es un objeto tipo Size del que se debe construir
+     *        el parámetro height y que especifica la altura de la barra de
+     *        navegación
+     * Post:  ha construido el widget
+     */  
+    ProfileNavbar({Key key, this.preferredSize, }) : super(key: key);
 
-  ProfileNavbar();
+    @override
+    final Size preferredSize;
 
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double topMargin = height/30;
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: PreferredSize(
+    @override
+    _ProfileNavbarState createState() => _ProfileNavbarState();
+}
+
+class _ProfileNavbarState extends State<ProfileNavbar>{
+
+    @override
+    Widget build(BuildContext context) {
+      double width = MediaQuery.of(context).size.width;
+      double height = MediaQuery.of(context).size.height;
+      double topMargin = height/40;      
+      return PreferredSize(
           preferredSize: Size.fromHeight(height/3.3),
           child: AppBar(
             automaticallyImplyLeading: false,
@@ -47,12 +71,12 @@ class ProfileNavbar extends StatelessWidget {
                                 color: Colors.white,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w300
-                              )                                
+                              )
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 5.0),
                               child: Icon(Icons.chat_bubble, color: Colors.green),
-                            ),                              
+                            ),
                             ],
                           ),
                           //MOCKUP mientras no esté el visor de estrellas
@@ -71,12 +95,22 @@ class ProfileNavbar extends StatelessWidget {
                       ),
                     )
                   ),
-                  Hero(
-                    tag: "profileImage",
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/user_picture.jpg'),
-                      radius: 50.0,
+                  GestureDetector(
+                    child: Hero(
+                      tag: "profileImage",
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/user_picture.jpg'),
+                        radius: 50.0,
+                      ),
                     ),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BigProfileImage(
+                          image: AssetImage('assets/images/user_picture.jpg')
+                        )),
+                      );                      
+                    },
                   )
                 ],
               ),
@@ -111,18 +145,39 @@ class ProfileNavbar extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.share, size: 30.0),
-                    onPressed: () {},
+                    onPressed: () {
+                      Share.share(
+                        Translations.of(context).text('share_profile', params: ['Juan']) + 'https://bookalo.es/user=123'
+                      );
+                    },
                   )              
                 ],
               )
             )
           ),
-        ),
-        body: TabBarView(
-          children: [
-            Icon(Icons.ac_unit),
-            Icon(Icons.access_alarms),
-          ],
+        );
+    }
+}
+
+class BigProfileImage extends StatelessWidget {
+  final AssetImage image;
+  BigProfileImage({Key key, this.image}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: (){Navigator.pop(context);},
+      child: Scaffold(
+        backgroundColor: Colors.pink,
+        body: Center(
+            child: Hero(
+              tag: "profileImage",
+              child: CircleAvatar(
+                backgroundImage: image,
+                radius: width/2.2,
+              ),
+            )
         ),
       ),
     );
