@@ -14,21 +14,17 @@ import 'package:bookalo/widgets/animations/bookalo_progress.dart';
  *                bien la de venta. Permite deslizado de una a otra
  */
 class BuyAndSell extends StatelessWidget {
-
   BuyAndSell();
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: BuyAndSellNavbar(preferredSize: Size.fromHeight(height/5)),
+        appBar: BuyAndSellNavbar(preferredSize: Size.fromHeight(height / 5)),
         body: TabBarView(
-          children: [
-            Buy(),
-            BookaloProgressIndicator()
-          ],
+          children: [Buy(), BookaloProgressIndicator()],
         ),
       ),
     );

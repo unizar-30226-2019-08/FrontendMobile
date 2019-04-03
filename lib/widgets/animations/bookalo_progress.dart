@@ -18,47 +18,45 @@ class BookaloProgressIndicator extends StatefulWidget {
    *        del indicador de carga. En caso de no especificarse ninguno.
    *        será Colors.pink
    * Post:  ha construido el widget
-   */ 
-  BookaloProgressIndicator({Key key, this.color = Colors.pink}) : super(key: key);
+   */
+  BookaloProgressIndicator({Key key, this.color = Colors.pink})
+      : super(key: key);
 
-  _BookaloProgressIndicatorState createState() => _BookaloProgressIndicatorState();
+  _BookaloProgressIndicatorState createState() =>
+      _BookaloProgressIndicatorState();
 }
 
-class _BookaloProgressIndicatorState extends State<BookaloProgressIndicator> with SingleTickerProviderStateMixin{
-
+class _BookaloProgressIndicatorState extends State<BookaloProgressIndicator>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _rotator;
 
-  void initState(){ 
+  void initState() {
     super.initState();
-    _controller =  AnimationController(
+    _controller = AnimationController(
       duration: const Duration(milliseconds: 700),
       vsync: this,
-    );    
-    _rotator = Tween(begin: math.pi*2, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.ease
-      ),
-    )..addListener((){
-      setState(() {});
-    });
+    );
+    _rotator = Tween(begin: math.pi * 2, end: 0.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.ease),
+    )..addListener(() {
+        setState(() {});
+      });
     _controller.repeat();
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Transform.rotate(
-      angle: _rotator.value,
-      child: IconButton(
-        onPressed: () {},
-        iconSize: 50.0,
-        icon: ImageIcon(
-          AssetImage('assets/images/mini_bookalo.png'),
-          color: widget.color,
-        ),
-      )
-    );
+        angle: _rotator.value,
+        child: IconButton(
+          onPressed: () {},
+          iconSize: 50.0,
+          icon: ImageIcon(
+            AssetImage('assets/images/mini_bookalo.png'),
+            color: widget.color,
+          ),
+        ));
   }
 
   @override

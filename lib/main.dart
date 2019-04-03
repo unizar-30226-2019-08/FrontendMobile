@@ -10,38 +10,35 @@ import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 
 //void main() => runApp(MyApp());
-void main(){
+void main() {
   //debugPaintSizeEnabled = true; //
-  runApp(MyApp());}
-
+  runApp(MyApp());
+}
 
 /*
  *  CLASE:        MyApp
  *  DESCRIPCIÓN:  widget principal de la aplicación. Establece configuración general
  *                y declara BuyAndSell como widget principal 
  */
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp
-    ]);    
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
-      title: 'Bookalo',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-      ),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        const TranslationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
+        title: 'Bookalo',
+        theme: ThemeData(
+          primarySwatch: Colors.pink,
+        ),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          const TranslationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
           //const Locale('en', 'US'),
           const Locale('es', 'ES'),
-      ],      
-      home: BuyAndSell()
-    );
+        ],
+        home: BuyAndSell());
   }
 }

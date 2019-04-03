@@ -15,14 +15,13 @@ import 'package:bookalo/translations.dart';
  *                de cerrarse de nuevo
  */
 class RadialButton extends StatefulWidget {
-
   RadialButton();
 
   _RadialButtonState createState() => _RadialButtonState();
-  
 }
 
-class _RadialButtonState extends State<RadialButton> with SingleTickerProviderStateMixin{
+class _RadialButtonState extends State<RadialButton>
+    with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<Color> _colorAnimation;
 
@@ -30,20 +29,22 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
    * Pre:   ---
    * Post:  comparte un perfil de usuario de prueba
    */
-  void share(){
+  void share() {
     Share.share(
-      Translations.of(context).text('share_profile', params: ['Juan']) + 'https://bookalo.es/user=123'
-    );
+        Translations.of(context).text('share_profile', params: ['Juan']) +
+            'https://bookalo.es/user=123');
     close();
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _animationController = new AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-    _colorAnimation = new ColorTween(begin: Colors.pink, end: Colors.pink[700]).animate(_animationController);
+    _animationController = new AnimationController(
+        vsync: this, duration: Duration(milliseconds: 400));
+    _colorAnimation = new ColorTween(begin: Colors.pink, end: Colors.pink[700])
+        .animate(_animationController);
   }
-  
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -51,16 +52,16 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double expandedSize = height/4;
-    double hiddenSize = height/14;
+    double expandedSize = height / 4;
+    double hiddenSize = height / 14;
     return SizedBox(
       height: expandedSize,
       width: expandedSize,
       child: AnimatedBuilder(
         animation: _animationController,
-        builder: (BuildContext context, Widget child){
+        builder: (BuildContext context, Widget child) {
           return Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -68,7 +69,7 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
               _buildFabCore(),
               _buildOption(Icons.chat_bubble_outline, 0.0, share),
               _buildOption(Icons.favorite, math.pi, share),
-              _buildOption(Icons.share, -(math.pi/2), share)
+              _buildOption(Icons.share, -(math.pi / 2), share)
             ],
           );
         },
@@ -80,9 +81,10 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
    * Pre:   expandedSize y hiddenSize son el tamaño final e inicial del botón
    *        en píxeles
    * Post:  ha devuelto el widget base del botón radial
-   */ 
-  Widget _buildExpandedBackground(double expandedSize, double hiddenSize){
-    double size = hiddenSize + (expandedSize - hiddenSize) * _animationController.value;
+   */
+  Widget _buildExpandedBackground(double expandedSize, double hiddenSize) {
+    double size =
+        hiddenSize + (expandedSize - hiddenSize) * _animationController.value;
     return new Container(
       height: size,
       width: size,
@@ -94,13 +96,13 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
    * Pre:   icon es un icono, angle su posición relativa al botón en radianes
    *        y onClick la función e ejecutar al ser pulsado
    * Post:  ha devuelto un botón simple con las características especificadas
-   */ 
-  Widget _buildOption(IconData icon, double angle, VoidCallback onClick){
+   */
+  Widget _buildOption(IconData icon, double angle, VoidCallback onClick) {
     double iconSize = 0.0;
     if (_animationController.value > 0.8) {
       iconSize = 26.0 * (_animationController.value - 0.8) * 5;
     }
-    
+
     return new Transform.rotate(
       angle: angle,
       child: new Align(
@@ -113,7 +115,7 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
               angle: -angle,
               child: IconButton(
                 icon: Icon(icon, size: iconSize),
-                onPressed: onClick, 
+                onPressed: onClick,
                 color: Colors.white,
               ),
             ),
@@ -129,9 +131,9 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
   /*
    * Pre:   ---
    * Post:  ha establecido la lógica de expansión del widget
-   */ 
-  Widget _buildFabCore(){
-    double scaleFactor = 2*(_animationController.value -0.5).abs();
+   */
+  Widget _buildFabCore() {
+    double scaleFactor = 2 * (_animationController.value - 0.5).abs();
     return FloatingActionButton(
       heroTag: "radialFAB",
       onPressed: _onFabTap,
@@ -151,9 +153,9 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
   /*
    * Pre:   ---
    * Post:  ha expandido el botón radial
-   */ 
+   */
   open() {
-    if (_animationController.isDismissed){
+    if (_animationController.isDismissed) {
       _animationController.forward();
     }
   }
@@ -161,9 +163,9 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
   /*
    * Pre:   ---
    * Post:  ha cerrado el botón radial
-   */ 
+   */
   close() {
-    if (_animationController.isCompleted){
+    if (_animationController.isCompleted) {
       _animationController.reverse();
     }
   }
@@ -171,9 +173,9 @@ class _RadialButtonState extends State<RadialButton> with SingleTickerProviderSt
   /*
    * Pre:   ---
    * Post:  ha establecido la lógica de apertura del botón radial
-   */ 
+   */
   _onFabTap() {
-    if (_animationController.isDismissed){
+    if (_animationController.isDismissed) {
       open();
     } else {
       close();

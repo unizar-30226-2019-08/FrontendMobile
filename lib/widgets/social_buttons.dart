@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SocialButtons extends StatelessWidget{
-
-_launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+class SocialButtons extends StatelessWidget {
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -28,27 +27,26 @@ _launchURL(String url) async {
                   'dale',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w200
-                  ),
-                ),                      
+                      fontSize: 20.0,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w200),
+                ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 5.0),
                   child: Icon(
                     Icons.favorite,
                     color: Colors.pink,
-                    size: 25.0,),
+                    size: 25.0,
+                  ),
                 ),
                 Text(
                   'a Bookalo',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w200
-                  ),
-                ),                        
+                      fontSize: 20.0,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w200),
+                ),
               ],
             ),
             Row(
@@ -60,31 +58,28 @@ _launchURL(String url) async {
                     color: Colors.blue[900],
                     size: 30.0,
                   ),
-                  onPressed: (){
+                  onPressed: () {
                     _launchURL('http://facebook.com');
                   },
                 ),
                 Container(width: 5.0),
                 IconButton(
-                  icon: Icon(MdiIcons.twitter,
-                    color: Colors.blue,
-                    size: 30.0),
-                  onPressed: (){
+                  icon: Icon(MdiIcons.twitter, color: Colors.blue, size: 30.0),
+                  onPressed: () {
                     _launchURL('http://twitter.com');
                   },
                 ),
                 Container(width: 5.0),
                 IconButton(
                   icon: Icon(MdiIcons.instagram,
-                    color: Colors.purple,
-                    size: 30.0),
-                  onPressed: (){
-                    _launchURL('http://instagram.com');
+                      color: Colors.purple, size: 30.0),
+                  onPressed: () {
+                    _launchURL('http://instagram.com/bookalo_es');
                   },
-                )                                           
+                )
               ],
             ),
-          Container(height: 100.0),
+            Container(height: 100.0),
           ],
         ),
       ),

@@ -23,19 +23,19 @@ class DistanceChip extends StatelessWidget {
    *        es el contexto actual de ejecución
    * Post:  ha devuelto una cadena de texto con la distancia en el formato
    *        adecuado
-   */ 
-  String distanceToString(LatLng p1, LatLng p2, BuildContext context){
+   */
+  String distanceToString(LatLng p1, LatLng p2, BuildContext context) {
     double distance = computeDistanceBetween(p1, p2);
-    if(distance < 100){
+    if (distance < 100) {
       return Translations.of(context).text("very_close");
     }
-    if(distance < 1000){
+    if (distance < 1000) {
       return distance.toStringAsFixed(0) + ' m';
     }
-    if(distance < 10000){
-      return (distance/1000).toStringAsFixed(1) + ' km';  
+    if (distance < 10000) {
+      return (distance / 1000).toStringAsFixed(1) + ' km';
     }
-    return (distance/1000).toStringAsFixed(0) + ' km';
+    return (distance / 1000).toStringAsFixed(0) + ' km';
   }
 
   /*
@@ -43,19 +43,17 @@ class DistanceChip extends StatelessWidget {
    *        la posición actual del usuario. targetPosition también es un obejto
    *        LatLng que representa la posición del producto
    * Post:  
-   */ 
-  DistanceChip({Key key, this.userPosition, this.targetPosition}) : super(key: key);
+   */
+  DistanceChip({Key key, this.userPosition, this.targetPosition})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Chip(
       label: Text(
         distanceToString(userPosition, targetPosition, context),
         style: TextStyle(
-          color: Colors.white,
-          fontSize: 17.0,
-          fontWeight: FontWeight.w300
-        ),
+            color: Colors.white, fontSize: 17.0, fontWeight: FontWeight.w300),
       ),
       backgroundColor: Colors.pink,
     );

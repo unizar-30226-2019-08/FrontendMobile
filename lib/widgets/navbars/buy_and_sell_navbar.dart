@@ -17,71 +17,67 @@ import 'package:bookalo/pages/user_profile.dart';
  *                acceso a la sección de 'Mis chats'
  */
 class BuyAndSellNavbar extends StatefulWidget implements PreferredSizeWidget {
-    /*
+  /*
      * Pre:   preferredSize es un objeto tipo Size del que se debe construir
      *        el parámetro height y que especifica la altura de la barra de
      *        navegación
      * Post:  ha construido el widget
-     */      
-    BuyAndSellNavbar({Key key, this.preferredSize, }) : super(key: key);
+     */
+  BuyAndSellNavbar({
+    Key key,
+    this.preferredSize,
+  }) : super(key: key);
 
-    @override
-    final Size preferredSize;
+  @override
+  final Size preferredSize;
 
-    @override
-    _BuyAndSellNavbarState createState() => _BuyAndSellNavbarState();
+  @override
+  _BuyAndSellNavbarState createState() => _BuyAndSellNavbarState();
 }
 
-class _BuyAndSellNavbarState extends State<BuyAndSellNavbar>{
-
-    @override
-    Widget build(BuildContext context) {
-      double width = MediaQuery.of(context).size.width;
-      double height = MediaQuery.of(context).size.height;
-      double topMargin = height/40;      
-      return PreferredSize(
-        preferredSize: Size.fromHeight(height/5),
-        child: AppBar(
+class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double topMargin = height / 40;
+    return PreferredSize(
+      preferredSize: Size.fromHeight(height / 5),
+      child: AppBar(
           actions: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: topMargin*0.7, right: width/30),
+              margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
               child: IconButton(
-                icon: Icon(Icons.chat_bubble_outline, color: Colors.white, size: 35.0),
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyChats()),
-                  );
-                }
-              ),
+                  icon: Icon(Icons.chat_bubble_outline,
+                      color: Colors.white, size: 35.0),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyChats()),
+                    );
+                  }),
             ),
             GestureDetector(
-              child: Container(
-                margin: EdgeInsets.only(top: topMargin, right: width/30),
-                child: Hero(
-                  tag: "profileImage",
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/user_picture.jpg')
-                  ),
-                )
-              ),
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UserProfile()),
-                );
-              }
-            )
+                child: Container(
+                    margin: EdgeInsets.only(top: topMargin, right: width / 30),
+                    child: Hero(
+                      tag: "profileImage",
+                      child: CircleAvatar(
+                          backgroundImage:
+                              AssetImage('assets/images/user_picture.jpg')),
+                    )),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserProfile()),
+                  );
+                })
           ],
           elevation: 0.0,
           bottom: TabBar(
             indicatorWeight: 3.0,
-            labelStyle: TextStyle(
-              fontSize: 20.0, 
-              fontWeight: FontWeight.w300),
-            indicator: BoxDecoration(
-              color: Theme.of(context).canvasColor
-            ),
+            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+            indicator: BoxDecoration(color: Theme.of(context).canvasColor),
             tabs: [
               Tab(text: Translations.of(context).text('buy_tab')),
               Tab(text: Translations.of(context).text('sell_tab'))
@@ -91,9 +87,9 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar>{
           ),
           title: Container(
             margin: EdgeInsets.only(top: topMargin),
-            child: Image.asset('assets/images/bookalo_logo.png', width: width/2),
-          )
-        ),
-      );
-    }
+            child:
+                Image.asset('assets/images/bookalo_logo.png', width: width / 2),
+          )),
+    );
+  }
 }

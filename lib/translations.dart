@@ -17,8 +17,9 @@ import 'package:flutter/services.dart';
  *                el método .text() ya que es el único que se usa desde el exterior de la clase
  */
 
-class Translations{
-  Translations(this._locale, {
+class Translations {
+  Translations(
+    this._locale, {
     this.isTest = false,
   });
   final Locale _locale;
@@ -34,8 +35,8 @@ class Translations{
   }
 
   Future<Translations> load() async {
-    String data = await rootBundle
-        .loadString('locale/i18n_${_locale.languageCode}.json');
+    String data =
+        await rootBundle.loadString('locale/i18n_${_locale.languageCode}.json');
 
     Map<String, dynamic> _result = json.decode(data);
     _sentences = new Map();
@@ -52,17 +53,18 @@ class Translations{
    *        idioma del usuario y, en caso de haberse especificado param1
    *        y contener una etiqueta param1 dicha cadena, la ha sustituido
    */
-  String text(String key, {List<String> params}){
-    if(isTest){
+  String text(String key, {List<String> params}) {
+    if (isTest) {
       return key;
     }
-    if(params == null){
+    if (params == null) {
       return _sentences[key] ?? '** $key not found';
     }
     String output = _sentences[key] ?? '** $key not found';
     int counter = 1;
-    params.forEach((param){
-      output = output.replaceAll(RegExp(r"{{param" + counter.toString() + "}}"), param);
+    params.forEach((param) {
+      output = output.replaceAll(
+          RegExp(r"{{param" + counter.toString() + "}}"), param);
       counter++;
     });
     return output;

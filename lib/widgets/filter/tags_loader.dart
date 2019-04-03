@@ -27,29 +27,22 @@ class TagsLoader extends StatefulWidget {
    *        activos, ha ejecutado la callack onTagsChanged. Si initialTags era una
    *        lista vacía, ha cargado tags iniciales de forma asíncrona de acuerdo a
    *        la función _getTags(). En caso contrario, ha cargado los tags suministrados
-   */ 
+   */
   TagsLoader({Key key, this.initialTags, this.onTagsChanged}) : super(key: key);
 
   _TagsLoaderState createState() => _TagsLoaderState();
 }
 
 class _TagsLoaderState extends State<TagsLoader> {
-  
   /*
    * Pre:   ---
    * Post   devolverá una lista de tags. Por el momento, mockup
-   */ 
-  Future<List<Tag>> _getTags() async{
+   */
+  Future<List<Tag>> _getTags() async {
     List<Tag> mockTagList = [];
     int tagCounter = 0;
-    nouns.take(100).forEach((noun){
-      mockTagList.add(
-        Tag(
-          id:tagCounter,
-          title: noun,
-          active: false
-        )
-      );
+    nouns.take(100).forEach((noun) {
+      mockTagList.add(Tag(id: tagCounter, title: noun, active: false));
       tagCounter++;
     });
     return mockTagList;
@@ -57,25 +50,25 @@ class _TagsLoaderState extends State<TagsLoader> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.initialTags.length == 0){
+    if (widget.initialTags.length == 0) {
       double height = MediaQuery.of(context).size.height;
       return FutureBuilder(
-        future:_getTags(),
-        builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot){
-          if(snapshot.hasData){
+        future: _getTags(),
+        builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
+          if (snapshot.hasData) {
             return TagsSelector(
               onTagsChanged: widget.onTagsChanged,
               suggestedTags: snapshot.data,
             );
-          }else{
+          } else {
             return Container(
-              height: height/4,
+              height: height / 4,
               child: Center(child: BookaloProgressIndicator()),
             );
           }
         },
       );
-    }else{
+    } else {
       return TagsSelector(
         onTagsChanged: widget.onTagsChanged,
         suggestedTags: widget.initialTags,

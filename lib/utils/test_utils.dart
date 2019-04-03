@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 
-Widget makeTestableWidget({ Widget child }) {
+Widget makeTestableWidget({Widget child}) {
   return MediaQuery(
     data: MediaQueryData(),
     child: MaterialApp(

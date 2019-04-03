@@ -24,7 +24,7 @@ class DistanceMap extends StatelessWidget {
    *        a la localización de actual del usuario. height es la altura en píxeles
    *        del widget. REQUIERE PERMISOS DE INTERNET Y LOCALIZACIÓN
    * Post:  ha construido el widget haciendo uso de OpenStreetMap
-   */ 
+   */
   DistanceMap({Key key, this.distanceRadius, this.height}) : super(key: key);
 
   @override
@@ -33,32 +33,30 @@ class DistanceMap extends StatelessWidget {
       height: height,
       child: FutureBuilder<Position>(
         future: _getUserPosition(),
-        builder: (BuildContext context, AsyncSnapshot<Position> snapshot){
-          if(snapshot.hasData){
+        builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+          if (snapshot.hasData) {
             return FlutterMap(
-              options: MapOptions(
-                center: LatLng(snapshot.data.latitude, snapshot.data.longitude),
-                maxZoom: 12.0,
-                minZoom: 8.0,
-                zoom: 10.0
-              ),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate:"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  subdomains: ['a', 'b', 'c']),
-                  CircleLayerOptions(
-                    circles: [
-                      CircleMarker(
-                        point: LatLng(snapshot.data.latitude, snapshot.data.longitude),
+                options: MapOptions(
+                    center:
+                        LatLng(snapshot.data.latitude, snapshot.data.longitude),
+                    maxZoom: 12.0,
+                    minZoom: 8.0,
+                    zoom: 10.0),
+                layers: [
+                  TileLayerOptions(
+                      urlTemplate:
+                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      subdomains: ['a', 'b', 'c']),
+                  CircleLayerOptions(circles: [
+                    CircleMarker(
+                        point: LatLng(
+                            snapshot.data.latitude, snapshot.data.longitude),
                         color: Colors.pink.withOpacity(0.5),
                         useRadiusInMeter: true,
-                        radius: distanceRadius
-                      )
-                    ]
-                  )
-              ]
-            );
-          }else{
+                        radius: distanceRadius)
+                  ])
+                ]);
+          } else {
             return Center(child: BookaloProgressIndicator());
           }
         },
@@ -66,8 +64,8 @@ class DistanceMap extends StatelessWidget {
     );
   }
 
-  Future<Position> _getUserPosition() async{
-    return await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  Future<Position> _getUserPosition() async {
+    return await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
-
 }

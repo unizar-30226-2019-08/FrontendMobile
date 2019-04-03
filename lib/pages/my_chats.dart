@@ -14,7 +14,6 @@ import 'package:bookalo/widgets/navbars/chat_navbar.dart';
  *                TEMPORALMENTE CONTIENE NAVBAR DE CHAT CONCRETO. NO SERÁ ASÍ.
  */
 class MyChats extends StatefulWidget {
-
   MyChats();
 
   _MyChatsState createState() => _MyChatsState();
@@ -25,7 +24,8 @@ class _MyChatsState extends State<MyChats> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: ChatNavbar(preferredSize: Size.fromHeight(height/10), interest: Interest.buys),
+      appBar: ChatNavbar(
+          preferredSize: Size.fromHeight(height / 10), interest: Interest.buys),
     );
   }
 }

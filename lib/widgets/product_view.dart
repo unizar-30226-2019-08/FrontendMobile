@@ -17,31 +17,31 @@ import 'package:bookalo/translations.dart';
   CLASE: ProductView
   DESCRIPCIÓN: widget de vista de producto de la pantalla principal
  */
-class ProductView extends StatelessWidget{
+class ProductView extends StatelessWidget {
   final Product _product;
   final double _stars;
   final int _reviews;
   final List<Tag> _tags = [
     Tag(
-        id: 1,
-        title: 'mates',
+      id: 1,
+      title: 'mates',
     ),
     Tag(
-        id: 1,
-        title: 'uni',
+      id: 1,
+      title: 'uni',
     ),
     Tag(
-        id: 1,
-        title: 'primero',
+      id: 1,
+      title: 'primero',
     ),
     Tag(
-        id: 1,
-        title: 'universidad',
+      id: 1,
+      title: 'universidad',
     ),
     Tag(
-        id: 1,
-        title: 'universidad',
-    )                   
+      id: 1,
+      title: 'universidad',
+    )
   ];
   ProductView(this._product, this._stars, this._reviews);
 
@@ -50,7 +50,7 @@ class ProductView extends StatelessWidget{
   Post: devuelve un Widget (Card) con el precio, descripcion y tags del producto
         vendido y  valoraciones del vendedor
  */
-  Widget priceCard(BuildContext context){
+  Widget priceCard(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Card(
       child: Column(
@@ -59,42 +59,39 @@ class ProductView extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 16,top: 16, bottom: 8),
-                child: Text(
-                    _product.priceToString(),
+                padding: EdgeInsets.only(left: 16, top: 16, bottom: 8),
+                child: Text(_product.priceToString(),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
-                    )
-                ),
+                    )),
               )
             ],
           ),
           Container(
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.only(left: 16, bottom: 8, right: 10.0),
-            child:  Text(this._product.getDescription(),
+            child: Text(
+              this._product.getDescription(),
               textAlign: TextAlign.justify,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 13
-              ),
+              style: TextStyle(fontSize: 13),
             ),
           ),
-         Container(
+          Container(
             padding: EdgeInsets.only(left: 16, bottom: 8),
-            child: StaticStars(this._stars, Colors.black,this._reviews),
+            child: StaticStars(this._stars, Colors.black, this._reviews),
           ),
           SelectableTags(
-            height: height/30,
+            height: height / 30,
             tags: _tags,
             fontSize: 10.0,
-            onPressed: (tag){},
+            onPressed: (tag) {},
             margin: EdgeInsets.all(5.0),
             activeColor: Colors.pink,
-          )        
+          )
         ],
       ),
     );
@@ -104,12 +101,10 @@ class ProductView extends StatelessWidget{
   Pre: ---
   Post: devuelve un Widget (Card) con la imagen y nombre del producto vendido
  */
-  Widget imageCard(BuildContext context){
+  Widget imageCard(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Stack(
-        alignment: Alignment.topRight,
-        children: <Widget>[
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Stack(alignment: Alignment.topRight, children: <Widget>[
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -122,11 +117,11 @@ class ProductView extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5)
-                  ),
+                  decoration:
+                      BoxDecoration(color: Colors.black.withOpacity(0.5)),
                   child: ListTile(
-                    title: Text(this._product.getName(),
+                    title: Text(
+                      this._product.getName(),
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -134,12 +129,13 @@ class ProductView extends StatelessWidget{
                       ),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.chat_bubble_outline, color: Colors.pink, size: 40),
-                      onPressed: (){
+                      icon: Icon(Icons.chat_bubble_outline,
+                          color: Colors.pink, size: 40),
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => MyChats()),
-                        );                    
+                        );
                       },
                     ),
                   ),
@@ -150,25 +146,20 @@ class ProductView extends StatelessWidget{
           Container(
             margin: EdgeInsets.only(right: 10.0),
             child: (_product.getSold()
-                    ? Chip(
-                      label: Text(
-                        Translations.of(context).text('sold_tab'),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white
-                        ),
-                      ),
-                      backgroundColor: Colors.pink,
-                    )
-                    : DistanceChip(
-                        userPosition: LatLng(0.0, 0.0),
-                        targetPosition: LatLng(0.003, 0.0),
-                      )
-            ),
+                ? Chip(
+                    label: Text(
+                      Translations.of(context).text('sold_tab'),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.white),
+                    ),
+                    backgroundColor: Colors.pink,
+                  )
+                : DistanceChip(
+                    userPosition: LatLng(0.0, 0.0),
+                    targetPosition: LatLng(0.003, 0.0),
+                  )),
           ),
-        ]
-      )
-    );
+        ]));
   }
 
   @override
@@ -176,9 +167,9 @@ class ProductView extends StatelessWidget{
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return  Center(
+    return Center(
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: height/50),
+        margin: EdgeInsets.symmetric(vertical: height / 50),
         child: SizedBox(
           child: Stack(
             alignment: Alignment.center,
@@ -187,37 +178,30 @@ class ProductView extends StatelessWidget{
               Positioned(
                 child: Container(
                   color: Colors.transparent,
-                  width: width/1.3,
-                  height: height/2.1,
+                  width: width / 1.3,
+                  height: height / 2.1,
                 ),
               ),
               Positioned(
                 left: 100.0,
                 child: Container(
-                  height: height/2.1,
-                  width: width/1.7,
+                  height: height / 2.1,
+                  width: width / 1.7,
                   child: imageCard(context),
                 ),
               ),
               Positioned(
-                top: height/20,
-                right: width/3,
-                child: Container(
-                  height: height/3,
-                  width: width/2,
-                  child: priceCard(context),
-                )
-              )
-
-
+                  top: height / 20,
+                  right: width / 3,
+                  child: Container(
+                    height: height / 3,
+                    width: width / 2,
+                    child: priceCard(context),
+                  ))
             ],
           ),
         ),
       ),
     );
   }
-
-
-
-
 }

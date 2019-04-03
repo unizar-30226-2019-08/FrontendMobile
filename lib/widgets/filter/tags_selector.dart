@@ -15,7 +15,7 @@ import 'package:bookalo/translations.dart';
  *                algunos y permite la adición de nuevos
  */
 class TagsSelector extends StatefulWidget {
-  final List<Tag> suggestedTags; 
+  final List<Tag> suggestedTags;
   final Function(Tag) onTagsChanged;
 
   /*
@@ -23,22 +23,21 @@ class TagsSelector extends StatefulWidget {
    *        función void
    * Post:  ha generado el widget de tal forma que al modificarse la lista de tags
    *        activos, ha ejecutado la callack onTagsChanged
-   */ 
-  TagsSelector({Key key, this.onTagsChanged, this.suggestedTags}) : super(key: key);
+   */
+  TagsSelector({Key key, this.onTagsChanged, this.suggestedTags})
+      : super(key: key);
 
   _TagsSelectorState createState() => _TagsSelectorState();
 }
 
 class _TagsSelectorState extends State<TagsSelector> {
-
   GlobalKey<AutoCompleteTextFieldState<Tag>> key = new GlobalKey();
   List<Tag> selectedTags = [];
 
-
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    selectedTags.addAll(widget.suggestedTags.sublist(0,5));  
+    selectedTags.addAll(widget.suggestedTags.sublist(0, 5));
   }
 
   @override
@@ -47,45 +46,45 @@ class _TagsSelectorState extends State<TagsSelector> {
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(right: width/3),
-          width: width / 2,
-          child: AutoCompleteTextField<Tag>(
-            decoration: InputDecoration(
-              hintText: Translations.of(context).text("tag_example"),
-              labelText: Translations.of(context).text("add_tags")
-            ),
-            key: key,
-            suggestions: widget.suggestedTags,
-            itemBuilder: (context, suggestion) {
-              return Column(
-                children: <Widget>[
-                  Divider(),
-                  Chip(
-                    label: Text(suggestion.title),
-                    labelStyle: TextStyle(color: Colors.white),
-                    backgroundColor: Colors.pink,
-                  ),
-                ],
-              );
-            },
-            submitOnSuggestionTap: true,
-            itemSubmitted: (tag){
-              if(!selectedTags.contains(tag)){
-                tag.active = true;
-                setState(() {
-                  selectedTags.add(tag);
-                });
-                widget.onTagsChanged(tag);
-              }
-            },
-            itemSorter: (a, b) {
-              return 1;
-            },
-            itemFilter: (suggestions, input) {
-               return suggestions.title.toLowerCase().contains(input.toLowerCase());
-            },
-          )
-        ),
+            margin: EdgeInsets.only(right: width / 3),
+            width: width / 2,
+            child: AutoCompleteTextField<Tag>(
+              decoration: InputDecoration(
+                  hintText: Translations.of(context).text("tag_example"),
+                  labelText: Translations.of(context).text("add_tags")),
+              key: key,
+              suggestions: widget.suggestedTags,
+              itemBuilder: (context, suggestion) {
+                return Column(
+                  children: <Widget>[
+                    Divider(),
+                    Chip(
+                      label: Text(suggestion.title),
+                      labelStyle: TextStyle(color: Colors.white),
+                      backgroundColor: Colors.pink,
+                    ),
+                  ],
+                );
+              },
+              submitOnSuggestionTap: true,
+              itemSubmitted: (tag) {
+                if (!selectedTags.contains(tag)) {
+                  tag.active = true;
+                  setState(() {
+                    selectedTags.add(tag);
+                  });
+                  widget.onTagsChanged(tag);
+                }
+              },
+              itemSorter: (a, b) {
+                return 1;
+              },
+              itemFilter: (suggestions, input) {
+                return suggestions.title
+                    .toLowerCase()
+                    .contains(input.toLowerCase());
+              },
+            )),
         Container(
           margin: EdgeInsets.only(left: 20.0),
           child: SelectableTags(
