@@ -1,0 +1,9 @@
+tests:
+  - test/screenshots_tests.dart
+staging: /tmp/screenshots
+locales:
+  - en-US
+devices:
+ android:
+  - Nexus 6P
+frame: true

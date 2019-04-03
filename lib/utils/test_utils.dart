@@ -17,3 +17,17 @@ Widget makeTestableWidget({Widget child}) {
     ),
   );
 }
+
+Widget makeTestablePage({Widget child}) {
+  return MediaQuery(
+    data: MediaQueryData(),
+    child: MaterialApp(
+      localizationsDelegates: [
+        TranslationsDelegate(isTest: true),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      home: child
+    ),
+  );
+}
