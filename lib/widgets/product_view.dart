@@ -4,12 +4,14 @@
  * CREACIÓN:    15/03/2019
  *
  */
-
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/selectable_tags.dart';
+import 'package:geo/geo.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
-
-
+import 'package:bookalo/pages/my_chats.dart';
+import 'package:bookalo/widgets/distance_chip.dart';
+import 'package:bookalo/translations.dart';
 
 /*
   CLASE: ProductView
@@ -19,8 +21,28 @@ class ProductView extends StatelessWidget{
   final Product _product;
   final double _stars;
   final int _reviews;
-
-
+  final List<Tag> _tags = [
+    Tag(
+        id: 1,
+        title: 'mates',
+    ),
+    Tag(
+        id: 1,
+        title: 'uni',
+    ),
+    Tag(
+        id: 1,
+        title: 'primero',
+    ),
+    Tag(
+        id: 1,
+        title: 'universidad',
+    ),
+    Tag(
+        id: 1,
+        title: 'universidad',
+    )                   
+  ];
   ProductView(this._product, this._stars, this._reviews);
 
   /*
@@ -28,13 +50,9 @@ class ProductView extends StatelessWidget{
   Post: devuelve un Widget (Card) con el precio, descripcion y tags del producto
         vendido y  valoraciones del vendedor
  */
-  Widget PriceCard(BuildContext context){
-    return Card(  //Tarjeta 1
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-        side: BorderSide(color: Colors.black),
-      ),
+  Widget priceCard(BuildContext context){
+    double height = MediaQuery.of(context).size.height;
+    return Card(
       child: Column(
         children: <Widget>[
           Row(
@@ -47,7 +65,7 @@ class ProductView extends StatelessWidget{
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 30,
                     )
                 ),
               )
@@ -55,94 +73,147 @@ class ProductView extends StatelessWidget{
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(left: 16, bottom: 8),
-            child:  Text(this._product.getName(),
-              textAlign: TextAlign.justify, //TODO:descripcion
-              maxLines: 5,    //TODO: ver maximo de lineas--> max BD
+            margin: EdgeInsets.only(left: 16, bottom: 8, right: 10.0),
+            child:  Text(this._product.getDescription(),
+              textAlign: TextAlign.justify,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                  fontSize: 17
+                  fontSize: 13
               ),
             ),
           ),
          Container(
             padding: EdgeInsets.only(left: 16, bottom: 8),
             child: StaticStars(this._stars, Colors.black,this._reviews),
-          )
+          ),
+          SelectableTags(
+            height: height/30,
+            tags: _tags,
+            fontSize: 10.0,
+            onPressed: (tag){},
+            margin: EdgeInsets.all(5.0),
+            activeColor: Colors.pink,
+          )        
         ],
       ),
     );
   }
+
   /*
   Pre: ---
   Post: devuelve un Widget (Card) con la imagen y nombre del producto vendido
  */
-  Widget ImageCard(BuildContext context){
+  Widget imageCard(BuildContext context){
     return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-        side: BorderSide(color: Colors.black),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Stack(
+        alignment: Alignment.topRight,
         children: <Widget>[
-          Expanded(
-            flex: 8,
-            child: Container(
-              margin: EdgeInsets.all(20),
-              child: Image.network(
-                _product.getImage(),
-                //this._product.getImage(),
-                fit: BoxFit.fitHeight,
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(_product.getImage()),
+                fit: BoxFit.fill,
+                alignment: Alignment.topCenter,
               ),
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              //width: MediaQuery.of(context).size.width,
-              // margin:EdgeInsets.all(10),
-                child: ListTile(
-                  title: Text(this._product.getName(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      // fontSize: 40,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5)
+                  ),
+                  child: ListTile(
+                    title: Text(this._product.getName(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        // fontSize: 40,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.chat_bubble_outline, color: Colors.pink, size: 40),
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyChats()),
+                        );                    
+                      },
                     ),
                   ),
-                  trailing: Icon(Icons.chat_bubble, size: 40,),
-                )
+                ),
+              ],
             ),
-          )
-        ],
-      ),
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 10.0),
+            child: (_product.getSold()
+                    ? Chip(
+                      label: Text(
+                        Translations.of(context).text('sold_tab'),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white
+                        ),
+                      ),
+                      backgroundColor: Colors.pink,
+                    )
+                    : DistanceChip(
+                        userPosition: LatLng(0.0, 0.0),
+                        targetPosition: LatLng(0.003, 0.0),
+                      )
+            ),
+          ),
+        ]
+      )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    //todo: obtener dimensiones
-    double width=MediaQuery.of(context).size.width* 0.7;
-    double height= MediaQuery.of(context).size.height*0.7;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
-    return  Stack(
-      overflow: Overflow.visible,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(left: width *0.5,top: height*0.01),
-          height: height*0.65,
-          width: width*0.75,
-          child: ImageCard(context),
+    return  Center(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: height/50),
+        child: SizedBox(
+          child: Stack(
+            alignment: Alignment.center,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              Positioned(
+                child: Container(
+                  color: Colors.transparent,
+                  width: width/1.3,
+                  height: height/2.1,
+                ),
+              ),
+              Positioned(
+                left: 100.0,
+                child: Container(
+                  height: height/2.1,
+                  width: width/1.7,
+                  child: imageCard(context),
+                ),
+              ),
+              Positioned(
+                top: height/20,
+                right: width/3,
+                child: Container(
+                  height: height/3,
+                  width: width/2,
+                  child: priceCard(context),
+                )
+              )
+
+
+            ],
+          ),
         ),
-        Container(
-          margin: EdgeInsets.only(top: height *0.1),
-          height: height*0.45,
-          width: width*0.65,
-          child: PriceCard(context),
-        )
-
-      ],
+      ),
     );
   }
 

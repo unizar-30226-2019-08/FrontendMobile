@@ -6,9 +6,9 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/usuario.dart';
+import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/static_stars.dart';
-import 'package:bookalo/translations.dart';
+import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -16,9 +16,9 @@ import 'package:bookalo/translations.dart';
   DESCRIPCIÓN: widget de miniatura de transaccion
  */
 class ReviewCard extends StatelessWidget{
-  final Usuario _user;
+  final User _user;
   //final int _reviewDate;
-   var _reviewDate;
+  final DateTime _reviewDate;
   final bool _seller; //true: vendió, false: compró
 
   //TODO: numero de valoraciones en usuario??
@@ -30,19 +30,11 @@ class ReviewCard extends StatelessWidget{
   ReviewCard(this._user, this._reviewDate, this._seller,
       this._product, this._review, this._stars);
 
-  //  TODO: pasar a utils
-  String DateToString(DateTime f){
-    String res=(f.day).toString()+'/'+(f.month).toString()+'/'+(f.year).toString();
-    return res;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return  Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
+    return  Container(
+      margin: EdgeInsets.all(10.0),
+      child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -71,17 +63,17 @@ class ReviewCard extends StatelessWidget{
               children :[
                 Container(
                   margin:EdgeInsets.only(left: 16),
-                  child: Text(DateToString(_reviewDate),  //DateToString
+                  child: Text(dateToNumbers(_reviewDate, context),  //DateToString
                     style:TextStyle(
                       color: Colors.grey[400],
                       fontSize: 19,
                     )
                   ),
                 ),
-               Container(
-                 padding: EdgeInsets.only(right: 16),
-                 child: StaticStars(this._stars, Colors.black,null),
-               )
+                Container(
+                  padding: EdgeInsets.only(right: 16),
+                  child: StaticStars(this._stars, Colors.black,null),
+                )
 
               ]
             ),
@@ -102,7 +94,8 @@ class ReviewCard extends StatelessWidget{
             )
           ],
         ),
-      );
+      ),
+    );
 
 
    // return null;
