@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:latlong/latlong.dart';
 
 part 'filter_query.g.dart';
 

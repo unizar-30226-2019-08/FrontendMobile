@@ -6,7 +6,9 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/filter.dart';
-
+import 'package:bookalo/widgets/product_view.dart';
+import 'package:bookalo/widgets/social_buttons.dart';
+import 'package:bookalo/objects/product.dart';
 /*
  *  CLASE:        Buy
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
@@ -23,7 +25,6 @@ class Buy extends StatefulWidget {
 class _BuyState extends State<Buy> {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -55,25 +56,33 @@ class _BuyState extends State<Buy> {
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          margin: EdgeInsets.only(top: height/5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: height/25),
-                child: Icon(Icons.remove_shopping_cart, size: 80.0, color: Colors.pink)
-              ),
-              Text(
-                Translations.of(context).text("no_products_available"),
-                style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w300
-                ),
-              )
-            ],
-          ),
-        ),
+      // body: Center(
+      //   child: Container(
+      //     margin: EdgeInsets.only(top: height/5),
+      //     child: Column(
+      //       children: <Widget>[
+      //         Container(
+      //           margin: EdgeInsets.only(bottom: height/25),
+      //           child: Icon(Icons.remove_shopping_cart, size: 80.0, color: Colors.pink)
+      //         ),
+      //         Text(
+      //           Translations.of(context).text("no_products_available"),
+      //           style: TextStyle(
+      //             fontSize: 25.0,
+      //             fontWeight: FontWeight.w300
+      //           ),
+      //         )
+      //       ],
+      //     ),
+      //   ),
+      // )
+      body: ListView(
+        children: <Widget>[
+          ProductView(Product('Fundamentos álgebra', 12, false, 'https://placeimg.com/640/480/any', ""),6.1,39),
+          ProductView(Product('Fundamentos programación', 18, false, 'https://placeimg.com/640/480/any', ""),6.1,39),
+          ProductView(Product('Lengua castellana', 3, true, 'https://placeimg.com/640/480/any', ""),6.1,39),
+          SocialButtons()
+        ],
       )
     );
   }

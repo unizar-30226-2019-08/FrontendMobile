@@ -35,7 +35,7 @@ class _BookaloProgressIndicatorState extends State<BookaloProgressIndicator> wit
       duration: const Duration(milliseconds: 700),
       vsync: this,
     );    
-    _rotator = Tween(begin: 0.0, end: math.pi*2).animate(
+    _rotator = Tween(begin: math.pi*2, end: 0.0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Curves.ease

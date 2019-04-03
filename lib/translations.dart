@@ -35,7 +35,7 @@ class Translations{
 
   Future<Translations> load() async {
     String data = await rootBundle
-        .loadString('res/langs/${_locale.languageCode}.json');
+        .loadString('locale/i18n_${_locale.languageCode}.json');
 
     Map<String, dynamic> _result = json.decode(data);
     _sentences = new Map();
@@ -76,7 +76,7 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
   final bool isTest;
 
   @override
-  bool isSupported(Locale locale) => ['en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => ['es'].contains(locale.languageCode);
 
   @override
   Future<Translations> load(Locale locale) async {

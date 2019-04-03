@@ -4,8 +4,6 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:geo/geo.dart';
 import 'package:bookalo/translations.dart';
 
@@ -55,7 +53,7 @@ class DistanceChip extends StatelessWidget {
         distanceToString(userPosition, targetPosition, context),
         style: TextStyle(
           color: Colors.white,
-          fontSize: 25.0,
+          fontSize: 17.0,
           fontWeight: FontWeight.w300
         ),
       ),

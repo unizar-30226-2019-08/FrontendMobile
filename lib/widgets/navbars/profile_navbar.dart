@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/widgets/static_stars.dart';
 
 /*
  *  CLASE:        ProfileNavbar
@@ -79,18 +80,7 @@ class _ProfileNavbarState extends State<ProfileNavbar>{
                             ),
                             ],
                           ),
-                          //MOCKUP mientras no esté el visor de estrellas
-                          Container(
-                            margin: EdgeInsets.only(top: 10.0),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(Icons.star, color: Colors.white),
-                                Icon(Icons.star, color: Colors.white),
-                                Icon(Icons.star, color: Colors.white),
-                                Icon(Icons.star, color: Colors.white)
-                              ],
-                            )
-                          ),
+                          StaticStars(6.1,Colors.white,32)
                         ],
                       ),
                     )
@@ -155,7 +145,7 @@ class _ProfileNavbarState extends State<ProfileNavbar>{
               )
             )
           ),
-        );
+      );
     }
 }
 
