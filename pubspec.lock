@@ -185,6 +185,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.5"
+  file:
+    dependency: transitive
+    description:
+      name: file
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.7"
   fixnum:
     dependency: transitive
     description:
@@ -204,6 +211,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0+1"
+  flutter_driver:
+    dependency: "direct dev"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_image:
     dependency: transitive
     description:
@@ -256,6 +268,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.14"
+  fuchsia_remote_debug_protocol:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   geo:
     dependency: "direct main"
     description:
@@ -347,6 +364,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  json_rpc_2:
+    dependency: transitive
+    description:
+      name: json_rpc_2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.9"
   json_serializable:
     dependency: "direct dev"
     description:
@@ -459,6 +483,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   pool:
     dependency: transitive
     description:
@@ -473,6 +504,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  process:
+    dependency: transitive
+    description:
+      name: process
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.9"
   pub_semver:
     dependency: transitive
     description:
@@ -502,7 +540,7 @@ packages:
     source: hosted
     version: "2.1.5"
   screenshots:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: screenshots
       url: "https://pub.dartlang.org"
@@ -660,6 +698,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  vm_service_client:
+    dependency: transitive
+    description:
+      name: vm_service_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.6"
   watcher:
     dependency: transitive
     description:

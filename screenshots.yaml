@@ -2,7 +2,7 @@ tests:
   - test/screenshots_tests.dart
 staging: /tmp/screenshots
 locales:
-  - en-US
+  - es-ES
 devices:
  android:
   - Nexus 6P
