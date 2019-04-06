@@ -83,7 +83,7 @@ class _ValorationCardState extends State<ValorationCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
-                      maxlines:null, //no hay máximo de lineas
+                      maxLines: null, 
                       maxLength: 1000,//1000 caracteres máximo
                       maxLengthEnforced: true,
                       decoration: InputDecoration(
