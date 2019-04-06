@@ -14,8 +14,8 @@ import 'package:bookalo/widgets/distance_chip.dart';
 import 'package:bookalo/translations.dart';
 
 /*
-  CLASE: ProductView
-  DESCRIPCIÓN: widget de vista de producto de la pantalla principal
+ * CLASE: ProductView
+ * DESCRIPCIÓN: widget de vista de producto de la pantalla principal
  */
 class ProductView extends StatelessWidget {
   final Product _product;
@@ -46,10 +46,10 @@ class ProductView extends StatelessWidget {
   ProductView(this._product, this._stars, this._reviews);
 
   /*
-  Pre: ---
-  Post: devuelve un Widget (Card) con el precio, descripcion y tags del producto
-        vendido y  valoraciones del vendedor
- */
+   * Pre:   ---
+   * Post:  devuelve un Widget (Card) con el precio, descripcion y tags del producto
+   *        vendido y  valoraciones del vendedor
+   */
   Widget priceCard(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Card(
@@ -98,9 +98,9 @@ class ProductView extends StatelessWidget {
   }
 
   /*
-  Pre: ---
-  Post: devuelve un Widget (Card) con la imagen y nombre del producto vendido
- */
+   * Pre: ---
+   * Post: devuelve un Widget (Card) con la imagen y nombre del producto vendido
+   */
   Widget imageCard(BuildContext context) {
     return Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,

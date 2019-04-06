@@ -24,6 +24,7 @@ dependencies:
   material_design_icons_flutter: 3.2.3595
   url_launcher: ^5.0.2
   lipsum: ^1.0.0+1
+  flutter_rating: ^0.0.2
   
 dev_dependencies:
   flutter_test:
