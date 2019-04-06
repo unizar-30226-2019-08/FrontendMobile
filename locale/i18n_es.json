@@ -1,5 +1,5 @@
 {
-    "buy_tab": "COMPRAR",
+"buy_tab": "COMPRAR",
     "sell_tab": "VENDER",
     "reviews_tab": "OPINIONES",
     "on_sale_tab": "EN VENTA",
@@ -36,5 +36,13 @@
     "number_date": "{{param1}}/{{param2}}/{{param3}}",
     "last_time": "últ. vez",
     "filter_title": "Filtrado",
-    "very_close": "muy cerca"
+    "very_close": "muy cerca",
+    "you": "Tú",
+    "rate_user" : "Valora a {{param1}}",
+    "valoration_text": "Escribiendo un comentario, estás ayudando a toda la comunidad de Bookalo, ¡dedícale un minuto!",
+    "how_was_it": "¿qué tal fue todo?",
+    "review_too_shot": "Escribe un poco más",
+    "send": "ENVIAR",
+"report": "REPORTAR",
+"chat_finished": "COMPRADO/VENDIDO"
 }

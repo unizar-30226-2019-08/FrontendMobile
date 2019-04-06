@@ -1,107 +1,102 @@
+/*
+ * FICHERO:     miniature_chat.dart
+ * DESCRIPCIÓN: clases relativas a la  miniatura de un chat
+ * CREACIÓN:    14/03/2019
+ */
+
+
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:bookalo/Objects/usuario.dart';
-import 'package:bookalo/Objects/product.dart';
-import 'package:intl/intl.dart';
+import 'package:bookalo/utils/dates_utils.dart';
+import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/translations.dart';
+
+
+
+/*
+ *  CLASE:        MiniatureChat
+ *  DESCRIPCIÓN:  widget para mostrar la información de un chat aún vigente
+ */
 
 
 class MiniatureChat extends StatelessWidget {
-  final Usuario user; //Usuario con el que se chatea
-  final Product product;    //Producto sobre el que trata el chat
-  final bool author;        //vale true si el usuario es el autor ddel ultimo mensaje
-  final String lastMessage;   //ultimo mensaje enviado en el chat
-  final bool buying;          //vale true si el chat es para comprar un producto y false si es para venderlo
-  final bool closed;         //vale true si la transacción está cerrada
-  final DateTime lastTimeDate;     //indica la fecha de la última conexión
-  //final EdgeInsetsGeometry padding;
- // final Color color;
-  MiniatureChat({Key key,this.user,this.product,this.author,this.lastMessage,this.buying,this.closed,
-  this.lastTimeDate}): super(key: key);
+  final User user; //Usuario con el que se chatea
+  final Product product; //Producto sobre el que trata el chat
+  final bool lastWasMe; //vale true si el usuario es el autor del ultimo mensaje
+  final String lastMessage; //ultimo mensaje enviado en el chat
+  final bool closed; //vale true si la transacción está cerrada
+  final DateTime lastTimeDate; //indica la fecha de la última conexión
+  
+  MiniatureChat(
+      {Key key,
+      this.user,
+      this.product,
+      this.lastWasMe,
+      this.lastMessage,
+      this.closed,
+      this.lastTimeDate})
+      : super(key: key);
 
+  /*
+   * Pre:  ---
+   * Post: construye el título de la miniatura con el último mensaje y su autor
+   */
+  Text buildTitle(BuildContext context) {
+    String message = ""; //ultimo mensaje enviado
+    String author = "";   //nombre de el autor del último mensaje
+    if (this.lastMessage.length > 10) {  //si el mensaje tiene más de 10 caracteres 
+      message = this.lastMessage.substring(1, 10) + "..."; // se muestran los 10 primeros
+    } else {//si no,se muestra entero
+      message = this.lastMessage;
+    }
 
-  /*Pre:lastCon no puede representar una fecha posterior a la actual
-  *Post:Devuelve un string que indica la fecha de la ultima conexión.
-  */
-  Text lastConection(DateTime lastCon){
-    String aMostrar=DateFormat('kk:mm').format(lastCon);
-    var fechaActual=new DateTime.now();
-    var diferencia=fechaActual.difference(lastCon);
-    
-    if(diferencia.inDays==1){
-      aMostrar='Ayer '+ aMostrar;
+    if (lastWasMe) { // si el autor fui yo
+      author = Translations.of(context).text("you"); //Muestra "tu"
+    } else {//si no, muestra el nombre del usuario
+      this.user.getName();
     }
-    else if(diferencia.inDays==0 ){
-      aMostrar='Hoy '+ aMostrar;
-    }
-    else if(diferencia.inDays>1){
-      aMostrar=DateFormat().format(lastCon);
-    }
-    return Text(aMostrar);
+    String toShow = author + ': ' + message; //construye mensaje completo
+    return Text(toShow);
   }
+/*Pre: --
+ *Post:Crea un widget que representa el título de la miniatura
+ */
 
-  /*Pre:
-  *Post:Construye el título de la miniatura con último mensaje y su autor
-  */
-  Text buildTitle(){
-    String message="";
-    String autor="";
-    if(this.lastMessage.length>10){
-      message=this.lastMessage.substring(1,10)+"...";
-    }
-    else{
-      message=this.lastMessage;
-    }
-
-    if(author){
-        autor="Tu";
-    }
-    else{
-      this.user.getNombre();
-    }
-    String aMostrar=autor+': '+message;
-    return Text(aMostrar);
-  }
-
-  Widget title(BuildContext context){
+  Widget title(BuildContext context) {
     Widget b;
-    if(closed){
-      b=new Row(
-        children:<Widget>[
-          buildTitle(),
-          DecoratedBox(
-            decoration:BoxDecoration(color:Colors.pink),
-            child: Padding(
-              padding:const EdgeInsets.all(1.0),
-              child:Text('Cerrado',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10),))
-          ,)
-        ]
-      );
+    if (closed) { //si la venta está cerrada
+      b = new Row(children: <Widget>[
+        buildTitle(context),
+        DecoratedBox(//incluir mensaje de cerrado
+          decoration: BoxDecoration(color: Colors.pink),
+          child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Text(
+                Translations.of(context).text("chat_finished"),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+              )),
+        )
+      ]);
+    } else {//si no, se construye el título sin cajita
+      b = buildTitle(context);
     }
-      else{
-        b=buildTitle();
-      }
-      return b;
-
-
-
+    return b;
   }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading:CircleAvatar(backgroundImage: NetworkImage(this.user.getImagenPerfil())),
-      title:title(context),//new Row(
-    
-      
-      subtitle:lastConection(this.lastTimeDate),
-      //contentPadding:this.padding,
+      leading: CircleAvatar(
+          backgroundImage: NetworkImage(this.user.getImagenPerfil())),
+      title: title(context),
+      subtitle: Text(dateToFullString(this.lastTimeDate, context)),
       isThreeLine: true,
       enabled: true,
-      trailing:CircleAvatar(backgroundImage: NetworkImage(this.product.getImagen())),
-      dense:true,
+      trailing:
+          CircleAvatar(backgroundImage: NetworkImage(this.product.getImage())), //imagen del producto sobre el que se chatea
+      dense: true,
     );
   }
-
-
-
 }
