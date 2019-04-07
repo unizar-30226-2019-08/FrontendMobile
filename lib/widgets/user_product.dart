@@ -10,6 +10,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/static_stars.dart';
+import 'package:bookalo/translations.dart';
 
 
 
@@ -18,7 +19,7 @@ import 'package:bookalo/widgets/static_stars.dart';
   CLASE: ProductView
   DESCRIPCIÓN: widget de vista de producto de la pantalla principal
  */
-
+/*
   class UserProduct extends StatefulWidget {
     //TODO: ver atributos
 
@@ -28,11 +29,48 @@ import 'package:bookalo/widgets/static_stars.dart';
 }
 
   class _UserProduct extends State<UserProduct>{
+  User usuario; //TODO: ver como inicializarlo
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Text(Translations.of(context).text("offered")
+        ),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(usuario.getImagenPerfil()),
+            ),
+          title: Text(usuario.getName()),
+          subtitle: StaticStars(usuario.getRating(), Colors.black, usuario.getReviews()),
+        ),
+      ],
+    );
+  }
+
+  }
+  */
+class UserProduct extends StatelessWidget {
+  User usuario; //TODO: ver como inicializarlo
+
+  UserProduct(this.usuario);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
+    return Container(
+        child: Column(
+          children: <Widget>[
+            Text(Translations.of(context).text("offered")
+            ),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(usuario.getImagenPerfil()),
+              ),
+              title: Text(usuario.getName()),
+              subtitle: StaticStars(
+                  usuario.getRating(), Colors.black, usuario.getReviews()),
+            ),
+          ],
+        ),
+    );
   }
-
-  }
+}

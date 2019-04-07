@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/my_chats.dart';
 import 'package:bookalo/my_profile.dart';
-import 'package:bookalo/widgets/mini_product.dart';
+import 'package:bookalo/widgets/user_product.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/product_view.dart';
 
 class MainNavbar extends StatelessWidget {
@@ -91,7 +92,8 @@ class MainNavbar extends StatelessWidget {
               ],
             ),
 
-            Icon(Icons.access_alarms),
+            //Icon(Icons.access_alarms),
+            UserProduct(new User('Silvia M.','https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g',27,6.9))
           ],
         ),
       ),

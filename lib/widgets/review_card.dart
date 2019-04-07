@@ -9,14 +9,14 @@ import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/translations.dart';
+
 
 /*
   CLASE: ReviewCard
   DESCRIPCIÓN: widget de miniatura de transaccion
  */
 class ReviewCard extends StatelessWidget{
-  final Usuario _user;
+  final User _user;
   //final int _reviewDate;
    var _reviewDate;
   final bool _seller; //true: vendió, false: compró
