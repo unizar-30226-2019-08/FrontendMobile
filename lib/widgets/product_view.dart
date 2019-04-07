@@ -1,8 +1,8 @@
 /*
- * FICHERO:     product_view.dart
- * DESCRIPCIÓN: visor del producto de la apntalla principal
- * CREACIÓN:    15/03/2019
- *
+* FICHERO:     product_view.dart
+* DESCRIPCIÓN: visor del producto de la pantalla principal
+* CREACIÓN:    15/03/2019
+*
  */
 
 import 'package:flutter/material.dart';

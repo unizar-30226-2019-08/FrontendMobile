@@ -6,7 +6,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/usuario.dart';
+import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/translations.dart';
@@ -63,7 +63,7 @@ class ReviewCard extends StatelessWidget{
                 ),
               ),
               trailing:CircleAvatar(backgroundImage:
-                            NetworkImage(_product.getPrimaryImage())),
+                            NetworkImage(_product.priceToString())),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

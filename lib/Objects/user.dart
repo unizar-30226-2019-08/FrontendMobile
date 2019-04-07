@@ -1,5 +1,5 @@
 //TODO:firebase user
-
+//TODO: cambiar nombre fichero
 class Usuario{
   String nombre;
   String imagenPerfil;

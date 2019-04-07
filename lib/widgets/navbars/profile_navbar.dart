@@ -4,7 +4,7 @@ import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/review_card.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/usuario.dart';
+import 'package:bookalo/objects/user.dart';
 
 class ProfileNavbar extends StatelessWidget {
 
