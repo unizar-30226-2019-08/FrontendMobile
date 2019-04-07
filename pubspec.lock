@@ -73,6 +73,20 @@ packages:
       url: "https://github.com/MarkOSullivan94/dart_config.git"
     source: git
     version: "0.5.0"
+  firebase_auth:
+    dependency: "direct dev"
+    description:
+      name: firebase_auth
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.4"
+  firebase_core:
+    dependency: "direct dev"
+    description:
+      name: firebase_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -228,3 +242,4 @@ packages:
     version: "2.1.15"
 sdks:
   dart: ">=2.1.0 <3.0.0"
+  flutter: ">=0.1.4 <2.0.0"

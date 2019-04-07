@@ -63,7 +63,7 @@ class ReviewCard extends StatelessWidget{
                 ),
               ),
               trailing:CircleAvatar(backgroundImage:
-                            NetworkImage(_product.getImage())),
+                            NetworkImage(_product.getPrimaryImage())),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

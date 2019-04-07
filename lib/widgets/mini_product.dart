@@ -15,7 +15,6 @@ import 'package:bookalo/objects/product.dart';
  */
 
 class MiniProduct extends StatelessWidget{
-  //TODO: cambiar nombre fichero??
   final Product _product;
 
   MiniProduct(this._product);
@@ -83,7 +82,7 @@ class MiniProduct extends StatelessWidget{
            border: new Border.all(color: Colors.grey[400],width: 0.4)
        ),
        child: ListTile(
-     leading:CircleAvatar(backgroundImage: NetworkImage(this._product.getImage())),
+     leading:CircleAvatar(backgroundImage: NetworkImage(this._product.getPrimaryImage())),
      title:Container(
        margin: EdgeInsets.all(10),
        child: Row(

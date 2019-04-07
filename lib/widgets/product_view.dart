@@ -92,8 +92,8 @@ class ProductView extends StatelessWidget{
             child: Container(
               margin: EdgeInsets.all(20),
               child: Image.network(
-                _product.getImage(),
-                //this._product.getImage(),
+                _product.getPrimaryImage(),
+                //this._product.getPrimaryImage(),
                 fit: BoxFit.fitHeight,
               ),
             ),

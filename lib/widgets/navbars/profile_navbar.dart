@@ -117,8 +117,8 @@ class ProfileNavbar extends StatelessWidget {
             //Icon(Icons.ac_unit),
             Column(
               children: <Widget>[
-                MiniProduct(new Product('Libroqwertyuiopqwertyuiopasdasdasdasdasd', 9999.5, true, 'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')),
-                MiniProduct(new Product('Lápiz', 0.75, false, 'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg')),
+                MiniProduct(new Product('Libroqwertyuiopqwertyuiopasdasdasdasdasd', 9999.5, true, new List()[10]('https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg'))),
+                MiniProduct(new Product('Lápiz', 0.75, false, new List()[10]('https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg'))),
               ],
             ),
 
@@ -127,11 +127,11 @@ class ProfileNavbar extends StatelessWidget {
               children: <Widget>[
                 ReviewCard(new Usuario('Silvia M.','https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'),
                     new DateTime.utc(2019, 03, 9),false, new Product('Libro', 9.5, true,
-                        'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg'),
+                        new List()[10]('https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')),
                     'Muy buen vendedor', 8.4),
                 ReviewCard(new Usuario('Laura P.','https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png'),
                     new DateTime.utc(2019, 02, 15),true, new Product('Libro', 9.5, true,
-                        'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg'),
+                  new List()[10]('https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg')),
                     'No fue puntual.---Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non maximus risus. Curabitur et felis ex. Aliquam erat volutpat. Donec sit amet ullamcorper ante. Maecenas at mauris at odio ultricies eleifend. In mollis leo odio. Nunc laoreet, lectus non porttitor pharetra, felis libero ultrices libero, et aliquet sem metus id purus. Donec id lectus nisi. Mauris sed fringilla leo. Sed ullamcorper feugiat tincidunt. Mauris faucibus fringilla neque, at maximus ligula. Donec non tellus magna.', 2)
               ],
 
