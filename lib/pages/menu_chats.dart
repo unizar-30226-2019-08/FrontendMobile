@@ -1,3 +1,13 @@
+/*
+ *  CLASE:        menuChats
+ *  DESCRIPCIÓN:  widget para el cuerpo principal del visor de chats abierto
+ *                de un usuario. Los chats se dividen en dos listas: una para los
+ *                artícullos que el usuario quiere comprar y otra para los que quiere vender
+ *                
+ */
+
+
+
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/valoration_card.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -50,15 +60,14 @@ double height = MediaQuery.of(context).size.height;
           
           children:[
           Text("Mis chats de compra",
-          style: TextStyle(fontWeight:FontWeight.bold,
-                            fontStyle:FontStyle.italic,
-                            fontSize: 20,
+          style: TextStyle(fontWeight:FontWeight.w300,
+                            height:1.0,
+                            fontSize: 30,
                             decoration: TextDecoration.underline,
                             decorationStyle: TextDecorationStyle.wavy),),
            MiniatureChat(user:user2,product:product2,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
           MiniatureChat(user:user,product:product,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
-           MiniatureChat(user:user,product:product,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
-           MiniatureChat(user:user,product:product,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
+           
 
 
             Padding(
@@ -67,15 +76,14 @@ double height = MediaQuery.of(context).size.height;
 
 
             Text("Mis chats de venta",
-            style: TextStyle(fontWeight:FontWeight.bold, 
-                            fontStyle:FontStyle.italic,
-                            fontSize: 20,
+            style: TextStyle(fontWeight:FontWeight.w300, 
+                            height:1.0,
+                            fontSize: 30,
                             decoration: TextDecoration.underline,
                             decorationStyle: TextDecorationStyle.wavy),),
            MiniatureChat(user:user,product:product,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
           MiniatureChat(user:user2,product:product2,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
-           MiniatureChat(user:user,product:product,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
-           MiniatureChat(user:user,product:product,lastWasMe:true,lastMessage:lastMessage,closed:closed,lastTimeDate:lastTimeDate),
+       
 
 
 
