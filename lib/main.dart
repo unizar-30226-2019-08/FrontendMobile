@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
+import 'package:bookalo/pages/menuChats.dart';
+import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 
 //void main() => runApp(MyApp());
 void main() {
@@ -38,7 +40,12 @@ class MyApp extends StatelessWidget {
         supportedLocales: [
           //const Locale('en', 'US'),
           const Locale('es', 'ES'),
+          
         ],
-        home: BuyAndSell());
+        home:new menuChats(),
+      
+          
+        
+    );
   }
 }

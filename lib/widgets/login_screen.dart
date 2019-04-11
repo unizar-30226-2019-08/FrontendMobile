@@ -7,12 +7,13 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:bookalo/Objects/usuario.dart';
-import 'package:bookalo/Objects/product.dart';
+import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/product.dart';
 import 'package:intl/intl.dart';
-import 'package:bookalo/social_buttons.dart';
+import 'package:bookalo/widgets/social_buttons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bookalo/translations.dart';
 
 /*
  *  CLASE:        LoginScreen

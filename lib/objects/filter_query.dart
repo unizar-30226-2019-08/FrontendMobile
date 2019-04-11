@@ -8,7 +8,7 @@ class FilterQuery {
       _$FilterQueryFromJson(json);
   Map<String, dynamic> toJson() => _$FilterQueryToJson(this);
 
-  Set<String> _tags = {};
+  Set<String> _tags =Set();
   //LatLng _userLocation;
   double _maxDistance;
   double _maxPrice;
