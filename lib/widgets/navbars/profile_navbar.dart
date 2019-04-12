@@ -6,8 +6,10 @@
  */
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/static_stars.dart';
+import 'package:bookalo/widgets/login/logout_photo.dart';
 
 /*
  *  CLASE:        ProfileNavbar
@@ -84,11 +86,18 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                 GestureDetector(
                   child: Hero(
                     tag: "profileImage",
-                    child: CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/user_picture.jpg'),
-                      radius: 50.0,
-                    ),
+                    child: FutureBuilder<FirebaseUser>(
+                    future: FirebaseAuth.instance.currentUser(),
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState == ConnectionState.done){
+                        return LogoutPhoto(url: snapshot.data.photoUrl);
+                      }else{
+                        return CircleAvatar(
+                          radius: 50.0,
+                        );
+                      }
+                    }
+                  ),
                   ),
                   onTap: () {
                     Navigator.push(
@@ -120,10 +129,24 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    "Juan L.",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w300, fontSize: 45.0),
+                  FutureBuilder<FirebaseUser>(
+                    future: FirebaseAuth.instance.currentUser(),
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState == ConnectionState.done){
+                        var displayName = snapshot.data.displayName.split(" ");
+                        return Text(
+                          displayName[0] + ' ' + displayName[1][0] + '.',
+                          style:
+                              TextStyle(fontWeight: FontWeight.w300, fontSize: 45.0),
+                        );
+                      }else{
+                        return Text(
+                          "---",
+                          style:
+                              TextStyle(fontWeight: FontWeight.w300, fontSize: 45.0),
+                        );
+                      }
+                    }
                   ),
                   IconButton(
                     icon: Icon(Icons.share, size: 30.0),

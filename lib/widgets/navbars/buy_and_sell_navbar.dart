@@ -5,6 +5,7 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/my_chats.dart';
 import 'package:bookalo/pages/user_profile.dart';
@@ -44,6 +45,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
     return PreferredSize(
       preferredSize: Size.fromHeight(height / 5),
       child: AppBar(
+          automaticallyImplyLeading: false,
           actions: <Widget>[
             Container(
               margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
@@ -62,9 +64,18 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                     margin: EdgeInsets.only(top: topMargin, right: width / 30),
                     child: Hero(
                       tag: "profileImage",
-                      child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/user_picture.jpg')),
+                      child: FutureBuilder<FirebaseUser>(
+                        future: FirebaseAuth.instance.currentUser(),
+                        builder: (context, snapshot) {
+                          if(snapshot.connectionState == ConnectionState.done){
+                            return CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(snapshot.data.photoUrl));
+                          }else{
+                            return CircularProgressIndicator();
+                          }
+                        }
+                      ),
                     )),
                 onTap: () {
                   Navigator.push(

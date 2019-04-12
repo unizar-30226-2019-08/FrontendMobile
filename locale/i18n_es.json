@@ -45,7 +45,9 @@
     "send": "ENVIAR",
 	"report": "REPORTAR",
 	"chat_finished": "COMPRADO/VENDIDO",
-	"Welcome": "¡HOLA!",
-	"Welcome_text":"Gracias por elegir Bookalo.¿Cómo quieres iniciar sesión?"
+	"welcome": "Hola",
+    "welcome_text": "Es hora de conocernos. ¿Cómo quieres que lo hagamos?",
+    "login_error": "No ha sido posible iniciar sesión con {{param1}}",
+    "accept" : "ACEPTAR"
 
 }
