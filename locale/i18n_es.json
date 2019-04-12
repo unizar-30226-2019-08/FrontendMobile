@@ -41,8 +41,11 @@
     "rate_user" : "Valora a {{param1}}",
     "valoration_text": "Escribiendo un comentario, estás ayudando a toda la comunidad de Bookalo, ¡dedícale un minuto!",
     "how_was_it": "¿qué tal fue todo?",
-    "review_too_short": "Escribe un poco más",
+    "review_too_shot": "Escribe un poco más",
     "send": "ENVIAR",
-    "report": "REPORTAR",
-    "chat_finished": "COMPRADO/VENDIDO"
+	"report": "REPORTAR",
+	"chat_finished": "COMPRADO/VENDIDO",
+	"Welcome": "¡HOLA!",
+	"Welcome_text":"Gracias por elegir Bookalo.¿Cómo quieres iniciar sesión?"
+
 }
