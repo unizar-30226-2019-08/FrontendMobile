@@ -30,10 +30,10 @@ class _SellState extends State<Sell> {
 
 
   _fetchPage(int pageNumber, int pageSize) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));//TODO: solo para visualizacion  de prueba
 
     return List.generate(pageSize, (index) {
-      if(index%2==0){ //TODO: solo para visualizacion  de prueba
+      if(index%2==0){
         return MiniProduct(new Product(
             'Fundamentos de álgebra',
             10,

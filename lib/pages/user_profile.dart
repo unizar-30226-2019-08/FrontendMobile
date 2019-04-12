@@ -8,7 +8,9 @@ import 'package:bookalo/widgets/navbars/profile_navbar.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/review_card.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 
 /*
  *  CLASE:        UserProfile
@@ -22,7 +24,144 @@ class UserProfile extends StatefulWidget {
   _UserProfileState createState() => _UserProfileState();
 }
 
+//TODO: clase page_view que encapsule list.builder??
+//TODO: _fetch page con productos o con widget visor??
 class _UserProfileState extends State<UserProfile> {
+
+  _fetchFavorites(int pageNumber, int pageSize) async{
+    await Future.delayed(Duration(seconds: 1));//TODO: solo para visualizacion  de prueba
+
+    return List.generate(pageSize, (index) {
+      if(index%2==0){
+        return  ProductView(
+            Product('Fundamentos álgebra', 12, false,
+                'https://placeimg.com/640/480/any', ""),
+            6.1,
+            39);
+      }else{
+        return ProductView(
+            Product('Lengua castellana', 3, true,
+                'https://placeimg.com/640/480/any', ""),
+            6.1,
+            39);
+      }
+    });
+
+  }
+
+  Widget _buildPage(List page) {
+    return ListView(
+        shrinkWrap: true,
+        primary: false,
+        children: page
+    );
+  }
+
+
+//crea lista de productos favoritos con product view
+  Widget _favoriteProducts(){
+    return ListView.builder(
+      itemBuilder: (context,pageNumber){
+        return FutureBuilder(
+          future: this._fetchFavorites(pageNumber, 3),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: BookaloProgressIndicator(),
+                );
+              case ConnectionState.waiting:
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: BookaloProgressIndicator(),
+                );
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return this._buildPage(snapshot.data);
+                }break;
+              case ConnectionState.active:
+            }
+          },
+        );
+      },
+    );
+  }
+
+
+
+  _fetchReviews(int pageNumber, int pageSize) async {
+    await Future.delayed(
+        Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
+
+    return List.generate(pageSize, (index) {
+      if (index % 2 == 0) {
+        return ReviewCard(
+            User('Silvia M.',
+                'https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'),
+            DateTime.utc(2019, 03, 9),
+            false,
+            new Product(
+                'Libro',
+                9.5,
+                true,
+                'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
+                ""),
+            'Muy buen vendedor',
+            8.4);
+      } else {
+        return ReviewCard(
+            User('Laura P.',
+                'https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png'),
+            DateTime.utc(2019, 02, 15),
+            true,
+            new Product(
+                'Libro',
+                9.5,
+                true,
+                'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
+                ""),
+            'No fue puntual.---Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non maximus risus. Curabitur et felis ex. Aliquam erat volutpat. Donec sit amet ullamcorper ante. Maecenas at mauris at odio ultricies eleifend. In mollis leo odio. Nunc laoreet, lectus non porttitor pharetra, felis libero ultrices libero, et aliquet sem metus id purus. Donec id lectus nisi. Mauris sed fringilla leo. Sed ullamcorper feugiat tincidunt. Mauris faucibus fringilla neque, at maximus ligula. Donec non tellus magna.',
+            2);
+      }
+    });
+  }
+
+//crea lista de valoraciones con review_card
+  Widget _userReviews(){
+    return ListView.builder(
+      itemBuilder: (context,pageNumber){
+        return FutureBuilder(
+          future: this._fetchReviews(pageNumber, 3),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: BookaloProgressIndicator(),
+                );
+              case ConnectionState.waiting:
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: BookaloProgressIndicator(),
+                );
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return this._buildPage(snapshot.data);
+                }break;
+              case ConnectionState.active:
+            }
+          },
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -33,55 +172,12 @@ class _UserProfileState extends State<UserProfile> {
           body: TabBarView(
             children: [
               //Icon(Icons.ac_unit),
-              Column(
-                children: <Widget>[
-                  MiniProduct(new Product(
-                      'Fundamentos de álgebra',
-                      10,
-                      true,
-                      'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                      "")),
-                  MiniProduct(new Product(
-                      'Lápiz',
-                      0.75,
-                      false,
-                      'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg',
-                      "")),
-                ],
-              ),
-
-              ListView(
-                children: <Widget>[
-                  ReviewCard(
-                      User('Silvia M.',
-                          'https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'),
-                      DateTime.utc(2019, 03, 9),
-                      false,
-                      new Product(
-                          'Libro',
-                          9.5,
-                          true,
-                          'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                          ""),
-                      'Muy buen vendedor',
-                      8.4),
-                  ReviewCard(
-                      User('Laura P.',
-                          'https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png'),
-                      DateTime.utc(2019, 02, 15),
-                      true,
-                      new Product(
-                          'Libro',
-                          9.5,
-                          true,
-                          'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                          ""),
-                      'No fue puntual.---Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non maximus risus. Curabitur et felis ex. Aliquam erat volutpat. Donec sit amet ullamcorper ante. Maecenas at mauris at odio ultricies eleifend. In mollis leo odio. Nunc laoreet, lectus non porttitor pharetra, felis libero ultrices libero, et aliquet sem metus id purus. Donec id lectus nisi. Mauris sed fringilla leo. Sed ullamcorper feugiat tincidunt. Mauris faucibus fringilla neque, at maximus ligula. Donec non tellus magna.',
-                      2)
-                ],
-              )
+              _favoriteProducts(),
+              _userReviews()
             ],
           )),
     );
   }
 }
+
+
