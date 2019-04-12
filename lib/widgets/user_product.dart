@@ -16,58 +16,49 @@ import 'package:bookalo/translations.dart';
 
 
 /*
-  CLASE: ProductView
-  DESCRIPCIÓN: widget de vista de producto de la pantalla principal
+  CLASE: UserProduct
+  DESCRIPCIÓN: widget que muestra la información del
+            usuario vendedor en la página de producto detallado
  */
-/*
+
   class UserProduct extends StatefulWidget {
     //TODO: ver atributos
 
-  UserProduct();
-  _UserProduct createState() => _UserProduct();
-
-}
-
-  class _UserProduct extends State<UserProduct>{
-  User usuario; //TODO: ver como inicializarlo
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(Translations.of(context).text("offered")
-        ),
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(usuario.getImagenPerfil()),
-            ),
-          title: Text(usuario.getName()),
-          subtitle: StaticStars(usuario.getRating(), Colors.black, usuario.getReviews()),
-        ),
-      ],
-    );
-  }
+    UserProduct();
+    _UserProductState createState() => _UserProductState();
 
   }
-  */
-class UserProduct extends StatelessWidget {
-  User usuario; //TODO: ver como inicializarlo
 
-  UserProduct(this.usuario);
+
+
+
+class _UserProductState extends State<UserProduct> {
+  User usuario=User('Silvia M.',
+      'https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'); //TODO: ver como inicializarlo
 
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(Translations.of(context).text("offered")
+            Container(
+              margin: EdgeInsets.only(left: 16, right: 16,top: 16),
+              child: Text(
+                Translations.of(context).text("offered"),
+                style: TextStyle(height: 1.0, fontSize: 22,fontWeight: FontWeight.bold),
+              )
             ),
             ListTile(
+              isThreeLine: false,
               leading: CircleAvatar(
                 backgroundImage: NetworkImage(usuario.getImagenPerfil()),
               ),
               title: Text(usuario.getName()),
               subtitle: StaticStars(
-                  usuario.getRating(), Colors.black, usuario.getReviews()),
+                 /* usuario.getRating()*/6,
+                  Colors.black,
+                  /*usuario.getReviews()*/6),//Todo: rating y reviews
             ),
           ],
         ),
