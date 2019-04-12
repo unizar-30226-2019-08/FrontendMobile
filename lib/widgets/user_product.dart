@@ -22,13 +22,11 @@ import 'package:bookalo/translations.dart';
  */
 
   class UserProduct extends StatefulWidget {
-    //TODO: ver atributos
 
-    UserProduct();
+     UserProduct();
     _UserProductState createState() => _UserProductState();
 
   }
-
 
 
 
