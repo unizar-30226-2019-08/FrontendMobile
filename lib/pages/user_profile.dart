@@ -62,7 +62,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget _favoriteProducts(){
     return ListView.builder(
       itemBuilder: (context,pageNumber){
-        return FutureBuilder(
+        return KeepAliveFutureBuilder(
           future: this._fetchFavorites(pageNumber, 3),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -133,7 +133,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget _userReviews(){
     return ListView.builder(
       itemBuilder: (context,pageNumber){
-        return FutureBuilder(
+        return KeepAliveFutureBuilder(
           future: this._fetchReviews(pageNumber, 3),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -141,7 +141,7 @@ class _UserProfileState extends State<UserProfile> {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: BookaloProgressIndicator(),
-                );
+                                  );
               case ConnectionState.waiting:
                 return SizedBox(
                   height: MediaQuery.of(context).size.height,
@@ -179,5 +179,31 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 }
+//TODO: fix bug scroll
 
+class KeepAliveFutureBuilder extends StatefulWidget {
 
+  final Future future;
+  final AsyncWidgetBuilder builder;
+
+  KeepAliveFutureBuilder({
+    this.future,
+    this.builder
+  });
+
+  @override
+  _KeepAliveFutureBuilderState createState() => _KeepAliveFutureBuilderState();
+}
+
+class _KeepAliveFutureBuilderState extends State<KeepAliveFutureBuilder> with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: widget.future,
+      builder: widget.builder,
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}

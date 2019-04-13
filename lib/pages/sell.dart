@@ -12,6 +12,9 @@ import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 
+//TODO: ver vomo importar keepalive
+import 'package:bookalo/pages/user_profile.dart';
+
 /*
  *  CLASE:        Sell
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
@@ -124,7 +127,7 @@ class _SellState extends State<Sell> {
           itemBuilder: (context,pageNumber){
             //Todo: 8 mas o menos por pagina
             //TODO:  obtener producto de la lista
-            return FutureBuilder(
+            return KeepAliveFutureBuilder(
               future: this._fetchPage(pageNumber, 8),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
