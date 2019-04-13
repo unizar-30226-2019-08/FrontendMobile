@@ -78,17 +78,17 @@ class _BuyState extends State<Buy> {
           children: <Widget>[
             ProductView(
                 Product('Fundamentos álgebra', 12, false,
-                    'https://placeimg.com/640/480/any', ""),
+                    'https://placeimg.com/640/480/any', "",true,'nuevo',50),
                 6.1,
                 39),
             ProductView(
                 Product('Fundamentos programación', 18, false,
-                    'https://placeimg.com/640/480/any', ""),
+                    'https://placeimg.com/640/480/any', "",true,'viejo',50),
                 6.1,
                 39),
             ProductView(
                 Product('Lengua castellana', 3, true,
-                    'https://placeimg.com/640/480/any', ""),
+                    'https://placeimg.com/640/480/any', "",false,'nuevo',24),
                 6.1,
                 39),
             SocialButtons()

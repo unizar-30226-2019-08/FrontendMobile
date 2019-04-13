@@ -14,11 +14,14 @@ import 'package:lipsum/lipsum.dart' as lipsum;
 class Product {
   String _name;
   double _price;
+  String _state;
+  int _likes;
+  bool _deliver;
   bool _sold;
   String _image;
   String _description;
 
-  Product(this._name, this._price, this._sold, this._image, this._description);
+  Product(this._name, this._price, this._sold, this._image, this._description,this._deliver,this._state,this._likes);
 
   String getName() {
     return this._name;
@@ -46,5 +49,21 @@ class Product {
     } else {
       return this._price.toStringAsFixed(2) + '€';
     }
+  }
+  String isDelivered(){
+      if(this._deliver){
+    return "Con envío";
+      }
+      else{
+        return "Sin envío";
+      }
+  }
+
+  String getState(){
+    return this._state;
+  }
+
+  int getLikes(){
+    return this._likes;
   }
 }

@@ -40,13 +40,13 @@ class _UserProfileState extends State<UserProfile> {
                       10,
                       true,
                       'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                      "")),
+                      "",true,'viejo',34)),
                   MiniProduct(new Product(
                       'Lápiz',
                       0.75,
                       false,
                       'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg',
-                      "")),
+                      "",false,'seminuevo',10)),
                 ],
               ),
 
@@ -63,7 +63,7 @@ class _UserProfileState extends State<UserProfile> {
                           9.5,
                           true,
                           'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                          ""),
+                          "",false,'seminuevo',20),
                       'Muy buen vendedor',
                       8.4),
                   ReviewCard(
@@ -76,7 +76,7 @@ class _UserProfileState extends State<UserProfile> {
                           9.5,
                           true,
                           'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                          ""),
+                          "",true,'seminuevo',13),
                       'No fue puntual.---Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non maximus risus. Curabitur et felis ex. Aliquam erat volutpat. Donec sit amet ullamcorper ante. Maecenas at mauris at odio ultricies eleifend. In mollis leo odio. Nunc laoreet, lectus non porttitor pharetra, felis libero ultrices libero, et aliquet sem metus id purus. Donec id lectus nisi. Mauris sed fringilla leo. Sed ullamcorper feugiat tincidunt. Mauris faucibus fringilla neque, at maximus ligula. Donec non tellus magna.',
                       2)
                 ],

@@ -8,8 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
-import 'package:bookalo/pages/menuChats.dart';
+import 'package:bookalo/pages/menu_chats.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
+import 'package:bookalo/widgets/Product_info.dart';
+import 'package:bookalo/objects/product.dart';
 
 //void main() => runApp(MyApp());
 void main() {
@@ -25,6 +27,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var product2=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'nuevo',54);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
         title: 'Bookalo',
@@ -42,8 +45,10 @@ class MyApp extends StatelessWidget {
           const Locale('es', 'ES'),
           
         ],
-        home:new menuChats(),
-      
+        
+        home: new Scaffold(
+         body:new Center( child:new ProductInfo(product2))
+        )
           
         
     );

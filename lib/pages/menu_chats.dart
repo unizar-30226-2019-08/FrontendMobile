@@ -31,7 +31,7 @@ class menuChats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    var user=new User ("Paco","https://raw.githubusercontent.com/josman231/FrontendMobile/master/assets/images/user_picture.jpg");
-    var product=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/product_picture.jpg",'esta chulo');
+    var product=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/product_picture.jpg",'esta chulo',false,'nuevo',30);
   final bool lastWasMe=true; //vale true si el usuario es el autor del ultimo mensaje
   final String lastMessage='hola'; //ultimo mensaje enviado en el chat
   final bool closed=true; //vale true si la transacción está cerrada
@@ -41,7 +41,7 @@ class menuChats extends StatelessWidget {
 
 
     var user2=new User ("Paco","https://raw.githubusercontent.com/josman231/FrontendMobile/master/assets/images/user_picture.jpg");
-    var product2=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien');
+    var product2=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'nuevo',34);
   final bool lastWasMe2=false; //vale true si el usuario es el autor del ultimo mensaje
   final String lastMessage2='muy buenas'; //ultimo mensaje enviado en el chat
   final bool closed2=false; //vale true si la transacción está cerrada

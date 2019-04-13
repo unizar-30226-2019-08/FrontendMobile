@@ -46,6 +46,8 @@
 	"report": "REPORTAR",
 	"chat_finished": "COMPRADO/VENDIDO",
 	"Welcome": "¡HOLA!",
-	"Welcome_text":"Gracias por elegir Bookalo.¿Cómo quieres iniciar sesión?"
+    "Welcome_text":"Gracias por elegir Bookalo.¿Cómo quieres iniciar sesión?",
+    "is_sent":"Sí",
+    "is_not_sent":"No"
 
 }
