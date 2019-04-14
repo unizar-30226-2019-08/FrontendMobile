@@ -16,12 +16,12 @@ class Product {
   double _price;
   String _state;
   int _likes;
-  bool _deliver;
+  bool _ship;
   bool _sold;
   String _image;
   String _description;
 
-  Product(this._name, this._price, this._sold, this._image, this._description,this._deliver,this._state,this._likes);
+  Product(this._name, this._price, this._sold, this._image, this._description,this._ship,this._state,this._likes);
 
   String getName() {
     return this._name;
@@ -50,8 +50,8 @@ class Product {
       return this._price.toStringAsFixed(2) + '€';
     }
   }
-  String isDelivered(){
-      if(this._deliver){
+  String isShipped(){
+      if(this._ship){
     return "Con envío";
       }
       else{

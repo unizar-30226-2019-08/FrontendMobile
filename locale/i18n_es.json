@@ -48,6 +48,8 @@
 	"Welcome": "¡HOLA!",
     "Welcome_text":"Gracias por elegir Bookalo.¿Cómo quieres iniciar sesión?",
     "is_sent":"Sí",
-    "is_not_sent":"No"
+    "is_not_sent":"No",
+    "state":"Estado",
+    "ships":"Envios"
 
 }

@@ -27,7 +27,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var product2=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'nuevo',54);
+    var product2=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'Desgastado',54);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
         title: 'Bookalo',

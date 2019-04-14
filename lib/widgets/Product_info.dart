@@ -19,18 +19,69 @@ class ProductInfo extends StatelessWidget {
 
   ProductInfo(this._product);
 
+/*Pre:Los estados posibles son: "Nuevo","Semi-Nuevo","Usado","Antigüedad","Roto","Desgastado"
+ *Post:Personaliza el icono "estado" en función del estado del producto
+ */
 
+Widget state(){
+  Widget child;
+  switch(this._product.getState()){
+   case "Nuevo":
+    child=new Icon(Icons.fiber_new);
+     break;
 
+  case "Semi-Nuevo":
+    child=new Icon(Icons.sentiment_very_satisfied);
+    break;
+
+  case "Usado":
+   child=new Icon(Icons.sentiment_satisfied);
+
+    break;
+  case "Desgastado":
+   child=new Icon(Icons.sentiment_neutral);
+    break;
+
+  case "Antigüedad":
+    child=new Icon(Icons.sentiment_dissatisfied);
+    break;
+
+  default:
+  child=new Icon(Icons.sentiment_very_dissatisfied);
+  break;
+  }
+
+  return child;
+  
+}
+
+/*Pre:
+ *Post:Personaliza el icono de la columna de envíos en función de siel producto incluye envío o no
+ */
+Widget ships(){
+  Widget child;
+  if(this._product.isShipped()=="Con envío"){
+    child= new Icon(Icons.local_shipping);//si incluye envío,se imprime el camión
+  }
+  else {
+    child=new Icon(Icons.close);//si no, se imprime la cruz
+  }
+  return child;
+}
 
   @override
   Widget build(BuildContext context) {
-      
+   
+ 
+  
  return new SizedBox(
    width:500,
    height:100,
     child:new Row(
   children: <Widget>[
-    
+
+
+    //Columna de estado
     new Expanded(
   child: new Container(
     padding: new EdgeInsets.only(left: 8.0),
@@ -38,16 +89,20 @@ class ProductInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Text("Estado",textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold),),
+        new Text(Translations.of(context).text("state"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold),),
         new Padding(padding:EdgeInsets.all(8.0),),
         new Text(this._product.getState(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
-        new Icon(Icons.fiber_new)
+        
+        state()
       ],
-    ),
+    )
+    
   ),
 ),
       new VerticalDivider(width:2.0,color:Colors.black,indent:3.0),
     
+
+    //Columna de envío
      new Expanded(
   child: new Container(
     padding: new EdgeInsets.only(left: 8.0),
@@ -55,10 +110,13 @@ class ProductInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Text("Envios",textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
+      
+        new Text(Translations.of(context).text("ships"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         new Padding(padding:EdgeInsets.all(8.0),),
-        new Text(this._product.isDelivered(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
-        new Icon(Icons.local_shipping)     
+        new Text(this._product.isShipped(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
+        ships()
+        
+        
       ],
     ),
   ),
@@ -67,6 +125,8 @@ class ProductInfo extends StatelessWidget {
 
  new VerticalDivider(width:2.0,color:Colors.black,indent:3.0),
 
+
+  //Columna de likes
    new Expanded(
   child: new Container(
     padding: new EdgeInsets.only(left: 8.0),
@@ -77,7 +137,7 @@ class ProductInfo extends StatelessWidget {
         new Text("Likes",textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         new Padding(padding:EdgeInsets.all(8.0),),
         new Text(this._product.getLikes().toString(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
-        new Icon(Icons.star)
+        new Icon(Icons.favorite)
       ],
     ),
   ),
