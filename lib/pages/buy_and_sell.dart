@@ -26,7 +26,6 @@ class BuyAndSell extends StatelessWidget {
       child: Scaffold(
         appBar: BuyAndSellNavbar(preferredSize: Size.fromHeight(height / 5)),
         body: TabBarView(
-         // children: [Buy(), BookaloProgressIndicator()], //todo : añadir pantalla vista productos
           children: [Buy(), Sell()],
         ),
       ),

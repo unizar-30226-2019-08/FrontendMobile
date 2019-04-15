@@ -87,7 +87,7 @@ class ReviewCard extends StatelessWidget {
                     textAlign: TextAlign.justify,
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ),//TODO: expandablePanel
                 )
               ],
             )

@@ -5,12 +5,12 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/profile_navbar.dart';
-import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/review_card.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
+import 'package:bookalo/utils/list_viewer.dart';
 
 /*
  *  CLASE:        UserProfile
@@ -28,6 +28,10 @@ class UserProfile extends StatefulWidget {
 //TODO: _fetch page con productos o con widget visor??
 class _UserProfileState extends State<UserProfile> {
 
+  /*
+      Pre: pageNumber >=0 y pageSize > 0
+      Post: devuelve una lista con pageSize ProductView
+   */
   _fetchFavorites(int pageNumber, int pageSize) async{
     await Future.delayed(Duration(seconds: 1));//TODO: solo para visualizacion  de prueba
 
@@ -49,6 +53,10 @@ class _UserProfileState extends State<UserProfile> {
 
   }
 
+  /*
+      Pre: ---
+      Post: devuelve una ListView con la lista de elementos en page
+   */
   Widget _buildPage(List page) {
     return ListView(
         shrinkWrap: true,
@@ -57,8 +65,11 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
+  /*
+      Pre:---
+      Post: devuelve una listView de productos favoritos con product view
+   */
 
-//crea lista de productos favoritos con product view
   Widget _favoriteProducts(){
     return ListView.builder(
       itemBuilder: (context,pageNumber){
@@ -91,7 +102,10 @@ class _UserProfileState extends State<UserProfile> {
   }
 
 
-
+  /*
+      Pre: pageNumber >=0 y pageSize > 0
+      Post: devuelve una lista con pageSize ReviewCard
+   */
   _fetchReviews(int pageNumber, int pageSize) async {
     await Future.delayed(
         Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
@@ -129,12 +143,16 @@ class _UserProfileState extends State<UserProfile> {
     });
   }
 
-//crea lista de valoraciones con review_card
+  /*
+      Pre:---
+      Post: devuelve una listView de  valoraciones con ReviewCard
+   */
+
   Widget _userReviews(){
     return ListView.builder(
       itemBuilder: (context,pageNumber){
         return KeepAliveFutureBuilder(
-          future: this._fetchReviews(pageNumber, 3),
+          future: this._fetchReviews(pageNumber, 4),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -171,7 +189,6 @@ class _UserProfileState extends State<UserProfile> {
           appBar: ProfileNavbar(preferredSize: Size.fromHeight(height / 3.3)),
           body: TabBarView(
             children: [
-              //Icon(Icons.ac_unit),
               _favoriteProducts(),
               _userReviews()
             ],
@@ -179,31 +196,4 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 }
-//TODO: fix bug scroll
 
-class KeepAliveFutureBuilder extends StatefulWidget {
-
-  final Future future;
-  final AsyncWidgetBuilder builder;
-
-  KeepAliveFutureBuilder({
-    this.future,
-    this.builder
-  });
-
-  @override
-  _KeepAliveFutureBuilderState createState() => _KeepAliveFutureBuilderState();
-}
-
-class _KeepAliveFutureBuilderState extends State<KeepAliveFutureBuilder> with AutomaticKeepAliveClientMixin {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: widget.future,
-      builder: widget.builder,
-    );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}

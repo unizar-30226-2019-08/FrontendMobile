@@ -45,5 +45,6 @@
     "send": "ENVIAR",
     "report": "REPORTAR",
     "chat_finished": "COMPRADO/VENDIDO",
-    "offered":"Ofrecido por"
+    "offered":"Ofrecido por",
+    "favorites": "FAVORITOS"
 }

@@ -4,16 +4,10 @@
  * CREACIÓN:    12/04/2019
  */
 import 'package:flutter/material.dart';
-import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/filter.dart';
-import 'package:bookalo/widgets/product_view.dart';
-import 'package:bookalo/widgets/social_buttons.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
-
-//TODO: ver vomo importar keepalive
-import 'package:bookalo/pages/user_profile.dart';
+import 'package:bookalo/utils/list_viewer.dart';
 
 /*
  *  CLASE:        Sell
@@ -29,10 +23,12 @@ class Sell extends StatefulWidget {
 }
 
 class _SellState extends State<Sell> {
-  @override
 
-
-  _fetchPage(int pageNumber, int pageSize) async {
+  /*
+      Pre: pageNumber >=0 y pageSize > 0
+      Post: devuelve una lista con pageSize MiniProduct
+   */
+   _fetchPage(int pageNumber, int pageSize) async {
     await Future.delayed(Duration(seconds: 1));//TODO: solo para visualizacion  de prueba
 
     return List.generate(pageSize, (index) {
@@ -54,11 +50,15 @@ class _SellState extends State<Sell> {
     });
   }
 
+  /*
+      Pre: ---
+      Post: devuelve una ListView con la lista de elementos en page
+   */
   Widget _buildPage(List page) {
     return ListView(
         shrinkWrap: true,
         primary: false,
-        children: page//.map((_miniProduct) => _miniProduct)
+        children: page
     );
   }
 
@@ -102,27 +102,7 @@ class _SellState extends State<Sell> {
 
           ],
         ),
-      /*---valido
-        body: ListView(
-          children: <Widget>[
-            MiniProduct(new Product(
-                'Fundamentos de álgebra',
-                10,
-                true,
-                'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                "")),
-            MiniProduct(new Product(
-                'Lápiz',
-                0.75,
-                false,
-                'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg',
-                "")),
-            SocialButtons()
-          ],
-        )
-      //--valido */
 
-      //-- lista infinita
         body: ListView.builder(
           itemBuilder: (context,pageNumber){
             //Todo: 8 mas o menos por pagina
@@ -153,9 +133,6 @@ class _SellState extends State<Sell> {
             );
           },
         )
-      //-- lista infinita
-
-
     );
   }
 }

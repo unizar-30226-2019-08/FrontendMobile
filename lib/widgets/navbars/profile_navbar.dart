@@ -109,7 +109,7 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
             indicator: BoxDecoration(color: Theme.of(context).canvasColor),
             tabs: [
-              Tab(text: Translations.of(context).text('on_sale_tab')),
+              Tab(text: Translations.of(context).text('favorites')),
               Tab(text: Translations.of(context).text('reviews_tab'))
             ],
             labelColor: Colors.black,
