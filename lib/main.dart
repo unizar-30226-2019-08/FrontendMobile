@@ -13,7 +13,7 @@ import 'package:bookalo/pages/login.dart';
 
 void main() async {
   bool _isAuthenticated;
-  await FirebaseAuth.instance.currentUser().then((user){
+  await FirebaseAuth.instance.currentUser().then((user) {
     _isAuthenticated = (user != null);
   });
   runApp(MyApp(isAuthenticated: _isAuthenticated));
@@ -25,7 +25,6 @@ void main() async {
  *                y declara BuyAndSell como widget principal 
  */
 class MyApp extends StatelessWidget {
-
   final bool isAuthenticated;
 
   MyApp({Key key, this.isAuthenticated}) : super(key: key);
@@ -34,20 +33,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
-        title: 'Bookalo',
-        theme: ThemeData(
-          primarySwatch: Colors.pink,
-        ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          const TranslationsDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          //const Locale('en', 'US'),
-          const Locale('es', 'ES'),
-        ],
+      title: 'Bookalo',
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        const TranslationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        //const Locale('en', 'US'),
+        const Locale('es', 'ES'),
+      ],
       initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
@@ -55,10 +54,10 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) {
               return StreamBuilder(
                 stream: FirebaseAuth.instance.onAuthStateChanged,
-                builder: ((context, snapshot){
-                  if(snapshot.hasData){
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
                     return BuyAndSell();
-                  }else{
+                  } else {
                     return Login();
                   }
                 }),
@@ -67,7 +66,7 @@ class MyApp extends StatelessWidget {
           case '/login':
             return MaterialPageRoute(builder: (_) => Login());
           case '/buy_and_sell':
-            return MaterialPageRoute(builder: (_) => BuyAndSell());            
+            return MaterialPageRoute(builder: (_) => BuyAndSell());
         }
       },
     );

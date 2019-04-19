@@ -1,8 +1,19 @@
+/*
+ * FICHERO:     login_header.dart
+ * DESCRIPCIÓN: clases relativas al widget principal de la pantalla de inicio
+ * CREACIÓN:    09/04/2019
+ */
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:bookalo/translations.dart';
 
+/*
+ *  CLASE:        LoginHeader
+ *  DESCRIPCIÓN:  widget principal de la pantalla de inicio. Muestra un vídeo
+ *                decorativo de fondo y un texto de bienvenida
+ */
 class LoginHeader extends StatefulWidget {
   @override
   _LoginHeaderState createState() => _LoginHeaderState();
@@ -14,7 +25,7 @@ class _LoginHeaderState extends State<LoginHeader> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('assets/images/login.mp4')
+    _controller = VideoPlayerController.asset('assets/images/intro.webm')
       ..initialize().then((_) {
         setState(() {});
       });
@@ -35,8 +46,8 @@ class _LoginHeaderState extends State<LoginHeader> {
             child: new Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: new BoxDecoration(
-                  color: Colors.pink.withOpacity(0.6)),
+              decoration:
+                  new BoxDecoration(color: Colors.pink.withOpacity(0.6)),
             ),
           ),
           Column(

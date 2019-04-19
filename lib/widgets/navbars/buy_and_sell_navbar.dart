@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/my_chats.dart';
+import 'package:bookalo/pages/menu_chats.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*
@@ -43,7 +43,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
     double height = MediaQuery.of(context).size.height;
     double topMargin = height / 40;
     return PreferredSize(
-      preferredSize: Size.fromHeight(height / 5),
+      preferredSize: Size.fromHeight(0),
       child: AppBar(
           automaticallyImplyLeading: false,
           actions: <Widget>[
@@ -55,7 +55,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyChats()),
+                      MaterialPageRoute(builder: (context) => ChatsLis()),
                     );
                   }),
             ),
@@ -65,17 +65,17 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                     child: Hero(
                       tag: "profileImage",
                       child: FutureBuilder<FirebaseUser>(
-                        future: FirebaseAuth.instance.currentUser(),
-                        builder: (context, snapshot) {
-                          if(snapshot.connectionState == ConnectionState.done){
-                            return CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(snapshot.data.photoUrl));
-                          }else{
-                            return CircularProgressIndicator();
-                          }
-                        }
-                      ),
+                          future: FirebaseAuth.instance.currentUser(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(snapshot.data.photoUrl));
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          }),
                     )),
                 onTap: () {
                   Navigator.push(
@@ -84,17 +84,12 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                   );
                 })
           ],
-          elevation: 0.0,
           bottom: TabBar(
-            indicatorWeight: 3.0,
-            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
-            indicator: BoxDecoration(color: Theme.of(context).canvasColor),
+            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [
               Tab(text: Translations.of(context).text('buy_tab')),
               Tab(text: Translations.of(context).text('sell_tab'))
             ],
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.white,
           ),
           title: Container(
             margin: EdgeInsets.only(top: topMargin),

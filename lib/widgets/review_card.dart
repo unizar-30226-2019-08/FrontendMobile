@@ -21,7 +21,6 @@ class ReviewCard extends StatelessWidget {
   final DateTime _reviewDate;
   final bool _seller; //true: vendió, false: compró
 
-  //TODO: numero de valoraciones en usuario??
   final Product _product;
   final String _review;
   final double _stars;
@@ -39,7 +38,7 @@ class ReviewCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                  backgroundImage: NetworkImage(_user.getImagenPerfil())),
+                  backgroundImage: NetworkImage(_user.getPicture())),
               title: Text(_user.getName(),
                   style: TextStyle(
                     color: Colors.black,
