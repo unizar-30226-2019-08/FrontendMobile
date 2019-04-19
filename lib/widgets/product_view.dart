@@ -84,7 +84,7 @@ class ProductView extends StatelessWidget {
             height: height / 9,
             child: SelectableTags(
               textOverflow: TextOverflow.ellipsis,
-              height: height/30,
+              height: height / 30,
               tags: _tags,
               fontSize: 11.0,
               onPressed: (tag) {},

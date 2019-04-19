@@ -62,14 +62,13 @@ class _LoginState extends State<Login> {
               key: Key("google_login"),
             ),
             LoginButton(
-              inProgress: twitterLoginInProgress,
-              iconData: MdiIcons.twitter,
-              callback: () {
-                _signInWithTwitter();
-              },
-              color: Colors.blue,
-              key: Key("twitter_login")
-            )
+                inProgress: twitterLoginInProgress,
+                iconData: MdiIcons.twitter,
+                callback: () {
+                  _signInWithTwitter();
+                },
+                color: Colors.blue,
+                key: Key("twitter_login"))
           ],
         ));
   }
@@ -77,7 +76,7 @@ class _LoginState extends State<Login> {
   /*
    * Pre:   ---
    * Post:  ha lanzado el proceso de inicio de sesión con Google
-   */ 
+   */
   void _signInWithGoogle() async {
     if (!(googleLoginInProgress ||
         facebookLoginInProgress ||
@@ -104,7 +103,7 @@ class _LoginState extends State<Login> {
   /*
    * Pre:   ---
    * Post:  ha lanzado el proceso de inicio de sesión con Facebook
-   */ 
+   */
   void _signInWithFacebook() async {
     if (!(googleLoginInProgress ||
         facebookLoginInProgress ||
@@ -127,7 +126,7 @@ class _LoginState extends State<Login> {
   /*
    * Pre:   ---
    * Post:  ha lanzado el proceso de inicio de sesión con Twitter
-   */ 
+   */
   void _signInWithTwitter() async {
     if (!(googleLoginInProgress ||
         facebookLoginInProgress ||
@@ -155,7 +154,7 @@ class _LoginState extends State<Login> {
    * Pre:   platform es la plataforma que ha causado el error
    * Post:  ha cancelado el proceso de inicio de sesión y ha informado
    *        al usuario de la incidencia
-   */ 
+   */
   void _handleError(String platform) {
     setState(() {
       googleLoginInProgress = false;

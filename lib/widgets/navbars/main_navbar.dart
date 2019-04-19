@@ -43,7 +43,9 @@ class MainNavbar extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserProfile()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UserProfile(isOwnProfile: true)),
                       );
                     })
               ],

@@ -23,7 +23,7 @@ class LoginButton extends StatelessWidget {
    *        el icono del proveedor social, callback es na función void que se ejecuatará
    *        al ser pulsado si no está en progreso y color es el color del botón
    * Post:  ha devuelto un widget construido
-   */ 
+   */
   LoginButton(
       {Key key, this.inProgress, this.iconData, this.callback, this.color})
       : super(key: key);

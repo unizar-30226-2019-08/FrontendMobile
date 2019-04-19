@@ -56,7 +56,8 @@ class _ChatNavbarState extends State<ChatNavbar> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserProfile()),
+                  MaterialPageRoute(
+                      builder: (context) => UserProfile(isOwnProfile: false)),
                 );
               })),
       title: Text(Translations.of(context)

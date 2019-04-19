@@ -80,7 +80,8 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfile()),
+                    MaterialPageRoute(
+                        builder: (context) => UserProfile(isOwnProfile: true)),
                   );
                 })
           ],

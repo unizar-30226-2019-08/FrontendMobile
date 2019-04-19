@@ -11,11 +11,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/product.dart';
 
-
 /*
  * Pre:   firebaseUser es un usuario de Firebase válido
  * Post:  ha devuelto un objeto User basado en firebaseUser
- */ 
+ */
 User generatePseudoUser(FirebaseUser firebaseUser) {
   return User(
       firebaseUser.displayName,
@@ -31,7 +30,7 @@ User generatePseudoUser(FirebaseUser firebaseUser) {
 /*
  * Pre:   ---
  * Post:  ha devuelto un objeto User aleatorio
- */ 
+ */
 User generateRandomUser() {
   var faker = new Faker();
   return User(
@@ -48,7 +47,7 @@ User generateRandomUser() {
 /*
  * Pre:   ---
  * Post:  ha devuelto un objeto Product aleatorio
- */ 
+ */
 Product generateRandomProduct() {
   return Product(
       faker.company.name(),

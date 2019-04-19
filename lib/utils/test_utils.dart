@@ -11,7 +11,7 @@ import 'package:bookalo/translations.dart';
 /*
  * Pre:   child es un Widget
  * Post:  ha devuelto un Widget testable
- */ 
+ */
 Widget makeTestableWidget({Widget child}) {
   return MediaQuery(
     data: MediaQueryData(),
@@ -31,7 +31,7 @@ Widget makeTestableWidget({Widget child}) {
 /*
  * Pre:   child es un Widget con un Scaffold como padre
  * Post:  ha devuelto una página testable
- */ 
+ */
 Widget makeTestablePage({Widget child}) {
   return MediaQuery(
     data: MediaQueryData(),

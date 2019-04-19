@@ -1,5 +1,5 @@
 {
-"buy_tab": "COMPRAR",
+    "buy_tab": "COMPRAR",
     "sell_tab": "VENDER",
     "reviews_tab": "OPINIONES",
     "on_sale_tab": "EN VENTA",
@@ -43,6 +43,8 @@
     "how_was_it": "¿qué tal fue todo?",
     "review_too_shot": "Escribe un poco más",
     "send": "ENVIAR",
+    "offered":"Ofrecido por",
+    "favorites": "FAVORITOS",
 	"report": "REPORTAR",
     "chat_finished_buy": "COMPRADO",
     "chat_finished_sell": "VENDIDO",

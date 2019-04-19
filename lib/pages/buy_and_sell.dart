@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/buy_and_sell_navbar.dart';
 import 'package:bookalo/pages/buy.dart';
+import 'package:bookalo/pages/sell.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 
 /*
@@ -13,6 +14,7 @@ import 'package:bookalo/widgets/animations/bookalo_progress.dart';
  *  DESCRIPCIÓN:  widget para la selección de bien la pestaña de compra,
  *                bien la de venta. Permite deslizado de una a otra
  */
+
 class BuyAndSell extends StatelessWidget {
   BuyAndSell();
 
@@ -24,7 +26,7 @@ class BuyAndSell extends StatelessWidget {
       child: Scaffold(
         appBar: BuyAndSellNavbar(preferredSize: Size.fromHeight(height / 5)),
         body: TabBarView(
-          children: [Buy(), BookaloProgressIndicator()],
+          children: [Buy(), Sell()],
         ),
       ),
     );

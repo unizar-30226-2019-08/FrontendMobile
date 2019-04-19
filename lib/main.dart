@@ -11,12 +11,10 @@ import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 import 'package:bookalo/pages/login.dart';
 
-void main() async {
-  bool _isAuthenticated;
-  await FirebaseAuth.instance.currentUser().then((user) {
-    _isAuthenticated = (user != null);
-  });
-  runApp(MyApp(isAuthenticated: _isAuthenticated));
+//void main() => runApp(MyApp());
+void main() {
+  //debugPaintSizeEnabled = true; //
+  runApp(MyApp());
 }
 
 /*

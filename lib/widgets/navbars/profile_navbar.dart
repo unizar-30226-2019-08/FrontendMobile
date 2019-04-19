@@ -14,7 +14,7 @@ import 'package:bookalo/objects/user.dart';
 /*
  *  CLASE:        ProfileNavbar
  *  DESCRIPCIÓN:  widget para barra de navegación del perfil de usuario. Muestra
- *                el nombre de usuario, su ubicación, si está en línea, opciones 
+ *                el nombre de usuario, su ubicación, si está en línea, opciones
  *                de compartición, su valoración media y su foto
  */
 class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
@@ -24,7 +24,8 @@ class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        navegación
      * Post:  ha construido el widget
      */
-  ProfileNavbar({Key key, this.preferredSize, this.user}) : super(key: key);
+  ProfileNavbar({Key key, this.preferredSize, this.user, this.isOwnProfile})
+      : super(key: key);
 
   @override
   final Size preferredSize;
@@ -32,6 +33,7 @@ class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
   @override
   _ProfileNavbarState createState() => _ProfileNavbarState();
 
+  final bool isOwnProfile;
   final User user;
 }
 
@@ -63,7 +65,7 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                                   color: Colors.white,
                                   fontSize: 19.0,
                                   fontWeight: FontWeight.w300)),
-                          Container(height: 5.0),        
+                          Container(height: 5.0),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -88,7 +90,13 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                 GestureDetector(
                   child: Hero(
                       tag: "profileImage",
-                      child: LogoutPhoto(url: widget.user.getPicture())),
+                      child: (widget.isOwnProfile
+                          ? LogoutPhoto(url: widget.user.getPicture())
+                          : CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(widget.user.getPicture()),
+                              radius: 50.0,
+                            ))),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -104,7 +112,10 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
           bottom: TabBar(
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [
-              Tab(text: Translations.of(context).text('on_sale_tab')),
+              Tab(
+                  text: (widget.isOwnProfile
+                      ? Translations.of(context).text('favorites')
+                      : Translations.of(context).text('on_sale_tab'))),
               Tab(text: Translations.of(context).text('reviews_tab'))
             ],
           ),

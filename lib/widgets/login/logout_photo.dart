@@ -21,7 +21,7 @@ class LogoutPhoto extends StatelessWidget {
   /*
    * Pre:   url es un enlace directo a la foto de perfil del usuario
    * Post:  ha devuelto el widget construido
-   */ 
+   */
   LogoutPhoto({Key key, this.url}) : super(key: key);
 
   @override
