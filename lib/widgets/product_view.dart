@@ -9,7 +9,7 @@ import 'package:flutter_tags/selectable_tags.dart';
 import 'package:geo/geo.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
-import 'package:bookalo/pages/my_chats.dart';
+import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/widgets/distance_chip.dart';
 import 'package:bookalo/translations.dart';
 
@@ -28,7 +28,7 @@ class ProductView extends StatelessWidget {
     ),
     Tag(
       id: 1,
-      title: 'uni',
+      title: 'universidad',
     ),
     Tag(
       id: 1,
@@ -36,12 +36,8 @@ class ProductView extends StatelessWidget {
     ),
     Tag(
       id: 1,
-      title: 'universidad',
+      title: 'ciencias',
     ),
-    Tag(
-      id: 1,
-      title: 'universidad',
-    )
   ];
   ProductView(this._product, this._stars, this._reviews);
 
@@ -84,13 +80,17 @@ class ProductView extends StatelessWidget {
             padding: EdgeInsets.only(left: 16, bottom: 8),
             child: StaticStars(this._stars, Colors.black, this._reviews),
           ),
-          SelectableTags(
-            height: height / 30,
-            tags: _tags,
-            fontSize: 10.0,
-            onPressed: (tag) {},
-            margin: EdgeInsets.all(5.0),
-            activeColor: Colors.pink,
+          SizedBox(
+            height: height / 9,
+            child: SelectableTags(
+              textOverflow: TextOverflow.ellipsis,
+              height: height / 30,
+              tags: _tags,
+              fontSize: 11.0,
+              onPressed: (tag) {},
+              margin: EdgeInsets.all(5.0),
+              activeColor: Colors.pink,
+            ),
           )
         ],
       ),
@@ -118,7 +118,7 @@ class ProductView extends StatelessWidget {
               children: <Widget>[
                 Container(
                   decoration:
-                  BoxDecoration(color: Colors.black.withOpacity(0.5)),
+                      BoxDecoration(color: Colors.black.withOpacity(0.5)),
                   child: ListTile(
                     title: Text(
                       this._product.getName(),
@@ -134,7 +134,7 @@ class ProductView extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyChats()),
+                          MaterialPageRoute(builder: (context) => Chat()),
                         );
                       },
                     ),
@@ -147,17 +147,17 @@ class ProductView extends StatelessWidget {
             margin: EdgeInsets.only(right: 10.0),
             child: (_product.getSold()
                 ? Chip(
-              label: Text(
-                Translations.of(context).text('sold_tab'),
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, color: Colors.white),
-              ),
-              backgroundColor: Colors.pink,
-            )
+                    label: Text(
+                      Translations.of(context).text('sold_tab'),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.white),
+                    ),
+                    backgroundColor: Colors.pink,
+                  )
                 : DistanceChip(
-              userPosition: LatLng(0.0, 0.0),
-              targetPosition: LatLng(0.003, 0.0),
-            )),
+                    userPosition: LatLng(0.0, 0.0),
+                    targetPosition: LatLng(0.003, 0.0),
+                  )),
           ),
         ]));
   }

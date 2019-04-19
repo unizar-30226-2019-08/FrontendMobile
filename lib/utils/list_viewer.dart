@@ -15,22 +15,18 @@ import 'package:flutter/material.dart';
     USO: se utiliza igual que "FutureBuilder" y posee los mismos campos que este
  */
 
-
 class KeepAliveFutureBuilder extends StatefulWidget {
-
   final Future future;
   final AsyncWidgetBuilder builder;
 
-  KeepAliveFutureBuilder({
-    this.future,
-    this.builder
-  });
+  KeepAliveFutureBuilder({this.future, this.builder});
 
   @override
   _KeepAliveFutureBuilderState createState() => _KeepAliveFutureBuilderState();
 }
 
-class _KeepAliveFutureBuilderState extends State<KeepAliveFutureBuilder> with AutomaticKeepAliveClientMixin {
+class _KeepAliveFutureBuilderState extends State<KeepAliveFutureBuilder>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

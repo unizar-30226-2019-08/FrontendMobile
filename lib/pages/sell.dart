@@ -24,23 +24,23 @@ class Sell extends StatefulWidget {
 }
 
 class _SellState extends State<Sell> {
-
   /*
       Pre: pageNumber >=0 y pageSize > 0
       Post: devuelve una lista con pageSize MiniProduct
    */
-   _fetchPage(int pageNumber, int pageSize) async {
-    await Future.delayed(Duration(seconds: 1));//TODO: solo para visualizacion  de prueba
+  _fetchPage(int pageNumber, int pageSize) async {
+    await Future.delayed(
+        Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
 
     return List.generate(pageSize, (index) {
-      if(index%2==0){
+      if (index % 2 == 0) {
         return MiniProduct(new Product(
             'Fundamentos de álgebra',
             10,
             true,
             'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
             ""));
-      }else{
+      } else {
         return MiniProduct(new Product(
             'Lápiz',
             0.75,
@@ -56,13 +56,8 @@ class _SellState extends State<Sell> {
       Post: devuelve una ListView con la lista de elementos en page
    */
   Widget _buildPage(List page) {
-    return ListView(
-        shrinkWrap: true,
-        primary: false,
-        children: page
-    );
+    return ListView(shrinkWrap: true, primary: false, children: page);
   }
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,21 +86,17 @@ class _SellState extends State<Sell> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FloatingActionButton(
-              heroTag: "add",//todo: ver formato tags
+              heroTag: "add", //todo: ver formato tags
               child: Icon(Icons.add),
               onPressed: () {
-                 Navigator.push(
-                   context,
-                   MaterialPageRoute(builder: (context) => UploadProduct())
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UploadProduct()));
               },
             ),
-
           ],
         ),
-
         body: ListView.builder(
-          itemBuilder: (context,pageNumber){
+          itemBuilder: (context, pageNumber) {
             //Todo: 8 mas o menos por pagina
             //TODO:  obtener producto de la lista
             return KeepAliveFutureBuilder(
@@ -127,13 +118,13 @@ class _SellState extends State<Sell> {
                       return Text('Error: ${snapshot.error}');
                     } else {
                       return this._buildPage(snapshot.data);
-                    }break;
+                    }
+                    break;
                   case ConnectionState.active:
                 }
               },
             );
           },
-        )
-    );
+        ));
   }
 }

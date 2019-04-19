@@ -41,10 +41,16 @@
     "rate_user" : "Valora a {{param1}}",
     "valoration_text": "Escribiendo un comentario, estás ayudando a toda la comunidad de Bookalo, ¡dedícale un minuto!",
     "how_was_it": "¿qué tal fue todo?",
-    "review_too_short": "Escribe un poco más",
+    "review_too_shot": "Escribe un poco más",
     "send": "ENVIAR",
-    "report": "REPORTAR",
-    "chat_finished": "COMPRADO/VENDIDO",
     "offered":"Ofrecido por",
-    "favorites": "FAVORITOS"
+    "favorites": "FAVORITOS",
+	"report": "REPORTAR",
+    "chat_finished_buy": "COMPRADO",
+    "chat_finished_sell": "VENDIDO",
+	"welcome": "Hola",
+    "welcome_text": "Es hora de conocernos. ¿Cómo quieres que lo hagamos?",
+    "login_error": "No ha sido posible iniciar sesión con {{param1}}",
+    "accept" : "ACEPTAR"
+
 }

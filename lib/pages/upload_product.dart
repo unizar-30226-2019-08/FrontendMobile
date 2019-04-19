@@ -19,9 +19,9 @@ class UploadProduct extends StatefulWidget {
 }
 
 class _UploadProduct extends State<UploadProduct> {
-  int _currentStep=0;
+  int _currentStep = 0;
 
-@override
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return DefaultTabController(
@@ -29,77 +29,68 @@ class _UploadProduct extends State<UploadProduct> {
       child: Scaffold(
           appBar: SimpleNavbar(preferredSize: Size.fromHeight(height / 7.6)),
           body: Stepper(
-              steps: _mySteps(),
-              currentStep: this._currentStep,
-              onStepTapped: (step){
-                setState(() {
-                  this._currentStep = step;
-                });
-              },
-              onStepContinue: (){
-                setState(() {
-                  if(_currentStep < this._mySteps().length -1){
-                    _currentStep=_currentStep+1;
-                  }//TODO: else--> verificar si todo esta correcto
-                  else{
-                    print('Completado');
-                  }
-                });
-              },
-              onStepCancel: (){
-                setState(() {
-                  if(_currentStep > 0){
-                    _currentStep = _currentStep - 1;
-                  } else{
-                    _currentStep = 0;
-                  }
-                });
-              },
-          )
-      ),
+            steps: _mySteps(),
+            currentStep: this._currentStep,
+            onStepTapped: (step) {
+              setState(() {
+                this._currentStep = step;
+              });
+            },
+            onStepContinue: () {
+              setState(() {
+                if (_currentStep < this._mySteps().length - 1) {
+                  _currentStep = _currentStep + 1;
+                } //TODO: else--> verificar si todo esta correcto
+                else {
+                  print('Completado');
+                }
+              });
+            },
+            onStepCancel: () {
+              setState(() {
+                if (_currentStep > 0) {
+                  _currentStep = _currentStep - 1;
+                } else {
+                  _currentStep = 0;
+                }
+              });
+            },
+          )),
     );
   }
 
-  List<Step> _mySteps(){
-    List<Step> _steps =[
+  List<Step> _mySteps() {
+    List<Step> _steps = [
       Step(
-        title: Text('Step 1'),
-        content: TextField(),
-        isActive: _currentStep >= 0
-      ),
+          title: Text('Step 1'),
+          content: TextField(),
+          isActive: _currentStep >= 0),
       Step(
           title: Text('Step 2'),
           content: TextField(),
-          isActive: _currentStep >= 1
-      ),
+          isActive: _currentStep >= 1),
       Step(
           title: Text('Step 3'),
           content: TextField(),
-          isActive: _currentStep >= 2
-      )
+          isActive: _currentStep >= 2)
     ];
 
     return _steps;
   }
 
-
-
-Widget _imageViewer (){
-  return Card(
-    semanticContainer: true,
-    clipBehavior: Clip.antiAliasWithSaveLayer,
-    child: Image.network(
-      'https://placeimg.com/640/480/any',
-      fit: BoxFit.fill,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    elevation: 5,
-    margin: EdgeInsets.all(10),
-  );
-}
-
-  
-
+  Widget _imageViewer() {
+    return Card(
+      semanticContainer: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Image.network(
+        'https://placeimg.com/640/480/any',
+        fit: BoxFit.fill,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 5,
+      margin: EdgeInsets.all(10),
+    );
+  }
 }
