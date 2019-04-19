@@ -1,6 +1,6 @@
 /*
  * FICHERO:     product.dart
- * DESCRIPCIÓN: clase Procduct
+ * DESCRIPCIÓN: clase Product
  * CREACIÓN:    15/03/2019
  */
 
