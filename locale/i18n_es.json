@@ -50,6 +50,7 @@
     "is_sent":"Sí",
     "is_not_sent":"No",
     "state":"Estado",
-    "ships":"Envios"
-
+    "ships":"Envios",
+    "buyChat_tab":"Compradores",
+    "sellChat_tab":"Vendedores"
 }
