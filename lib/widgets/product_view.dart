@@ -12,6 +12,7 @@ import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/widgets/distance_chip.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/pages/detailed_product.dart';
 
 /*
  * CLASE: ProductView
@@ -166,42 +167,52 @@ class ProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
-    return Center(
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: height / 50),
-        child: SizedBox(
-          child: Stack(
-            alignment: Alignment.center,
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Positioned(
-                child: Container(
-                  color: Colors.transparent,
-                  width: width / 1.3,
-                  height: height / 2.1,
-                ),
-              ),
-              Positioned(
-                left: 100.0,
-                child: Container(
-                  height: height / 2.1,
-                  width: width / 1.7,
-                  child: imageCard(context),
-                ),
-              ),
-              Positioned(
-                  top: height / 20,
-                  right: width / 3,
+    return GestureDetector(
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: height / 50),
+          child: SizedBox(
+            child: Stack(
+              alignment: Alignment.center,
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
                   child: Container(
-                    height: height / 3,
-                    width: width / 2,
-                    child: priceCard(context),
-                  ))
-            ],
+                    color: Colors.transparent,
+                    width: width / 1.3,
+                    height: height / 2.1,
+                  ),
+                ),
+                Positioned(
+                  left: 100.0,
+                  child: Container(
+                    height: height / 2.1,
+                    width: width / 1.7,
+                    child: imageCard(context),
+                  ),
+                ),
+                Positioned(
+                    top: height / 20,
+                    right: width / 3,
+                    child: Container(
+                      height: height / 3,
+                      width: width / 2,
+                      child: priceCard(context),
+                    ))
+              ],
+            ),
           ),
         ),
       ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailedProduct(
+                    product: this._product,
+                  )),
+        );
+      },
     );
   }
 }

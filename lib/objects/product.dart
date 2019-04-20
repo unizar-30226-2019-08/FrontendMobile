@@ -37,7 +37,7 @@ class Product {
   }
 
   String getDescription() {
-    return lipsum.createSentence();
+    return lipsum.createSentence(numSentences: 4);
   }
 
   String priceToString() {
