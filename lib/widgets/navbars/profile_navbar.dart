@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/static_stars.dart';
+import 'package:bookalo/widgets/login/logout_photo.dart';
+import 'package:bookalo/objects/user.dart';
 
 /*
  *  CLASE:        ProfileNavbar
  *  DESCRIPCIÓN:  widget para barra de navegación del perfil de usuario. Muestra
- *                el nombre de usuario, su ubicación, si está en línea, opciones 
+ *                el nombre de usuario, su ubicación, si está en línea, opciones
  *                de compartición, su valoración media y su foto
  */
 class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
@@ -22,16 +24,17 @@ class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        navegación
      * Post:  ha construido el widget
      */
-  ProfileNavbar({
-    Key key,
-    this.preferredSize,
-  }) : super(key: key);
+  ProfileNavbar({Key key, this.preferredSize, this.user, this.isOwnProfile})
+      : super(key: key);
 
   @override
   final Size preferredSize;
 
   @override
   _ProfileNavbarState createState() => _ProfileNavbarState();
+
+  final bool isOwnProfile;
+  final User user;
 }
 
 class _ProfileNavbarState extends State<ProfileNavbar> {
@@ -53,15 +56,16 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                     margin: EdgeInsets.only(top: topMargin, right: width / 30),
                     height: height / 5,
                     child: Container(
-                      margin: EdgeInsets.only(top: height / 15, left: 25.0),
+                      margin: EdgeInsets.only(top: height / 15, left: 20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Zaragoza',
+                          Text(widget.user.getCity(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 19.0,
                                   fontWeight: FontWeight.w300)),
+                          Container(height: 5.0),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -77,60 +81,59 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                               ),
                             ],
                           ),
-                          StaticStars(6.1, Colors.white, 32)
+                          Container(height: 5.0),
+                          StaticStars(widget.user.getRating(), Colors.white,
+                              widget.user.getRatingsAmount())
                         ],
                       ),
                     )),
                 GestureDetector(
                   child: Hero(
-                    tag: "profileImage",
-                    child: CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/user_picture.jpg'),
-                      radius: 50.0,
-                    ),
-                  ),
+                      tag: "profileImage",
+                      child: (widget.isOwnProfile
+                          ? LogoutPhoto(url: widget.user.getPicture())
+                          : CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(widget.user.getPicture()),
+                              radius: 50.0,
+                            ))),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BigProfileImage(
-                              image: AssetImage(
-                                  'assets/images/user_picture.jpg'))),
+                              image: NetworkImage(widget.user.getPicture()))),
                     );
                   },
                 )
               ],
             ),
           ),
-          elevation: 0.0,
           bottom: TabBar(
-            indicatorWeight: 3.0,
-            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
-            indicator: BoxDecoration(color: Theme.of(context).canvasColor),
+            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [
-              Tab(text: Translations.of(context).text('on_sale_tab')),
+              Tab(
+                  text: (widget.isOwnProfile
+                      ? Translations.of(context).text('favorites')
+                      : Translations.of(context).text('on_sale_tab'))),
               Tab(text: Translations.of(context).text('reviews_tab'))
             ],
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.white,
           ),
           title: Container(
               margin: EdgeInsets.only(top: 10.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    "Juan L.",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w300, fontSize: 45.0),
-                  ),
+                  Text(widget.user.getName(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w300, fontSize: 45.0)),
                   IconButton(
                     icon: Icon(Icons.share, size: 30.0),
                     onPressed: () {
-                      Share.share(Translations.of(context)
-                              .text('share_profile', params: ['Juan']) +
-                          'https://bookalo.es/user=123');
+                      Share.share(Translations.of(context).text('share_profile',
+                              params: [widget.user.getName()]) +
+                          'https://bookalo.es/user=' +
+                          widget.user.getUID());
                     },
                   )
                 ],
@@ -140,7 +143,7 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
 }
 
 class BigProfileImage extends StatelessWidget {
-  final AssetImage image;
+  final NetworkImage image;
   BigProfileImage({Key key, this.image}) : super(key: key);
 
   @override

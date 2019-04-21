@@ -4,12 +4,10 @@
  * CREACIÓN:    20/03/2019
  */
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/translations.dart';
-
 
 /*
   CLASE: ValorationCard
@@ -25,7 +23,7 @@ class ValorationCard extends StatefulWidget {
 }
 
 class _ValorationCardState extends State<ValorationCard> {
-  double rating = 3.0;   //valoración proporcionada por las estrellas
+  double rating = 3.0; //valoración proporcionada por las estrellas
   final _formKey = GlobalKey<FormState>();
   _ValorationCardState();
 
@@ -57,7 +55,8 @@ class _ValorationCardState extends State<ValorationCard> {
                           child: Icon(
                             Icons.rate_review,
                             color: Colors.white,
-                            size: 30.0,),
+                            size: 30.0,
+                          ),
                         ),
                         Text(
                           Translations.of(context).text("rate_user",
@@ -83,15 +82,17 @@ class _ValorationCardState extends State<ValorationCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextFormField(
                       keyboardType: TextInputType.multiline,
-                    
-                      maxLength: 1000,//1000 caracteres máximo
+                      maxLines: null,
+                      maxLength: 1000, //1000 caracteres máximo
                       maxLengthEnforced: true,
                       decoration: InputDecoration(
-                        hintText: Translations.of(context).text("how_was_it") 
-                      ),
+                          hintText:
+                              Translations.of(context).text("how_was_it")),
                       validator: (review) {
-                        if (review.length < 30) { //El comentario debe tener al menos 30 caracteres
-                          return Translations.of(context).text("review_too_short");
+                        if (review.length < 30) {
+                          //El comentario debe tener al menos 30 caracteres
+                          return Translations.of(context)
+                              .text("review_too_short");
                         }
                       },
                     )),
@@ -105,12 +106,12 @@ class _ValorationCardState extends State<ValorationCard> {
                     starCount: 5,
                     onRatingChanged: (rating) => setState(
                           () {
-                            this.rating = rating;//la variable "rating" cambia al pulsar las estrellas
+                            this.rating =
+                                rating; //la variable "rating" cambia al pulsar las estrellas
                           },
                         ),
                   ),
                 ),
-
 
                 //confirmar y enviar valoración
                 Container(
@@ -121,16 +122,16 @@ class _ValorationCardState extends State<ValorationCard> {
                       OutlineButton(
                         borderSide: BorderSide(color: Colors.pink, width: 3.0),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
                         child: Text(
                           Translations.of(context).text("send"),
                           style: TextStyle(
-                            color: Colors.pink[600],
-                            fontWeight: FontWeight.w700
-                          ),
+                              color: Colors.pink[600],
+                              fontWeight: FontWeight.w700),
                         ),
-                        onPressed: (){//comprobar si la información introducida es válida al pulsar
+                        onPressed: () {
+                          //comprobar si la información introducida es válida al pulsar
                           _formKey.currentState.validate();
                         },
                       ),
@@ -138,16 +139,15 @@ class _ValorationCardState extends State<ValorationCard> {
                       OutlineButton(
                         borderSide: BorderSide(color: Colors.grey, width: 3.0),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
                         child: Text(
                           Translations.of(context).text("report"),
                           style: TextStyle(
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.w700
-                          ),
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w700),
                         ),
-                        onPressed: (){},
+                        onPressed: () {},
                       ),
                     ],
                   ),

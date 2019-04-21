@@ -1,0 +1,2 @@
+- Elementos de chat
+- 10% menos de bugs

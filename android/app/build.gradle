@@ -39,11 +39,14 @@ android {
 
     defaultConfig {
         applicationId "es.bookalo.bookalo"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
+        versionCode 11
         versionName "0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk{
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
     signingConfigs {
@@ -69,4 +72,27 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+}
+
+apply plugin: 'com.google.gms.google-services'
+
+// Include both 32bit and 64bit arm libflutter.so files into your APK
+project.afterEvaluate {
+	assembleRelease.doLast {
+		String src
+		if(project.hasProperty('target-platform') &&
+			project.property('target-platform') == 'android-arm64') {
+			// If we are building the 64bit then we also want to add the 32bit libflutter.so
+			src = "$flutterRoot/bin/cache/artifacts/engine/android-arm-release/flutter.jar"
+		}else{
+			// If we are building the opposite (32bit), we include the 64bit libflutter.so
+			src = "$flutterRoot/bin/cache/artifacts/engine/android-arm64-release/flutter.jar"
+		}
+		copy {
+			from zipTree(src)
+			include 'lib/*/libflutter.so'
+			into "$buildDir/intermediates/jniLibs/release/0/"
+		}
+	}
 }

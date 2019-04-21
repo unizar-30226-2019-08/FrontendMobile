@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/my_chats.dart';
+import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 class MainNavbar extends StatelessWidget {
@@ -26,7 +26,7 @@ class MainNavbar extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyChats()),
+                          MaterialPageRoute(builder: (context) => Chat()),
                         );
                       }),
                 ),
@@ -43,7 +43,9 @@ class MainNavbar extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserProfile()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UserProfile(isOwnProfile: true)),
                       );
                     })
               ],

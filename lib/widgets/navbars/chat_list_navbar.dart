@@ -5,10 +5,8 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/menu_chats_buy.dart';
-import 'package:bookalo/pages/menu_chats_sell.dart';
+import 'package:bookalo/pages/chats_menu.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*
@@ -18,14 +16,14 @@ import 'package:bookalo/pages/user_profile.dart';
  *                avatar clickable del usuario que ha iniciado sesión y
  *                acceso a la sección de 'Mis chats'
  */
-class BuyAndSellNavbar extends StatefulWidget implements PreferredSizeWidget {
+class ChatListNavbar extends StatefulWidget implements PreferredSizeWidget {
   /*
      * Pre:   preferredSize es un objeto tipo Size del que se debe construir
      *        el parámetro height y que especifica la altura de la barra de
      *        navegación
      * Post:  ha construido el widget
      */
-  BuyAndSellNavbar({
+  ChatListNavbar({
     Key key,
     this.preferredSize,
   }) : super(key: key);
@@ -34,64 +32,47 @@ class BuyAndSellNavbar extends StatefulWidget implements PreferredSizeWidget {
   final Size preferredSize;
 
   @override
-  _BuyAndSellNavbarState createState() => _BuyAndSellNavbarState();
+  _ChatListNavbarState createState() => _ChatListNavbarState();
 }
 
-class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
+class _ChatListNavbarState extends State<ChatListNavbar> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double topMargin = height / 40;
     return PreferredSize(
-      preferredSize: Size.fromHeight(0),
+      preferredSize: Size.fromHeight(height / 5),
       child: AppBar(
-          automaticallyImplyLeading: false,
           actions: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
-              child: IconButton(
-                  icon: Icon(Icons.chat_bubble_outline,
-                      color: Colors.white, size: 35.0),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => BuyChatsList()),
-                    );
-                  }),
-            ),
+          
             GestureDetector(
                 child: Container(
                     margin: EdgeInsets.only(top: topMargin, right: width / 30),
                     child: Hero(
                       tag: "profileImage",
-                      child: FutureBuilder<FirebaseUser>(
-                          future: FirebaseAuth.instance.currentUser(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(snapshot.data.photoUrl));
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          }),
+                      child: CircleAvatar(
+                          backgroundImage:
+                              AssetImage('assets/images/user_picture.jpg')),
                     )),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => UserProfile(isOwnProfile: true)),
+                    MaterialPageRoute(builder: (context) => UserProfile()),
                   );
                 })
           ],
+          elevation: 0.0,
           bottom: TabBar(
-            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
+            indicatorWeight: 3.0,
+            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+            indicator: BoxDecoration(color: Theme.of(context).canvasColor),
             tabs: [
-              Tab(text: Translations.of(context).text('buy_tab')),
-              Tab(text: Translations.of(context).text('sell_tab'))
+              Tab(text: Translations.of(context).text('buyChat_tab')),
+              Tab(text: Translations.of(context).text('sellChat_tab'))
             ],
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.white,
           ),
           title: Container(
             margin: EdgeInsets.only(top: topMargin),

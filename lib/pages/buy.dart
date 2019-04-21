@@ -8,7 +8,7 @@ import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/filter.dart';
 import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/widgets/social_buttons.dart';
-import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/utils/objects_generator.dart';
 
 /*
  *  CLASE:        Buy
@@ -76,21 +76,8 @@ class _BuyState extends State<Buy> {
         // )
         body: ListView(
           children: <Widget>[
-            ProductView(
-                Product('Fundamentos álgebra', 12, false,
-                    'https://placeimg.com/640/480/any', "",true,'nuevo',50),
-                6.1,
-                39),
-            ProductView(
-                Product('Fundamentos programación', 18, false,
-                    'https://placeimg.com/640/480/any', "",true,'viejo',50),
-                6.1,
-                39),
-            ProductView(
-                Product('Lengua castellana', 3, true,
-                    'https://placeimg.com/640/480/any', "",false,'nuevo',24),
-                6.1,
-                39),
+            ProductView(generateRandomProduct(), 6.1, 39),
+            ProductView(generateRandomProduct(), 6.1, 39),
             SocialButtons()
           ],
         ));
