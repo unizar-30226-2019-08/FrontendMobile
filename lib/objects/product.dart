@@ -50,13 +50,9 @@ class Product {
       return this._price.toStringAsFixed(2) + '€';
     }
   }
-  String isShipped(){
-      if(this._ship){
-    return "Con envío";
-      }
-      else{
-        return "Sin envío";
-      }
+  bool isSent(){
+      return this._ship;
+    
   }
 
   String getState(){

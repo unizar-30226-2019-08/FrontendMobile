@@ -60,7 +60,7 @@ Widget state(){
  */
 Widget ships(){
   Widget child;
-  if(this._product.isShipped()=="Con envío"){
+  if(this._product.isSent()){
     child= new Icon(Icons.local_shipping);//si incluye envío,se imprime el camión
   }
   else {
@@ -113,7 +113,9 @@ Widget ships(){
       
         new Text(Translations.of(context).text("ships"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         new Padding(padding:EdgeInsets.all(8.0),),
-        new Text(this._product.isShipped(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
+        this._product.isSent()==true ?  new Text(Translations.of(context).text("is_sent"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)):
+         new Text(Translations.of(context).text("is_not_sent"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
+       
         ships()
         
         
@@ -134,7 +136,7 @@ Widget ships(){
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Text("Likes",textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
+        new Text("LIKES",textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         new Padding(padding:EdgeInsets.all(8.0),),
         new Text(this._product.getLikes().toString(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
         new Icon(Icons.favorite)
