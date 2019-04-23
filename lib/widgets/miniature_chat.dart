@@ -10,6 +10,7 @@ import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/pages/chat.dart';
 
 /*
  *  CLASE:        MiniatureChat
@@ -108,7 +109,11 @@ class MiniatureChat extends StatelessWidget {
       trailing: CircleAvatar(
           backgroundImage: NetworkImage(this
               .product
-              .getImage())), //imagen del producto sobre el que se chatea
+              .getImage())),
+      onTap:() {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) =>Chat()));
+              }, //imagen del producto sobre el que se chatea
     );
   }
 }

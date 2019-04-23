@@ -63,6 +63,8 @@
     "Used":"USADO",
     "Old":"ANTIGÜEDAD",
     "Broken":"ROTO",
-    "Wasted":"DESGASTADO"
+    "Wasted":"DESGASTADO",
+    "buyChat_tab":"Vendedores",
+    "sellChat_tab":"Compradores"
 
 }

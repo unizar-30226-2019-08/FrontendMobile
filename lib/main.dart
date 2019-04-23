@@ -26,6 +26,7 @@ import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/widgets/Product_info.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/pages/login.dart';
+import 'package:bookalo/pages/chats_menu.dart';
 import 'package:bookalo/widgets/Product_info.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.onAuthStateChanged,
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
-                    return ProductInfo(generateRandomProduct()); //BuyAndSell();
+                    return BuyAndSell();
                   } else {
                     return Login();
                   }

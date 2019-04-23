@@ -24,10 +24,10 @@ class ChatMenu extends StatelessWidget {
       length: 2,
       child: Scaffold(
        appBar:ChatListNavbar(
-          preferredSize: Size.fromHeight(height/10),
+          preferredSize: Size.fromHeight(height/5),
         ),
         body: TabBarView(
-          children: [BuyChatsList(),SellChatsList()],
+          children: [MenuChatsBuy(),MenuChatsSell()],
         ),
       ),
     );
