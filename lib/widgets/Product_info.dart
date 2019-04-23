@@ -1,6 +1,6 @@
 /*
- * FICHERO:     product_info.dart
- * DESCRIPCIÓN: visor de miniatura del producto
+ * FICHERO:     Product_info.dart
+ * DESCRIPCIÓN: Características del producto
  * CREACIÓN:    13/04/2019
  */
 

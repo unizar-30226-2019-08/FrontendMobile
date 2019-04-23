@@ -1,8 +1,8 @@
 /*
- * FICHERO:     buy_and_sell_navbar.dart
+ * FICHERO:     chat_list_navbar.dart
  * DESCRIPCIÓN: clases relativas al widget de barra de navegación 
  *              de las pestañas de compra/venta
- * CREACIÓN:    13/03/2019
+ * CREACIÓN:    20/04/2019
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
@@ -10,11 +10,11 @@ import 'package:bookalo/pages/chats_menu.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*
- *  CLASE:        BuyAndSellNavbar
- *  DESCRIPCIÓN:  widget para barra de navegación principal de Bookalo.
- *                Incluye dos pestañas (para compra y venta), así cómo
- *                avatar clickable del usuario que ha iniciado sesión y
- *                acceso a la sección de 'Mis chats'
+ *  CLASE:        ChatListNavbar
+ *  DESCRIPCIÓN:  widget para barra de navegación entre chats de Bookalo.
+ *                Incluye dos pestañas (para chats de compra y venta), así cómo
+ *                avatar clickable del usuario que ha iniciado sesión
+ *         
  */
 class ChatListNavbar extends StatefulWidget implements PreferredSizeWidget {
   /*
@@ -68,7 +68,7 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
             indicator: BoxDecoration(color: Theme.of(context).canvasColor),
             tabs: [
-              Tab(text: Translations.of(context).text('buyChat_tab')),
+              Tab(text: Translations.of(context).text('buyChat_tab')), //pestañas de navegacion
               Tab(text: Translations.of(context).text('sellChat_tab'))
             ],
             labelColor: Colors.black,

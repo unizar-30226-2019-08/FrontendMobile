@@ -1,7 +1,7 @@
 /*
- * FICHERO:     sell.dart
- * DESCRIPCIÓN: clases relativas a la pestaña de venta
- * CREACIÓN:    12/04/2019
+ * FICHERO:     menu_chats_buy.dart
+ * DESCRIPCIÓN: clases relativas a la pestaña de chats de compra
+ * CREACIÓN:    20/04/2019
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
@@ -13,11 +13,11 @@ import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
 
 /*
- *  CLASE:        Sell
+ *  CLASE:        MenuChatsBuy
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
- *                de venta. Contiene una lista con las miniaturas
-  *               de los productos del rpopio usuario que tiene a
-  *               la venta.
+ *                de chats de compra. Contiene una lista con las miniaturas
+  *               de los chats iniciados con vendedores
+  *               
  */
 class MenuChatsBuy extends StatefulWidget {
   MenuChatsBuy({Key key}) : super(key: key);
