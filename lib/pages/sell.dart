@@ -9,6 +9,7 @@ import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
 import 'package:bookalo/pages/upload_product.dart';
+import 'package:bookalo/utils/objects_generator.dart';
 
 /*
  *  CLASE:        Sell
@@ -34,19 +35,9 @@ class _SellState extends State<Sell> {
 
     return List.generate(pageSize, (index) {
       if (index % 2 == 0) {
-        return MiniProduct(new Product(
-            'Fundamentos de álgebra',
-            10,
-            true,
-            'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-            ""));
+        return MiniProduct(generateRandomProduct());
       } else {
-        return MiniProduct(new Product(
-            'Lápiz',
-            0.75,
-            false,
-            'https://www.kalamazoo.es/content/images/product/31350_1_xnl.jpg',
-            ""));
+        return MiniProduct(generateRandomProduct());
       }
     });
   }

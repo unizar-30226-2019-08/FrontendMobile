@@ -4,8 +4,7 @@
  * CREACIÓN:    15/03/2019
  */
 
-import 'package:lipsum/lipsum.dart' as lipsum;
-
+import 'package:latlong/latlong.dart';
 /*
   CLASE: Product
   DESCRIPCIÓN: clase objeto que recoge todos los datos asociados a un producto
@@ -17,8 +16,10 @@ class Product {
   bool _sold;
   String _image;
   String _description;
+  double _lat;
+  double _lng;
 
-  Product(this._name, this._price, this._sold, this._image, this._description);
+  Product(this._name, this._price, this._sold, this._image, this._description, this._lat, this._lng);
 
   String getName() {
     return this._name;
@@ -37,7 +38,7 @@ class Product {
   }
 
   String getDescription() {
-    return lipsum.createSentence(numSentences: 4);
+    return this._description;
   }
 
   String priceToString() {
@@ -46,5 +47,9 @@ class Product {
     } else {
       return this._price.toStringAsFixed(2) + '€';
     }
+  }
+
+  LatLng getPosition(){
+    return LatLng(_lat, _lng);
   }
 }

@@ -8,7 +8,6 @@ import 'package:lipsum/lipsum.dart' as lipsum;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/widgets/navbars/profile_navbar.dart';
 import 'package:bookalo/widgets/review_card.dart';
-import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
@@ -43,14 +42,12 @@ class _UserProfileState extends State<UserProfile> {
     return List.generate(pageSize, (index) {
       if (index % 2 == 0) {
         return ProductView(
-            Product('Fundamentos álgebra', 12, false,
-                'https://placeimg.com/640/480/any', ""),
+            generateRandomProduct(),
             6.1,
             39);
       } else {
         return ProductView(
-            Product('Lengua castellana', 3, true,
-                'https://placeimg.com/640/480/any', ""),
+            generateRandomProduct(),
             6.1,
             39);
       }

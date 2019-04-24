@@ -23,14 +23,17 @@ class DetailedProduct extends StatefulWidget {
 class _DetailedProductState extends State<DetailedProduct> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    bool longTitle = widget.product.getName().length > 17;
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
           SliverPersistentHeader(
             pinned: true,
             delegate: _SliverAppBarDelegate(
-                minHeight: 200.0,
-                maxHeight: 300.0,
+                minHeight: (longTitle ? height/3 : height/4),
+                maxHeight: (longTitle ? height/2 : height/2.4),
                 child: Stack(
                   alignment: Alignment.bottomRight,
                   children: <Widget>[
@@ -48,7 +51,7 @@ class _DetailedProductState extends State<DetailedProduct> {
                       control: new SwiperControl(),
                     ),
                     Container(
-                      height: 80.0,
+                      height: (longTitle ? height/6 : height/8),
                       decoration: BoxDecoration(
                         color: Theme.of(context).canvasColor,
                         borderRadius: BorderRadius.only(
@@ -56,14 +59,17 @@ class _DetailedProductState extends State<DetailedProduct> {
                           topRight: Radius.circular(35.0),
                         ),
                       ),
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: EdgeInsets.only(top: height/40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
+                            width: width/1.6,
                             margin: EdgeInsets.only(left: 20),
                             child: Text(
                               widget.product.getName(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 35.0, fontWeight: FontWeight.w300),
                             ),
@@ -79,13 +85,17 @@ class _DetailedProductState extends State<DetailedProduct> {
                         ],
                       ),
                     ),
-                    RadialButton(),
+                    Container(
+                      margin: EdgeInsets.only(bottom: (longTitle ? height/25 : 0)),
+                      child: RadialButton()
+                    ),
                   ],
                 )),
           ),
           SliverList(
             delegate: SliverChildListDelegate(
               [
+                Divider(),
                 Container(
                   margin:
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

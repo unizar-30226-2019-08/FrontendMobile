@@ -54,5 +54,8 @@ Product generateRandomProduct() {
       (Random().nextDouble() * 30).round().toDouble(),
       Random().nextDouble() > 0.8,
       "https://picsum.photos/200/300/?random",
-      lipsum.createSentence());
+      lipsum.createSentence(numSentences: 20),
+      41.65606 + Random().nextDouble(),
+      -0.87734 + Random().nextDouble(),
+      );
 }
