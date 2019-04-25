@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/buy_and_sell_navbar.dart';
 import 'package:bookalo/pages/buy.dart';
 import 'package:bookalo/pages/sell.dart';
-import 'package:bookalo/widgets/animations/bookalo_progress.dart';
+
 
 /*
  *  CLASE:        BuyAndSell

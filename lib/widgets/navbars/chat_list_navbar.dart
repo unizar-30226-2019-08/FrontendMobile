@@ -6,7 +6,6 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/chats_menu.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*
@@ -64,15 +63,14 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
           ],
           elevation: 0.0,
           bottom: TabBar(
-            indicatorWeight: 3.0,
+      
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
-            indicator: BoxDecoration(color: Theme.of(context).canvasColor),
+         
             tabs: [
               Tab(text: Translations.of(context).text('buyChat_tab')), //pestañas de navegacion
               Tab(text: Translations.of(context).text('sellChat_tab'))
             ],
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.white,
+           
           ),
           title: Container(
             margin: EdgeInsets.only(top: topMargin),

@@ -8,8 +8,6 @@ import 'package:lipsum/lipsum.dart' as lipsum;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/widgets/navbars/profile_navbar.dart';
 import 'package:bookalo/widgets/review_card.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
 import 'package:bookalo/utils/objects_generator.dart';

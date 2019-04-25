@@ -4,11 +4,8 @@
  * CREACIÓN:    20/04/2019
  */
 import 'package:flutter/material.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
-import 'package:bookalo/pages/upload_product.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
 
@@ -20,13 +17,17 @@ import 'package:bookalo/widgets/miniature_chat.dart';
   *               
  */
 class MenuChatsBuy extends StatefulWidget {
-  MenuChatsBuy({Key key}) : super(key: key);
+ final bool buyChats;
+  MenuChatsBuy({Key key,this.buyChats}) : super(key: key);
 
-  _MenuChatsBuyState createState() => _MenuChatsBuyState();
+  @override
+  State<MenuChatsBuy> createState() {
+    return _MenuChatsBuyState();
+  }
 }
 
 class _MenuChatsBuyState extends State<MenuChatsBuy> {
-  /*
+    /*
       Pre: pageNumber >=0 y pageSize > 0
       Post: devuelve una lista con pageSize MiniProduct
    */
@@ -56,6 +57,10 @@ class _MenuChatsBuyState extends State<MenuChatsBuy> {
     return ListView(shrinkWrap: true, primary: false, children: page);
   }
 
+  bool isBuyChat(){
+    return widget.buyChats;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         // body: Center(
@@ -82,7 +87,7 @@ class _MenuChatsBuyState extends State<MenuChatsBuy> {
         
         body:
         
-        
+        isBuyChat() ? 
          ListView.builder(
           
           itemBuilder: (context, pageNumber) {
@@ -115,6 +120,39 @@ class _MenuChatsBuyState extends State<MenuChatsBuy> {
             );
           },
          )
+         :
+
+          ListView.builder(
+          itemBuilder: (context, pageNumber) {
+            //Todo: 8 mas o menos por pagina
+            //TODO:  obtener producto de la lista
+            return KeepAliveFutureBuilder(
+              future: this._fetchPage(pageNumber, 8),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: BookaloProgressIndicator(),
+                    );
+                  case ConnectionState.waiting:
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: BookaloProgressIndicator(),
+                    );
+                  case ConnectionState.done:
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return this._buildPage(snapshot.data);
+                    }
+                    break;
+                  case ConnectionState.active:
+                }
+              },
+            );
+          },
+        )
     );
   }
 }

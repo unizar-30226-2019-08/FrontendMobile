@@ -10,7 +10,7 @@ import 'package:faker/faker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/translations.dart';
+
 
 /*
  * Pre:   firebaseUser es un usuario de Firebase válido

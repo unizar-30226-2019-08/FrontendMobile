@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chats_menu.dart';
-import 'package:bookalo/pages/menu_chats_buy.dart';
-import 'package:bookalo/pages/menu_chats_sell.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*

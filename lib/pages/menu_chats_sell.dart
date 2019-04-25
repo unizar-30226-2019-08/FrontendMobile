@@ -4,11 +4,8 @@
  * CREACIÓN:    20/04/2019
  */
 import 'package:flutter/material.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
-import 'package:bookalo/pages/upload_product.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
 

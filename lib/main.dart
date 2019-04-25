@@ -20,15 +20,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
-import 'package:bookalo/pages/menu_chats_buy.dart';
-import 'package:bookalo/pages/menu_chats_sell.dart';
-import 'package:bookalo/widgets/navbars/simple_navbar.dart';
-import 'package:bookalo/widgets/Product_info.dart';
-import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/pages/login.dart';
-import 'package:bookalo/pages/chats_menu.dart';
-import 'package:bookalo/widgets/Product_info.dart';
+import 'package:bookalo/widgets/product_info.dart';
 import 'package:bookalo/utils/objects_generator.dart';
+
 
 //void main() => runApp(MyApp());
 void main() {
@@ -74,7 +69,7 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.onAuthStateChanged,
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
-                    return BuyAndSell();
+                    return Scaffold(body:ProductInfo(generateRandomProduct()));
                   } else {
                     return Login();
                   }

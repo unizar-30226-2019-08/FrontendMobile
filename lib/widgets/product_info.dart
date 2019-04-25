@@ -71,12 +71,13 @@ Widget ships(){
 
   @override
   Widget build(BuildContext context) {
-   
+   double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
  
   
  return new SizedBox(
-   width:500,
-   height:100,
+   width:width,
+   height:height/5,
     child:new Row(
   children: <Widget>[
 
@@ -113,8 +114,8 @@ Widget ships(){
       
         new Text(Translations.of(context).text("ships"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         new Padding(padding:EdgeInsets.all(8.0),),
-        this._product.isSent()==true ?  new Text(Translations.of(context).text("is_sent"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)):
-         new Text(Translations.of(context).text("is_not_sent"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
+        this._product.isSent()==true ?  new Text(Translations.of(context).text("include_shipping"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)):
+         new Text(Translations.of(context).text("not_shipping"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
        
         ships()
         
@@ -136,7 +137,7 @@ Widget ships(){
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Text("LIKES",textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
+        new Text(Translations.of(context).text("favourite"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         new Padding(padding:EdgeInsets.all(8.0),),
         new Text(this._product.getLikes().toString(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
         new Icon(Icons.favorite)
