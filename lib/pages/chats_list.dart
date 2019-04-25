@@ -8,6 +8,7 @@ import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
+import 'package:paging/paging.dart';
 
 /*
  *  CLASE:        ChatsList
@@ -36,16 +37,28 @@ class _ChatsListState extends State<ChatsList> {
         Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
 
     return List.generate(pageSize, (index) {
-      
-        return MiniatureChat(
+      Widget Miniature;
+      widget.buyChats==true ?
+        Miniature= MiniatureChat(
                     user: generateRandomUser(),
                     product: generateRandomProduct(),
                     lastWasMe: true,
-                    lastMessage: 'hola',
+                    lastMessage: 'Soy un vendedor',
                     closed: false,
                     lastTimeDate: DateTime.now(),
                     isBuyer: false
+              )
+          :
+          Miniature= MiniatureChat(
+                    user: generateRandomUser(),
+                    product: generateRandomProduct(),
+                    lastWasMe: true,
+                    lastMessage: 'Soy un comprador',
+                    closed: false,
+                    lastTimeDate: DateTime.now(),
+                    isBuyer: true
               );
+return Miniature;
       });
   }
 
@@ -63,37 +76,16 @@ class _ChatsListState extends State<ChatsList> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        // body: Center(
-        //   child: Container(
-        //     margin: EdgeInsets.only(top: height/5),
-        //     child: Column(
-        //       children: <Widget>[
-        //         Container(
-        //           margin: EdgeInsets.only(bottom: height/25),
-        //           child: Icon(Icons.remove_shopping_cart, size: 80.0, color: Colors.pink)
-        //         ),
-        //         Text(
-        //           Translations.of(context).text("no_products_available"),
-        //           style: TextStyle(
-        //             fontSize: 25.0,
-        //             fontWeight: FontWeight.w300
-        //           ),
-        //         )
-        //       ],
-        //     ),
-        //   ),
-        // )
-
-        
         body:
         
-        isBuyChat() ? 
+      
          ListView.builder(
           
           itemBuilder: (context, pageNumber) {
             //Todo: 8 mas o menos por pagina
             //TODO:  obtener producto de la lista
             return KeepAliveFutureBuilder(
+              
               future: this._fetchPage(pageNumber, 8),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
@@ -120,39 +112,8 @@ class _ChatsListState extends State<ChatsList> {
             );
           },
          )
-         :
+         
 
-          ListView.builder(
-          itemBuilder: (context, pageNumber) {
-            //Todo: 8 mas o menos por pagina
-            //TODO:  obtener producto de la lista
-            return KeepAliveFutureBuilder(
-              future: this._fetchPage(pageNumber, 8),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: BookaloProgressIndicator(),
-                    );
-                  case ConnectionState.waiting:
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: BookaloProgressIndicator(),
-                    );
-                  case ConnectionState.done:
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return this._buildPage(snapshot.data);
-                    }
-                    break;
-                  case ConnectionState.active:
-                }
-              },
-            );
-          },
-        )
     );
   }
 }
