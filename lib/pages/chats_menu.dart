@@ -5,8 +5,8 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/chat_list_navbar.dart';
-import 'package:bookalo/pages/menu_chats_buy.dart';
-import 'package:bookalo/pages/menu_chats_sell.dart';
+import 'package:bookalo/pages/chats_list.dart';
+
 
 
 /*
@@ -27,7 +27,7 @@ class ChatMenu extends StatelessWidget {
           preferredSize: Size.fromHeight(height/5),
         ),
         body: TabBarView(
-          children: [MenuChatsBuy(buyChats:true),MenuChatsBuy(buyChats:false)],
+          children: [ChatsList(buyChats:true),ChatsList(buyChats:false)],
         ),
       ),
     );

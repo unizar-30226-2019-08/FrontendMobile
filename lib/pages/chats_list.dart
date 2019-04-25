@@ -10,23 +10,23 @@ import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
 
 /*
- *  CLASE:        MenuChatsBuy
+ *  CLASE:        ChatsList
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
  *                de chats de compra. Contiene una lista con las miniaturas
   *               de los chats iniciados con vendedores
   *               
  */
-class MenuChatsBuy extends StatefulWidget {
+class ChatsList extends StatefulWidget {
  final bool buyChats;
-  MenuChatsBuy({Key key,this.buyChats}) : super(key: key);
+  ChatsList({Key key,this.buyChats}) : super(key: key);
 
   @override
-  State<MenuChatsBuy> createState() {
-    return _MenuChatsBuyState();
+  State<ChatsList> createState() {
+    return _ChatsListState();
   }
 }
 
-class _MenuChatsBuyState extends State<MenuChatsBuy> {
+class _ChatsListState extends State<ChatsList> {
     /*
       Pre: pageNumber >=0 y pageSize > 0
       Post: devuelve una lista con pageSize MiniProduct

@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.onAuthStateChanged,
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
-                    return Scaffold(body:ProductInfo(generateRandomProduct()));
+                    return BuyAndSell();
                   } else {
                     return Login();
                   }
