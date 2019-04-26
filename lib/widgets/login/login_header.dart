@@ -42,12 +42,11 @@ class _LoginHeaderState extends State<LoginHeader> {
         children: <Widget>[
           VideoPlayer(_controller),
           BackdropFilter(
-            filter: new ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-            child: new Container(
+            filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+            child: Container(
               width: double.infinity,
               height: double.infinity,
-              decoration:
-                  new BoxDecoration(color: Colors.pink.withOpacity(0.6)),
+              decoration: BoxDecoration(color: Colors.pink.withOpacity(0.6)),
             ),
           ),
           Column(

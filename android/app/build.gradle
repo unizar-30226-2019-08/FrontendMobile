@@ -1,4 +1,4 @@
-def localProperties = new Properties()
+def localProperties =  Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
@@ -8,7 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    throw  GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = 1
@@ -24,10 +24,10 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def keystoreProperties = new Properties()
+def keystoreProperties =  Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystoreProperties.load( FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -37,11 +37,18 @@ android {
         disable 'InvalidPackage'
     }
 
+    android {
+         compileOptions {
+             sourceCompatibility 1.8
+             targetCompatibility 1.8
+         }
+     }
+
     defaultConfig {
         applicationId "es.bookalo.bookalo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 12
+        versionCode 11
         versionName "0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk{

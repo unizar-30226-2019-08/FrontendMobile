@@ -48,9 +48,9 @@ class _DistanceSliderState extends State<DistanceSlider> {
                 min: 1.0,
                 max: 30.0,
                 value: _maxDistance,
-                onChanged: (newValue) {
-                  setState(() => _maxDistance = newValue);
-                  widget.onMaxDistanceChange(newValue);
+                onChanged: (Value) {
+                  setState(() => _maxDistance = Value);
+                  widget.onMaxDistanceChange(Value);
                 },
               ),
             ),

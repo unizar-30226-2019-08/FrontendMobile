@@ -11,9 +11,7 @@ import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 import 'package:bookalo/pages/login.dart';
 
-//void main() => runApp(MyApp());
 void main() {
-  //debugPaintSizeEnabled = true; //
   runApp(MyApp());
 }
 
@@ -29,6 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var product2= Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'Desgastado',54);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Bookalo',

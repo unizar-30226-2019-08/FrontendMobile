@@ -55,19 +55,19 @@ class _PriceSliderState extends State<PriceSlider> {
               ),
               Container(
                 width: width / 1.8,
-                child: new RangeSlider(
+                child: RangeSlider(
                   min: 1.0,
                   max: 100.0,
                   lowerValue: _minPrice,
                   upperValue: _maxPrice,
                   showValueIndicator: true,
                   valueIndicatorMaxDecimals: 1,
-                  onChanged: (double newLowerValue, double newUpperValue) {
+                  onChanged: (double LowerValue, double UpperValue) {
                     setState(() {
-                      _minPrice = newLowerValue;
-                      _maxPrice = newUpperValue;
+                      _minPrice = LowerValue;
+                      _maxPrice = UpperValue;
                     });
-                    widget.onPriceChanged(newLowerValue, newUpperValue);
+                    widget.onPriceChanged(LowerValue, UpperValue);
                   },
                 ),
               ),

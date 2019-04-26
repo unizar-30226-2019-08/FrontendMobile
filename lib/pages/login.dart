@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:http/http.dart' as http;
 import 'package:bookalo/widgets/login/login_header.dart';
 import 'package:bookalo/widgets/login/login_button.dart';
 import 'package:bookalo/translations.dart';
@@ -28,7 +29,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool googleLoginInProgress = false;
   bool facebookLoginInProgress = false;
@@ -94,6 +95,12 @@ class _LoginState extends State<Login> {
           idToken: googleAuth.idToken,
         );
         await FirebaseAuth.instance.signInWithCredential(credential);
+        FirebaseUser user = await FirebaseAuth.instance.currentUser();
+        var response = await http.post(
+          'https://bookalo.es/api/login',
+          headers: {'appmovil' : 'true'}, 
+          body: {'token' : user.getIdToken()});
+          print('RESPUESTA HTTP: ' + response.toString());
       } catch (e) {
         _handleError("Google");
       }
@@ -135,7 +142,7 @@ class _LoginState extends State<Login> {
         twitterLoginInProgress = true;
       });
       try {
-        var twitterLogin = new TwitterLogin(
+        var twitterLogin = TwitterLogin(
           consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
           consumerSecret: 'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',
         );

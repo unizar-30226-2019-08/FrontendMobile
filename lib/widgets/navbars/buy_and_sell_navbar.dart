@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/pages/chats_menu.dart';
 import 'package:bookalo/pages/menu_chats.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
@@ -55,7 +56,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChatsLis()),
+                      MaterialPageRoute(builder: (context) => ChatMenu()),
                     );
                   }),
             ),

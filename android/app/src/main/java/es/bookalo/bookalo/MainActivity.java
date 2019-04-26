@@ -13,7 +13,7 @@ public class MainActivity extends FlutterActivity {
     getWindow().setStatusBarColor(0x00000000);
     GeneratedPluginRegistrant.registerWith(this);
     ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
-    vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    vto.addOnGlobalLayoutListener( ViewTreeObserver.OnGlobalLayoutListener() {
       @Override
       public void onGlobalLayout() {
         getFlutterView().getViewTreeObserver().removeOnGlobalLayoutListener(this);

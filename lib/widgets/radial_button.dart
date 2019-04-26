@@ -39,9 +39,9 @@ class _RadialButtonState extends State<RadialButton>
   @override
   void initState() {
     super.initState();
-    _animationController = new AnimationController(
-        vsync: this, duration: Duration(milliseconds: 400));
-    _colorAnimation = new ColorTween(begin: Colors.pink, end: Colors.pink[700])
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.pink[700])
         .animate(_animationController);
   }
 
@@ -85,10 +85,10 @@ class _RadialButtonState extends State<RadialButton>
   Widget _buildExpandedBackground(double expandedSize, double hiddenSize) {
     double size =
         hiddenSize + (expandedSize - hiddenSize) * _animationController.value;
-    return new Container(
+    return Container(
       height: size,
       width: size,
-      decoration: new BoxDecoration(shape: BoxShape.circle, color: Colors.pink),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.pink),
     );
   }
 
@@ -103,15 +103,15 @@ class _RadialButtonState extends State<RadialButton>
       iconSize = 26.0 * (_animationController.value - 0.8) * 5;
     }
 
-    return new Transform.rotate(
+    return Transform.rotate(
       angle: angle,
-      child: new Align(
+      child: Align(
         alignment: Alignment.topCenter,
-        child: new Padding(
-          padding: new EdgeInsets.only(top: 8.0),
-          child: new IconButton(
+        child: Padding(
+          padding: EdgeInsets.only(top: 8.0),
+          child: IconButton(
             onPressed: null,
-            icon: new Transform.rotate(
+            icon: Transform.rotate(
               angle: -angle,
               child: IconButton(
                 icon: Icon(icon, size: iconSize),
@@ -121,7 +121,7 @@ class _RadialButtonState extends State<RadialButton>
             ),
             iconSize: 26.0,
             alignment: Alignment.center,
-            padding: new EdgeInsets.all(0.0),
+            padding: EdgeInsets.all(0.0),
           ),
         ),
       ),

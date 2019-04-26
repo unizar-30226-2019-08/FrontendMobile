@@ -74,8 +74,8 @@ class MiniProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(4.0),
-        decoration: new BoxDecoration(
-            border: new Border.all(color: Colors.grey[400], width: 0.4)),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[400], width: 0.4)),
         child: ListTile(
           leading: CircleAvatar(
               backgroundImage: NetworkImage(this._product.getImage())),
