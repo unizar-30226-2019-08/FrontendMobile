@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/filter.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:flutter/services.dart';
 
 /*
  *  CLASE:        UploadProduct
@@ -20,6 +22,7 @@ class UploadProduct extends StatefulWidget {
 
 class _UploadProduct extends State<UploadProduct> {
   int _currentStep=0;
+  Product newP;
 
 @override
   Widget build(BuildContext context) {
@@ -31,11 +34,11 @@ class _UploadProduct extends State<UploadProduct> {
           body: Stepper(
               steps: _mySteps(),
               currentStep: this._currentStep,
-              onStepTapped: (step){
+             onStepTapped: (step){
                 setState(() {
                   this._currentStep = step;
                 });
-              },
+              }, //TODO: dejar navegar libremente entre pasos??
               onStepContinue: (){
                 setState(() {
                   if(_currentStep < this._mySteps().length -1){
@@ -63,19 +66,85 @@ class _UploadProduct extends State<UploadProduct> {
   List<Step> _mySteps(){
     List<Step> _steps =[
       Step(
-        title: Text('Step 1'),
+        title: Text('¡Fotos, por favor!'),
         content: TextField(),
         isActive: _currentStep >= 0
       ),
       Step(
-          title: Text('Step 2'),
-          content: TextField(),
+          title: Text('Título'),
+          content: TextFormField(
+            keyboardType: TextInputType.text,
+            autocorrect: false,
+            onSaved: (String value) {
+                newP.name(value) ;
+            },
+            maxLines: 1,
+            maxLength: 50,
+
+          /*  validator: (value) {
+              if (value.isEmpty || value.length < 1) {
+                return 'Please enter name';
+              }
+            },*/ //TODO: hacer validacion
+            decoration: new InputDecoration(
+              labelText: 'Dale un nombre a tu producto',
+              labelStyle:
+              new TextStyle(decorationStyle: TextDecorationStyle.solid)
+            ),
+
+          ),
           isActive: _currentStep >= 1
       ),
       Step(
-          title: Text('Step 3'),
-          content: TextField(),
+          title: Text('Descripción'),
+          content: TextFormField(
+            keyboardType: TextInputType.text,
+            autocorrect: false,
+            onSaved: (String value) {
+              newP.description(value) ;
+            },
+
+            decoration: new InputDecoration(
+                labelText: '¿Cómo es?',
+                labelStyle:
+                new TextStyle(decorationStyle: TextDecorationStyle.solid)
+            ),
+            maxLength: 700,
+          ),
           isActive: _currentStep >= 2
+      ),
+      Step(
+          title: Text('¿Unos tags?'),
+          content: Container(
+            child: Column(
+              children: <Widget>[
+                Text('Bolsa de tags'),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  autocorrect: false,
+                /*  onSaved: (String value) {
+                    newP.description(value) ;
+                  },*/  //TODO: ver como guardar tags
+
+                  decoration: new InputDecoration(
+                      hintText: 'tu propio tag',
+                      icon: Icon(Icons.add_circle), //TODO: boton para añadir tag
+                      labelStyle:
+                      new TextStyle(decorationStyle: TextDecorationStyle.solid)
+
+                  ),
+                  maxLines: 1,
+                  maxLength: 50,
+                ),
+              ],
+            ),
+          ),
+          isActive: _currentStep >= 3
+      ),
+      Step(
+        title: Text('¿Dónde lo vendes?'),
+        content: Text('Mapa seleccion'),
+        isActive: _currentStep >= 4
       )
     ];
 

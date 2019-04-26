@@ -20,6 +20,11 @@ class Product {
 
   Product(this._name, this._price, this._sold, this._image, this._description);
 
+
+  void name(String value) {
+    _name = value;
+  }
+
   String getName() {
     return this._name;
   }
@@ -46,5 +51,21 @@ class Product {
     } else {
       return this._price.toStringAsFixed(2) + '€';
     }
+  }
+
+  void price(double value) {
+    _price = value;
+  }
+
+  void sold(bool value) {
+    _sold = value;
+  }
+
+  void image(String value) {
+    _image = value;
+  }
+
+  void description(String value) {
+    _description = value;
   }
 }
