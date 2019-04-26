@@ -32,7 +32,7 @@ User generatePseudoUser(FirebaseUser firebaseUser) {
  * Post:  ha devuelto un objeto User aleatorio
  */
 User generateRandomUser() {
-  var faker = new Faker();
+  var faker = Faker();
   return User(
       faker.person.firstName() + ' ' + faker.person.lastName()[0],
       "https://picsum.photos/300/?random",
@@ -54,5 +54,8 @@ Product generateRandomProduct() {
       (Random().nextDouble() * 30).round().toDouble(),
       Random().nextDouble() > 0.8,
       "https://picsum.photos/200/300/?random",
-      lipsum.createSentence());
+      lipsum.createSentence(),
+      Random().nextDouble() > 0.8,
+      (['Nuevo', 'Seminuevo', 'Usado']..shuffle()).first,
+      Random().nextInt(100));
 }

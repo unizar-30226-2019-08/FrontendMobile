@@ -5,6 +5,8 @@
  */
 
 import 'package:lipsum/lipsum.dart' as lipsum;
+import 'package:flutter/material.dart';
+import 'package:bookalo/translations.dart';
 
 /*
   CLASE: Product
@@ -14,11 +16,15 @@ import 'package:lipsum/lipsum.dart' as lipsum;
 class Product {
   String _name;
   double _price;
-  bool _sold;
+  String _state;
+  int _favorites;
+  bool _includesShipping;
+  bool _isSold;
   String _image;
   String _description;
 
-  Product(this._name, this._price, this._sold, this._image, this._description);
+  Product(this._name, this._price, this._isSold, this._image, this._description,
+      this._includesShipping, this._state, this._favorites);
 
   String getName() {
     return this._name;
@@ -29,7 +35,7 @@ class Product {
   }
 
   bool getSold() {
-    return this._sold;
+    return this._isSold;
   }
 
   String getImage() {
@@ -46,5 +52,17 @@ class Product {
     } else {
       return this._price.toStringAsFixed(2) + '€';
     }
+  }
+
+  bool includesShipping() {
+    return this._includesShipping;
+  }
+
+  int getFavourites() {
+    return this._favorites;
+  }
+
+  String getState() {
+    return this._state;
   }
 }

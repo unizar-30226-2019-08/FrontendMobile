@@ -28,7 +28,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool googleLoginInProgress = false;
   bool facebookLoginInProgress = false;
@@ -135,7 +135,7 @@ class _LoginState extends State<Login> {
         twitterLoginInProgress = true;
       });
       try {
-        var twitterLogin = new TwitterLogin(
+        var twitterLogin = TwitterLogin(
           consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
           consumerSecret: 'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',
         );

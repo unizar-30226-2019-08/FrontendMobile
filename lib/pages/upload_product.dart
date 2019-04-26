@@ -5,8 +5,6 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
-import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/filter.dart';
 
 /*
  *  CLASE:        UploadProduct

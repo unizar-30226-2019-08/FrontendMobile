@@ -12,8 +12,8 @@ import 'package:bookalo/widgets/miniature_chat.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 
-class ChatsLis extends StatelessWidget {
-  ChatsLis({Key key, this.salesChat}) : super(key: key);
+class ChatsList extends StatelessWidget {
+  ChatsList({Key key, this.salesChat}) : super(key: key);
 
   final bool salesChat; //vale true si el mensaje se ha enviado
 
@@ -25,7 +25,7 @@ class ChatsLis extends StatelessWidget {
 
     double height = MediaQuery.of(context).size.height;
 
-    return new Scaffold(
+    return Scaffold(
         appBar: SimpleNavbar(
           preferredSize: Size.fromHeight(height / 10),
         ),

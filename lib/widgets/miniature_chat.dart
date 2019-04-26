@@ -10,6 +10,7 @@ import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/pages/chat.dart';
 
 /*
  *  CLASE:        MiniatureChat
@@ -71,7 +72,7 @@ class MiniatureChat extends StatelessWidget {
     Widget b;
     if (closed) {
       //si la venta está cerrada
-      b = new Row(children: <Widget>[
+      b = Row(children: <Widget>[
         buildTitle(context),
         Container(width: 100.0),
         Container(
@@ -105,10 +106,12 @@ class MiniatureChat extends StatelessWidget {
       title: title(context),
       subtitle: Text(dateToFullString(this.lastTimeDate, context)),
       enabled: true,
-      trailing: CircleAvatar(
-          backgroundImage: NetworkImage(this
-              .product
-              .getImage())), //imagen del producto sobre el que se chatea
+      trailing:
+          CircleAvatar(backgroundImage: NetworkImage(this.product.getImage())),
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Chat()));
+      }, //imagen del producto sobre el que se chatea
     );
   }
 }

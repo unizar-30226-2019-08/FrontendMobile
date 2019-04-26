@@ -4,18 +4,16 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
-import 'package:bookalo/widgets/navbars/buy_and_sell_navbar.dart';
-import 'package:bookalo/pages/buy.dart';
-import 'package:bookalo/pages/sell.dart';
+import 'package:bookalo/widgets/navbars/chat_list_navbar.dart';
+import 'package:bookalo/pages/chats_list.dart';
 
 /*
  *  CLASE:        BuyAndSell
  *  DESCRIPCIÓN:  widget para la selección de bien la pestaña de compra,
  *                bien la de venta. Permite deslizado de una a otra
  */
-
-class BuyAndSell extends StatelessWidget {
-  BuyAndSell();
+class ChatMenu extends StatelessWidget {
+  ChatMenu();
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +21,11 @@ class BuyAndSell extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: BuyAndSellNavbar(preferredSize: Size.fromHeight(height / 5)),
+        appBar: ChatListNavbar(
+          preferredSize: Size.fromHeight(height / 5),
+        ),
         body: TabBarView(
-          children: [Buy(), Sell()],
+          children: [ChatsList(buyChats: true), ChatsList(buyChats: false)],
         ),
       ),
     );

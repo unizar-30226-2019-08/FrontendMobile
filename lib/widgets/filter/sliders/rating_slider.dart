@@ -50,9 +50,9 @@ class _RatingSliderSate extends State<RatingSlider> {
                 min: 1.0,
                 max: 5.0,
                 value: _minRate,
-                onChanged: (newValue) {
-                  setState(() => _minRate = newValue);
-                  widget.onMinRatingChanged(newValue);
+                onChanged: (Value) {
+                  setState(() => _minRate = Value);
+                  widget.onMinRatingChanged(Value);
                 },
               ),
             ),

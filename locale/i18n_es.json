@@ -48,9 +48,22 @@
 	"report": "REPORTAR",
     "chat_finished_buy": "COMPRADO",
     "chat_finished_sell": "VENDIDO",
+    "buy_chat": "COMPRADORES",
+    "sell_chat": "VENDEDORES",
 	"welcome": "Hola",
     "welcome_text": "Es hora de conocernos. ¿Cómo quieres que lo hagamos?",
     "login_error": "No ha sido posible iniciar sesión con {{param1}}",
-    "accept" : "ACEPTAR"
+    "accept" : "ACEPTAR",
+    "state" : "ESTADO",
+    "favourite": "FAVORITO",
+    "ships" : "ENVIOS",
+    "include_shipping" : "Con envío",
+    "not_shipping" : "Sin envío",
+    "": "NUEVO",
+    "Almost-":"SEMI-NUEVO",
+    "Used":"USADO",
+    "Old":"ANTIGÜEDAD",
+    "Broken":"ROTO",
+    "Wasted":"DESGASTADO"
 
 }
