@@ -78,6 +78,7 @@ class _BuyState extends State<Buy> {
           children: <Widget>[
             ProductView(generateRandomProduct(), 6.1, 39),
             ProductView(generateRandomProduct(), 6.1, 39),
+            ProductView(generateRandomProduct(), 6.1, 39),
             SocialButtons()
           ],
         ));

@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 /*
  * FICHERO:     main.dart
  * DESCRIPCIÓN: punto de entrada de la ejecución y configuraciones básicas
@@ -21,13 +10,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 import 'package:bookalo/pages/login.dart';
-import 'package:bookalo/widgets/product_info.dart';
-import 'package:bookalo/utils/objects_generator.dart';
 
-
-//void main() => runApp(MyApp());
 void main() {
-  //debugPaintSizeEnabled = true; //
   runApp(MyApp());
 }
 
@@ -43,7 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   // var product2=new Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'Desgastado',54);
+    // var product2= Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'Desgastado',54);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Bookalo',

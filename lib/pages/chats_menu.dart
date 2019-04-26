@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/chat_list_navbar.dart';
 import 'package:bookalo/pages/chats_list.dart';
 
-
-
 /*
  *  CLASE:        BuyAndSell
  *  DESCRIPCIÓN:  widget para la selección de bien la pestaña de compra,
@@ -23,11 +21,11 @@ class ChatMenu extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-       appBar:ChatListNavbar(
-          preferredSize: Size.fromHeight(height/5),
+        appBar: ChatListNavbar(
+          preferredSize: Size.fromHeight(height / 5),
         ),
         body: TabBarView(
-          children: [ChatsList(buyChats:true),ChatsList(buyChats:false)],
+          children: [ChatsList(buyChats: true), ChatsList(buyChats: false)],
         ),
       ),
     );

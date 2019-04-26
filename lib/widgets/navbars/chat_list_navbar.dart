@@ -43,8 +43,8 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
     return PreferredSize(
       preferredSize: Size.fromHeight(height / 5),
       child: AppBar(
+          automaticallyImplyLeading: false,
           actions: <Widget>[
-          
             GestureDetector(
                 child: Container(
                     margin: EdgeInsets.only(top: topMargin, right: width / 30),
@@ -63,14 +63,11 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
           ],
           elevation: 0.0,
           bottom: TabBar(
-      
-            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
-         
+            labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [
-              Tab(text: Translations.of(context).text('buyChat_tab')), //pestañas de navegacion
-              Tab(text: Translations.of(context).text('sellChat_tab'))
+              Tab(text: Translations.of(context).text('buy_chat')),
+              Tab(text: Translations.of(context).text('sell_chat'))
             ],
-           
           ),
           title: Container(
             margin: EdgeInsets.only(top: topMargin),

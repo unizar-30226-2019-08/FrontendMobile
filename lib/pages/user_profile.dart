@@ -40,7 +40,7 @@ class _UserProfileState extends State<UserProfile> {
 
     return List.generate(pageSize, (index) {
       if (index % 2 == 0) {
-      /*  return ProductView(
+        /*  return ProductView(
             Product('Fundamentos álgebra', 12, false,
                 'https://placeimg.com/640/480/any', ""),
             6.1,

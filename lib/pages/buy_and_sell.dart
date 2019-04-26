@@ -8,7 +8,6 @@ import 'package:bookalo/widgets/navbars/buy_and_sell_navbar.dart';
 import 'package:bookalo/pages/buy.dart';
 import 'package:bookalo/pages/sell.dart';
 
-
 /*
  *  CLASE:        BuyAndSell
  *  DESCRIPCIÓN:  widget para la selección de bien la pestaña de compra,

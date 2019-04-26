@@ -11,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/product.dart';
 
-
 /*
  * Pre:   firebaseUser es un usuario de Firebase válido
  * Post:  ha devuelto un objeto User basado en firebaseUser
@@ -33,7 +32,7 @@ User generatePseudoUser(FirebaseUser firebaseUser) {
  * Post:  ha devuelto un objeto User aleatorio
  */
 User generateRandomUser() {
-  var faker = new Faker();
+  var faker = Faker();
   return User(
       faker.person.firstName() + ' ' + faker.person.lastName()[0],
       "https://picsum.photos/300/?random",
@@ -46,36 +45,6 @@ User generateRandomUser() {
 }
 
 /*
- *Pre: Option tiene valores entre 1 y 6
- *Post:Elige uno de los estados según el parametro
- */
-
-String randomState(int option){
-  switch (option){
-  case 1:return "Nuevo";
-  break;
-
-  case 2:return "Semi-Nuevo";
-  break;
-
-  case 3: return "Antigüedad";
-  break;
-
-  case 4: return "Usado";
-  break;
-
-  case 5: return "Roto";
-  break;
-
-  default: return "Desgastado";
-  break;
-}
-}
-
-
-
-
-/*
  * Pre:   ---
  * Post:  ha devuelto un objeto Product aleatorio
  */
@@ -85,5 +54,8 @@ Product generateRandomProduct() {
       (Random().nextDouble() * 30).round().toDouble(),
       Random().nextDouble() > 0.8,
       "https://picsum.photos/200/300/?random",
-      lipsum.createSentence(), Random().nextDouble() > 0.5,randomState(Random().nextInt(6)),Random().nextInt(1000));
+      lipsum.createSentence(),
+      Random().nextDouble() > 0.8,
+      (['Nuevo', 'Seminuevo', 'Usado']..shuffle()).first,
+      Random().nextInt(100));
 }

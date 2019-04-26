@@ -20,11 +20,6 @@ class Chat extends StatefulWidget {
 
   _ChatState createState() => _ChatState();
 }
-Widget showValoration(){
-    User user = generateRandomUser();
-  return Center(child:ValorationCard( userToValorate: user,
-            currentUser: user)); 
-}
 
 class _ChatState extends State<Chat> {
   @override

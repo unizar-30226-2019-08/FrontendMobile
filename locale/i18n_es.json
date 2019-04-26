@@ -59,13 +59,11 @@
     "ships" : "ENVIOS",
     "include_shipping" : "Con envío",
     "not_shipping" : "Sin envío",
-    "new": "NUEVO",
-    "Almost-new":"SEMI-NUEVO",
+    "": "NUEVO",
+    "Almost-":"SEMI-NUEVO",
     "Used":"USADO",
     "Old":"ANTIGÜEDAD",
     "Broken":"ROTO",
-    "Wasted":"DESGASTADO",
-    "buyChat_tab":"Vendedores",
-    "sellChat_tab":"Compradores"
+    "Wasted":"DESGASTADO"
 
 }

@@ -6,7 +6,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 
-
 /*
  *  CLASE:        UploadProduct
  *  DESCRIPCIÓN:  widget para la pagina de subida de un producto.//TODO: add descripcion

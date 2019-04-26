@@ -1,5 +1,5 @@
 name: bookalo
-description: A new Flutter project.
+description: A  Flutter project.
 version: 1.0.0+1
 
 
@@ -57,3 +57,4 @@ flutter_icons:
   #adaptive_icon_background: "#e91e63"
   #adaptive_icon_foreground: "assets/images/bookalo_icon_adaptative.png"
   android: true 
+

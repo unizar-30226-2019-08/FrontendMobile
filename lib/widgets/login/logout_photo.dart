@@ -46,11 +46,11 @@ class LogoutPhoto extends StatelessWidget {
             });
             switch (provider) {
               case "google.com":
-                final GoogleSignIn g = new GoogleSignIn();
+                final GoogleSignIn g = GoogleSignIn();
                 await g.disconnect();
                 break;
               case "twitter.com":
-                var twitterLogin = new TwitterLogin(
+                var twitterLogin = TwitterLogin(
                   consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
                   consumerSecret:
                       'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',

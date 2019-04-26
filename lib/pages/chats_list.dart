@@ -3,9 +3,10 @@
  * DESCRIPCIÓN: clases relativas a la pestaña de chats de compra
  * CREACIÓN:    20/04/2019
  */
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
-import 'package:bookalo/utils/list_viewer.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
 import 'package:paging/paging.dart';
@@ -18,8 +19,11 @@ import 'package:paging/paging.dart';
   *               
  */
 class ChatsList extends StatefulWidget {
- final bool buyChats;
-  ChatsList({Key key,this.buyChats}) : super(key: key);
+  final bool buyChats;
+  bool _hasChats;
+  ChatsList({Key key, this.buyChats}) : super(key: key) {
+    this._hasChats = Random().nextDouble() > 0.2;
+  }
 
   @override
   State<ChatsList> createState() {
@@ -28,92 +32,70 @@ class ChatsList extends StatefulWidget {
 }
 
 class _ChatsListState extends State<ChatsList> {
-    /*
-      Pre: pageNumber >=0 y pageSize > 0
-      Post: devuelve una lista con pageSize MiniProduct
-   */
-  _fetchPage(int pageNumber, int pageSize) async {
-    await Future.delayed(
-        Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
+  bool alreadyChecked = false;
 
-    return List.generate(pageSize, (index) {
-      Widget Miniature;
-      widget.buyChats==true ?
-        Miniature= MiniatureChat(
-                    user: generateRandomUser(),
-                    product: generateRandomProduct(),
-                    lastWasMe: true,
-                    lastMessage: 'Soy un vendedor',
-                    closed: false,
-                    lastTimeDate: DateTime.now(),
-                    isBuyer: false
-              )
-          :
-          Miniature= MiniatureChat(
-                    user: generateRandomUser(),
-                    product: generateRandomProduct(),
-                    lastWasMe: true,
-                    lastMessage: 'Soy un comprador',
-                    closed: false,
-                    lastTimeDate: DateTime.now(),
-                    isBuyer: true
-              );
-return Miniature;
+  Future<List<Widget>> _fetchPage(int pageSize, double height) async {
+    await Future.delayed(Duration(seconds: 1));
+    if (widget._hasChats) {
+      return List<MiniatureChat>.generate(8, (index) {
+        return widget.buyChats
+            ? MiniatureChat(
+                user: generateRandomUser(),
+                product: generateRandomProduct(),
+                lastWasMe: true,
+                lastMessage: 'Soy un vendedor',
+                closed: false,
+                lastTimeDate: DateTime.now(),
+                isBuyer: false)
+            : MiniatureChat(
+                user: generateRandomUser(),
+                product: generateRandomProduct(),
+                lastWasMe: true,
+                lastMessage: 'Soy un comprador',
+                closed: false,
+                lastTimeDate: DateTime.now(),
+                isBuyer: true);
       });
-  }
-
-  /*
-      Pre: ---
-      Post: devuelve una ListView con la lista de elementos en page
-   */
-  Widget _buildPage(List page) {
-    return ListView(shrinkWrap: true, primary: false, children: page);
-  }
-
-  bool isBuyChat(){
-    return widget.buyChats;
+    } else {
+      if (!alreadyChecked) {
+        alreadyChecked = true;
+        return List.of([
+          Center(
+            child: Container(
+              margin: EdgeInsets.only(top: height / 5),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(bottom: height / 25),
+                      child: Icon(Icons.remove_shopping_cart,
+                          size: 80.0, color: Colors.pink)),
+                  Text(
+                    Translations.of(context).text("no_products_available"),
+                    style:
+                        TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                  )
+                ],
+              ),
+            ),
+          )
+        ]);
+      } else {
+        return List.of([]);
+      }
+    }
   }
 
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body:
-        
-      
-         ListView.builder(
-          
-          itemBuilder: (context, pageNumber) {
-            //Todo: 8 mas o menos por pagina
-            //TODO:  obtener producto de la lista
-            return KeepAliveFutureBuilder(
-              
-              future: this._fetchPage(pageNumber, 8),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: BookaloProgressIndicator(),
-                    );
-                  case ConnectionState.waiting:
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: BookaloProgressIndicator(),
-                    );
-                  case ConnectionState.done:
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return this._buildPage(snapshot.data);
-                    }
-                    break;
-                  case ConnectionState.active:
-                }
-              },
-            );
-          },
-         )
-         
-
-    );
+        body: Pagination<Widget>(
+      progress: Container(
+          margin: EdgeInsets.symmetric(vertical: height / 20),
+          child: BookaloProgressIndicator()),
+      pageBuilder: (currentSize) => _fetchPage(currentSize, height),
+      itemBuilder: (index, item) {
+        return item;
+      },
+    ));
   }
 }

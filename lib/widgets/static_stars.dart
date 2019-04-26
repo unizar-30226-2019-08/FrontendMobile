@@ -28,11 +28,11 @@ class StaticStars extends StatelessWidget {
     double decimalR = _rating / 2;
     Icon icon;
     if (index >= decimalR) {
-      icon = new Icon(Icons.star_border, color: _color);
+      icon = Icon(Icons.star_border, color: _color);
     } else if (index > decimalR - 1 && index < decimalR) {
-      icon = new Icon(Icons.star_half, color: _color);
+      icon = Icon(Icons.star_half, color: _color);
     } else {
-      icon = new Icon(Icons.star, color: _color);
+      icon = Icon(Icons.star, color: _color);
     }
 
     return icon;
@@ -53,9 +53,7 @@ class StaticStars extends StatelessWidget {
     return Container(
         child: Row(
       children: <Widget>[
-        Row(
-            children:
-                new List.generate(5, (index) => buildStars(context, index))),
+        Row(children: List.generate(5, (index) => buildStars(context, index))),
         Padding(
             padding: const EdgeInsets.only(left: 3),
             child: Text(

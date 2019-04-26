@@ -31,7 +31,7 @@ class TagsSelector extends StatefulWidget {
 }
 
 class _TagsSelectorState extends State<TagsSelector> {
-  GlobalKey<AutoCompleteTextFieldState<Tag>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<Tag>> key = GlobalKey();
   List<Tag> selectedTags = [];
 
   @override

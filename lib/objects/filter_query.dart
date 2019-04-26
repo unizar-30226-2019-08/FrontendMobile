@@ -8,7 +8,7 @@ class FilterQuery {
       _$FilterQueryFromJson(json);
   Map<String, dynamic> toJson() => _$FilterQueryToJson(this);
 
-  Set<String> _tags =Set();
+  Set<String> _tags = Set();
   //LatLng _userLocation;
   double _maxDistance;
   double _maxPrice;
@@ -20,8 +20,8 @@ class FilterQuery {
     _minPrice = 10.0;
   }
 
-  void setTags(Set<String> newTagSet) {
-    this._tags = newTagSet;
+  void setTags(Set<String> TagSet) {
+    this._tags = TagSet;
   }
 
   void setMaxDistance(double maxDistance) {

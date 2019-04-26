@@ -4,8 +4,9 @@
  * CREACIÓN:    13/04/2019
  */
 
-import 'package:bookalo/translations.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:bookalo/translations.dart';
 import 'package:bookalo/objects/product.dart';
 
 /*
@@ -19,88 +20,114 @@ class ProductInfo extends StatelessWidget {
 
   ProductInfo(this._product);
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
-   double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
- 
-  
- return new SizedBox(
-   width:width,
-   height:height/5,
-    child:new Row(
-  children: <Widget>[
 
+    return SizedBox(
+        width: width,
+        height: height / 5,
+        child: Row(
+          children: <Widget>[
+            //Columna de estado
+            Expanded(
+              child: Container(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        Translations.of(context).text("state"),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                      ),
+                      Text(
+                          Translations.of(context)
+                              .text(this._product.getState()),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.w300)),
+                      getStateIcon(this._product) //Icono de estado
+                    ],
+                  )),
+            ),
+            VerticalDivider(width: 2.0, color: Colors.black, indent: 3.0),
 
-    //Columna de estado
-    new Expanded(
-  child: new Container(
-    padding: new EdgeInsets.only(left: 8.0),
-    child: new Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new Text(Translations.of(context).text("state"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold),),
-        new Padding(padding:EdgeInsets.all(8.0),),
-        new Text(this._product.getState(context),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
-        this._product.stateIcon()//Icono de estado
-       
-      ],
-    )
-    
-  ),
-),
-      new VerticalDivider(width:2.0,color:Colors.black,indent:3.0),
-    
+            //Columna de envío
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(Translations.of(context).text("ships"),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                    ),
+                    this._product.includesShipping() == true
+                        ? Text(
+                            Translations.of(context).text("include_shipping"),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w300))
+                        : Text(Translations.of(context).text("not_shipping"),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w300)),
+                    Icon(this._product.includesShipping()
+                        ? Icons.local_shipping
+                        : MdiIcons.accountRemove)
+                  ],
+                ),
+              ),
+            ),
 
-    //Columna de envío
-     new Expanded(
-  child: new Container(
-    padding: new EdgeInsets.only(left: 8.0),
-    child: new Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-      
-        new Text(Translations.of(context).text("ships"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
-        new Padding(padding:EdgeInsets.all(8.0),),
-        this._product.shipping()==true ?  new Text(Translations.of(context).text("include_shipping"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)):
-         new Text(Translations.of(context).text("not_shipping"),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
-       this._product.shippingIcon()
-        
-        
-        
-      ],
-    ),
-  ),
-),
+            VerticalDivider(width: 2.0, color: Colors.black, indent: 3.0),
 
+            //Columna de Favoritos
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(Translations.of(context).text("favourite"),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                    ),
+                    Text(this._product.getFavourites().toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.w300)),
+                    Icon(Icons.favorite)
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ));
+  }
 
- new VerticalDivider(width:2.0,color:Colors.black,indent:3.0),
-
-
-  //Columna de Favoritos
-   new Expanded(
-  child: new Container(
-    padding: new EdgeInsets.only(left: 8.0),
-    child: new Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new Text(Translations.of(context).text("favourite"),textAlign:TextAlign.center,style:TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
-        new Padding(padding:EdgeInsets.all(8.0),),
-        new Text(this._product.getFavourites().toString(),textAlign:TextAlign.center,style:TextStyle(fontWeight:FontWeight.w300)),
-        new Icon(Icons.favorite)
-      ],
-    ),
-  ),
-),
-  ],
-    )
-);
+  Widget getStateIcon(Product product) {
+    switch (product.getState()) {
+      case "Nuevo":
+        return Icon(Icons.fiber_new);
+      case "Seminuevo":
+        return Icon(MdiIcons.walletTravel);
+      case "Usado":
+        return Icon(Icons.restore_page);
+      default:
+        return Container();
+    }
   }
 }
