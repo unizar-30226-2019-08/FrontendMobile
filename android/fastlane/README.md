@@ -30,12 +30,12 @@ Subir nueva versión a GooglePlay
 ```
 fastlane android beta
 ```
-Submit a  Beta Build to Crashlytics Beta
+Submit a new Beta Build to Crashlytics Beta
 ### android deploy
 ```
 fastlane android deploy
 ```
-Deploy a  version to the Google Play
+Deploy a new version to the Google Play
 
 ----
 
