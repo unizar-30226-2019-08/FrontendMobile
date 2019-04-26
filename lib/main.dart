@@ -10,6 +10,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 import 'package:bookalo/pages/login.dart';
+import 'package:bookalo/pages/report.dart';
+import 'package:bookalo/utils/objects_generator.dart';
+import 'package:bookalo/widgets/valoration_card.dart';
+import 'package:bookalo/widgets/navbars/report_navbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +24,7 @@ void main() {
  *  DESCRIPCIÓN:  widget principal de la aplicación. Establece configuración general
  *                y declara BuyAndSell como widget principal 
  */
+
 class MyApp extends StatelessWidget {
   final bool isAuthenticated;
 
@@ -53,7 +58,7 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.onAuthStateChanged,
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
-                    return BuyAndSell();
+                    return Report(userToValorate: generateRandomUser(),currentUser: generateRandomUser(),);
                   } else {
                     return Login();
                   }
@@ -69,3 +74,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

@@ -20,6 +20,22 @@ class Chat extends StatefulWidget {
 
   _ChatState createState() => _ChatState();
 }
+void showValoration(BuildContext context){
+   User user = generateRandomUser();
+  var dialog=AlertDialog( content:Center(child:ValorationCard( userToValorate: user,
+            currentUser: user)));
+   showDialog(
+     context:context,
+     builder: (BuildContext context){
+       return dialog;
+     }
+   );
+}
+
+
+
+
+
 
 class _ChatState extends State<Chat> {
   @override
@@ -29,8 +45,13 @@ class _ChatState extends State<Chat> {
     return Scaffold(
       appBar: ChatNavbar(
           preferredSize: Size.fromHeight(height / 10), interest: Interest.buys),
-      body: ListView(
+      body:
+        
+         ListView(
         children: <Widget>[
+          RaisedButton(
+            onPressed:(){ showValoration(context);},
+          ),
           Bubble(
             message: lipsum.createSentence(),
             user: user,
@@ -52,10 +73,7 @@ class _ChatState extends State<Chat> {
             sent: false,
             isMe: false,
           ),
-          ValorationCard(
-            userToValorate: user,
-            currentUser: user,
-          )
+         
         ],
       ),
     );
