@@ -42,7 +42,7 @@ class _ReportNavbarState extends State<ReportNavbar> {
             margin: EdgeInsets.only(top: topMargin/3, right: width / 20),
         child: Icon(Icons.flag,size:50.0)
       ),
-      title: Text("REPORTE A"),
+      title: Text(Translations.of(context).text("report_to")),
       actions: <Widget>[
         Container(
           

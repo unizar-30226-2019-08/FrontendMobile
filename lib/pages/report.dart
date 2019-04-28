@@ -26,14 +26,16 @@ class Report extends StatefulWidget {
 class _ReportState extends State<Report> {
   double rating = 3.0; //valoración proporcionada por las estrellas
   final _formKey = GlobalKey<FormState>();
-    bool _value1 = false;
-  bool _value2 = false;
-    bool _value3 = false;
+    int _value1 = 1;
+  int _value2 = 2;
+    int _value3 = 3;
+    int groupValue;
+      
+    
 
   _ReportState();
-void _value1Changed(bool value) => setState(() => _value1 = value);
-  void _value2Changed(bool value) => setState(() => _value2 = value);
-  void _value3Changed(bool value) => setState(() => _value3 = value);
+void _valueChanged(int value) => setState(() => groupValue = value);
+ 
 
 
   @override
@@ -63,7 +65,7 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                         Container(
                           margin: EdgeInsets.only(right: 15.0),
                           child: Icon(
-                            Icons.sentiment_dissatisfied,
+                            Icons.rate_review,
                            // color: Colors.white,
                             size: 30.0,
                           ),
@@ -73,16 +75,9 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                           style: TextStyle(
                              // color: Colors.white,
                               fontSize: 30.0,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.w300),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 15.0),
-                          child: Icon(
-                            Icons.sentiment_dissatisfied,
-                           // color: Colors.white,
-                            size: 30.0,
-                          ),
-                        ),
+                       
                       ],
                     ),
                   ),
@@ -102,27 +97,44 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                     height:height/4,
                     child:
                     ListView(children:[
-                          new CheckboxListTile(
+                      new Row(
+                        children:[
+                          new Radio(
                   value: _value1,
-                  onChanged: _value1Changed,
-                  title: new Text('Racismo'),
-                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged:(_value1)=> _valueChanged(_value1),
                   activeColor: Colors.pink,
+                  groupValue:groupValue,
                           ),
-              new CheckboxListTile(
+                   new Text(Translations.of(context).text("fraud")),
+                         ] ),
+
+                  
+                new Row(
+                        children:[
+                          new Radio(
                   value: _value2,
-                  onChanged: _value2Changed,
-                  title: new Text('Abuso'),
-                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (_value2)=> _valueChanged(_value2),
                   activeColor: Colors.pink,
-              ),
-              new CheckboxListTile(
+                  groupValue:groupValue,
+                          ),
+                   new Text(Translations.of(context).text("offensive_comment")),
+                         ] ),
+
+
+
+
+                new Row(
+                        children:[
+                          new Radio(
                   value: _value3,
-                  onChanged: _value3Changed,
-                  title: new Text('Maltrato'),
-                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (_value3)=> _valueChanged(_value3),
                   activeColor: Colors.pink,
-              )
+                  groupValue:groupValue,
+                          ),
+                   new Text(Translations.of(context).text("offensive_content")),
+                         ] ),
+
+
                   ]
               ),
                   )     

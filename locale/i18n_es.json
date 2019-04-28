@@ -67,5 +67,9 @@
     "Wasted":"DESGASTADO",
     "report_title":"¡OH VAYA!",
     "report_text":"¡Vaya! Sentimos lo ocurrido.Por favor, expón el motivo de esta desagradable noticia",
-    "report_comment":"¿Qué ha pasado?"
+    "report_comment":"¿Qué ha pasado?",
+    "fraud":"Fraude",
+    "offensive_comment":"Comentario ofensivo",
+    "offensive_content":"Contenido ofensivo",
+    "report_to":"REPORTE A"
 }
