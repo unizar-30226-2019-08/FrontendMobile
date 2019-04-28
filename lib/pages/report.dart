@@ -43,20 +43,18 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
         appBar: ReportNavbar(preferredSize: Size.fromHeight(height / 10)),
         body:  Padding(
         padding: EdgeInsets.all(20),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: Form(
+        child: Column(
+        
+          children:[ Form(
               key: _formKey,
               child: Column(children: <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
-                  decoration: BoxDecoration(
+                  /*decoration: BoxDecoration(
                       color: Colors.pink,
                       borderRadius: BorderRadius.only(
                           topLeft: const Radius.circular(15.0),
-                          topRight: const Radius.circular(15.0))),
+                          topRight: const Radius.circular(15.0))),*/
                   child: Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -65,17 +63,25 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                         Container(
                           margin: EdgeInsets.only(right: 15.0),
                           child: Icon(
-                            Icons.rate_review,
-                            color: Colors.white,
+                            Icons.sentiment_dissatisfied,
+                           // color: Colors.white,
                             size: 30.0,
                           ),
                         ),
                         Text(
-                          "QUE HA PACHAO",
+                          Translations.of(context).text("report_title"),
                           style: TextStyle(
-                              color: Colors.white,
+                             // color: Colors.white,
                               fontSize: 30.0,
-                              fontWeight: FontWeight.w300),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 15.0),
+                          child: Icon(
+                            Icons.sentiment_dissatisfied,
+                           // color: Colors.white,
+                            size: 30.0,
+                          ),
                         ),
                       ],
                     ),
@@ -85,7 +91,7 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                 //Texto de presentación
                 Container(
                   margin: EdgeInsets.all(20.0),
-                  child: Text("¡Vaya! Sentimos lo ocurrido.Por favor, expón el motivo de esta desagradable noticia",
+                  child: Text(Translations.of(context).text("report_text"),
                       style: TextStyle(height: 1.0, fontSize: 20)),
                 ),
                  Padding(
@@ -129,9 +135,18 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                       maxLines: null,
                       maxLength: 1000, //1000 caracteres máximo
                       maxLengthEnforced: true,
+                      
                       decoration: InputDecoration(
+                         border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(0.0),
+                          borderSide: new BorderSide(
+                          ),
+                        ),
+                        //fillColor: Colors.green
+                      
                           hintText:
-                              Translations.of(context).text("how_was_it")),
+                              Translations.of(context).text("report_comment")),
+                          
                       validator: (review) {
                         if (review.length < 30) {
                           //El comentario debe tener al menos 30 caracteres
@@ -170,7 +185,7 @@ void _value1Changed(bool value) => setState(() => _value1 = value);
                   ),
                 )
               ])),
-        ))
+          ]))
             );
   }
 

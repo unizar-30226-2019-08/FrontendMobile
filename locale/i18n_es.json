@@ -64,6 +64,8 @@
     "Used":"USADO",
     "Old":"ANTIGÜEDAD",
     "Broken":"ROTO",
-    "Wasted":"DESGASTADO"
-
+    "Wasted":"DESGASTADO",
+    "report_title":"¡OH VAYA!",
+    "report_text":"¡Vaya! Sentimos lo ocurrido.Por favor, expón el motivo de esta desagradable noticia",
+    "report_comment":"¿Qué ha pasado?"
 }
