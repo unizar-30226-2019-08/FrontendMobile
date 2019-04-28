@@ -9,7 +9,7 @@ import 'package:bookalo/pages/filter.dart';
 import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/widgets/social_buttons.dart';
 import 'package:bookalo/objects/product.dart';
-
+import 'package:geo/geo.dart';
 /*
  *  CLASE:        Buy
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
@@ -77,18 +77,21 @@ class _BuyState extends State<Buy> {
         body: ListView(
           children: <Widget>[
             ProductView(
-                Product('Fundamentos álgebra', 12, false,
-                    'https://placeimg.com/640/480/any', ""),
+                Product('Fundamentos álgebra', 12, "Nuevo",
+                    "En Venta", LatLng(0,0), false, "Descripcion",
+                    2,['https://placeimg.com/640/480/any']),
                 6.1,
                 39),
             ProductView(
-                Product('Fundamentos programación', 18, false,
-                    'https://placeimg.com/640/480/any', ""),
+                Product('Fundamentos programación', 18, "Nuevo",
+                    "En Venta", LatLng(0,0), false, "Descripcion",
+                    2,['https://placeimg.com/640/480/any']),
                 6.1,
                 39),
             ProductView(
-                Product('Lengua castellana', 3, true,
-                    'https://placeimg.com/640/480/any', ""),
+                Product('Lengua castellana', 3, "Nuevo",
+                    "En Venta", LatLng(0,0), false, "Descripcion",
+                    2,['https://placeimg.com/640/480/any']),
                 6.1,
                 39),
             SocialButtons()

@@ -12,6 +12,8 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/list_viewer.dart';
 
+import 'package:geo/geo.dart';
+
 /*
  *  CLASE:        OtherProfile
  *  DESCRIPCIÓN:  widget para el cuerpo principal del visor de perfiles
@@ -38,14 +40,16 @@ class _UserProfileState extends State<UserProfile> {
     return List.generate(pageSize, (index) {
       if(index%2==0){
         return  ProductView(
-            Product('Fundamentos álgebra', 12, false,
-                'https://placeimg.com/640/480/any', ""),
+            Product('Fundamentos álgebra', 12, "Nuevo",
+                "En Venta", LatLng(0,0), false, "Descripcion",
+                2,['https://placeimg.com/640/480/any']),
             6.1,
             39);
       }else{
         return ProductView(
-            Product('Lengua castellana', 3, true,
-                'https://placeimg.com/640/480/any', ""),
+            Product('Lengua castellana', 3, "Nuevo",
+                "En Venta", LatLng(0,0), false, "Descripcion",
+                2,['https://placeimg.com/640/480/any']),
             6.1,
             39);
       }
@@ -120,9 +124,9 @@ class _UserProfileState extends State<UserProfile> {
             new Product(
                 'Libro',
                 9.5,
-                true,
-                'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                ""),
+                "Nuevo",
+                "En Venta", LatLng(0,0), false, "Descripcion",
+                2,['https://placeimg.com/640/480/any']),
             'Muy buen vendedor',
             8.4);
       } else {
@@ -134,9 +138,9 @@ class _UserProfileState extends State<UserProfile> {
             new Product(
                 'Libro',
                 9.5,
-                true,
-                'https://www.ecured.cu/images/thumb/8/81/Libro_abierto.jpg/260px-Libro_abierto.jpg',
-                ""),
+                "Nuevo",
+                "En Venta", LatLng(0,0), false, "Descripcion",
+                2,['https://placeimg.com/640/480/any']),
             'No fue puntual.---Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non maximus risus. Curabitur et felis ex. Aliquam erat volutpat. Donec sit amet ullamcorper ante. Maecenas at mauris at odio ultricies eleifend. In mollis leo odio. Nunc laoreet, lectus non porttitor pharetra, felis libero ultrices libero, et aliquet sem metus id purus. Donec id lectus nisi. Mauris sed fringilla leo. Sed ullamcorper feugiat tincidunt. Mauris faucibus fringilla neque, at maximus ligula. Donec non tellus magna.',
             2);
       }
