@@ -52,66 +52,67 @@ class Product {
 
   }
 
-  List<String> get images => _images;
+  List<String> getImages(){return this._images;}
 
-  set images(List<String> value) {
-    _images = value;
+  void setImages(List<String> value) {
+    this._images = value;
   }
 
   String getImage(){
-    return _images.first;
-  }
-  int get likes => _likes;
+    return this._images.first;
+  } //TODO: ver cual es la imagen principal
 
-  set likes(int value) {
-    _likes = value;
-  }
+  int getLikes(){return this._likes;}
 
-  String get description => _description;
-
-  set description(String value) {
-    _description = value;
+  void setLikes(int value) {
+    this._likes = value;
   }
 
-  bool get sending => _sending;
+  String getDescription(){ return this._description;}
 
-  set sending(bool value) {
-    _sending = value;
+  void setDescription(String value) {
+    this._description = value;
   }
 
-  LatLng get position => _position;
+  bool getSending() {return this._sending; }
 
-  set position(LatLng value) {
-    _position = value;
+  void setSending(bool value) {
+    this._sending = value;
   }
 
-  String get sStatus => _sStatus;
+  LatLng getPosition() {return  this._position;}
 
-  set sStatus(String value) {
-    _sStatus = value;
+  void setPosition(LatLng value) {
+    this._position = value;
   }
 
-  String get pStatus => _pStatus;
+  String getSellStatus() {return  this._sStatus;}
 
-  set pStatus(String value) {
-    _pStatus = value;
+  void setSellStatus(String value) {
+    this._sStatus = value;
   }
 
-  double get price => _price;
+  String getProductStatus() {return this._pStatus;}
 
-  set price(double value) {
-    _price = value;
+  void SetProductStatus(String value) {
+    this._pStatus = value;
   }
 
-  String get name => _name;
+  double getPrice() {return this._price;}
 
-  set name(String value) {
-    _name = value;
+  void setPrice(double value) {
+    this._price = value;
+  }
+
+  String getName(){ return  this._name; }
+
+  void setName(String value) {
+    this._name = value;
   }
 
   bool getSold(){
-    return this.sStatus == "Vendido";
-  }
+    return this._sStatus == "Vendido";
+  } //TODO: ver cuales son los valores de estado de venta 
 
   String priceToString() {
     if (this._price % 1 == 0) {

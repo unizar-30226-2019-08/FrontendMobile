@@ -76,7 +76,7 @@ class _UploadProduct extends State<UploadProduct> {
             keyboardType: TextInputType.text,
             autocorrect: false,
             onSaved: (String value) {
-                newP.name(value) ;
+                newP.setName(value) ;
             },
             maxLines: 1,
             maxLength: 50,
@@ -101,7 +101,7 @@ class _UploadProduct extends State<UploadProduct> {
             keyboardType: TextInputType.text,
             autocorrect: false,
             onSaved: (String value) {
-              newP.description(value) ;
+              newP.setDescription(value);
             },
 
             decoration: new InputDecoration(
