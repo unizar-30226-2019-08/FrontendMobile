@@ -9,6 +9,7 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/bubble_chat.dart';
 import 'package:lipsum/lipsum.dart' as lipsum;
 import 'package:bookalo/widgets/valoration_card.dart';
+import 'package:bookalo/translations.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 
 /*
@@ -20,17 +21,10 @@ class Chat extends StatefulWidget {
 
   _ChatState createState() => _ChatState();
 }
-void showValoration(BuildContext context){
-   User user = generateRandomUser();
-  var dialog=AlertDialog( content:Center(child:ValorationCard( userToValorate: user,
-            currentUser: user)));
-   showDialog(
-     context:context,
-     builder: (BuildContext context){
-       return dialog;
-     }
-   );
-}
+
+  
+
+
 
 
 
@@ -39,6 +33,9 @@ void showValoration(BuildContext context){
 
 class _ChatState extends State<Chat> {
   @override
+  bool closed=false;
+void setClosed(BuildContext context)=> setState(() => closed = true);
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     User user = generateRandomUser();
@@ -49,9 +46,22 @@ class _ChatState extends State<Chat> {
         
          ListView(
         children: <Widget>[
-          RaisedButton(
-            onPressed:(){ showValoration(context);},
-          ),
+          OutlineButton(
+                        borderSide: BorderSide(color: Colors.pink, width: 3.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        child: Text(
+                          Translations.of(context).text("close_chat"),
+                          style: TextStyle(
+                              color: Colors.pink[600],
+                              fontWeight: FontWeight.w700),
+                        ),
+                        onPressed: () {
+                          //comprobar si la información introducida es válida al pulsar
+                          setClosed(context);
+                        },
+                      ),
           Bubble(
             message: lipsum.createSentence(),
             user: user,
@@ -73,8 +83,31 @@ class _ChatState extends State<Chat> {
             sent: false,
             isMe: false,
           ),
+
+          closed == false ? Container(height:30):ValorationCard( userToValorate: user,
+            currentUser: user),   
+          Container(height:50.0),
+          Padding(padding: const EdgeInsets.only(bottom: 30.0),
+                  child:
+           Container(
+                  margin: EdgeInsets.only(bottom: 1.0),
+                  child:
+           TextFormField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 15),
+                border:  OutlineInputBorder(borderRadius:BorderRadius.circular(32.0)),
+                suffixIcon: IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed:null)),
+              
+             keyboardType: TextInputType.text,
+                      maxLines: null,
+                     ),
+
+           // IconButton(icon:Icon(Icons.send,size:50.0), onPressed:null )
          
-        ],
+                  
+          ))]
       ),
     );
   }

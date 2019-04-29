@@ -30,7 +30,7 @@ class _ValorationCardState extends State<ValorationCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(10),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -39,7 +39,7 @@ class _ValorationCardState extends State<ValorationCard> {
               key: _formKey,
               child: Column(children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
                   decoration: BoxDecoration(
                       color: Colors.pink,
                       borderRadius: BorderRadius.only(
@@ -63,7 +63,7 @@ class _ValorationCardState extends State<ValorationCard> {
                               params: [widget.userToValorate.getName()]),
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 30.0,
+                              fontSize: 25.0,
                               fontWeight: FontWeight.w300),
                         ),
                       ],

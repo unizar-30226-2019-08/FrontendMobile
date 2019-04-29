@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 import 'package:bookalo/pages/login.dart';
+import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/pages/report.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/valoration_card.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
                 stream: FirebaseAuth.instance.onAuthStateChanged,
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
-                    return Report(userToValorate: generateRandomUser(),currentUser: generateRandomUser(),);
+                    return Chat();
                   } else {
                     return Login();
                   }
