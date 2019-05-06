@@ -32,8 +32,9 @@ class Chat extends StatefulWidget {
 
 
 class _ChatState extends State<Chat> {
-  @override
   bool closed=false;
+  
+  
 void setClosed(BuildContext context)=> setState(() => closed = true);
 
   Widget build(BuildContext context) {
@@ -46,8 +47,11 @@ void setClosed(BuildContext context)=> setState(() => closed = true);
         
          ListView(
         children: <Widget>[
+        
+          
           OutlineButton(
                         borderSide: BorderSide(color: Colors.pink, width: 3.0),
+                        
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.0))),

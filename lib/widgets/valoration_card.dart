@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/pages/report.dart';
 
 /*
   CLASE: ValorationCard
@@ -147,7 +148,13 @@ class _ValorationCardState extends State<ValorationCard> {
                               color: Colors.grey[700],
                               fontWeight: FontWeight.w700),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                           Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Report(currentUser:widget.currentUser,userToValorate: widget.userToValorate,)),
+                );
+                        },
                       ),
                     ],
                   ),
