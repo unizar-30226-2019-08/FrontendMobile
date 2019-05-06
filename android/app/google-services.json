@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "305041397855",
+    "firebase_url": "https://bookalo-9e0fe.firebaseio.com",
+    "project_id": "bookalo-9e0fe",
+    "storage_bucket": "bookalo-9e0fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305041397855:android:9563d548031be47d",
+        "android_client_info": {
+          "package_name": "es.bookalo.bookalo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305041397855-6hm2qkqb7gsfs5vm495o04d30o2uvbn8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.bookalo.bookalo",
+            "certificate_hash": "b9fdbc06798c9213f2c06d98e6b086fed694e823"
+          }
+        },
+        {
+          "client_id": "305041397855-51h9ev3d5ten7b9no63ej82pirfoq1f1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.bookalo.bookalo",
+            "certificate_hash": "540fe83020804fe4352195539fbdc3291e6e185e"
+          }
+        },
+        {
+          "client_id": "305041397855-sr3fa06ab650udrjt9820e792m7kgo46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8dkS5fgGjZo5Sm8k7ym9sqIu5_iJM6p0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305041397855-sr3fa06ab650udrjt9820e792m7kgo46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

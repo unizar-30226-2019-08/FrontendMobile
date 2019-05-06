@@ -1,0 +1,5 @@
+- Visor de producto añadido
+- Visor de opiniones añadido
+- Ventana de filtrado añadido
+- Perfil de usuario añadido
+- ¡Redes sociales!
