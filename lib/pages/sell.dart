@@ -46,7 +46,7 @@ class _SellState extends State<Sell> {
             'Lápiz',
             0.75,
             "Nuevo",
-            "En Venta", LatLng(0,0), false, "Descripcion",
+            "Vendido", LatLng(0,0), false, "Descripcion",
             2,['https://placeimg.com/640/480/any']));
       }
     });

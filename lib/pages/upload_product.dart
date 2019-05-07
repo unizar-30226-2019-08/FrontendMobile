@@ -9,6 +9,8 @@ import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/filter.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:flutter/services.dart';
+import 'package:bookalo/widgets/filter/distance_map.dart';
+import 'package:flutter_tags/selectable_tags.dart';
 
 /*
  *  CLASE:        UploadProduct
@@ -23,14 +25,36 @@ class UploadProduct extends StatefulWidget {
 class _UploadProduct extends State<UploadProduct> {
   int _currentStep=0;
   Product newP;
+  final List<Tag> _tags = [ //TODO: solo para pruebas
+    Tag(
+      id: 1,
+      title: 'mates',
+    ),
+    Tag(
+      id: 1,
+      title: 'uni',
+    ),
+    Tag(
+      id: 1,
+      title: 'primero',
+    ),
+    Tag(
+      id: 1,
+      title: 'universidad',
+    ),
+    Tag(
+      id: 1,
+      title: 'universidad',
+    )
+  ];
 
 @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+  double _height = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: SimpleNavbar(preferredSize: Size.fromHeight(height / 7.6)),
+          appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
           body: Stepper(
               steps: _mySteps(),
               currentStep: this._currentStep,
@@ -64,6 +88,7 @@ class _UploadProduct extends State<UploadProduct> {
   }
 
   List<Step> _mySteps(){
+    double _height = MediaQuery.of(context).size.height;
     List<Step> _steps =[
       Step(
         title: Text('¡Fotos, por favor!'),
@@ -114,11 +139,19 @@ class _UploadProduct extends State<UploadProduct> {
           isActive: _currentStep >= 2
       ),
       Step(
-          title: Text('¿Unos tags?'),
+          title: Text('¿Unos tags?'), //TODO: ver logica para guardar tags
           content: Container(
             child: Column(
               children: <Widget>[
-                Text('Bolsa de tags'),
+                SelectableTags(
+                  height: _height / 25,
+                  tags: _tags,
+                  fontSize: 15.0,
+                  onPressed: (tag) {},
+                  margin: EdgeInsets.all(5.0),
+                  activeColor: Colors.pink,
+                  backgroundContainer: Colors.transparent,
+                ),
                 TextFormField(
                   keyboardType: TextInputType.text,
                   autocorrect: false,
@@ -128,7 +161,10 @@ class _UploadProduct extends State<UploadProduct> {
 
                   decoration: new InputDecoration(
                       hintText: 'tu propio tag',
-                      icon: Icon(Icons.add_circle), //TODO: boton para añadir tag
+                      icon: IconButton(icon: Icon(Icons.add_circle),
+                        highlightColor: Colors.pink,
+                        onPressed: () {},
+                      ) , //TODO: boton para añadir tag
                       labelStyle:
                       new TextStyle(decorationStyle: TextDecorationStyle.solid)
 
@@ -143,7 +179,8 @@ class _UploadProduct extends State<UploadProduct> {
       ),
       Step(
         title: Text('¿Dónde lo vendes?'),
-        content: Text('Mapa seleccion'),
+        content: DistanceMap( //TODO: ver que pàrametros necesita
+            height: _height / 5, distanceRadius:  1000),
         isActive: _currentStep >= 4
       )
     ];

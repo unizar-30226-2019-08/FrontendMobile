@@ -112,7 +112,7 @@ class Product {
 
   bool getSold(){
     return this._sStatus == "Vendido";
-  } //TODO: ver cuales son los valores de estado de venta 
+  } //TODO: ver cuales son los valores de estado de venta
 
   String priceToString() {
     if (this._price % 1 == 0) {

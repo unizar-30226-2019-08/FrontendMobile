@@ -1,6 +1,6 @@
 /*
  * FICHERO:     product_view.dart
- * DESCRIPCIÓN: visor del producto de la apntalla principal
+ * DESCRIPCIÓN: visor del producto de la pantalla principal
  * CREACIÓN:    15/03/2019
  *
  */
@@ -19,7 +19,7 @@ import 'package:bookalo/translations.dart';
  */
 class ProductView extends StatelessWidget {
   final Product _product;
-  final double _stars;
+  final double _stars;  //TODO: ver que estrellas son
   final int _reviews;
   final List<Tag> _tags = [
     Tag(
