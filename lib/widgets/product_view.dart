@@ -6,11 +6,11 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
-import 'package:geo/geo.dart';
+import 'package:latlong/latlong.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/pages/chat.dart';
-import 'package:bookalo/widgets/distance_chip.dart';
+import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/detailed_product.dart';
 
@@ -83,15 +83,15 @@ class ProductView extends StatelessWidget {
           ),
           SizedBox(
             height: height / 9,
-            child: SelectableTags(
-              textOverflow: TextOverflow.ellipsis,
-              height: height / 30,
-              tags: _tags,
-              fontSize: 11.0,
-              onPressed: (tag) {},
-              margin: EdgeInsets.all(5.0),
-              activeColor: Colors.pink,
-            ),
+            // child: SelectableTags(
+            //   textOverflow: TextOverflow.ellipsis,
+            //   height: height / 30,
+            //   tags: _tags,
+            //   fontSize: 11.0,
+            //   onPressed: (tag) {},
+            //   margin: EdgeInsets.all(5.0),
+            //   activeColor: Colors.pink,
+            // ),
           )
         ],
       ),
@@ -109,7 +109,7 @@ class ProductView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(_product.getImage()),
+                image: NetworkImage(_product.getImages()[0]),
                 fit: BoxFit.fill,
                 alignment: Alignment.topCenter,
               ),

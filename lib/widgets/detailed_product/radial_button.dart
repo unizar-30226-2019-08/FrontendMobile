@@ -7,6 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/objects/product.dart';
 
 /*
  *  CLASE:        RadialButton
@@ -15,7 +16,11 @@ import 'package:bookalo/translations.dart';
  *                de cerrarse de nuevo
  */
 class RadialButton extends StatefulWidget {
-  RadialButton();
+  final String sellerId;
+  final String buyerId;
+  final Product product;
+  RadialButton({Key key, this.product, this.sellerId, this.buyerId})
+      : super(key: key);
 
   _RadialButtonState createState() => _RadialButtonState();
 }
@@ -30,9 +35,11 @@ class _RadialButtonState extends State<RadialButton>
    * Post:  comparte un perfil de usuario de prueba
    */
   void share() {
-    Share.share(
-        Translations.of(context).text('share_profile', params: ['Juan']) +
-            'https://bookalo.es/user=123');
+    Share.share(Translations.of(context)
+            .text('share_product', params: [widget.product.getName()]) +
+        'https://bookalo.es/product=' +
+        widget.product.getId().toString());
+    //TODO: actualizar ruta del producto
     close();
   }
 

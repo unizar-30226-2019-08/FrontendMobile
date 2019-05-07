@@ -40,39 +40,36 @@ class _TagsLoaderState extends State<TagsLoader> {
    */
   Future<List<Tag>> _getTags() async {
     List<Tag> mockTagList = [];
-    int tagCounter = 0;
+    mockTagList.addAll(widget.initialTags);
     nouns.take(100).forEach((noun) {
-      mockTagList.add(Tag(id: tagCounter, title: noun, active: false));
-      tagCounter++;
+      if (!widget.initialTags.map((tag) {
+        return tag.title;
+      }).contains(noun)) {
+        mockTagList.add(Tag(title: noun, active: false));
+      }
     });
     return mockTagList;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.initialTags.length == 0) {
-      double height = MediaQuery.of(context).size.height;
-      return FutureBuilder(
-        future: _getTags(),
-        builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
-          if (snapshot.hasData) {
-            return TagsSelector(
-              onTagsChanged: widget.onTagsChanged,
-              suggestedTags: snapshot.data,
-            );
-          } else {
-            return Container(
-              height: height / 4,
-              child: Center(child: BookaloProgressIndicator()),
-            );
-          }
-        },
-      );
-    } else {
-      return TagsSelector(
-        onTagsChanged: widget.onTagsChanged,
-        suggestedTags: widget.initialTags,
-      );
-    }
+    double height = MediaQuery.of(context).size.height;
+    return FutureBuilder(
+      future: _getTags(),
+      builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
+        if (snapshot.hasData) {
+          return TagsSelector(
+            onTagsChanged: widget.onTagsChanged,
+            suggestedTags: snapshot.data,
+            previousTagsLength: widget.initialTags.length,
+          );
+        } else {
+          return Container(
+            height: height / 4,
+            child: Center(child: BookaloProgressIndicator()),
+          );
+        }
+      },
+    );
   }
 }

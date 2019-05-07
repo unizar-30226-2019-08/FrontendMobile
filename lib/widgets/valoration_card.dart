@@ -89,7 +89,7 @@ class _ValorationCardState extends State<ValorationCard> {
                           hintText:
                               Translations.of(context).text("how_was_it")),
                       validator: (review) {
-                        if (review.length < 30) {
+                        if (review.length < 15) {
                           //El comentario debe tener al menos 30 caracteres
                           return Translations.of(context)
                               .text("review_too_short");

@@ -4,13 +4,18 @@
  * CREACIÓN:    19/04/2019
  */
 
-import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:latlong/latlong.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/widgets/radial_button.dart';
-import 'package:bookalo/widgets/user_product.dart';
-import 'package:bookalo/widgets/filter/distance_map.dart';
+import 'package:bookalo/utils/silver_header.dart';
+import 'package:bookalo/widgets/detailed_product/radial_button.dart';
+import 'package:bookalo/widgets/detailed_product/user_product.dart';
+import 'package:bookalo/widgets/detailed_product/product_map.dart';
+import 'package:bookalo/widgets/detailed_product/product_info.dart';
+import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
+import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
+import 'package:bookalo/widgets/detailed_product/image_swipper.dart';
 
 class DetailedProduct extends StatefulWidget {
   final Product product;
@@ -31,27 +36,24 @@ class _DetailedProductState extends State<DetailedProduct> {
         slivers: <Widget>[
           SliverPersistentHeader(
             pinned: true,
-            delegate: _SliverAppBarDelegate(
-                minHeight: (longTitle ? height/3 : height/4),
-                maxHeight: (longTitle ? height/2 : height/2.4),
+            delegate: SliverAppBarDelegate(
+                minHeight: (longTitle ? height / 3 : height / 4),
+                maxHeight: (longTitle ? height / 2 : height / 2.4),
                 child: Stack(
                   alignment: Alignment.bottomRight,
                   children: <Widget>[
-                    Swiper(
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Image.network(
-                          widget.product.getImage(),
-                          fit: BoxFit.fill,
-                        );
-                      },
-                      itemCount: 3,
-                      pagination: new SwiperPagination(
-                        alignment: Alignment(0, -0.9),
+                    ImageSwiper(product: widget.product, expandible: true),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20.0, right: 20.0),
+                        child: DistanceChip(
+                            userPosition: LatLng(0.0, 0.0),
+                            targetPosition: widget.product.getPosition()),
                       ),
-                      control: new SwiperControl(),
                     ),
                     Container(
-                      height: (longTitle ? height/6 : height/8),
+                      height: (longTitle ? height / 6 : height / 8),
                       decoration: BoxDecoration(
                         color: Theme.of(context).canvasColor,
                         borderRadius: BorderRadius.only(
@@ -59,12 +61,12 @@ class _DetailedProductState extends State<DetailedProduct> {
                           topRight: Radius.circular(35.0),
                         ),
                       ),
-                      padding: EdgeInsets.only(top: height/40),
+                      padding: EdgeInsets.only(top: height / 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
-                            width: width/1.6,
+                            width: width / 1.6,
                             margin: EdgeInsets.only(left: 20),
                             child: Text(
                               widget.product.getName(),
@@ -86,9 +88,12 @@ class _DetailedProductState extends State<DetailedProduct> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: (longTitle ? height/25 : 0)),
-                      child: RadialButton()
-                    ),
+                        margin: EdgeInsets.only(
+                            bottom: (longTitle ? height / 25 : 0)),
+                        child: RadialButton(
+                            product: widget.product,
+                            sellerId: "123",
+                            buyerId: "123")),
                   ],
                 )),
           ),
@@ -97,16 +102,28 @@ class _DetailedProductState extends State<DetailedProduct> {
               [
                 Divider(),
                 Container(
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  margin: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     widget.product.getDescription(),
                     textAlign: TextAlign.justify,
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
-                UserProduct(),
-                DistanceMap(distanceRadius: 7000, height: 150.0)
+                Container(height: 10.0),
+                Center(
+                  child: Container(
+                    child: TagWraper(product: widget.product),
+                    margin: EdgeInsets.symmetric(horizontal: 20.0),
+                  ),
+                ),
+                Container(height: 10.0),
+                ProductInfo(widget.product),
+                Container(height: 10.0),
+                Center(child: UserProduct()),
+                ProductMap(
+                    position: widget.product.getPosition(),
+                    height: height / 5,
+                    expandible: true)
               ],
             ),
           ),
@@ -116,33 +133,4 @@ class _DetailedProductState extends State<DetailedProduct> {
   }
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  });
 
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => math.max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new SizedBox.expand(child: child);
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}
