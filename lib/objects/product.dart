@@ -54,7 +54,7 @@ class Product {
     }
   }
 
-  bool includesShipping() {
+  bool getIncludesShipping() {
     return this._includesShipping;
   }
 
@@ -65,4 +65,38 @@ class Product {
   String getState() {
     return this._state;
   }
+
+  void name(String value) {
+    _name = value;
+  }
+
+  void description(String value) {
+    _description = value;
+  }
+
+  void image(String value) {
+    _image = value;
+  }
+
+  void isSold(bool value) {
+    _isSold = value;
+  }
+
+  void includesShipping(bool value) {
+    _includesShipping = value;
+  }
+
+  void favorites(int value) {
+    _favorites = value;
+  }
+
+  void state(String value) {
+    _state = value;
+  }
+
+  void price(double value) {
+    _price = value;
+  }
+
+
 }

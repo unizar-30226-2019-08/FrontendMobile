@@ -42,10 +42,6 @@ class _UploadProduct extends State<UploadProduct> {
       id: 1,
       title: 'universidad',
     ),
-    Tag(
-      id: 1,
-      title: 'universidad',
-    )
   ];
 
   @override
@@ -60,6 +56,7 @@ class _UploadProduct extends State<UploadProduct> {
             currentStep: this._currentStep,
             onStepTapped: (step){
               setState(() {
+                //validacion
                 this._currentStep = step;
               });
             }, //TODO: dejar navegar libremente entre pasos??
@@ -90,27 +87,27 @@ class _UploadProduct extends State<UploadProduct> {
   List<Step> _mySteps(){
     double _height = MediaQuery.of(context).size.height;
     List<Step> _steps =[
-      Step(
+      Step( //Fotos
           title: Text('¡Fotos, por favor!'),
           content: TextField(),
           isActive: _currentStep >= 0
       ),
-      Step(
+      Step(//Titulo
           title: Text('Título'),
           content: TextFormField(
             keyboardType: TextInputType.text,
             autocorrect: false,
             onSaved: (String value) {
-             // newP.setName(value) ;
+              //newP.name(value) ;
             },
             maxLines: 1,
             maxLength: 50,
 
-            /*  validator: (value) {
-              if (value.isEmpty || value.length < 1) {
-                return 'Please enter name';
+            validator: (value) {
+              if (value.isEmpty || value.length < 6) {
+                return 'Introduce un título válido'; //TODO:
               }
-            },*/ //TODO: hacer validacion
+            }, //TODO: hacer validacion
             decoration: new InputDecoration(
                 labelText: 'Dale un nombre a tu producto',
                 labelStyle:
@@ -120,15 +117,19 @@ class _UploadProduct extends State<UploadProduct> {
           ),
           isActive: _currentStep >= 1
       ),
-      Step(
+      Step(//Descripcion
           title: Text('Descripción'),
           content: TextFormField(
             keyboardType: TextInputType.text,
             autocorrect: false,
             onSaved: (String value) {
-             // newP.setDescription(value);
+             newP.description(value);
             },
-
+            validator: (value) {
+              if (value.isEmpty || value.length < 6) {
+                return 'Introduce una descripción válida'; //TODO: translations
+              }
+            },
             decoration: new InputDecoration(
                 labelText: '¿Cómo es?',
                 labelStyle:
@@ -138,7 +139,7 @@ class _UploadProduct extends State<UploadProduct> {
           ),
           isActive: _currentStep >= 2
       ),
-      Step(
+      Step(//Tags
           title: Text('¿Unos tags?'), //TODO: ver logica para guardar tags
           content: Container(
             child: Column(
@@ -177,7 +178,7 @@ class _UploadProduct extends State<UploadProduct> {
           ),
           isActive: _currentStep >= 3
       ),
-      Step(
+      Step(//Ubicacion
           title: Text('¿Dónde lo vendes?'),
           content: DistanceMap( //TODO: ver que pàrametros necesita
               height: _height / 5, distanceRadius:  1000),
@@ -206,6 +207,8 @@ class _UploadProduct extends State<UploadProduct> {
     );
   }
 
-
+  void _validation(int currentStep, int futureStep){
+    
+  }
 
 }

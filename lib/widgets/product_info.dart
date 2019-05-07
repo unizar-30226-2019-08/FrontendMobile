@@ -73,7 +73,7 @@ class ProductInfo extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(8.0),
                     ),
-                    this._product.includesShipping() == true
+                    this._product.getIncludesShipping() == true
                         ? Text(
                             Translations.of(context).text("include_shipping"),
                             textAlign: TextAlign.center,
@@ -81,7 +81,7 @@ class ProductInfo extends StatelessWidget {
                         : Text(Translations.of(context).text("not_shipping"),
                             textAlign: TextAlign.center,
                             style: TextStyle(fontWeight: FontWeight.w300)),
-                    Icon(this._product.includesShipping()
+                    Icon(this._product.getIncludesShipping()
                         ? Icons.local_shipping
                         : MdiIcons.accountRemove)
                   ],

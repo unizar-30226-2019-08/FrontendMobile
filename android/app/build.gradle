@@ -38,11 +38,11 @@ android {
     }
 
     android {
-         compileOptions {
-             sourceCompatibility 1.8
-             targetCompatibility 1.8
-         }
-     }
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8
+        }
+    }
 
     defaultConfig {
         applicationId "es.bookalo.bookalo"
@@ -86,20 +86,20 @@ apply plugin: 'com.google.gms.google-services'
 
 // Include both 32bit and 64bit arm libflutter.so files into your APK
 project.afterEvaluate {
-	assembleRelease.doLast {
-		String src
-		if(project.hasProperty('target-platform') &&
-			project.property('target-platform') == 'android-arm64') {
-			// If we are building the 64bit then we also want to add the 32bit libflutter.so
-			src = "$flutterRoot/bin/cache/artifacts/engine/android-arm-release/flutter.jar"
-		}else{
-			// If we are building the opposite (32bit), we include the 64bit libflutter.so
-			src = "$flutterRoot/bin/cache/artifacts/engine/android-arm64-release/flutter.jar"
-		}
-		copy {
-			from zipTree(src)
-			include 'lib/*/libflutter.so'
-			into "$buildDir/intermediates/jniLibs/release/0/"
-		}
-	}
+    assembleRelease.doLast {
+        String src
+        if(project.hasProperty('target-platform') &&
+                project.property('target-platform') == 'android-arm64') {
+            // If we are building the 64bit then we also want to add the 32bit libflutter.so
+            src = "$flutterRoot/bin/cache/artifacts/engine/android-arm-release/flutter.jar"
+        }else{
+            // If we are building the opposite (32bit), we include the 64bit libflutter.so
+            src = "$flutterRoot/bin/cache/artifacts/engine/android-arm64-release/flutter.jar"
+        }
+        copy {
+            from zipTree(src)
+            include 'lib/*/libflutter.so'
+            into "$buildDir/intermediates/jniLibs/release/0/"
+        }
+    }
 }
