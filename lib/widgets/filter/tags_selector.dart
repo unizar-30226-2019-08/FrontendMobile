@@ -7,6 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter_tags/selectable_tags.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -16,6 +18,7 @@ import 'package:bookalo/translations.dart';
  */
 class TagsSelector extends StatefulWidget {
   final List<Tag> suggestedTags;
+  final int previousTagsLength;
   final Function(Tag) onTagsChanged;
 
   /*
@@ -24,7 +27,11 @@ class TagsSelector extends StatefulWidget {
    * Post:  ha generado el widget de tal forma que al modificarse la lista de tags
    *        activos, ha ejecutado la callack onTagsChanged
    */
-  TagsSelector({Key key, this.onTagsChanged, this.suggestedTags})
+  TagsSelector(
+      {Key key,
+      this.onTagsChanged,
+      this.suggestedTags,
+      this.previousTagsLength})
       : super(key: key);
 
   _TagsSelectorState createState() => _TagsSelectorState();
@@ -37,7 +44,8 @@ class _TagsSelectorState extends State<TagsSelector> {
   @override
   void initState() {
     super.initState();
-    selectedTags.addAll(widget.suggestedTags.sublist(0, 5));
+    selectedTags
+        .addAll(widget.suggestedTags.sublist(0, 5 + widget.previousTagsLength));
   }
 
   @override
@@ -70,6 +78,7 @@ class _TagsSelectorState extends State<TagsSelector> {
               itemSubmitted: (tag) {
                 if (!selectedTags.contains(tag)) {
                   tag.active = true;
+                  ScopedModel.of<FilterQuery>(context).addTag(tag.title);
                   setState(() {
                     selectedTags.add(tag);
                   });

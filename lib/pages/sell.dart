@@ -88,6 +88,7 @@ class _SellState extends State<Sell> {
           ],
         ),
         body: Pagination<Widget>(
+          scrollDirection: Axis.vertical,
           progress: Container(
               margin: EdgeInsets.symmetric(vertical: height / 20),
               child: BookaloProgressIndicator()),

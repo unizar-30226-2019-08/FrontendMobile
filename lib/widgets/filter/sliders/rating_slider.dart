@@ -4,6 +4,8 @@
  * CREACIÓN:    17/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -26,7 +28,6 @@ class RatingSlider extends StatefulWidget {
 }
 
 class _RatingSliderSate extends State<RatingSlider> {
-  double _minRate = 4.0;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -49,10 +50,13 @@ class _RatingSliderSate extends State<RatingSlider> {
                 divisions: 4,
                 min: 1.0,
                 max: 5.0,
-                value: _minRate,
-                onChanged: (Value) {
-                  setState(() => _minRate = Value);
-                  widget.onMinRatingChanged(Value);
+                value: ScopedModel.of<FilterQuery>(context).minRating != -1
+                    ? ScopedModel.of<FilterQuery>(context).minRating
+                    : 4,
+                onChanged: (value) {
+                  setState(() =>
+                      ScopedModel.of<FilterQuery>(context).setMinRating(value));
+                  widget.onMinRatingChanged(value);
                 },
               ),
             ),
@@ -61,7 +65,13 @@ class _RatingSliderSate extends State<RatingSlider> {
               width: width / 4,
               child: Row(
                 children: <Widget>[
-                  Text(_minRate.toStringAsFixed(0) + ' ',
+                  Text(
+                      ScopedModel.of<FilterQuery>(context).minRating != -1
+                          ? ScopedModel.of<FilterQuery>(context)
+                                  .minRating
+                                  .toStringAsFixed(0) +
+                              " "
+                          : "4 ",
                       style: TextStyle(
                           fontSize: 25.0, fontWeight: FontWeight.w300)),
                   Icon(Icons.star, color: Colors.pink, size: 30.0)

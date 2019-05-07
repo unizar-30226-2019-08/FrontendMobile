@@ -78,7 +78,7 @@ class MiniProduct extends StatelessWidget {
             border: Border.all(color: Colors.grey[400], width: 0.4)),
         child: ListTile(
           leading: CircleAvatar(
-              backgroundImage: NetworkImage(this._product.getImage())),
+              backgroundImage: NetworkImage(this._product.getImages()[0])),
           title: Container(
             margin: EdgeInsets.all(10),
             child: Row(

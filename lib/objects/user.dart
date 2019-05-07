@@ -36,7 +36,7 @@ class User {
   String getName() {
     var displayName = this.displayName.split(" ");
     if (displayName.length > 1) {
-      return displayName[0] + ' ' + displayName[1][0];
+      return displayName[0] + ' ' + displayName[1][0] + '.';
     } else {
       return displayName[0];
     }
