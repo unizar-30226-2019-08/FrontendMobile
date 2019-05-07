@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/my_chats.dart';
+import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 class MainNavbar extends StatelessWidget {
@@ -26,24 +26,26 @@ class MainNavbar extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyChats()),
+                          MaterialPageRoute(builder: (context) => Chat()),
                         );
                       }),
                 ),
                 GestureDetector(
                     child: Container(
                         margin:
-                        EdgeInsets.only(top: topMargin, right: width / 30),
+                            EdgeInsets.only(top: topMargin, right: width / 30),
                         child: Hero(
                           tag: "profileImage",
                           child: CircleAvatar(
                               backgroundImage:
-                              AssetImage('assets/images/user_picture.jpg')),
+                                  AssetImage('assets/images/user_picture.jpg')),
                         )),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserProfile()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UserProfile(isOwnProfile: true)),
                       );
                     })
               ],
@@ -51,7 +53,7 @@ class MainNavbar extends StatelessWidget {
               bottom: TabBar(
                 indicatorWeight: 3.0,
                 labelStyle:
-                TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
                 indicator: BoxDecoration(color: Theme.of(context).canvasColor),
                 tabs: [
                   Tab(text: Translations.of(context).text('buy_tab')),

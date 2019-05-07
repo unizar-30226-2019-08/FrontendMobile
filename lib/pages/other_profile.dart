@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clases relativas a la página personal de un usuario
  * CREACIÓN:    15/03/2019
  */
+import 'package:bookalo/utils/objects_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/profile_navbar.dart';
 import 'package:bookalo/widgets/review_card.dart';
@@ -39,19 +40,9 @@ class _UserProfileState extends State<UserProfile> {
 
     return List.generate(pageSize, (index) {
       if(index%2==0){
-        return  ProductView(
-            Product('Fundamentos álgebra', 12, "Nuevo",
-                "En Venta", LatLng(0,0), false, "Descripcion",
-                2,['https://placeimg.com/640/480/any']),
-            6.1,
-            39);
+        return  ProductView(generateRandomProduct(), 6.1, 39);
       }else{
-        return ProductView(
-            Product('Lengua castellana', 3, "Nuevo",
-                "En Venta", LatLng(0,0), false, "Descripcion",
-                2,['https://placeimg.com/640/480/any']),
-            6.1,
-            39);
+        return ProductView(generateRandomProduct(), 6.1, 39);
       }
     });
 
@@ -117,30 +108,18 @@ class _UserProfileState extends State<UserProfile> {
     return List.generate(pageSize, (index) {
       if (index % 2 == 0) {
         return ReviewCard(
-            User('Silvia M.',
-                'https://secure.gravatar.com/avatar/b10f7ddbf9b8be9e3c46c302bb20101d?s=400&d=mm&r=g'),
+            generateRandomUser(),
             DateTime.utc(2019, 03, 9),
             false,
-            new Product(
-                'Libro',
-                9.5,
-                "Nuevo",
-                "En Venta", LatLng(0,0), false, "Descripcion",
-                2,['https://placeimg.com/640/480/any']),
+            generateRandomProduct(),
             'Muy buen vendedor',
             8.4);
       } else {
         return ReviewCard(
-            User('Laura P.',
-                'https://media.nngroup.com/media/people/photos/Kim-Flaherty-Headshot.png.400x400_q95_autocrop_crop_upscale.png'),
+            generateRandomUser(),
             DateTime.utc(2019, 02, 15),
             true,
-            new Product(
-                'Libro',
-                9.5,
-                "Nuevo",
-                "En Venta", LatLng(0,0), false, "Descripcion",
-                2,['https://placeimg.com/640/480/any']),
+            generateRandomProduct(),
             'No fue puntual.---Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non maximus risus. Curabitur et felis ex. Aliquam erat volutpat. Donec sit amet ullamcorper ante. Maecenas at mauris at odio ultricies eleifend. In mollis leo odio. Nunc laoreet, lectus non porttitor pharetra, felis libero ultrices libero, et aliquet sem metus id purus. Donec id lectus nisi. Mauris sed fringilla leo. Sed ullamcorper feugiat tincidunt. Mauris faucibus fringilla neque, at maximus ligula. Donec non tellus magna.',
             2);
       }

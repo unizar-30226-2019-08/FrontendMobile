@@ -39,7 +39,7 @@ class Translations {
         await rootBundle.loadString('locale/i18n_${_locale.languageCode}.json');
 
     Map<String, dynamic> _result = json.decode(data);
-    _sentences = new Map();
+    _sentences = Map();
     _result.forEach((String key, dynamic value) {
       _sentences[key] = value.toString();
     });
@@ -82,7 +82,7 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
 
   @override
   Future<Translations> load(Locale locale) async {
-    Translations localizations = new Translations(locale, isTest: isTest);
+    Translations localizations = Translations(locale, isTest: isTest);
     if (isTest) {
       await localizations.loadTest(locale);
     } else {

@@ -48,40 +48,40 @@ class _UploadProduct extends State<UploadProduct> {
     )
   ];
 
-@override
+  @override
   Widget build(BuildContext context) {
-  double _height = MediaQuery.of(context).size.height;
+    double _height = MediaQuery.of(context).size.height;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
           appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
           body: Stepper(
-              steps: _mySteps(),
-              currentStep: this._currentStep,
-             onStepTapped: (step){
-                setState(() {
-                  this._currentStep = step;
-                });
-              }, //TODO: dejar navegar libremente entre pasos??
-              onStepContinue: (){
-                setState(() {
-                  if(_currentStep < this._mySteps().length -1){
-                    _currentStep=_currentStep+1;
-                  }//TODO: else--> verificar si todo esta correcto
-                  else{
-                    print('Completado');
-                  }
-                });
-              },
-              onStepCancel: (){
-                setState(() {
-                  if(_currentStep > 0){
-                    _currentStep = _currentStep - 1;
-                  } else{
-                    _currentStep = 0;
-                  }
-                });
-              },
+            steps: _mySteps(),
+            currentStep: this._currentStep,
+            onStepTapped: (step){
+              setState(() {
+                this._currentStep = step;
+              });
+            }, //TODO: dejar navegar libremente entre pasos??
+            onStepContinue: (){
+              setState(() {
+                if(_currentStep < this._mySteps().length -1){
+                  _currentStep=_currentStep+1;
+                }//TODO: else--> verificar si todo esta correcto
+                else{
+                  print('Completado');
+                }
+              });
+            },
+            onStepCancel: (){
+              setState(() {
+                if(_currentStep > 0){
+                  _currentStep = _currentStep - 1;
+                } else{
+                  _currentStep = 0;
+                }
+              });
+            },
           )
       ),
     );
@@ -91,9 +91,9 @@ class _UploadProduct extends State<UploadProduct> {
     double _height = MediaQuery.of(context).size.height;
     List<Step> _steps =[
       Step(
-        title: Text('¡Fotos, por favor!'),
-        content: TextField(),
-        isActive: _currentStep >= 0
+          title: Text('¡Fotos, por favor!'),
+          content: TextField(),
+          isActive: _currentStep >= 0
       ),
       Step(
           title: Text('Título'),
@@ -101,20 +101,20 @@ class _UploadProduct extends State<UploadProduct> {
             keyboardType: TextInputType.text,
             autocorrect: false,
             onSaved: (String value) {
-                newP.setName(value) ;
+             // newP.setName(value) ;
             },
             maxLines: 1,
             maxLength: 50,
 
-          /*  validator: (value) {
+            /*  validator: (value) {
               if (value.isEmpty || value.length < 1) {
                 return 'Please enter name';
               }
             },*/ //TODO: hacer validacion
             decoration: new InputDecoration(
-              labelText: 'Dale un nombre a tu producto',
-              labelStyle:
-              new TextStyle(decorationStyle: TextDecorationStyle.solid)
+                labelText: 'Dale un nombre a tu producto',
+                labelStyle:
+                new TextStyle(decorationStyle: TextDecorationStyle.solid)
             ),
 
           ),
@@ -126,7 +126,7 @@ class _UploadProduct extends State<UploadProduct> {
             keyboardType: TextInputType.text,
             autocorrect: false,
             onSaved: (String value) {
-              newP.setDescription(value);
+             // newP.setDescription(value);
             },
 
             decoration: new InputDecoration(
@@ -155,7 +155,7 @@ class _UploadProduct extends State<UploadProduct> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   autocorrect: false,
-                /*  onSaved: (String value) {
+                  /*  onSaved: (String value) {
                     newP.description(value) ;
                   },*/  //TODO: ver como guardar tags
 
@@ -178,10 +178,10 @@ class _UploadProduct extends State<UploadProduct> {
           isActive: _currentStep >= 3
       ),
       Step(
-        title: Text('¿Dónde lo vendes?'),
-        content: DistanceMap( //TODO: ver que pàrametros necesita
-            height: _height / 5, distanceRadius:  1000),
-        isActive: _currentStep >= 4
+          title: Text('¿Dónde lo vendes?'),
+          content: DistanceMap( //TODO: ver que pàrametros necesita
+              height: _height / 5, distanceRadius:  1000),
+          isActive: _currentStep >= 4
       )
     ];
 
@@ -190,22 +190,22 @@ class _UploadProduct extends State<UploadProduct> {
 
 
 
-Widget _imageViewer (){
-  return Card(
-    semanticContainer: true,
-    clipBehavior: Clip.antiAliasWithSaveLayer,
-    child: Image.network(
-      'https://placeimg.com/640/480/any',
-      fit: BoxFit.fill,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    elevation: 5,
-    margin: EdgeInsets.all(10),
-  );
-}
+  Widget _imageViewer (){
+    return Card(
+      semanticContainer: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Image.network(
+        'https://placeimg.com/640/480/any',
+        fit: BoxFit.fill,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 5,
+      margin: EdgeInsets.all(10),
+    );
+  }
 
-  
+
 
 }

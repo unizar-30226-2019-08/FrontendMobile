@@ -21,7 +21,6 @@ class ReviewCard extends StatelessWidget {
   final DateTime _reviewDate;
   final bool _seller; //true: vendió, false: compró
 
-  //TODO: numero de valoraciones en usuario??
   final Product _product;
   final String _review;
   final double _stars;
@@ -39,7 +38,7 @@ class ReviewCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                  backgroundImage: NetworkImage(_user.getImagenPerfil())),
+                  backgroundImage: NetworkImage(_user.getPicture())),
               title: Text(_user.getName(),
                   style: TextStyle(
                     color: Colors.black,
@@ -64,11 +63,11 @@ class ReviewCard extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(left: 16),
                     child:
-                    Text(dateToNumbers(_reviewDate, context), //DateToString
-                        style: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 19,
-                        )),
+                        Text(dateToNumbers(_reviewDate, context), //DateToString
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 19,
+                            )),
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 16),
@@ -81,13 +80,13 @@ class ReviewCard extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   margin:
-                  EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 10),
+                      EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 10),
                   child: Text(
                     this._review,
                     textAlign: TextAlign.justify,
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,
-                  ),//TODO: expandablePanel
+                  ), //TODO: expandablePanel
                 )
               ],
             )

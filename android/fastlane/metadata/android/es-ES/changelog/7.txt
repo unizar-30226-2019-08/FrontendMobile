@@ -1,0 +1,3 @@
+- Barras de navegación mejoradas
+- Sistema de login social
+- Página de chats

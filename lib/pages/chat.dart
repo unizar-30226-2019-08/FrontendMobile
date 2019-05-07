@@ -9,25 +9,23 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/bubble_chat.dart';
 import 'package:lipsum/lipsum.dart' as lipsum;
 import 'package:bookalo/widgets/valoration_card.dart';
+import 'package:bookalo/utils/objects_generator.dart';
 
 /*
- *  CLASE:        MyChats
- *  DESCRIPCIÓN:  widget para el cuerpo principal de la página de filtrado.
- *                Consiste en dos listas diferenciadas de chats con compradores
- *                y vendedores.
- *                TEMPORALMENTE CONTIENE NAVBAR DE CHAT CONCRETO. NO SERÁ ASÍ.
+ *  CLASE:        Chat
+ *  DESCRIPCIÓN:  widget para el cuerpo principal de la página de un chat concreto
  */
-class MyChats extends StatefulWidget {
-  MyChats();
+class Chat extends StatefulWidget {
+  Chat();
 
-  _MyChatsState createState() => _MyChatsState();
+  _ChatState createState() => _ChatState();
 }
 
-class _MyChatsState extends State<MyChats> {
+class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    User user = User("Juan ", "https://placeimg.com/480/480/any");
+    User user = generateRandomUser();
     return Scaffold(
       appBar: ChatNavbar(
           preferredSize: Size.fromHeight(height / 10), interest: Interest.buys),
