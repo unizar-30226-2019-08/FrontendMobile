@@ -59,10 +59,10 @@
     "ships" : "ENVIOS",
     "include_shipping" : "Con envío",
     "not_shipping" : "Sin envío",
-    "": "NUEVO",
-    "Almost-":"SEMI-NUEVO",
+    "New": "NUEVO",
+    "Almost-New":"SEMI-NUEVO",
     "Used":"USADO",
-    "Old":"ANTIGÜEDAD",
+    "Old":"VIEJO",
     "Broken":"ROTO",
     "Wasted":"DESGASTADO",
     "report_title":"¡OH VAYA!",
@@ -72,5 +72,11 @@
     "offensive_comment":"Comentario ofensivo",
     "offensive_content":"Contenido ofensivo",
     "report_to":"REPORTE A",
-    "close_chat":"Cerrar venta"
+    "close_chat":"Cerrar venta",
+    "isbn_scan":"¡Escanea su código de barras! ",
+    "title_hint":"Introduce el título",
+    "title_too_short":"Título demasiado corto",
+    "description_hint":"Introduce una descripcion",
+    "description_too_short":"Descripción demasiado corta"
+
 }

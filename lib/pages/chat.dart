@@ -12,6 +12,8 @@ import 'package:bookalo/widgets/valoration_card.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 
+import 'dart:math';
+
 /*
  *  CLASE:        Chat
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la página de un chat concreto
@@ -40,6 +42,21 @@ void setClosed(BuildContext context)=> setState(() => closed = true);
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     User user = generateRandomUser();
+    final items = List<Bubble>.generate(
+  10,
+  (i) => i % 6 == 0
+      ? Bubble(isMe:true,
+                    user:user,
+                     message: lipsum.createSentence(),
+                     sent:Random().nextDouble() > 0.5 ,
+                    time: DateTime.now())
+      : Bubble(isMe:false ,
+                    user:user,
+                     message: lipsum.createSentence(),
+                     sent:Random().nextDouble() > 0.5 ,
+                    time: DateTime.now())
+    
+);
     return Scaffold(
       appBar: ChatNavbar(
           preferredSize: Size.fromHeight(height / 10), interest: Interest.buys),
@@ -66,7 +83,19 @@ void setClosed(BuildContext context)=> setState(() => closed = true);
                           setClosed(context);
                         },
                       ),
-          Bubble(
+       
+        ListView.builder(
+  itemCount: items.length,
+  itemBuilder: (context, index) {
+    final item = items[index];
+    return item;
+  }
+        ),
+
+
+
+
+         /* Bubble(
             message: lipsum.createSentence(),
             user: user,
             time: DateTime.now(),
@@ -86,8 +115,9 @@ void setClosed(BuildContext context)=> setState(() => closed = true);
             time: DateTime.now(),
             sent: false,
             isMe: false,
-          ),
-
+          ),*/
+    
+          
           closed == false ? Container(height:30):ValorationCard( userToValorate: user,
             currentUser: user),   
           Container(height:50.0),
