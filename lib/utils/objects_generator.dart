@@ -16,15 +16,8 @@ import 'package:bookalo/objects/product.dart';
  * Post:  ha devuelto un objeto User basado en firebaseUser
  */
 User generatePseudoUser(FirebaseUser firebaseUser) {
-  return User(
-      firebaseUser.displayName,
-      firebaseUser.photoUrl,
-      firebaseUser.uid,
-      faker.address.city(),
-      Random().nextDouble() * 10,
-      Random().nextInt(100),
-      Random().nextDouble() > 0.5,
-      false);
+  return User(firebaseUser.displayName, firebaseUser.photoUrl, firebaseUser.uid,
+      faker.address.city(), Random().nextDouble() * 10, DateTime.now());
 }
 
 /*
@@ -39,9 +32,7 @@ User generateRandomUser() {
       "123abc",
       faker.address.city(),
       Random().nextDouble() * 10,
-      Random().nextInt(100),
-      Random().nextDouble() > 0.5,
-      false);
+      DateTime.now());
 }
 
 /*
@@ -55,12 +46,13 @@ Product generateRandomProduct() {
       (Random().nextDouble() * 30).round().toDouble(),
       Random().nextDouble() > 0.8,
       List.generate(2 + Random().nextInt(3),
-          (_) => "https://picsum.photos/200/300/?random"),
+          (_) => {'contenido_url': "https://picsum.photos/200/300/?random"}),
       lipsum.createSentence(numSentences: 3),
       Random().nextDouble() > 0.8,
       (['Nuevo', 'Seminuevo', 'Usado']..shuffle()).first,
       Random().nextInt(100),
       41.65606 + Random().nextDouble() / 10,
       -0.87734 + Random().nextDouble() / 10,
-      List.generate(6 + Random().nextInt(3), (_) => lipsum.createWord()));
+      List.generate(
+          6 + Random().nextInt(3), (_) => {'nombre': lipsum.createWord()}));
 }

@@ -67,5 +67,6 @@
     "max_distance_tag" : "distancia máx.",
     "max_price_tag" : "precio máx.",
     "min_price_tag" : "precio min.",
-    "min_rating_tag" : "calificación mín."
+    "min_rating_tag" : "calificación mín.",
+    "ago": "hace {{param1}}"
 }

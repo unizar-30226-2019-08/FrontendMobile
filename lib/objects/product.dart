@@ -29,22 +29,23 @@ class Product {
   @JsonKey(name: 'tipo_envio')
   bool includesShipping;
   @JsonKey(name: 'estado_venta')
-  bool isSold;
+  bool isForSale;
   @JsonKey(name: 'contenido_multimedia')
-  List<String> images;
+  List<Map> images;
   @JsonKey(name: 'descripcion')
   String description;
   @JsonKey(name: 'latitud')
   double lat;
   @JsonKey(name: 'longitud')
   double lng;
-  List<String> tags;
+  @JsonKey(name: 'tiene_tags')
+  List<Map> tags;
 
   Product(
       this.id,
       this.name,
       this.price,
-      this.isSold,
+      this.isForSale,
       this.images,
       this.description,
       this.includesShipping,
@@ -62,12 +63,16 @@ class Product {
     return this.price;
   }
 
-  bool getSold() {
-    return this.isSold;
+  bool checkfForSale() {
+    return this.isForSale;
   }
 
   List<String> getImages() {
-    return this.images;
+    List<String> output = List();
+    this.images.forEach((x) {
+      output.add('https://bookalo.es' + x['contenido_url']);
+    });
+    return output;
   }
 
   String getDescription() {
@@ -99,7 +104,11 @@ class Product {
   }
 
   List<String> getTags() {
-    return this.tags;
+    List<String> output = List();
+    this.tags.forEach((x) {
+      output.add(x['nombre']);
+    });
+    return output;
   }
 
   int getId() {

@@ -4,27 +4,35 @@
  * CREACIÓN:    15/03/2019
  */
 
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:bookalo/utils/dates_utils.dart';
+import 'package:bookalo/translations.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable()
 class User {
+  @JsonKey(name: 'nombre')
   String displayName;
+  @JsonKey(name: 'imagen_perfil')
   String pictureURL;
+  @JsonKey(name: 'uid')
   String uid;
+  @JsonKey(name: 'ciudad')
   String city;
+  @JsonKey(name: 'media_valoraciones')
   double rating;
-  int ratingsAmount;
-  bool online;
-  bool banned;
+  //int ratingsAmount;
+  @JsonKey(name: 'ultima_conexion')
+  DateTime lastConnection;
 
   /*
    *  SOLO SE USA EN SERIALIZACIÓN
    */
 
   User(this.displayName, this.pictureURL, this.uid, this.city, this.rating,
-      this.ratingsAmount, this.online, this.banned);
+      this.lastConnection);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
@@ -79,15 +87,7 @@ class User {
    * Post:  ha devuelto el número de calificaciones del usuario
    */
   int getRatingsAmount() {
-    return this.ratingsAmount;
-  }
-
-  /*
-   * Pre:   ---
-   * Post:  ha devuelto true si el usuario ha excedido el número de reportes
-   */
-  bool isBanned() {
-    return this.banned;
+    return 12;
   }
 
   /*
@@ -95,6 +95,13 @@ class User {
    * Post:  ha devuelto  true si el usuario se ha conectado durante los últimos 5 minutos
    */
   bool isOnline() {
-    return this.online;
+    return this
+        .lastConnection
+        .isAfter(DateTime.now().subtract(Duration(minutes: 5)));
+  }
+
+  String getLastConnection(BuildContext context) {
+    return Translations.of(context)
+        .text("ago", params: [dateToFullString(this.lastConnection, context)]);
   }
 }

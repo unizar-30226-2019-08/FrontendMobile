@@ -4,10 +4,10 @@
  * CREACIÓN:    19/04/2019
  */
 
-
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/utils/silver_header.dart';
 import 'package:bookalo/widgets/detailed_product/radial_button.dart';
 import 'package:bookalo/widgets/detailed_product/user_product.dart';
@@ -19,7 +19,8 @@ import 'package:bookalo/widgets/detailed_product/image_swipper.dart';
 
 class DetailedProduct extends StatefulWidget {
   final Product product;
-  DetailedProduct({Key key, this.product}) : super(key: key);
+  final User user;
+  DetailedProduct({Key key, this.product, this.user}) : super(key: key);
 
   @override
   _DetailedProductState createState() => _DetailedProductState();
@@ -119,7 +120,7 @@ class _DetailedProductState extends State<DetailedProduct> {
                 Container(height: 10.0),
                 ProductInfo(widget.product),
                 Container(height: 10.0),
-                Center(child: UserProduct()),
+                Center(child: UserProduct(widget.user)),
                 ProductMap(
                     position: widget.product.getPosition(),
                     height: height / 5,
@@ -132,5 +133,3 @@ class _DetailedProductState extends State<DetailedProduct> {
     );
   }
 }
-
-

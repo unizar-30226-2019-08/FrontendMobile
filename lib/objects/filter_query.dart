@@ -80,7 +80,7 @@ class FilterQuery extends Model {
           minPrice == -1 &&
           minRating == -1);
   List get queryResult => _queryResult;
-  
+
   Widget _defineFilterTag(String title, Function onDeleted) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),

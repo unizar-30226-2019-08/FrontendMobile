@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/pages/user_profile.dart';
 import 'package:bookalo/pages/chat.dart';
 
@@ -20,13 +19,10 @@ import 'package:bookalo/pages/chat.dart';
             usuario vendedor en la página de producto detallado
  */
 
-class UserProduct extends StatefulWidget {
-  UserProduct();
-  _UserProductState createState() => _UserProductState();
-}
+class UserProduct extends StatelessWidget {
+  final User _user;
 
-class _UserProductState extends State<UserProduct> {
-  User user = generateRandomUser();
+  UserProduct(this._user);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +42,7 @@ class _UserProductState extends State<UserProduct> {
             leading: Hero(
               tag: "profileImage",
               child: CircleAvatar(
-                backgroundImage: NetworkImage(user.getPicture()),
+                backgroundImage: NetworkImage(_user.getPicture()),
               ),
             ),
             trailing: IconButton(
@@ -62,7 +58,7 @@ class _UserProductState extends State<UserProduct> {
                 );
               },
             ),
-            title: Text(user.getName()),
+            title: Text(_user.getName()),
             subtitle: StaticStars(
                 /* usuario.getRating()*/ 6,
                 Colors.black,

@@ -13,6 +13,7 @@ import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/detailed_product.dart';
+import 'package:bookalo/objects/user.dart';
 
 /*
  * CLASE: ProductView
@@ -20,8 +21,7 @@ import 'package:bookalo/pages/detailed_product.dart';
  */
 class ProductView extends StatelessWidget {
   final Product _product;
-  final double _stars;
-  final int _reviews;
+  final User _user;
   final List<Tag> _tags = [
     Tag(
       id: 1,
@@ -40,7 +40,7 @@ class ProductView extends StatelessWidget {
       title: 'ciencias',
     ),
   ];
-  ProductView(this._product, this._stars, this._reviews);
+  ProductView(this._product, this._user);
 
   /*
    * Pre:   ---
@@ -79,7 +79,8 @@ class ProductView extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(left: 16, bottom: 8),
-            child: StaticStars(this._stars, Colors.black, this._reviews),
+            child: StaticStars(
+                _user.getRating(), Colors.black, _user.getRatingsAmount()),
           ),
           SizedBox(
             height: height / 9,
@@ -146,7 +147,7 @@ class ProductView extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(right: 10.0),
-            child: (_product.getSold()
+            child: (!_product.checkfForSale()
                 ? Chip(
                     label: Text(
                       Translations.of(context).text('sold_tab'),
@@ -157,7 +158,7 @@ class ProductView extends StatelessWidget {
                   )
                 : DistanceChip(
                     userPosition: LatLng(0.0, 0.0),
-                    targetPosition: LatLng(0.003, 0.0),
+                    targetPosition: _product.getPosition(),
                   )),
           ),
         ]));
@@ -210,6 +211,7 @@ class ProductView extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => DetailedProduct(
                     product: this._product,
+                    user: this._user,
                   )),
         );
       },

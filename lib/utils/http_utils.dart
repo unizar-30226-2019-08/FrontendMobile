@@ -4,36 +4,77 @@
  * CREACIÓN:    03/05/2019
  */
 
-import 'package:tuple/tuple.dart';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/product_view.dart';
+import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/objects/filter_query.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/user.dart';
 
 final Map<String, String> headers = {'appmovil': 'true'};
 
-Future<Tuple2<List<ProductView>, bool>> parseProducts(FilterQuery query, int currentSize) async {
+Future<List<ProductView>> parseProducts(
+    FilterQuery query, int currentIndex, int pageSize) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
   Map<String, String> body = {
     'token': await user.getIdToken(),
     'tags': query.tags,
-    'busqueda': 'v',
-    'precio_minimo': query.minPrice.round().toString(),
-    'precio_maximo': query.maxPrice.round().toString(),
-    'calificacion_minima': query.minRating.round().toString(),
-    'latitud': '0.1',
-    'longitud': '0.1',
-    'distancia_maxima': query.maxDistance.round().toString()
+    'busqueda': '',
+    'precio_minimo': '0.0',
+    'precio_maximo': '100.0',
+    'calificacion_minima': '-1',
+    'latitud': '41.0',
+    'longitud': '1.0',
+    'distancia_maxima': '-1',
+    'ultimo_indice': currentIndex.toString(),
+    'elementos_pagina': pageSize.toString()
   };
   var response = await http.post('https://bookalo.es/api/filter_product',
       headers: headers, body: body);
-  print(response.body);
-  //Map respuesta = json.decode(response.body);
-  // List<String> tagList =
-  //     (jsonDecode(respuesta['productos']) as List<dynamic>).cast<String>();
-  // print(tagList[0]);
-  List<ProductView> test = List();
+  List<ProductView> output = List();
+  (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
+      .forEach((x) {
+    Product product = Product.fromJson(x['info_producto']);
+    User user = User.fromJson(x['vendido_por']);
+    output.add(ProductView(product, user));
+  });
 
-  return Tuple2(test, test.length == 0);
+  return output;
+}
+
+Future<List<Tag>> parseTags(List<Tag> initialTags) async {
+  List<Tag> tagList = [];
+  var response = await http.post('https://bookalo.es/api/get_tags');
+  tagList.addAll(initialTags);
+  (json.decode(response.body)['tags'] as List).forEach((x) {
+    if (!initialTags.map((tag) {
+      return tag.title;
+    }).contains(x['nombre'])) {
+      tagList.add(Tag(title: x['nombre'], active: false));
+    }
+  });
+  return tagList;
+}
+
+Future<List<MiniProduct>> parseOwnProducts(int currentIndex, int pageSize) async{
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await user.getIdToken(),
+    'uid' : user.uid,
+    'ultimo_indice': currentIndex.toString(),
+    'elementos_pagina': pageSize.toString()
+  };
+  var response = await http.post('https://bookalo.es/api/filter_product',
+      headers: headers, body: body);
+  List<MiniProduct> output = List();
+  (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
+      .forEach((x) {
+    Product product = Product.fromJson(x['info_producto']);
+    output.add(MiniProduct(product));
+  });
+
+  return output;
 }

@@ -41,9 +41,9 @@ class _UserProfileState extends State<UserProfile> {
 
     return List.generate(pageSize, (index) {
       if (index % 2 == 0) {
-        return ProductView(generateRandomProduct(), 6.1, 39);
+        return ProductView(generateRandomProduct(), generateRandomUser());
       } else {
-        return ProductView(generateRandomProduct(), 6.1, 39);
+        return ProductView(generateRandomProduct(), generateRandomUser());
       }
     });
   }

@@ -26,7 +26,7 @@ class MiniProduct extends StatelessWidget {
 
   Widget priceBody(BuildContext context) {
     Widget b;
-    if (_product.getSold()) {
+    if (!_product.checkfForSale()) {
       b = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
