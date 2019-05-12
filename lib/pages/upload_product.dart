@@ -12,6 +12,11 @@ import 'package:flutter/services.dart';
 import 'package:bookalo/widgets/filter/distance_map.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:bookalo/widgets/list_image.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:bookalo/widgets/add_image.dart';
+import 'package:bookalo/widgets/image_card.dart';
+import 'dart:io';
 
 
 /*
@@ -33,6 +38,8 @@ class _UploadProduct extends State<UploadProduct> {
    String groupValue;
   Product newP;
   void _valueChanged(String value) => setState(() => groupValue = value);
+  List <File> _imageList=[];
+  File image;
   final List<Tag> _tags = [ //TODO: solo para pruebas
     Tag(
       id: 1,
@@ -55,6 +62,13 @@ class _UploadProduct extends State<UploadProduct> {
       title: 'universidad',
     )
   ];
+
+
+
+
+
+
+
 
   Future barcodeScanning() async {
 //imageSelectorGallery();
@@ -83,6 +97,7 @@ class _UploadProduct extends State<UploadProduct> {
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     final _formKey = GlobalKey<FormState>();
+   
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -122,15 +137,57 @@ class _UploadProduct extends State<UploadProduct> {
   List<Step> _mySteps(){
     double _height = MediaQuery.of(context).size.height;
     final _formKey = GlobalKey<FormState>();
-    
+    Image foto=Image.asset("assets/images/boli.png");
+    File image=File("assets/images/boli.png");
+    bool isSelected=false;
     List<Step> _steps =[
+
+
+      //Image picker
       Step(
           title: Text('¡Fotos, por favor!'),
-          content: TextField(),
+          content:
+          
+            ListImageCard(),
+            //AddImageCard(),
+           // ImageCard(),
+            //ImageCard(image:File("assets/images/boli.png"),),
+          
+          
+          
+           /*Row(
+            children:[
+              Column(children:[
+              FloatingActionButton(
+                
+                onPressed: cameraPicker,
+                child:Icon(Icons.add_a_photo)
+              ),
+
+              Container(height: 15.0),
+
+              FloatingActionButton(
+                onPressed: galleryPicker,
+                child:Icon(Icons.image)
+              ),
+              ],),
+             Container(width: 50.0),
+               Container(
+                 
+                 child:
+                 AddImageCard())
+              
+            ],
+            ),*/
           isActive: _currentStep >= 0
       ),
+
+
+
+
+
       Step(
-          title: Text('Título y descripcion'),
+          title: Text('¿Qué vendes?'),
           content: Form(
              key: _formKey,
             child:Column(children: <Widget>[
@@ -150,8 +207,40 @@ class _UploadProduct extends State<UploadProduct> {
                         onPressed: barcodeScanning,
                       ),
 
+              
+             TextFormField( //Input ISBN
+                      keyboardType: TextInputType.number,
+                      maxLines: 2,
+                      maxLength: 13, //13 numeros máximo
+                      maxLengthEnforced: false,
+                      onSaved: (String isbnReaded) {
+               newP.isbn(isbnReaded) ;
+                      },
+                      decoration: InputDecoration(
+                          hintText:
+                              Translations.of(context).text("isbn_hint")),
+                      validator: (isbn) {
+                        if (isbn.length < 13) {
+                          //El comentario debe tener al menos 30 caracteres
+                          return Translations.of(context)
+                              .text("isbn_too_short");
+                        }
+                      },
+                    ),
 
-               TextFormField(
+
+
+
+
+
+
+
+
+
+
+
+
+               TextFormField( // Input titulo
                       keyboardType: TextInputType.text,
                       maxLines: 1,
                       maxLength: 50, //1000 caracteres máximo
@@ -172,7 +261,7 @@ class _UploadProduct extends State<UploadProduct> {
                     ),
 
 
-                TextFormField(
+                TextFormField(//Input Descripcion
                       keyboardType: TextInputType.text,
                       maxLines: 1,
                       maxLength: 50, //1000 caracteres máximo
@@ -235,24 +324,7 @@ class _UploadProduct extends State<UploadProduct> {
           ),
       
       
-      Step(
-          title: Text("Descripcion"),
-          content: TextFormField(
-            keyboardType: TextInputType.text,
-            autocorrect: false,
-            onSaved: (String value) {
-             // newP.setDescription(value);
-            },
-
-            decoration: new InputDecoration(
-                labelText: '¿Cómo es?',
-                labelStyle:
-                new TextStyle(decorationStyle: TextDecorationStyle.solid)
-            ),
-            maxLength: 700,
-          ),
-          isActive: _currentStep >= 2
-      ),
+      
       Step(
           title: Text('¿Unos tags?'), //TODO: ver logica para guardar tags
           content: Container(
@@ -290,13 +362,13 @@ class _UploadProduct extends State<UploadProduct> {
               ],
             ),
           ),
-          isActive: _currentStep >= 3
+          isActive: _currentStep >= 2
       ),
       Step(
           title: Text('¿Dónde lo vendes?'),
           content: DistanceMap( //TODO: ver que pàrametros necesita
               height: _height / 5, distanceRadius:  1000),
-          isActive: _currentStep >= 4
+          isActive: _currentStep >= 3
       )
     ];
 

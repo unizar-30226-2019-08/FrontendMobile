@@ -16,6 +16,9 @@ import 'package:bookalo/pages/report.dart';
 import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/widgets/valoration_card.dart';
 import 'package:bookalo/widgets/navbars/report_navbar.dart';
+import 'package:bookalo/widgets/image_card.dart';
+import 'package:bookalo/widgets/add_image.dart';
+import  'dart:io';
 
 void main() {
   runApp(MyApp());

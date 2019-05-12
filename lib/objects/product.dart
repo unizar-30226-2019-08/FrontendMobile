@@ -15,7 +15,7 @@ import 'package:bookalo/translations.dart';
  */
 class Product {
   String _name;
- // String _isbn;
+  String _isbn;
   double _price;
   String _state;
   int _favorites;
@@ -100,5 +100,8 @@ class Product {
     _price = value;
   }
 
+  void isbn(String value){
+    _isbn=value;
+  }
 
 }
