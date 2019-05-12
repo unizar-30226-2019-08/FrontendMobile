@@ -17,7 +17,7 @@ dependencies:
   autocomplete_textfield: ^1.6.4  
   geolocator: ^3.0.1
   flutter_map: ^0.5.0
-  flutter_tags: ^0.2.2
+  flutter_tags: ^0.3.0
   json_annotation: ^2.0.0  
   english_words: ^3.1.5
   geo: ^0.2.0
@@ -35,6 +35,10 @@ dependencies:
   http: ^0.12.0+2
   scoped_model: ^1.0.1
   paging: ^0.1.0
+  fancy_bottom_navigation: ^0.3.2
+  curved_navigation_bar: ^0.1.2 
+  
+
 
 dev_dependencies:
   flutter_test:

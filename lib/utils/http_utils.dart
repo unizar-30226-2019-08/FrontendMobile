@@ -10,6 +10,17 @@ import 'package:http/http.dart' as http;
 import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/objects/filter_query.dart';
 
+import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_tags/selectable_tags.dart';
+import 'package:bookalo/widgets/product_view.dart';
+import 'package:bookalo/widgets/mini_product.dart';
+import 'package:bookalo/objects/filter_query.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/user.dart';
+
+
 final Map<String, String> headers = {'appmovil': 'true'};
 
 Future<Tuple2<List<ProductView>, bool>> parseProducts(FilterQuery query, int currentSize) async {
@@ -36,4 +47,18 @@ Future<Tuple2<List<ProductView>, bool>> parseProducts(FilterQuery query, int cur
   List<ProductView> test = List();
 
   return Tuple2(test, test.length == 0);
+}
+
+Future<List<Tag>> parseTags(List<Tag> initialTags) async {
+  List<Tag> tagList = [];
+  var response = await http.post('https://bookalo.es/api/get_tags');
+  tagList.addAll(initialTags);
+  (json.decode(response.body)['tags'] as List).forEach((x) {
+    if (!initialTags.map((tag) {
+      return tag.title;
+    }).contains(x['nombre'])) {
+      tagList.add(Tag(title: x['nombre'], active: false));
+    }
+  });
+  return tagList;
 }
