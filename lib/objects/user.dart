@@ -7,7 +7,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:bookalo/utils/dates_utils.dart';
-import 'package:bookalo/translations.dart';
 
 part 'user.g.dart';
 
@@ -23,7 +22,8 @@ class User {
   String city;
   @JsonKey(name: 'media_valoraciones')
   double rating;
-  //int ratingsAmount;
+  @JsonKey(name: 'numValoraciones')
+  int ratingsAmount;
   @JsonKey(name: 'ultima_conexion')
   DateTime lastConnection;
 
@@ -32,7 +32,7 @@ class User {
    */
 
   User(this.displayName, this.pictureURL, this.uid, this.city, this.rating,
-      this.lastConnection);
+      this.ratingsAmount, this.lastConnection);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
@@ -87,7 +87,7 @@ class User {
    * Post:  ha devuelto el número de calificaciones del usuario
    */
   int getRatingsAmount() {
-    return 12;
+    return this.ratingsAmount;
   }
 
   /*
@@ -101,7 +101,6 @@ class User {
   }
 
   String getLastConnection(BuildContext context) {
-    return Translations.of(context)
-        .text("ago", params: [dateToFullString(this.lastConnection, context)]);
+    return dateToFullString(this.lastConnection, context);
   }
 }

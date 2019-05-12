@@ -25,7 +25,6 @@ void main() async {
  */
 class MyApp extends StatelessWidget {
   final bool isAuthenticated;
-
   MyApp({Key key, this.isAuthenticated}) : super(key: key);
 
   @override

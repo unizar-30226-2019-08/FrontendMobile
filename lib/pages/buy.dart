@@ -4,16 +4,14 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
-import 'package:bookalo/utils/product_paging.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/filter.dart';
 import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/widgets/social_buttons.dart';
-import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/widgets/filter_options_selector.dart';
 import 'package:bookalo/utils/http_utils.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /*
  *  CLASE:        Buy
@@ -28,51 +26,8 @@ class Buy extends StatefulWidget {
 }
 
 class _BuyState extends State<Buy> {
-  bool endReached = false;
-  bool firstFetch = true;
-
-  @override
-  void initState() {
-    super.initState();
-    ScopedModel.of<FilterQuery>(context).queryResult.clear();
-  }
-
-  Future<List<Widget>> fetchProducts(
-      currentSize, height, FilterQuery query) async {
-    List<Widget> output = new List();
-    if (!endReached) {
-      List<ProductView> fetchResult = await parseProducts(query, currentSize, 4);
-      endReached = fetchResult.length == 0;
-      output.addAll(fetchResult);
-      if (endReached) {
-        if (firstFetch) {
-          output.add(Container(
-            margin: EdgeInsets.only(top: 200.0),
-            child: Column(
-              children: <Widget>[
-                Icon(Icons.remove_shopping_cart,
-                    size: 80.0, color: Colors.pink),
-                Text(
-                  Translations.of(context).text('no_products_available'),
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-                )
-              ],
-            ),
-          ));
-        } else {
-          output.add(SocialButtons());
-        }
-      }
-    }
-    if (firstFetch) {
-      firstFetch = false;
-    }
-    return output;
-  }
-
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -81,12 +36,7 @@ class _BuyState extends State<Buy> {
               heroTag: "searchFAB",
               icon: Icon(Icons.search),
               label: Text(Translations.of(context).text('search')),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Filter())
-                // );
-              },
+              onPressed: () {},
             ),
             SizedBox(
               height: 16.0,
@@ -102,26 +52,90 @@ class _BuyState extends State<Buy> {
             ),
           ],
         ),
-        body: Column(
-          children: <Widget>[
-            FilterOptionSelector(),
-            Expanded(
-              child: ScopedModelDescendant<FilterQuery>(
-                builder: (context, child, model) {
-                  return ProductPagination<Widget>(
-                    progress: Container(
-                        margin: EdgeInsets.symmetric(vertical: height / 20),
-                        child: BookaloProgressIndicator()),
-                    pageBuilder: (currentSize) =>
-                        fetchProducts(currentSize, height, model),
-                    itemBuilder: (index, item) {
-                      return item;
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
+        body: ScopedModelDescendant<FilterQuery>(
+          builder: (context, child, model) {
+            return new ProductListViewer(query: model);
+          },
         ));
+  }
+}
+
+class ProductListViewer extends StatefulWidget {
+  final FilterQuery query;
+  const ProductListViewer({Key key, this.query}) : super(key: key);
+
+  @override
+  _ProductListViewerState createState() => _ProductListViewerState();
+}
+
+class _ProductListViewerState extends State<ProductListViewer> {
+  bool _isLoading = false;
+
+  void fetchProducts() {
+    if (!_isLoading) {
+      _isLoading = true;
+      parseProducts(widget.query, widget.query.queryResult.length, 10)
+          .then((newProducts) {
+        _isLoading = false;
+        if (newProducts.isEmpty) {
+          widget.query.setEndReached(true);
+          if (widget.query.queryResult.length == 0) {
+            newProducts.add(Center(
+                child: Container(
+              margin: EdgeInsets.only(top: 150),
+              child: Column(
+                children: <Widget>[
+                  Icon(Icons.remove_shopping_cart,
+                      size: 150, color: Colors.pink),
+                  Container(height: 20),
+                  Text(
+                    Translations.of(context).text("no_products_available"),
+                    style:
+                        TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                  )
+                ],
+              ),
+            )));
+          } else {
+            newProducts.add(SocialButtons());
+          }
+        }
+        setState(() => widget.query.queryResult.addAll(newProducts));
+      }).catchError((e) {
+        print(e);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        FilterOptionSelector(),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (context, position) {
+              if (position < widget.query.queryResult.length) {
+                return widget.query.queryResult[position];
+              } else if (position == widget.query.queryResult.length &&
+                  !widget.query.endReached) {
+                fetchProducts();
+                return Container(
+                    margin: EdgeInsets.symmetric(vertical: 50.0),
+                    child: BookaloProgressIndicator());
+              } else {
+                return null;
+              }
+            },
+          ),
+        )
+      ],
+    );
   }
 }

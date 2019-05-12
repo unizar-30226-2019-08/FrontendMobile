@@ -75,8 +75,8 @@ class _FilterState extends State<Filter> {
               ),
               DistanceMap(
                   height: height / 5, distanceRadius: _maxDistance * 1000),
-              PriceSlider(onPriceChanged: (minPrice, maxPrice) {}),
-              RatingSlider(onMinRatingChanged: (minRate) {}),
+              PriceSlider(),
+              RatingSlider(),
               Container(
                 margin: EdgeInsets.only(top: 20.0),
                 child: Center(

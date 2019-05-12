@@ -4,7 +4,6 @@
  *              widget de selección de tags
  * CREACIÓN:    20/03/2019
  */
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/filter/tags_selector.dart';
@@ -34,13 +33,6 @@ class TagsLoader extends StatefulWidget {
 }
 
 class _TagsLoaderState extends State<TagsLoader> {
-  /*
-   * Pre:   ---
-   * Post   devolverá una lista de tags. Por el momento, mockup
-   */
-  Future<List<Tag>> _getTags() async {
-    return await parseTags(widget.initialTags);
-  }
 
   @override
   Widget build(BuildContext context) {

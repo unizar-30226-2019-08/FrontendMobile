@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chats_menu.dart';
-import 'package:bookalo/pages/menu_chats.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*
@@ -64,7 +63,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                 child: Container(
                     margin: EdgeInsets.only(top: topMargin, right: width / 30),
                     child: Hero(
-                      tag: "profileImage",
+                      tag: "ownProfileImage",
                       child: FutureBuilder<FirebaseUser>(
                           future: FirebaseAuth.instance.currentUser(),
                           builder: (context, snapshot) {

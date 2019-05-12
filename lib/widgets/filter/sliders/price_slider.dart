@@ -15,7 +15,7 @@ import 'package:bookalo/translations.dart';
  *                el que se desea obtener productos en el filtrado
  */
 class PriceSlider extends StatefulWidget {
-  final Function(double, double) onPriceChanged;
+
 
   /*
    * Pre:   onPriceChanged es una función void
@@ -23,12 +23,22 @@ class PriceSlider extends StatefulWidget {
    *        cambio en el rango de precios, ha ejecutado
    *        la callback onPriceChanged
    */
-  PriceSlider({Key key, this.onPriceChanged}) : super(key: key);
+  PriceSlider({Key key}) : super(key: key);
 
   _PriceSliderState createState() => _PriceSliderState();
 }
 
 class _PriceSliderState extends State<PriceSlider> {
+  double minPrice;
+  double maxPrice;
+
+  @override
+  void initState() {
+    super.initState();
+    minPrice = ScopedModel.of<FilterQuery>(context).minPrice;
+    maxPrice = ScopedModel.of<FilterQuery>(context).maxPrice;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -47,52 +57,37 @@ class _PriceSliderState extends State<PriceSlider> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                width: width / 7,
+                width: width / 9,
                 child: Text(
-                    ScopedModel.of<FilterQuery>(context).minPrice != -1
-                        ? ScopedModel.of<FilterQuery>(context)
-                                .minPrice
-                                .toStringAsFixed(0) +
-                            ' €'
-                        : "20 €",
+                    minPrice.toStringAsFixed(0) + '€',
                     style:
                         TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
               ),
               Container(
-                width: width / 1.8,
+                width: width / 2,
                 child: RangeSlider(
-                  min: 1.0,
+                  min: 0.0,
                   max: 100.0,
-                  lowerValue:
-                      ScopedModel.of<FilterQuery>(context).minPrice != -1
-                          ? ScopedModel.of<FilterQuery>(context).minPrice
-                          : 20.0,
-                  upperValue:
-                      ScopedModel.of<FilterQuery>(context).maxPrice != -1
-                          ? ScopedModel.of<FilterQuery>(context).maxPrice
-                          : 80,
+                  lowerValue: minPrice,
+                  upperValue: maxPrice,
                   showValueIndicator: true,
                   valueIndicatorMaxDecimals: 1,
-                  onChanged: (double lowerValue, double upperValue) {
+                  onChanged: (min, max){
                     setState(() {
-                      ScopedModel.of<FilterQuery>(context)
-                          .setMinPrice(lowerValue);
-                      ScopedModel.of<FilterQuery>(context)
-                          .setMaxPrice(upperValue);
+                      minPrice = min;
+                      maxPrice = max;
                     });
-                    widget.onPriceChanged(lowerValue, upperValue);
+                  },
+                  onChangeEnd: (min, max){
+                    ScopedModel.of<FilterQuery>(context).setMinPrice(min);
+                    ScopedModel.of<FilterQuery>(context).setMaxPrice(max);
                   },
                 ),
               ),
               Container(
-                width: width / 7,
+                width: width / 6,
                 child: Text(
-                    ScopedModel.of<FilterQuery>(context).maxPrice != -1
-                        ? ScopedModel.of<FilterQuery>(context)
-                                .maxPrice
-                                .toStringAsFixed(0) +
-                            ' €'
-                        : "80 €",
+                    maxPrice.toStringAsFixed(0) +' €',
                     style:
                         TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300)),
               )

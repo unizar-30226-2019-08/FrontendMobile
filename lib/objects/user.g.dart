@@ -13,6 +13,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
       json['uid'] as String,
       json['ciudad'] as String,
       (json['media_valoraciones'] as num)?.toDouble(),
+      json['numValoraciones'] as int,
       json['ultima_conexion'] == null
           ? null
           : DateTime.parse(json['ultima_conexion'] as String));
@@ -24,5 +25,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'uid': instance.uid,
       'ciudad': instance.city,
       'media_valoraciones': instance.rating,
+      'numValoraciones': instance.ratingsAmount,
       'ultima_conexion': instance.lastConnection?.toIso8601String()
     };

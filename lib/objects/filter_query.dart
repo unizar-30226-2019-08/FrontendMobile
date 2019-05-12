@@ -1,85 +1,115 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:latlong/latlong.dart';
 import 'package:bookalo/translations.dart';
 
 class FilterQuery extends Model {
   List _queryResult = List();
   Set<String> _tags = Set();
+  double _latitude;
+  double _longitude;
+  bool _usesDistance;
   double _maxDistance;
+  bool _usesMinPrice;
   double _maxPrice;
+  bool _usesMaxPrice;
   double _minPrice;
-  double _minRating;
-  bool _isFiltering;
+  bool _usesRating;
+  int _minRating;
+  bool _endReached;
 
   FilterQuery() {
-    _maxDistance = 10.0;
-    _maxPrice = 80.0;
-    _minPrice = 20.0;
-    _minRating = 4;
-    _isFiltering = false;
+    _latitude = 0.0;
+    _longitude = 0.0;
+    _maxDistance = 15.0;
+    _maxPrice = 75.0;
+    _minPrice = 2.0;
+    _minRating = 0;
+    _endReached = false;
+    _usesDistance = false;
+    _usesMaxPrice = false;
+    _usesMinPrice = false;
+    _usesRating = false;
+  }
+
+  void handleQueryChange() {
+    _queryResult.clear();
+    _endReached = false;
+    notifyListeners();
   }
 
   void removeFilter() {
-    _isFiltering = false;
-    _queryResult.clear();
-    notifyListeners();
+    _usesDistance = false;
+    _usesMinPrice = false;
+    _usesMaxPrice = false;
+    _usesRating = false;
+    _tags.clear();
+    handleQueryChange();
   }
 
   void addTag(String newTag) {
-    this._tags.add(newTag);
-    _isFiltering = true;
-    _queryResult.clear();
-    notifyListeners();
+    _tags.add(newTag);
+    handleQueryChange();
   }
 
   void removeTag(String tag) {
-    this._tags.remove(tag);
-    _queryResult.clear();
-    notifyListeners();
+    _tags.remove(tag);
+    handleQueryChange();
   }
 
   void setMaxDistance(double maxDistance) {
-    this._maxDistance = maxDistance;
-    _isFiltering = true;
-    _queryResult.clear();
-    notifyListeners();
+    _maxDistance = maxDistance;
+    _usesDistance = true;
+    handleQueryChange();
   }
 
   void setMaxPrice(double maxPrice) {
-    this._maxPrice = maxPrice;
-    _isFiltering = true;
-    _queryResult.clear();
-    notifyListeners();
+    _maxPrice = maxPrice;
+    _usesMaxPrice = true;
+    handleQueryChange();
   }
 
   void setMinPrice(double minPrice) {
-    this._minPrice = minPrice;
-    _isFiltering = true;
-    _queryResult.clear();
-    notifyListeners();
+    _minPrice = minPrice;
+    _usesMinPrice = true;
+    handleQueryChange();
   }
 
-  void setMinRating(double minRating) {
-    this._minRating = minRating;
-    _isFiltering = true;
-    _queryResult.clear();
-    notifyListeners();
+  void setMinRating(int minRating) {
+    _minRating = minRating;
+    _usesRating = true;
+    handleQueryChange();
   }
 
-  String get tags => _isFiltering ? _tags.join(',') : "";
+  void updatePosition(double latitude, double longitude) {
+    _latitude = latitude;
+    _longitude = longitude;
+    //TODO: handleQueryChange();
+  }
+
+  void setEndReached(bool value) {
+    _endReached = value;
+  }
+
+  String get tags => isFiltering ? _tags.join(',') : "";
   List<String> get tagList => _tags.toList();
+  LatLng get position => LatLng(_latitude, _longitude);
+  bool get usesDistance => _usesDistance;
+  bool get usesMinPrice => _usesMinPrice;
+  bool get usesMaxPrice => _usesMaxPrice;
+  bool get usesRating => _usesRating;
   double get maxDistance => _maxDistance;
   double get maxPrice => _maxPrice;
   double get minPrice => _minPrice;
-  double get minRating => _minRating;
+  int get minRating => _minRating;
   bool get isFiltering =>
-      _isFiltering &&
-      !(_tags.length == 0 &&
-          maxDistance == -1 &&
-          maxPrice == -1 &&
-          minPrice == -1 &&
-          minRating == -1);
+      _tags.length != 0 ||
+      _usesDistance ||
+      _usesMinPrice ||
+      _usesMaxPrice ||
+      _usesRating;
   List get queryResult => _queryResult;
+  bool get endReached => _endReached;
 
   Widget _defineFilterTag(String title, Function onDeleted) {
     return Container(
@@ -98,45 +128,50 @@ class FilterQuery extends Model {
 
   List<Widget> filterOptions(BuildContext context) {
     List<Widget> output = List();
-    if (_maxDistance != -1) {
+    if (_usesDistance) {
       output.add(_defineFilterTag(
           Translations.of(context).text("max_distance_tag") +
               " " +
               _maxDistance.toStringAsFixed(0) +
               "km", () {
-        this.setMaxDistance(-1);
+        _usesDistance = false;
+        notifyListeners();
       }));
     }
-    if (_maxPrice != -1) {
+    if (_usesMaxPrice) {
       output.add(_defineFilterTag(
           Translations.of(context).text("max_price_tag") +
               " " +
               _maxPrice.toStringAsFixed(0) +
               "€", () {
-        this.setMaxPrice(-1);
+        _usesMaxPrice = false;
+        notifyListeners();
       }));
     }
-    if (_minPrice != -1) {
+    if (_usesMinPrice) {
       output.add(_defineFilterTag(
           Translations.of(context).text("min_price_tag") +
               " " +
               _minPrice.toStringAsFixed(0) +
               "€", () {
-        this.setMinPrice(-1);
+        _usesMinPrice = false;
+        notifyListeners();
       }));
     }
-    if (_minRating != -1) {
+    if (_usesRating) {
       output.add(_defineFilterTag(
           Translations.of(context).text("min_rating_tag") +
               " " +
               _minRating.toStringAsFixed(0) +
               "/5", () {
-        this.setMinRating(-1);
+        _usesRating = false;
+        notifyListeners();
       }));
     }
     _tags.forEach((tag) {
       output.add(_defineFilterTag(tag, () {
-        this.removeTag(tag);
+        removeTag(tag);
+        notifyListeners();
       }));
     });
     return output;

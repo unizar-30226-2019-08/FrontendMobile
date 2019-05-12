@@ -13,37 +13,35 @@ class FilterOptionSelector extends StatefulWidget {
 class _FilterOptionSelectorState extends State<FilterOptionSelector> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<FilterQuery>(
-      builder: (context, child, model) {
-        if (!model.isFiltering) {
-          return Container(width: 0.0, height: 0.0);
-        }
-        return Column(
-          children: <Widget>[
-            Container(
-              height: 50.0,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: model.filterOptions(context),
-              ),
+    if (ScopedModel.of<FilterQuery>(context).isFiltering) {
+      return Column(
+        children: <Widget>[
+          Container(
+            height: 50.0,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children:
+                  ScopedModel.of<FilterQuery>(context).filterOptions(context),
             ),
-            OutlineButton(
-              borderSide: BorderSide(color: Colors.pink, width: 3.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              child: Text(
-                Translations.of(context).text("stop_filtering"),
-                style: TextStyle(
-                    color: Colors.pink[600], fontWeight: FontWeight.w700),
-              ),
-              onPressed: () {
-                model.removeFilter();
-              },
+          ),
+          OutlineButton(
+            borderSide: BorderSide(color: Colors.pink, width: 3.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            child: Text(
+              Translations.of(context).text("stop_filtering"),
+              style: TextStyle(
+                  color: Colors.pink[600], fontWeight: FontWeight.w700),
             ),
-            Divider()
-          ],
-        );
-      },
-    );
+            onPressed: () {
+              ScopedModel.of<FilterQuery>(context).removeFilter();
+            },
+          ),
+          Divider()
+        ],
+      );
+    } else {
+      return Container(height: 0.0, width: 0.0);
+    }
   }
 }

@@ -1,43 +1,27 @@
 /*
  * FICHERO:     detailed_product.dart
- * DESCRIPCIÓN: clases relativas al widget DetailedProduct
+ * DESCRIPCIÓN: clases relativas al widget OwnProduct
  * CREACIÓN:    19/04/2019
  */
 
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/utils/silver_header.dart';
-import 'package:bookalo/widgets/detailed_product/radial_button.dart';
-import 'package:bookalo/widgets/detailed_product/user_product.dart';
 import 'package:bookalo/widgets/detailed_product/product_map.dart';
 import 'package:bookalo/widgets/detailed_product/product_info.dart';
-import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
 import 'package:bookalo/widgets/detailed_product/image_swipper.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/translations.dart';
 
-class DetailedProduct extends StatefulWidget {
-  final bool isLiked;
+class OwnProduct extends StatefulWidget {
   final Product product;
-  final User user;
-  DetailedProduct({Key key, this.product, this.user, this.isLiked})
-      : super(key: key);
+  OwnProduct({Key key, this.product}) : super(key: key);
 
   @override
   _DetailedProductState createState() => _DetailedProductState();
 }
 
-class _DetailedProductState extends State<DetailedProduct> {
-  bool isMarkedAsFavorite;
-
-  @override
-  void initState() {
-    super.initState();
-    isMarkedAsFavorite = widget.isLiked;
-  }
-
+class _DetailedProductState extends State<OwnProduct> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -55,16 +39,6 @@ class _DetailedProductState extends State<DetailedProduct> {
                   alignment: Alignment.bottomRight,
                   children: <Widget>[
                     ImageSwiper(product: widget.product, expandible: true),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 20.0, right: 20.0),
-                        child: DistanceChip(
-                            userPosition:
-                                ScopedModel.of<FilterQuery>(context).position,
-                            targetPosition: widget.product.getPosition()),
-                      ),
-                    ),
                     Container(
                       height: (longTitle ? height / 6 : height / 8),
                       decoration: BoxDecoration(
@@ -100,18 +74,6 @@ class _DetailedProductState extends State<DetailedProduct> {
                         ],
                       ),
                     ),
-                    Container(
-                        margin: EdgeInsets.only(
-                            bottom: (longTitle ? height / 25 : 0)),
-                        child: RadialButton(
-                            product: widget.product,
-                            sellerId: widget.user.uid,
-                            wasMarkedAsFavorite: widget.isLiked,
-                            onFavorite: () {
-                              setState(() {
-                                isMarkedAsFavorite = !isMarkedAsFavorite;
-                              });
-                            })),
                   ],
                 )),
           ),
@@ -135,12 +97,54 @@ class _DetailedProductState extends State<DetailedProduct> {
                   ),
                 ),
                 Container(height: 10.0),
-                ProductInfo(
-                    widget.product,
-                    (!widget.isLiked && isMarkedAsFavorite),
-                    (widget.isLiked && !isMarkedAsFavorite)),
-                Container(height: 10.0),
-                Center(child: UserProduct(widget.user, widget.product)),
+                ProductInfo(widget.product, false, false),
+                Container(height: 30.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    OutlineButton(
+                      borderSide: BorderSide(color: Colors.pink, width: 3.0),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.edit, color: Colors.pink, size: 30.0),
+                          Text(
+                            Translations.of(context).text("edit_product"),
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.pink[600],
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {},
+                    ),
+                    OutlineButton(
+                      borderSide:
+                          BorderSide(color: Colors.grey[800], width: 3.0),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.delete_forever,
+                              color: Colors.grey[800], size: 30.0),
+                          Text(
+                            Translations.of(context).text("remove_product"),
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.grey[800],
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+                Container(height: 20.0),
                 ProductMap(
                     position: widget.product.getPosition(),
                     height: height / 5,

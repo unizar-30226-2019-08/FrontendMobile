@@ -6,8 +6,10 @@
 *
  */
 
+import 'package:bookalo/widgets/navbars/chat_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/user_profile.dart';
@@ -21,8 +23,9 @@ import 'package:bookalo/pages/chat.dart';
 
 class UserProduct extends StatelessWidget {
   final User _user;
+  final Product _product;
 
-  UserProduct(this._user);
+  UserProduct(this._user, this._product);
 
   @override
   Widget build(BuildContext context) {
@@ -54,20 +57,17 @@ class UserProduct extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Chat()),
+                  MaterialPageRoute(builder: (context) => Chat(user: _user, product: _product, interest: Interest.offers)),
                 );
               },
             ),
             title: Text(_user.getName()),
-            subtitle: StaticStars(
-                /* usuario.getRating()*/ 6,
-                Colors.black,
-                /*usuario.getReviews()*/ 6), //Todo: rating y reviews
+            subtitle: StaticStars(_user.getRating(), Colors.black, _user.getRatingsAmount()),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserProfile(isOwnProfile: false)),
+                    builder: (context) => UserProfile(isOwnProfile: false, user: _user,)),
               );
             },
           ),

@@ -16,8 +16,14 @@ import 'package:bookalo/objects/product.dart';
  * Post:  ha devuelto un objeto User basado en firebaseUser
  */
 User generatePseudoUser(FirebaseUser firebaseUser) {
-  return User(firebaseUser.displayName, firebaseUser.photoUrl, firebaseUser.uid,
-      faker.address.city(), Random().nextDouble() * 10, DateTime.now());
+  return User(
+      firebaseUser.displayName,
+      firebaseUser.photoUrl,
+      firebaseUser.uid,
+      faker.address.city(),
+      Random().nextDouble() * 10,
+      Random().nextInt(100),
+      DateTime.now());
 }
 
 /*
@@ -32,6 +38,7 @@ User generateRandomUser() {
       "123abc",
       faker.address.city(),
       Random().nextDouble() * 10,
+      Random().nextInt(100),
       DateTime.now());
 }
 

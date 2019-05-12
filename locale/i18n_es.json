@@ -68,5 +68,10 @@
     "max_price_tag" : "precio máx.",
     "min_price_tag" : "precio min.",
     "min_rating_tag" : "calificación mín.",
-    "ago": "hace {{param1}}"
+    "ago": "hace {{param1}}",
+    "no_productos_uploaded" : "¡Aún no has puesto nada a la venta!",
+    "edit_product" : "EDITAR",
+    "remove_product" : "BORRAR",
+    "no_favorites_yes": "¡Aún no has marcado nada como favorito!",
+    "no_reviews_yet" : "¡Aún no hay opiniones!"
 }

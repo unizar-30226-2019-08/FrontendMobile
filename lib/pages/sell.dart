@@ -26,7 +26,7 @@ class Sell extends StatefulWidget {
 
 class _SellState extends State<Sell> {
   bool endReached = false;
-  bool firstFetch = true;
+  bool firstFecth = true;
   /*
    * Pre:   pageNumber >=0 y pageSize > 0
    * Post:  devuelve una lista con pageSize MiniProduct
@@ -35,26 +35,28 @@ class _SellState extends State<Sell> {
     List<Widget> output = new List();
     if (!endReached) {
       List<MiniProduct> fetchResult = await parseOwnProducts(currentSize, 10);
-      endReached = fetchResult.length == 0;
       output.addAll(fetchResult);
+      endReached = fetchResult.length == 0;
       if (endReached) {
-        output.add(Container(
-          margin: EdgeInsets.only(top: 200.0),
-          child: Column(
-            children: <Widget>[
-              Icon(Icons.remove_shopping_cart,
-                  size: 80.0, color: Colors.pink),
-              Text(
-                Translations.of(context).text('no_products_available'),
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-              )
-            ],
-          ),
-        ));
+        if (firstFecth){
+          output.add(Container(
+            margin: EdgeInsets.only(top: 150.0, left: 70.0, right: 70.0),
+            child: Column(
+              children: <Widget>[
+                Icon(Icons.add_shopping_cart, size: 80.0, color: Colors.pink),
+                Text(
+                  Translations.of(context).text('no_productos_uploaded'),
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+          ));
+        }
       }
-    }
-    if (firstFetch) {
-      firstFetch = false;
+      if(firstFecth){
+        firstFecth = false;
+      }
     }
     return output;
   }

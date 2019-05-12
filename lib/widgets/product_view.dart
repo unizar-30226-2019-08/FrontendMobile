@@ -4,16 +4,19 @@
  * CREACIÓN:    15/03/2019
  *
  */
+import 'package:bookalo/widgets/navbars/chat_navbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/selectable_tags.dart';
-import 'package:latlong/latlong.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/detailed_product.dart';
+import 'package:bookalo/pages/own_product.dart';
 import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
 
 /*
  * CLASE: ProductView
@@ -22,25 +25,9 @@ import 'package:bookalo/objects/user.dart';
 class ProductView extends StatelessWidget {
   final Product _product;
   final User _user;
-  final List<Tag> _tags = [
-    Tag(
-      id: 1,
-      title: 'mates',
-    ),
-    Tag(
-      id: 1,
-      title: 'universidad',
-    ),
-    Tag(
-      id: 1,
-      title: 'primero',
-    ),
-    Tag(
-      id: 1,
-      title: 'ciencias',
-    ),
-  ];
-  ProductView(this._product, this._user);
+  final bool itsMine;
+  final bool isLiked;
+  ProductView(this._product, this._user, this.itsMine, this.isLiked);
 
   /*
    * Pre:   ---
@@ -48,7 +35,6 @@ class ProductView extends StatelessWidget {
    *        vendido y  valoraciones del vendedor
    */
   Widget priceCard(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Card(
       child: Column(
         children: <Widget>[
@@ -82,17 +68,13 @@ class ProductView extends StatelessWidget {
             child: StaticStars(
                 _user.getRating(), Colors.black, _user.getRatingsAmount()),
           ),
-          SizedBox(
-            height: height / 9,
-            // child: SelectableTags(
-            //   textOverflow: TextOverflow.ellipsis,
-            //   height: height / 30,
-            //   tags: _tags,
-            //   fontSize: 11.0,
-            //   onPressed: (tag) {},
-            //   margin: EdgeInsets.all(5.0),
-            //   activeColor: Colors.pink,
-            // ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 16.0, right: 5.0),
+              child: ListView(
+                children: <Widget>[TagWraper(product: _product)],
+              ),
+            ),
           )
         ],
       ),
@@ -131,13 +113,23 @@ class ProductView extends StatelessWidget {
                       ),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.chat_bubble_outline,
-                          color: Colors.pink, size: 40),
+                      icon: Icon(
+                          (itsMine ? Icons.edit : Icons.chat_bubble_outline),
+                          color: Colors.pink,
+                          size: 40),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Chat()),
-                        );
+                        if (itsMine) {
+                          //TODO: pantalla de edit
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Chat(
+                                    user: _user,
+                                    product: _product,
+                                    interest: Interest.offers)),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -157,7 +149,7 @@ class ProductView extends StatelessWidget {
                     backgroundColor: Colors.pink,
                   )
                 : DistanceChip(
-                    userPosition: LatLng(0.0, 0.0),
+                    userPosition: ScopedModel.of<FilterQuery>(context).position,
                     targetPosition: _product.getPosition(),
                   )),
           ),
@@ -196,7 +188,7 @@ class ProductView extends StatelessWidget {
                     top: height / 20,
                     right: width / 3,
                     child: Container(
-                      height: height / 3,
+                      height: height / 2.9,
                       width: width / 2,
                       child: priceCard(context),
                     ))
@@ -206,14 +198,25 @@ class ProductView extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DetailedProduct(
-                    product: this._product,
-                    user: this._user,
-                  )),
-        );
+        if (!itsMine) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailedProduct(
+                      product: this._product,
+                      user: this._user,
+                      isLiked: this.isLiked,
+                    )),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OwnProduct(
+                      product: this._product,
+                    )),
+          );
+        }
       },
     );
   }
