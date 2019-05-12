@@ -38,8 +38,11 @@ class Product {
   double lat;
   @JsonKey(name: 'longitud')
   double lng;
+  @JsonKey(name: 'isbn')
+  String isbn;
   List<String> tags;
 
+//TODO: Constructor con ISBN
   Product(
       this.id,
       this.name,
@@ -52,7 +55,9 @@ class Product {
       this.favorites,
       this.lat,
       this.lng,
-      this.tags);
+      this.tags){
+        this.isbn = null;
+      }
 
   String getName() {
     return this.name;
@@ -102,11 +107,42 @@ class Product {
     return this.tags;
   }
 
+
   int getId() {
     return this.id;
+  }
+
+  void setName(String _name){
+    this.name = _name;
+    print("nombre de prd " + this.name);
+  }
+
+ void setDesciption(String _desc){
+    this.description = _desc;
+  }
+
+  void setIsbn(String _isbn){
+    this.name = _isbn;
+  }
+
+  void setState(String _state){
+    this.state = _state;
+    print("estado del producto " + this.state);
+  }
+  String getISBN(){
+    return this.isbn;
+  }
+
+  void insertTag(t){
+    this.tags.add(t);
+  }
+
+  void deleteTag(t){
+    this.tags.remove(t);
   }
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
+
