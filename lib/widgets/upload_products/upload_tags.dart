@@ -21,8 +21,9 @@ class UploadTags extends StatefulWidget {
    * Post:  Ha insertado un nuevo tag a Product
    */
   final Function(String) onDeleteTag;
+  final Function(bool) validate;
   final List<String> initialT;
-  UploadTags({Key key, this.onInsertTag, this.onDeleteTag, this.initialT}) : super(key: key);
+  UploadTags({Key key, this.onInsertTag, this.onDeleteTag, this.initialT, this.validate}) : super(key: key);
   @override
   _UploadTagsState createState() => _UploadTagsState();
 
@@ -37,8 +38,8 @@ class _UploadTagsState extends State<UploadTags> {
       child: Column(
       children: <Widget>[
           TagsUploadProduct(
-            onInsertTag: (tag) {widget.onInsertTag(tag);},
-            onDeleteTag: (tag) {widget.onDeleteTag(tag);},
+            onInsertTag: (tag) {widget.onInsertTag(tag); widget.validate(widget.initialT.length >0 );},
+            onDeleteTag: (tag) {widget.onDeleteTag(tag); widget.validate(widget.initialT.length >0 );},
             initialTags: widget.initialT,
             
           ),
@@ -46,4 +47,5 @@ class _UploadTagsState extends State<UploadTags> {
       )
     );
   }
+  
 }

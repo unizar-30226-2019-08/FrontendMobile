@@ -14,20 +14,36 @@ import 'package:flutter/material.dart';
  */
 
 class UploadPosition extends StatefulWidget {
-	@override
-	_UploadPositionState createState() => _UploadPositionState();
+  final Function(bool) validate;
+
+  const UploadPosition({Key key, this.validate}) : super(key: key);
+  @override
+  _UploadPositionState createState() => _UploadPositionState();
 }
 
 class _UploadPositionState extends State<UploadPosition> {
-	@override
-	Widget build(BuildContext context) {
-		double _height = MediaQuery.of(context).size.height;
-		return Container(
-				padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-				child: DistanceMap( //TODO: ver que pàrametros necesita
-						height: _height, 
-						distanceRadius:  5000
-				),
-		);
-	}
+  @override
+  Widget build(BuildContext context) {
+    double _height = MediaQuery.of(context).size.height;
+    return Center(
+        child: ListView(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            children: <Widget>[
+          FlatButton.icon(
+            color: Colors.red,
+            icon: Icon(Icons.access_alarm), //`Icon` to display
+            label: Text('Add a Photo'), //`Text` to display
+
+            onPressed: () {
+              setState(() {});
+            },
+          ),
+          Container(
+            child: DistanceMap(
+                //TODO: ver que pàrametros necesita
+                height: _height*0.65,
+                distanceRadius: 5000),
+          ),
+        ]));
+  }
 }

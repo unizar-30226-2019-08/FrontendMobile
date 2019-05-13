@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clases relativas a la pagina de subida de producto
  * CREACIÓN:    15/04/2019
  */
+import 'package:bookalo/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/objects/product.dart';
@@ -13,7 +14,6 @@ import 'package:bookalo/widgets/upload_products/upload_images.dart';
 import 'package:bookalo/widgets/upload_products/upload_title.dart';
 import 'package:bookalo/widgets/upload_products/upload_tags.dart';
 import 'package:bookalo/widgets/upload_products/upload_position.dart';
-import 'package:flutter_tags/selectable_tags.dart';
 
 /*
  *  CLASE:        UploadProduct
@@ -26,8 +26,9 @@ class UploadProduct extends StatefulWidget {
 }
 
 class _UploadProduct extends State<UploadProduct> {
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   Product newP;
-  List<bool> pagesValited = [true, false, true, true];
+  List<bool> pagesValited = [true, false, false, false];
   var _pageOptions = [];
   @override
   void initState() {
@@ -68,6 +69,9 @@ class _UploadProduct extends State<UploadProduct> {
       ),
       UploadTags(
         initialT: newP.getTags(),
+        validate: (validado){setState(() {
+          pagesValited[2] = validado;
+        });},
         onDeleteTag: (tag) {
           setState(() {
             newP.deleteTag(tag);
@@ -79,7 +83,11 @@ class _UploadProduct extends State<UploadProduct> {
           });
         },
       ),
-      UploadPosition(),
+      UploadPosition(
+        validate: (validado){setState(() {
+          pagesValited[3] = validado;
+        });},
+      ),
     ];
   }
 
@@ -99,26 +107,39 @@ class _UploadProduct extends State<UploadProduct> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
         body: _pageOptions[currentPage],
-        //TODO: snackbar (login)
+        //TODO: snackbar -> Mejorar mensaje
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if(validarPaginas()){
+            if (validarPaginas()) {
               //Subir
-            }else{
+            } else {
               int i = 0;
-              while(pagesValited[i] && i < pagesValited.length){ 
+              while (pagesValited[i] && i < pagesValited.length) {
                 i++;
               }
               setState(() {
                 currentPage = i;
               });
-              //Error
+              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                content: Text(
+                  Translations.of(context).text("Por favor, complete los campos obligatorios",
+                      /*params: [provider, (result.index * 100).toString()]*/),
+                  style: TextStyle(fontSize: 17.0),
+                ),
+                action: SnackBarAction(
+                  label: Translations.of(context).text("accept"),
+                  onPressed: () {
+                    _scaffoldKey.currentState.hideCurrentSnackBar();
+                  },
+                ),
+              ));
             }
           },
           child: Icon(Icons.file_upload),
-          backgroundColor: (validarPaginas()? Colors.green : Colors.red),
+          backgroundColor: (validarPaginas() ? Colors.green : Colors.grey),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         bottomNavigationBar: BubbleBottomBar(
@@ -139,53 +160,64 @@ class _UploadProduct extends State<UploadProduct> {
           fabLocation: BubbleBottomBarFabLocation.end, //new
           hasNotch: true, //new
           hasInk: true, //new, gives a cute ink effect
-          inkColor:
-              Colors.black, //optional, uses theme color if not specified
+          inkColor: Colors.black, //optional, uses theme color if not specified
           items: <BubbleBottomBarItem>[
             BubbleBottomBarItem(
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.add_a_photo,
-                  color: Colors.white,
+                  color: (pagesValited[2]) ? Colors.green : Colors.white,
                 ),
                 activeIcon: Icon(
                   Icons.add_a_photo,
                   color: Colors.white,
                 ),
-                title: Text("Fotos", style: TextStyle(color: Colors.white),)),
+                title: Text(
+                  "Fotos",
+                  style: TextStyle(color: Colors.white),
+                )),
             BubbleBottomBarItem(
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.edit,
-                  color: Colors.white,
+                  color: (validarNPaginas(1)) ? (pagesValited[1]) ? Colors.green : Colors.white : Colors.grey,
                 ),
                 activeIcon: Icon(
                   Icons.edit,
                   color: Colors.white,
                 ),
-                title: Text("Producto",style: TextStyle(color: Colors.white),)),
+                title: Text(
+                  "Producto",
+                  style: TextStyle(color: Colors.white),
+                )),
             BubbleBottomBarItem(
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.dashboard,
-                  color: Colors.white,
+                  color: (validarNPaginas(2)) ? (pagesValited[2]) ? Colors.green : Colors.white : Colors.grey,
                 ),
                 activeIcon: Icon(
                   Icons.dashboard,
                   color: Colors.white,
                 ),
-                title: Text("Tags",style: TextStyle(color: Colors.white),)),
+                title: Text(
+                  "Tags",
+                  style: TextStyle(color: Colors.white),
+                )),
             BubbleBottomBarItem(
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.my_location,
-                  color: Colors.white,
+                  color: (validarNPaginas(3)) ? (pagesValited[3]) ? Colors.green : Colors.white : Colors.grey,
                 ),
                 activeIcon: Icon(
                   Icons.my_location,
                   color: Colors.white,
                 ),
-                title: Text("Posición",style: TextStyle(color: Colors.white),))
+                title: Text(
+                  "Posición",
+                  style: TextStyle(color: Colors.white),
+                ))
           ],
         ),
 
@@ -234,9 +266,20 @@ class _UploadProduct extends State<UploadProduct> {
       ),
     );
   }
-  bool validarPaginas(){
+
+  bool validarPaginas() {
     bool v = true;
-      pagesValited.forEach((x) { v = v && x;});
+    pagesValited.forEach((x) {
+      v = v && x;
+    });
+    return v;
+  }
+
+  bool validarNPaginas(int n) {
+    bool v = true;
+    for (int i = 0; i < n; i++) {
+      v = v && pagesValited[i];
+    }
     return v;
   }
 }

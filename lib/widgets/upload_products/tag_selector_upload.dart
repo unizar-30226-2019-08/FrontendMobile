@@ -47,16 +47,17 @@ class TagsSelectorUplod extends StatefulWidget {
 class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
 	GlobalKey<AutoCompleteTextFieldState<Tag>> key = GlobalKey();
 	List<String> selectedTagsIn = [];
+  bool showError = false;
+  String msgError = "";
 //	List<Tag> inputTags = [];
 
 	@override
 	void initState() {
 		super.initState();
 	}
-
+  
 	@override
-	Widget build(BuildContext context) {
-		
+	Widget build(BuildContext context) {	
 		int _column = 3;
 		double width = MediaQuery.of(context).size.width;
 		return Column(
@@ -89,6 +90,7 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
                   tag.active = true;
                   setState(() {
                     widget.onInsertTag(tag.title);
+                    showError = false;
                   });
                 }
               },
@@ -101,15 +103,30 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
                     .contains(input.toLowerCase());
               },
 							textSubmitted: (inputetx){
-                if(inputetx.length > 0 && inputetx.length < 40){
+                const maxLong = 3;
+                if(inputetx.length > 0 && inputetx.length < maxLong){
                   setState(() {
                       widget.onInsertTag(inputetx);
+                      showError = false;
                     });
+                }else{
+                  if(inputetx.length >= maxLong)
+                    setState(() {
+                      msgError = "Tag demasiado largo.\nMáximo permitido = 30";
+                      showError = true;
+                  });
                 }
                 
 							},
             )
 					),
+        ((showError)  
+            ?  Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Text(msgError, textAlign: TextAlign.left, style: TextStyle(color: Colors.redAccent),)
+              ) 
+            : Container()),
         Container(
 				    child: InputTags(
 						tags: widget.selectedTags,
