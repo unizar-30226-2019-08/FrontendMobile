@@ -35,9 +35,9 @@ dependencies:
   http: ^0.12.0+2
   scoped_model: ^1.0.1
   paging: ^0.1.0
-  fancy_bottom_navigation: ^0.3.2
-  curved_navigation_bar: ^0.1.2 
-  
+  #fancy_bottom_navigation: ^0.3.2
+  #curved_navigation_bar: ^0.1.2 
+  bubble_bottom_bar: ^1.2.0
 
 
 dev_dependencies:
