@@ -4,7 +4,8 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
-import 'package:geo/geo.dart';
+import 'package:geo/geo.dart' as geo;
+import 'package:latlong/latlong.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -18,6 +19,15 @@ class DistanceChip extends StatelessWidget {
   final LatLng targetPosition;
 
   /*
+   * Pre:   userPosition es un objeto LatLng de la libreria geo que representa
+   *        la posición actual del usuario. targetPosition también es un obejto
+   *        LatLng que representa la posición del producto
+   * Post:  
+   */
+  DistanceChip({Key key, this.userPosition, this.targetPosition})
+      : super(key: key);
+
+  /*
    * Pre:   p1 y p2 son dos objetos LatLng representando respectivamente
    *        la posición actual del usuario y la del producto; context
    *        es el contexto actual de ejecución
@@ -25,7 +35,9 @@ class DistanceChip extends StatelessWidget {
    *        adecuado
    */
   String distanceToString(LatLng p1, LatLng p2, BuildContext context) {
-    double distance = computeDistanceBetween(p1, p2);
+    geo.LatLng p1Converted = geo.LatLng(p1.latitude, p1.longitude);
+    geo.LatLng p2Converted = geo.LatLng(p2.latitude, p2.longitude);
+    double distance = geo.computeDistanceBetween(p1Converted, p2Converted);
     if (distance < 100) {
       return Translations.of(context).text("very_close");
     }
@@ -37,15 +49,6 @@ class DistanceChip extends StatelessWidget {
     }
     return (distance / 1000).toStringAsFixed(0) + ' km';
   }
-
-  /*
-   * Pre:   userPosition es un objeto LatLng de la libreria geo que representa
-   *        la posición actual del usuario. targetPosition también es un obejto
-   *        LatLng que representa la posición del producto
-   * Post:  
-   */
-  DistanceChip({Key key, this.userPosition, this.targetPosition})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

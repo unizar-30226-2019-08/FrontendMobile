@@ -4,6 +4,8 @@
  * CREACIÓN:    17/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -12,21 +14,26 @@ import 'package:bookalo/translations.dart';
 *                usuarios de los que se desea obtener productos en el filtrado
 */
 class RatingSlider extends StatefulWidget {
-  final Function(double) onMinRatingChanged;
-
   /*
    * Pre:   onMinRatingChanged es una función void
    * Post:  ha construido el widget de tal forma que en cada
-   *        cambio en la calificacción seleccionada, ha ejecutado
-   *        la callback onMinRatingChanged
+   *        cambio en la calificacción seleccionada, se han actualizado
+   *        las opciones de filtrado
    */
-  RatingSlider({Key key, this.onMinRatingChanged}) : super(key: key);
+  RatingSlider({Key key}) : super(key: key);
 
   _RatingSliderSate createState() => _RatingSliderSate();
 }
 
 class _RatingSliderSate extends State<RatingSlider> {
-  double _minRate = 4.0;
+  double rating;
+
+  @override
+  void initState() {
+    super.initState();
+    rating = ScopedModel.of<FilterQuery>(context).minRating.toDouble();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -46,13 +53,18 @@ class _RatingSliderSate extends State<RatingSlider> {
               width: width / 1.5,
               child: Slider(
                 label: Translations.of(context).text("min_rating"),
-                divisions: 4,
-                min: 1.0,
+                divisions: 5,
+                min: 0.0,
                 max: 5.0,
-                value: _minRate,
-                onChanged: (Value) {
-                  setState(() => _minRate = Value);
-                  widget.onMinRatingChanged(Value);
+                value: rating,
+                onChanged: (value) {
+                  setState(() {
+                    rating = value;
+                  });
+                },
+                onChangeEnd: (value) {
+                  ScopedModel.of<FilterQuery>(context)
+                      .setMinRating(value.round());
                 },
               ),
             ),
@@ -61,7 +73,7 @@ class _RatingSliderSate extends State<RatingSlider> {
               width: width / 4,
               child: Row(
                 children: <Widget>[
-                  Text(_minRate.toStringAsFixed(0) + ' ',
+                  Text(rating.toStringAsFixed(0) + ' ',
                       style: TextStyle(
                           fontSize: 25.0, fontWeight: FontWeight.w300)),
                   Icon(Icons.star, color: Colors.pink, size: 30.0)
