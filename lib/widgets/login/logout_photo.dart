@@ -5,10 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:bookalo/utils/auth_utils.dart';
 
 /*
  *  CLASE:        LogoutPhoto
@@ -40,31 +37,9 @@ class LogoutPhoto extends StatelessWidget {
             size: 35.0,
           ),
           onTap: () async {
-            String provider = "";
-            await FirebaseAuth.instance.currentUser().then((user) {
-              provider = user.providerData[1].providerId;
-            });
-            switch (provider) {
-              case "google.com":
-                final GoogleSignIn g = GoogleSignIn();
-                await g.disconnect();
-                break;
-              case "twitter.com":
-                var twitterLogin = TwitterLogin(
-                  consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
-                  consumerSecret:
-                      'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',
-                );
-                await twitterLogin.logOut();
-                break;
-              case "facebook.com":
-                final facebookLogin = FacebookLogin();
-                await facebookLogin.logOut();
-                break;
-            }
-            FirebaseAuth.instance.signOut();
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+            await signOut();
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login', (Route<dynamic> route) => false);
           },
         ),
       ],

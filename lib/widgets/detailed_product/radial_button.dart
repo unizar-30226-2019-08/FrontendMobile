@@ -7,6 +7,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/utils/http_utils.dart';
 
 /*
  *  CLASE:        RadialButton
@@ -15,13 +17,24 @@ import 'package:bookalo/translations.dart';
  *                de cerrarse de nuevo
  */
 class RadialButton extends StatefulWidget {
-  RadialButton();
+  final String sellerId;
+  final Product product;
+  final Function() onFavorite;
+  final bool wasMarkedAsFavorite;
+  RadialButton(
+      {Key key,
+      this.product,
+      this.sellerId,
+      this.onFavorite,
+      this.wasMarkedAsFavorite})
+      : super(key: key);
 
   _RadialButtonState createState() => _RadialButtonState();
 }
 
 class _RadialButtonState extends State<RadialButton>
     with SingleTickerProviderStateMixin {
+  bool isMarkedAsFavorite;
   AnimationController _animationController;
   Animation<Color> _colorAnimation;
 
@@ -30,10 +43,20 @@ class _RadialButtonState extends State<RadialButton>
    * Post:  comparte un perfil de usuario de prueba
    */
   void share() {
-    Share.share(
-        Translations.of(context).text('share_profile', params: ['Juan']) +
-            'https://bookalo.es/user=123');
+    Share.share(Translations.of(context)
+            .text('share_product', params: [widget.product.getName()]) +
+        'https://bookalo.es/product=' +
+        widget.product.getId().toString());
+    //TODO: actualizar ruta del producto
     close();
+  }
+
+  void markAsFavorite() async {
+    registerFavorite(widget.product);
+    setState(() {
+      widget.onFavorite();
+      isMarkedAsFavorite = !isMarkedAsFavorite;
+    });
   }
 
   @override
@@ -43,6 +66,7 @@ class _RadialButtonState extends State<RadialButton>
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.pink[700])
         .animate(_animationController);
+    isMarkedAsFavorite = widget.wasMarkedAsFavorite;
   }
 
   @override
@@ -68,7 +92,10 @@ class _RadialButtonState extends State<RadialButton>
               _buildExpandedBackground(expandedSize, hiddenSize),
               _buildFabCore(),
               _buildOption(Icons.chat_bubble_outline, 0.0, share),
-              _buildOption(Icons.favorite, math.pi, share),
+              _buildOption(
+                  (isMarkedAsFavorite ? Icons.favorite : Icons.favorite_border),
+                  math.pi,
+                  markAsFavorite),
               _buildOption(Icons.share, -(math.pi / 2), share)
             ],
           );

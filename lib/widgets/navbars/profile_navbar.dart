@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/static_stars.dart';
-import 'package:bookalo/widgets/login/logout_photo.dart';
 import 'package:bookalo/objects/user.dart';
 
 /*
@@ -24,8 +23,7 @@ class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        navegación
      * Post:  ha construido el widget
      */
-  ProfileNavbar({Key key, this.preferredSize, this.user, this.isOwnProfile})
-      : super(key: key);
+  ProfileNavbar({Key key, this.preferredSize, this.user}) : super(key: key);
 
   @override
   final Size preferredSize;
@@ -33,7 +31,6 @@ class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
   @override
   _ProfileNavbarState createState() => _ProfileNavbarState();
 
-  final bool isOwnProfile;
   final User user;
 }
 
@@ -69,15 +66,21 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Text(Translations.of(context).text('online'),
+                              Text(
+                                  (widget.user.isOnline()
+                                      ? Translations.of(context).text('online')
+                                      : widget.user.getLastConnection(context)),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.w300)),
                               Container(
                                 margin: EdgeInsets.only(left: 5.0),
-                                child: Icon(Icons.chat_bubble,
-                                    color: Colors.green),
+                                child: (widget.user.isOnline()
+                                    ? Icon(Icons.chat_bubble,
+                                        color: Colors.green)
+                                    : Icon(Icons.chat_bubble,
+                                        color: Colors.grey)),
                               ),
                             ],
                           ),
@@ -90,13 +93,10 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                 GestureDetector(
                   child: Hero(
                       tag: "profileImage",
-                      child: (widget.isOwnProfile
-                          ? LogoutPhoto(url: widget.user.getPicture())
-                          : CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(widget.user.getPicture()),
-                              radius: 50.0,
-                            ))),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(widget.user.getPicture()),
+                        radius: 50.0,
+                      )),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -112,10 +112,7 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
           bottom: TabBar(
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [
-              Tab(
-                  text: (widget.isOwnProfile
-                      ? Translations.of(context).text('favorites')
-                      : Translations.of(context).text('on_sale_tab'))),
+              Tab(text: Translations.of(context).text('on_sale_tab')),
               Tab(text: Translations.of(context).text('reviews_tab'))
             ],
           ),
@@ -158,9 +155,11 @@ class BigProfileImage extends StatelessWidget {
         body: Center(
             child: Hero(
           tag: "profileImage",
-          child: CircleAvatar(
-            backgroundImage: image,
-            radius: width / 2.2,
+          child: Center(
+            child: CircleAvatar(
+              backgroundImage: image,
+              radius: width / 2.2,
+            ),
           ),
         )),
       ),
