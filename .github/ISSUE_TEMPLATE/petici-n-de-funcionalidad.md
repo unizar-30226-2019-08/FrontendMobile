@@ -10,6 +10,6 @@ assignees: ''
 **Descripción**
 [...]
 
-**Pantallas y/o widgets relacionados*
+**Pantallas y/o widgets relacionados**
 - Pantalla A
 - Widget B
