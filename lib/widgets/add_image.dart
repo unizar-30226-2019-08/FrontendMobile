@@ -21,7 +21,7 @@ import 'dart:io';
  */
 
 class AddImageCard extends StatefulWidget {
-  final Function onNewPicture;
+  final Function(File) onNewPicture;
   AddImageCard(this.onNewPicture);
   _AddImageCardState createState() => _AddImageCardState();
 //Subir fotos de cámara
@@ -33,7 +33,7 @@ class AddImageCard extends StatefulWidget {
 
 class _AddImageCardState extends State<AddImageCard>{
   bool state=false;
-
+  File imageToAdd;
   bool isSelected(){
     return state;
   }
@@ -56,16 +56,24 @@ class _AddImageCardState extends State<AddImageCard>{
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-cameraPicker() async{
+Future cameraPicker() async{
+  
  File img= await ImagePicker.pickImage(source:ImageSource.camera);
- widget.onNewPicture(img);
+ setState(() {
+   imageToAdd=img;
+ });
+ widget.onNewPicture(imageToAdd);
 
 }
 
 //Subir fotos de galeria
- galleryPicker() async{
+ Future galleryPicker() async{
   File img= await ImagePicker.pickImage(source:ImageSource.gallery);
-  widget. onNewPicture(img);
+  setState(() {
+   imageToAdd=img;
+ });
+  widget.onNewPicture(imageToAdd);
+ 
 }
 
 
@@ -73,13 +81,13 @@ cameraPicker() async{
    return Column(
           children:[
                Container(
-                 width:width,
+                 width:width/1.5,
                  height:height/2,
                  child:
                 Padding(
         padding: EdgeInsets.all(5),
         child:Card(
-          
+          color:Colors.grey,
       child: InkWell(
         highlightColor: Colors.grey,
         splashColor: Colors.grey,
@@ -89,8 +97,8 @@ cameraPicker() async{
 
         child:Center(child:
         Container(
-          width:150.0,
-           height: 200.0,
+          width:width/2,
+           height:height/2,
            padding: EdgeInsets.symmetric(vertical: 5.0),
            child:Center(child:Icon(Icons.add_circle))
            )
@@ -107,7 +115,7 @@ cameraPicker() async{
                 child:Icon(Icons.add_a_photo)
               ),
 
-              Container(height: 15.0),
+              Container(width: 50.0),
 
               FloatingActionButton(
                 onPressed: galleryPicker,

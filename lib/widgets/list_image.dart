@@ -32,27 +32,36 @@ class _ListImageCardState extends State<ListImageCard> {
    List <Widget> imageCards=[];
      List <File> imagesList;
   _ListImageCardState();
+  File imageToAdd;
 
-
+//Estado inicial de la lista
 void initState() {
 super.initState();
-Widget card=AddImageCard(addImageToList);
+Widget card=AddImageCard(onNewPicture);
 imageCards.add(card);
 
-}
 
+}
+//Quitar foto de la lista
 void removeFromList(File img,Widget imageCard){
-  imageCards.remove(imageCard);
+  setState(() {
+    
+  //imageCards.remove(imageCard);
   imagesList.remove(img);
-  setState(() {});
+  });
 }
 
 
-//Subir fotos de cámara
- void addImageToList(File img) async{
- imageCards.add(ImageCard(img,removeFromList));
- imagesList.add(img);
- setState(() {});
+//Añadir foto a la lista
+ void onNewPicture(File img) async{
+  setState(() {
+    imageCards.add(ImageCard(img,removeFromList));
+    imagesList.add(img);
+  print("Anyadiendo a lista");
+
+  });
+ 
+ 
 }
 
 
@@ -65,7 +74,7 @@ void removeFromList(File img,Widget imageCard){
     double height = MediaQuery.of(context).size.height;
     return Container(
        width:width,
-                 height:height,
+      height:height,
       child:ListView.builder(
         
         shrinkWrap: true,
@@ -73,12 +82,26 @@ void removeFromList(File img,Widget imageCard){
         padding: EdgeInsets.all(10),
         itemCount: imageCards.length,
         itemBuilder:(BuildContext context,int index){
-          //return imageCards[index];
+          return  imageCards[index];
         }
     ),  
          // child: Image.file(widget.image)
             
     );   
   }
+
+
+//Mostrar imágenes de la lista
+Widget showImage(int index){
+  return new Container(
+    padding:EdgeInsets.all(5.0),
+    child:
+      
+          imageCards[index],
+      
+  );
+}
+  
+
   
 }

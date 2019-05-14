@@ -147,11 +147,11 @@ class _UploadProduct extends State<UploadProduct> {
       Step(
           title: Text('¡Fotos, por favor!'),
           content:
-          
+            
             ListImageCard(),
             //AddImageCard(),
            // ImageCard(),
-            //ImageCard(image:File("assets/images/boli.png"),),
+           
           
           
           

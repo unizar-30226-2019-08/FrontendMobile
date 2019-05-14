@@ -26,15 +26,16 @@ import 'dart:io';
 
 class ImageCard extends StatelessWidget {
   final File image; //usuario actual
-  final Function removePicture;
+  final Function (File,Widget) removePicture;
   ImageCard(this.image,this.removePicture);//(this.erasePicture);//({this.image});
 
-  void onXpressed(){
-    AlertDialog erase =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
+   onXpressed(){
+    AlertDialog removeWarning =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
     actions:[
-        new FlatButton(onPressed: null,child: Text("Continuar"),)
-    ]);
-    
+       // new FlatButton(onPressed: removePicture,child: Text("Continuar"),),
+        new FlatButton(onPressed: null,child: Text("Cancelar"),)
+    ]
+    );
    // erasePicture();
   }
   
@@ -42,49 +43,43 @@ class ImageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-   AlertDialog erase =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
+   AlertDialog removeWarning =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
     actions:[
-        new FlatButton(onPressed: removePicture,child: Text("Continuar"),),
+       //new FlatButton(onPressed: this.removePicture(),child: Text("Continuar"),),
         new FlatButton(onPressed: null,child: Text("Cancelar"),)
     ]);
 
 
- return Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Stack(alignment: Alignment.topRight, children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(generateRandomProduct().getImage()),
-                fit: BoxFit.fill,
-                alignment: Alignment.topCenter,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  width:width,
-                  height:height/2,
-                  
-                  
-                    child: IconButton(
-                      icon: Icon(Icons.cancel,
-                          color: Colors.pink, size: 30),
-                      onPressed: () {
-                        showDialog(context:context,child:erase);
-                      }
-                        )
-                      
-                    ),
-                  
-                
-                
-              ],
-            ),
-          ),
+   return Column(
+          children:[
+               Container(
+                 width:width/1.5,
+                 height:height/2,
+                 child:
+                Padding(
+        padding: EdgeInsets.all(5),
+        child:Card(
+          color:Colors.grey,
+      child: InkWell(
+        highlightColor: Colors.grey,
+        splashColor: Colors.grey,
+       
+
+
+        child:Image.file(this.image)
+        ),
+      ),
+    ),
+),
+   IconButton(icon:Icon(Icons.cancel),onPressed:(){showDialog(context: context,builder: (BuildContext context){return removeWarning;});})
+ 
           
-        ]));
+
+
+              ]
+   );
+   
+  
 
 
 
