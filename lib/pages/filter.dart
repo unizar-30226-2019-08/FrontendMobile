@@ -4,6 +4,9 @@
  * CREACIÓN:    15/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/filter_query.dart';
+import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/filter/distance_map.dart';
 import 'package:bookalo/widgets/filter/sliders/distance_slider.dart';
 import 'package:bookalo/widgets/filter/sliders/price_slider.dart';
@@ -47,8 +50,21 @@ class _FilterState extends State<Filter> {
           child: ListView(
             children: <Widget>[
               TagsLoader(
-                onTagsChanged: (tag) {},
-                initialTags: [],
+                onTagsChanged: (tag) {
+                  if (tag.active) {
+                    ScopedModel.of<FilterQuery>(context).addTag(tag.title);
+                  } else {
+                    ScopedModel.of<FilterQuery>(context).removeTag(tag.title);
+                  }
+                },
+                initialTags: List.generate(
+                    ScopedModel.of<FilterQuery>(context).tagList.length, (i) {
+                  return Tag(
+                      title: ScopedModel.of<FilterQuery>(context)
+                          .tagList
+                          .elementAt(i),
+                      active: true);
+                }),
               ),
               DistanceSlider(
                 onMaxDistanceChange: (maxDistance) {
@@ -59,8 +75,8 @@ class _FilterState extends State<Filter> {
               ),
               DistanceMap(
                   height: height / 5, distanceRadius: _maxDistance * 1000),
-              PriceSlider(onPriceChanged: (minPrice, maxPrice) {}),
-              RatingSlider(onMinRatingChanged: (minRate) {}),
+              PriceSlider(),
+              RatingSlider(),
               Container(
                 margin: EdgeInsets.only(top: 20.0),
                 child: Center(

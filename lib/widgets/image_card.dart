@@ -5,19 +5,8 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
-import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/report.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/widgets/static_stars.dart';
-import 'package:bookalo/pages/chat.dart';
-import 'package:bookalo/widgets/distance_chip.dart';
-import 'package:bookalo/translations.dart';
 import 'package:bookalo/utils/objects_generator.dart';
-import 'package:geo/geo.dart';
 import 'dart:io';
-
 
 /*
   CLASE: ImageCard
@@ -27,35 +16,48 @@ import 'dart:io';
 class ImageCard extends StatelessWidget {
   final File image; //usuario actual
   final Function removePicture;
-  ImageCard(this.image,this.removePicture);//(this.erasePicture);//({this.image});
+  ImageCard(
+      this.image, this.removePicture); //(this.erasePicture);//({this.image});
 
-  void onXpressed(){
-    AlertDialog erase =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
-    actions:[
-        new FlatButton(onPressed: null,child: Text("Continuar"),)
-    ]);
-    
-   // erasePicture();
+  void onXpressed() {
+    AlertDialog erase = AlertDialog(
+        title: Text("Cuidado"),
+        content: Text("¿seguro que quieres borrar esta foto"),
+        actions: [
+          new FlatButton(
+            onPressed: null,
+            child: Text("Continuar"),
+          )
+        ]);
+
+    // erasePicture();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-   AlertDialog erase =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
-    actions:[
-        new FlatButton(onPressed: removePicture,child: Text("Continuar"),),
-        new FlatButton(onPressed: null,child: Text("Cancelar"),)
-    ]);
+    AlertDialog erase = AlertDialog(
+        title: Text("Cuidado"),
+        content: Text("¿seguro que quieres borrar esta foto"),
+        actions: [
+          new FlatButton(
+            onPressed: removePicture,
+            child: Text("Continuar"),
+          ),
+          new FlatButton(
+            onPressed: null,
+            child: Text("Cancelar"),
+          )
+        ]);
 
-
- return Card(
+    return Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Stack(alignment: Alignment.topRight, children: <Widget>[
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(generateRandomProduct().getImage()),
+                image: NetworkImage(generateRandomProduct().getImages()[0]),
                 fit: BoxFit.fill,
                 alignment: Alignment.topCenter,
               ),
@@ -64,35 +66,19 @@ class ImageCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  width:width,
-                  height:height/2,
-                  
-                  
+                    width: width,
+                    height: height / 2,
                     child: IconButton(
-                      icon: Icon(Icons.cancel,
-                          color: Colors.pink, size: 30),
-                      onPressed: () {
-                        showDialog(context:context,child:erase);
-                      }
-                        )
-                      
-                    ),
-                  
-                
-                
+                        icon: Icon(Icons.cancel, color: Colors.pink, size: 30),
+                        onPressed: () {
+                          showDialog(context: context, child: erase);
+                        })),
               ],
             ),
           ),
-          
         ]));
 
-
-
-
-
-
-
-   /*return Column(
+    /*return Column(
           children:[
                Container(
                  width:width,
@@ -108,15 +94,6 @@ class ImageCard extends StatelessWidget {
 ),
           ]
    );*/
-  
-  
-
-
-
-
-
-
-
 
     /*return Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -134,14 +111,6 @@ class ImageCard extends StatelessWidget {
         )
     );*/
 
-
-
-
-
-
-
-
-
     /*return Padding(
         
         padding: EdgeInsets.all(10),
@@ -156,7 +125,4 @@ class ImageCard extends StatelessWidget {
             
         ));*/
   }
-  
-
-  
 }

@@ -4,12 +4,11 @@
  *              widget de selección de tags
  * CREACIÓN:    20/03/2019
  */
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/filter/tags_selector.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
+import 'package:bookalo/utils/http_utils.dart';
 
 /*
  *  CLASE:        TagsLoader
@@ -34,45 +33,25 @@ class TagsLoader extends StatefulWidget {
 }
 
 class _TagsLoaderState extends State<TagsLoader> {
-  /*
-   * Pre:   ---
-   * Post   devolverá una lista de tags. Por el momento, mockup
-   */
-  Future<List<Tag>> _getTags() async {
-    List<Tag> mockTagList = [];
-    int tagCounter = 0;
-    nouns.take(100).forEach((noun) {
-      mockTagList.add(Tag(id: tagCounter, title: noun, active: false));
-      tagCounter++;
-    });
-    return mockTagList;
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (widget.initialTags.length == 0) {
-      double height = MediaQuery.of(context).size.height;
-      return FutureBuilder(
-        future: _getTags(),
-        builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
-          if (snapshot.hasData) {
-            return TagsSelector(
-              onTagsChanged: widget.onTagsChanged,
-              suggestedTags: snapshot.data,
-            );
-          } else {
-            return Container(
-              height: height / 4,
-              child: Center(child: BookaloProgressIndicator()),
-            );
-          }
-        },
-      );
-    } else {
-      return TagsSelector(
-        onTagsChanged: widget.onTagsChanged,
-        suggestedTags: widget.initialTags,
-      );
-    }
+    double height = MediaQuery.of(context).size.height;
+    return FutureBuilder(
+      future: parseTags(widget.initialTags),
+      builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
+        if (snapshot.hasData) {
+          return TagsSelector(
+            onTagsChanged: widget.onTagsChanged,
+            suggestedTags: snapshot.data,
+            previousTagsLength: widget.initialTags.length,
+          );
+        } else {
+          return Container(
+            height: height / 4,
+            child: Center(child: BookaloProgressIndicator()),
+          );
+        }
+      },
+    );
   }
 }

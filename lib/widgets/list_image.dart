@@ -5,15 +5,9 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
-import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/report.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:bookalo/widgets/image_card.dart';
 import 'package:bookalo/widgets/add_image.dart';
 import 'dart:io';
-
 
 /*
   CLASE: ImageCard
@@ -21,64 +15,53 @@ import 'dart:io';
  */
 
 class ListImageCard extends StatefulWidget {
-   //usuario actual
-  
+  //usuario actual
+
   ListImageCard();
 
   _ListImageCardState createState() => _ListImageCardState();
 }
 
 class _ListImageCardState extends State<ListImageCard> {
-   List <Widget> imageCards=[];
-     List <File> imagesList;
+  List<Widget> imageCards = [];
+  List<File> imagesList;
   _ListImageCardState();
 
+  void initState() {
+    super.initState();
+    Widget card = AddImageCard(addImageToList);
+    imageCards.add(card);
+  }
 
-void initState() {
-super.initState();
-Widget card=AddImageCard(addImageToList);
-imageCards.add(card);
-
-}
-
-void removeFromList(File img,Widget imageCard){
-  imageCards.remove(imageCard);
-  imagesList.remove(img);
-  setState(() {});
-}
-
+  void removeFromList(File img, Widget imageCard) {
+    imageCards.remove(imageCard);
+    imagesList.remove(img);
+    setState(() {});
+  }
 
 //Subir fotos de cámara
- void addImageToList(File img) async{
- imageCards.add(ImageCard(img,removeFromList));
- imagesList.add(img);
- setState(() {});
-}
-
-
-
- 
+  void addImageToList(File img) async {
+    imageCards.add(ImageCard(img, removeFromList));
+    imagesList.add(img);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
-     double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Container(
-       width:width,
-                 height:height,
-      child:ListView.builder(
-        
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.all(10),
-        itemCount: imageCards.length,
-        itemBuilder:(BuildContext context,int index){
-          //return imageCards[index];
-        }
-    ),  
-         // child: Image.file(widget.image)
-            
-    );   
+      width: width,
+      height: height,
+      child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.all(10),
+          itemCount: imageCards.length,
+          itemBuilder: (BuildContext context, int index) {
+            //return imageCards[index];
+          }),
+      // child: Image.file(widget.image)
+    );
   }
-  
 }

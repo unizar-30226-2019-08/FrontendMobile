@@ -90,7 +90,7 @@ class _ValorationCardState extends State<ValorationCard> {
                           hintText:
                               Translations.of(context).text("how_was_it")),
                       validator: (review) {
-                        if (review.length < 30) {
+                        if (review.length < 15) {
                           //El comentario debe tener al menos 30 caracteres
                           return Translations.of(context)
                               .text("review_too_short");
@@ -149,11 +149,14 @@ class _ValorationCardState extends State<ValorationCard> {
                               fontWeight: FontWeight.w700),
                         ),
                         onPressed: () {
-                           Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Report(currentUser:widget.currentUser,userToValorate: widget.userToValorate,)),
-                );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Report(
+                                      currentUser: widget.currentUser,
+                                      userToValorate: widget.userToValorate,
+                                    )),
+                          );
                         },
                       ),
                     ],
