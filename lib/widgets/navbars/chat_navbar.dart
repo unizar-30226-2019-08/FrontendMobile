@@ -27,7 +27,9 @@ class ChatNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        enumeración de Interest
      * Post:  ha construido el widget
      */
-  ChatNavbar({Key key, this.preferredSize, this.interest, this.user, this.product}) : super(key: key);
+  ChatNavbar(
+      {Key key, this.preferredSize, this.interest, this.user, this.product})
+      : super(key: key);
 
   final Interest interest;
   final User user;
@@ -60,7 +62,8 @@ class _ChatNavbarState extends State<ChatNavbar> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => UserProfile(isOwnProfile: false, user: widget.user)),
+                      builder: (context) =>
+                          UserProfile(isOwnProfile: false, user: widget.user)),
                 );
               })),
       title: Text(Translations.of(context)

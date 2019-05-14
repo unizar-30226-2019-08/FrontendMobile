@@ -23,8 +23,7 @@ class ProfileNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        navegación
      * Post:  ha construido el widget
      */
-  ProfileNavbar({Key key, this.preferredSize, this.user})
-      : super(key: key);
+  ProfileNavbar({Key key, this.preferredSize, this.user}) : super(key: key);
 
   @override
   final Size preferredSize;
@@ -68,9 +67,9 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                (widget.user.isOnline()
-                                ? Translations.of(context).text('online')
-                                : widget.user.getLastConnection(context)),
+                                  (widget.user.isOnline()
+                                      ? Translations.of(context).text('online')
+                                      : widget.user.getLastConnection(context)),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 15.0,
@@ -78,8 +77,10 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                               Container(
                                 margin: EdgeInsets.only(left: 5.0),
                                 child: (widget.user.isOnline()
-                                  ? Icon(Icons.chat_bubble, color: Colors.green)
-                                  : Icon(Icons.chat_bubble, color: Colors.grey)),
+                                    ? Icon(Icons.chat_bubble,
+                                        color: Colors.green)
+                                    : Icon(Icons.chat_bubble,
+                                        color: Colors.grey)),
                               ),
                             ],
                           ),
@@ -93,10 +94,9 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                   child: Hero(
                       tag: "profileImage",
                       child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(widget.user.getPicture()),
-                              radius: 50.0,
-                            )),
+                        backgroundImage: NetworkImage(widget.user.getPicture()),
+                        radius: 50.0,
+                      )),
                   onTap: () {
                     Navigator.push(
                       context,

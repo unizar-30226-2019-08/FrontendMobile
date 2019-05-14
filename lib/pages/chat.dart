@@ -22,7 +22,6 @@ class Chat extends StatefulWidget {
 
   Chat({Key key, this.user, this.product, this.interest}) : super(key: key);
 
-
   _ChatState createState() => _ChatState();
 }
 
@@ -32,7 +31,11 @@ class _ChatState extends State<Chat> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: ChatNavbar(
-          preferredSize: Size.fromHeight(height / 10), interest: widget.interest, user: widget.user, product: widget.product,),
+        preferredSize: Size.fromHeight(height / 10),
+        interest: widget.interest,
+        user: widget.user,
+        product: widget.product,
+      ),
       body: ListView(
         children: <Widget>[
           Bubble(

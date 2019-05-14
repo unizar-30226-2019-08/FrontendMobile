@@ -63,7 +63,7 @@ class _DistanceSliderState extends State<DistanceSlider> {
                   });
                   widget.onMaxDistanceChange(value);
                 },
-                onChangeEnd: (value){
+                onChangeEnd: (value) {
                   ScopedModel.of<FilterQuery>(context).setMaxDistance(value);
                 },
               ),

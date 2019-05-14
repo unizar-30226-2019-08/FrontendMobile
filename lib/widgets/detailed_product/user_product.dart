@@ -57,17 +57,25 @@ class UserProduct extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Chat(user: _user, product: _product, interest: Interest.offers)),
+                  MaterialPageRoute(
+                      builder: (context) => Chat(
+                          user: _user,
+                          product: _product,
+                          interest: Interest.offers)),
                 );
               },
             ),
             title: Text(_user.getName()),
-            subtitle: StaticStars(_user.getRating(), Colors.black, _user.getRatingsAmount()),
+            subtitle: StaticStars(
+                _user.getRating(), Colors.black, _user.getRatingsAmount()),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserProfile(isOwnProfile: false, user: _user,)),
+                    builder: (context) => UserProfile(
+                          isOwnProfile: false,
+                          user: _user,
+                        )),
               );
             },
           ),

@@ -38,7 +38,7 @@ class _SellState extends State<Sell> {
       output.addAll(fetchResult);
       endReached = fetchResult.length == 0;
       if (endReached) {
-        if (firstFecth){
+        if (firstFecth) {
           output.add(Container(
             margin: EdgeInsets.only(top: 150.0, left: 70.0, right: 70.0),
             child: Column(
@@ -54,7 +54,7 @@ class _SellState extends State<Sell> {
           ));
         }
       }
-      if(firstFecth){
+      if (firstFecth) {
         firstFecth = false;
       }
     }

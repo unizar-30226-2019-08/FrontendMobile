@@ -33,7 +33,6 @@ class TagsLoader extends StatefulWidget {
 }
 
 class _TagsLoaderState extends State<TagsLoader> {
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;

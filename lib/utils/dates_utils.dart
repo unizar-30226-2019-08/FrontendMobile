@@ -28,7 +28,8 @@ const List<String> MONTHS = [
  */
 String dateToFullString(DateTime date, BuildContext context) {
   DateTime justNow = DateTime.now();
-  DateTime todaysMidnight = DateTime(justNow.year, justNow.month, justNow.day, 0, 0, 0);
+  DateTime todaysMidnight =
+      DateTime(justNow.year, justNow.month, justNow.day, 0, 0, 0);
   DateTime yesterdaysMidnight = todaysMidnight.subtract(Duration(days: 1));
   if (justNow.difference(date) < justNow.difference(todaysMidnight)) {
     String today = Translations.of(context).text("today_at");

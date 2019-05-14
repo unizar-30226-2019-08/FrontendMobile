@@ -45,7 +45,8 @@ class _UserProfileState extends State<UserProfile>
                     user: widget.user)),
             body: TabBarView(
               children: [
-                FeaturedProducts(isOwnProfile: widget.isOwnProfile, user: widget.user),
+                FeaturedProducts(
+                    isOwnProfile: widget.isOwnProfile, user: widget.user),
                 ReviewViewer(user: widget.user),
               ],
             )));
@@ -129,14 +130,14 @@ class ReviewViewer extends StatefulWidget {
 }
 
 class _ReviewViewerState extends State<ReviewViewer> {
-
   bool reviewsEndReached = false;
   bool reviewsFirstFecth = true;
 
   Future<List<Widget>> fetchReviews(currentSize, height) async {
     List<Widget> output = new List();
     if (!reviewsEndReached) {
-      List<ReviewCard> fetchResult = await parseReviews(currentSize, 10, user: widget.user);
+      List<ReviewCard> fetchResult =
+          await parseReviews(currentSize, 10, user: widget.user);
       reviewsEndReached = fetchResult.length == 0;
       output.addAll(fetchResult);
       if (reviewsEndReached) {
@@ -145,10 +146,9 @@ class _ReviewViewerState extends State<ReviewViewer> {
             margin: EdgeInsets.only(top: 150.0, left: 70.0, right: 70.0),
             child: Column(
               children: <Widget>[
-                Icon(Icons.rate_review,
-                    size: 80.0,
-                    color: Colors.pink),
-                Text(Translations.of(context).text('no_reviews_yet'),
+                Icon(Icons.rate_review, size: 80.0, color: Colors.pink),
+                Text(
+                  Translations.of(context).text('no_reviews_yet'),
                   style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
                   textAlign: TextAlign.center,
                 )

@@ -131,22 +131,22 @@ class _OwnProfileNavbarState extends State<OwnProfileNavbar> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Text(snapshot.hasData
-                          ? snapshot.data.getName()
-                          : '---',
+                      Text(snapshot.hasData ? snapshot.data.getName() : '---',
                           style: TextStyle(
                               fontWeight: FontWeight.w300, fontSize: 45.0)),
                       IconButton(
                         icon: Icon(Icons.share, size: 30.0),
                         onPressed: () {
-                          Share.share(Translations.of(context).text(
-                                  'share_profile',
-                                  params: [snapshot.hasData
-                          ? snapshot.data.getName()
-                          : '---']) +
-                              'https://bookalo.es/user=' + (snapshot.hasData
-                          ? snapshot.data.getUID()
-                          : '---'));
+                          Share.share(Translations.of(context)
+                                  .text('share_profile', params: [
+                                snapshot.hasData
+                                    ? snapshot.data.getName()
+                                    : '---'
+                              ]) +
+                              'https://bookalo.es/user=' +
+                              (snapshot.hasData
+                                  ? snapshot.data.getUID()
+                                  : '---'));
                         },
                       )
                     ],

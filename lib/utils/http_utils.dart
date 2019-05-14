@@ -151,26 +151,27 @@ Future<User> fetchOwnProfile() async {
   return user;
 }
 
-Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize, {User user}) async {
+Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize,
+    {User user}) async {
   String uid;
   List<ReviewCard> output = [];
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-  if(user == null){
+  if (user == null) {
     uid = firebaseUser.uid;
-  }else{
+  } else {
     uid = user.uid;
   }
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
     'uid': uid,
     'ultimo_indice': currentIndex.toString(),
-    'elementos_pagina': pageSize.toString()    
+    'elementos_pagina': pageSize.toString()
   };
   var response = await http.post('https://bookalo.es/api/get_ratings',
       headers: headers, body: body);
   (json.decode(utf8.decode(response.bodyBytes))['valoraciones'] as List)
       .forEach((x) {
-        output.add(ReviewCard(review: Review.fromJson(x)));
-  });      
+    output.add(ReviewCard(review: Review.fromJson(x)));
+  });
   return output;
 }

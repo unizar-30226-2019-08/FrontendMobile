@@ -44,7 +44,8 @@ class ReviewCard extends StatelessWidget {
                 ),
               ),
               trailing: CircleAvatar(
-                  backgroundImage: NetworkImage(review.getProduct.getImages()[0])),
+                  backgroundImage:
+                      NetworkImage(review.getProduct.getImages()[0])),
             ),
             Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,12 +53,12 @@ class ReviewCard extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 16),
-                    child:
-                        Text(dateToNumbers(review.getDate, context), //DateToString
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 19,
-                            )),
+                    child: Text(
+                        dateToNumbers(review.getDate, context), //DateToString
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 19,
+                        )),
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 16),

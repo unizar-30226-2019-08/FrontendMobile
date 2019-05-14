@@ -68,14 +68,16 @@ class ProductView extends StatelessWidget {
             child: StaticStars(
                 _user.getRating(), Colors.black, _user.getRatingsAmount()),
           ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(left: 16.0, right: 5.0),
-              child: ListView(
-                children: <Widget>[TagWraper(product: _product)],
-              ),
-            ),
-          )
+          // Container(
+          //   padding: EdgeInsets.only(left: 16, bottom: 8),
+          //   child: Text(
+          //     _product.getName(),
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.w500,
+          //       fontSize: 30.0
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -101,38 +103,56 @@ class ProductView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
+                  height: 50.0,
                   decoration:
                       BoxDecoration(color: Colors.black.withOpacity(0.5)),
-                  child: ListTile(
-                    title: Text(
-                      this._product.getName(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        // fontSize: 40,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(
-                          (itsMine ? Icons.edit : Icons.chat_bubble_outline),
-                          color: Colors.pink,
-                          size: 40),
-                      onPressed: () {
-                        if (itsMine) {
-                          //TODO: pantalla de edit
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Chat(
-                                    user: _user,
-                                    product: _product,
-                                    interest: Interest.offers)),
-                          );
-                        }
-                      },
-                    ),
-                  ),
+                  child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: List.generate(_product.getTags().length, (i) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Chip(
+                            label: Text(
+                              _product.getTags()[i],
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            backgroundColor: Colors.pink,
+                          ),
+                        );
+                      })),
+
+                  // child: ListTile(
+                  //   title: Text(
+                  //     this._product.getName(),
+                  //     style: TextStyle(
+                  //       color: Colors.white,
+                  //       fontWeight: FontWeight.bold,
+                  //       // fontSize: 40,
+                  //     ),
+                  //   ),
+                  //   trailing: IconButton(
+                  //     icon: Icon(
+                  //         (itsMine ? Icons.edit : Icons.chat_bubble_outline),
+                  //         color: Colors.pink,
+                  //         size: 40),
+                  //     onPressed: () {
+                  //       if (itsMine) {
+                  //         //TODO: pantalla de edit
+                  //       } else {
+                  //         Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) => Chat(
+                  //                   user: _user,
+                  //                   product: _product,
+                  //                   interest: Interest.offers)),
+                  //         );
+                  //       }
+                  //     },
+                  //   ),
+                  // ),
                 ),
               ],
             ),

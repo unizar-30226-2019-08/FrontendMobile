@@ -15,8 +15,6 @@ import 'package:bookalo/translations.dart';
  *                el que se desea obtener productos en el filtrado
  */
 class PriceSlider extends StatefulWidget {
-
-
   /*
    * Pre:   onPriceChanged es una función void
    * Post:  ha construido el widget de tal forma que en cada
@@ -58,8 +56,7 @@ class _PriceSliderState extends State<PriceSlider> {
             children: <Widget>[
               Container(
                 width: width / 9,
-                child: Text(
-                    minPrice.toStringAsFixed(0) + '€',
+                child: Text(minPrice.toStringAsFixed(0) + '€',
                     style:
                         TextStyle(fontSize: 25, fontWeight: FontWeight.w300)),
               ),
@@ -72,13 +69,13 @@ class _PriceSliderState extends State<PriceSlider> {
                   upperValue: maxPrice,
                   showValueIndicator: true,
                   valueIndicatorMaxDecimals: 1,
-                  onChanged: (min, max){
+                  onChanged: (min, max) {
                     setState(() {
                       minPrice = min;
                       maxPrice = max;
                     });
                   },
-                  onChangeEnd: (min, max){
+                  onChangeEnd: (min, max) {
                     ScopedModel.of<FilterQuery>(context).setMinPrice(min);
                     ScopedModel.of<FilterQuery>(context).setMaxPrice(max);
                   },
@@ -86,8 +83,7 @@ class _PriceSliderState extends State<PriceSlider> {
               ),
               Container(
                 width: width / 6,
-                child: Text(
-                    maxPrice.toStringAsFixed(0) +' €',
+                child: Text(maxPrice.toStringAsFixed(0) + ' €',
                     style:
                         TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300)),
               )

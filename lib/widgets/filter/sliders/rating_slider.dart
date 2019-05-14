@@ -14,7 +14,6 @@ import 'package:bookalo/translations.dart';
 *                usuarios de los que se desea obtener productos en el filtrado
 */
 class RatingSlider extends StatefulWidget {
-
   /*
    * Pre:   onMinRatingChanged es una función void
    * Post:  ha construido el widget de tal forma que en cada
@@ -32,7 +31,7 @@ class _RatingSliderSate extends State<RatingSlider> {
   @override
   void initState() {
     super.initState();
-    rating = ScopedModel.of<FilterQuery>(context).minRating.toDouble();  
+    rating = ScopedModel.of<FilterQuery>(context).minRating.toDouble();
   }
 
   @override
@@ -59,12 +58,13 @@ class _RatingSliderSate extends State<RatingSlider> {
                 max: 5.0,
                 value: rating,
                 onChanged: (value) {
-                  setState((){
+                  setState(() {
                     rating = value;
                   });
                 },
-                onChangeEnd: (value){
-                  ScopedModel.of<FilterQuery>(context).setMinRating(value.round());
+                onChangeEnd: (value) {
+                  ScopedModel.of<FilterQuery>(context)
+                      .setMinRating(value.round());
                 },
               ),
             ),
@@ -73,8 +73,7 @@ class _RatingSliderSate extends State<RatingSlider> {
               width: width / 4,
               child: Row(
                 children: <Widget>[
-                  Text(
-                      rating.toStringAsFixed(0)+ ' ',
+                  Text(rating.toStringAsFixed(0) + ' ',
                       style: TextStyle(
                           fontSize: 25.0, fontWeight: FontWeight.w300)),
                   Icon(Icons.star, color: Colors.pink, size: 30.0)
