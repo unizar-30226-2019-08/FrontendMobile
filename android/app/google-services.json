@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "305041397855-9f5j0omn8tvnnhdnc4vue0urnh9h0u1o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.bookalo.bookalo",
+            "certificate_hash": "ce19e419e95dd2764047a352a022f15215b72c8c"
+          }
+        },
+        {
           "client_id": "305041397855-sr3fa06ab650udrjt9820e792m7kgo46.apps.googleusercontent.com",
           "client_type": 3
         }

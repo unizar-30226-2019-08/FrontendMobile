@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bookalo/utils/test_utils.dart';
 
-import 'package:bookalo/widgets/radial_button.dart';
+import 'package:bookalo/widgets/detailed_product/radial_button.dart';
 
 void main() {
   /*

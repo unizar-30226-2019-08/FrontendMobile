@@ -23,8 +23,7 @@ User generatePseudoUser(FirebaseUser firebaseUser) {
       faker.address.city(),
       Random().nextDouble() * 10,
       Random().nextInt(100),
-      Random().nextDouble() > 0.5,
-      false);
+      DateTime.now());
 }
 
 /*
@@ -40,8 +39,7 @@ User generateRandomUser() {
       faker.address.city(),
       Random().nextDouble() * 10,
       Random().nextInt(100),
-      Random().nextDouble() > 0.5,
-      false);
+      DateTime.now());
 }
 
 /*
@@ -50,12 +48,18 @@ User generateRandomUser() {
  */
 Product generateRandomProduct() {
   return Product(
+      Random().nextInt(100000),
       faker.company.name(),
       (Random().nextDouble() * 30).round().toDouble(),
       Random().nextDouble() > 0.8,
-      "https://picsum.photos/200/300/?random",
-      lipsum.createSentence(),
+      List.generate(2 + Random().nextInt(3),
+          (_) => {'contenido_url': "https://picsum.photos/200/300/?random"}),
+      lipsum.createSentence(numSentences: 3),
       Random().nextDouble() > 0.8,
       (['Nuevo', 'Seminuevo', 'Usado']..shuffle()).first,
-      Random().nextInt(100));
+      Random().nextInt(100),
+      41.65606 + Random().nextDouble() / 10,
+      -0.87734 + Random().nextDouble() / 10,
+      List.generate(
+          6 + Random().nextInt(3), (_) => {'nombre': lipsum.createWord()}));
 }

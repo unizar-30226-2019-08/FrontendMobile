@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/buy_and_sell.dart';
 import 'package:bookalo/pages/login.dart';
+import 'package:bookalo/objects/filter_query.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  bool isAuthenticated = await FirebaseAuth.instance.currentUser() != null;
+  runApp(MyApp(isAuthenticated: isAuthenticated));
 }
 
 /*
@@ -22,50 +25,46 @@ void main() {
  */
 class MyApp extends StatelessWidget {
   final bool isAuthenticated;
-
   MyApp({Key key, this.isAuthenticated}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // var product2= Product("mesa", 20, false, "https://github.com/unizar-30226-2019-08/FrontendMobile/blob/master/assets/images/boli.jpg",'esta chulo tambien',true,'Desgastado',54);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return MaterialApp(
-      title: 'Bookalo',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
+    return ScopedModel<FilterQuery>(
+      model: FilterQuery(),
+      child: MaterialApp(
+        title: 'Bookalo',
+        theme: ThemeData(
+          primarySwatch: Colors.pink,
+        ),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          const TranslationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          //const Locale('en', 'US'),
+          const Locale('es', 'ES'),
+        ],
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          switch (settings.name) {
+            case '/':
+              return MaterialPageRoute(builder: (_) {
+                if (isAuthenticated) {
+                  return BuyAndSell();
+                } else {
+                  return Login();
+                }
+              });
+            case '/login':
+              return MaterialPageRoute(builder: (_) => Login());
+            case '/buy_and_sell':
+              return MaterialPageRoute(builder: (_) => BuyAndSell());
+          }
+        },
       ),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        const TranslationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        //const Locale('en', 'US'),
-        const Locale('es', 'ES'),
-      ],
-      initialRoute: '/',
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
-          case '/':
-            return MaterialPageRoute(builder: (_) {
-              return StreamBuilder(
-                stream: FirebaseAuth.instance.onAuthStateChanged,
-                builder: ((context, snapshot) {
-                  if (snapshot.hasData) {
-                    return BuyAndSell();
-                  } else {
-                    return Login();
-                  }
-                }),
-              );
-            });
-          case '/login':
-            return MaterialPageRoute(builder: (_) => Login());
-          case '/buy_and_sell':
-            return MaterialPageRoute(builder: (_) => BuyAndSell());
-        }
-      },
     );
   }
 }

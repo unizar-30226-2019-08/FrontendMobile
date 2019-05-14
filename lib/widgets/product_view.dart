@@ -4,14 +4,19 @@
  * CREACIÓN:    15/03/2019
  *
  */
+import 'package:bookalo/widgets/navbars/chat_navbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/selectable_tags.dart';
-import 'package:geo/geo.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/pages/chat.dart';
-import 'package:bookalo/widgets/distance_chip.dart';
+import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/pages/detailed_product.dart';
+import 'package:bookalo/pages/own_product.dart';
+import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
 
 /*
  * CLASE: ProductView
@@ -19,27 +24,10 @@ import 'package:bookalo/translations.dart';
  */
 class ProductView extends StatelessWidget {
   final Product _product;
-  final double _stars;
-  final int _reviews;
-  final List<Tag> _tags = [
-    Tag(
-      id: 1,
-      title: 'mates',
-    ),
-    Tag(
-      id: 1,
-      title: 'universidad',
-    ),
-    Tag(
-      id: 1,
-      title: 'primero',
-    ),
-    Tag(
-      id: 1,
-      title: 'ciencias',
-    ),
-  ];
-  ProductView(this._product, this._stars, this._reviews);
+  final User _user;
+  final bool itsMine;
+  final bool isLiked;
+  ProductView(this._product, this._user, this.itsMine, this.isLiked);
 
   /*
    * Pre:   ---
@@ -47,7 +35,6 @@ class ProductView extends StatelessWidget {
    *        vendido y  valoraciones del vendedor
    */
   Widget priceCard(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Card(
       child: Column(
         children: <Widget>[
@@ -78,20 +65,19 @@ class ProductView extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(left: 16, bottom: 8),
-            child: StaticStars(this._stars, Colors.black, this._reviews),
+            child: StaticStars(
+                _user.getRating(), Colors.black, _user.getRatingsAmount()),
           ),
-          SizedBox(
-            height: height / 9,
-            child: SelectableTags(
-              textOverflow: TextOverflow.ellipsis,
-              height: height / 30,
-              tags: _tags,
-              fontSize: 11.0,
-              onPressed: (tag) {},
-              margin: EdgeInsets.all(5.0),
-              activeColor: Colors.pink,
-            ),
-          )
+          // Container(
+          //   padding: EdgeInsets.only(left: 16, bottom: 8),
+          //   child: Text(
+          //     _product.getName(),
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.w500,
+          //       fontSize: 30.0
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -108,7 +94,7 @@ class ProductView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(_product.getImage()),
+                image: NetworkImage(_product.getImages()[0]),
                 fit: BoxFit.fill,
                 alignment: Alignment.topCenter,
               ),
@@ -117,35 +103,63 @@ class ProductView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
+                  height: 50.0,
                   decoration:
                       BoxDecoration(color: Colors.black.withOpacity(0.5)),
-                  child: ListTile(
-                    title: Text(
-                      this._product.getName(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        // fontSize: 40,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.chat_bubble_outline,
-                          color: Colors.pink, size: 40),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Chat()),
+                  child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: List.generate(_product.getTags().length, (i) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Chip(
+                            label: Text(
+                              _product.getTags()[i],
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            backgroundColor: Colors.pink,
+                          ),
                         );
-                      },
-                    ),
-                  ),
+                      })),
+
+                  // child: ListTile(
+                  //   title: Text(
+                  //     this._product.getName(),
+                  //     style: TextStyle(
+                  //       color: Colors.white,
+                  //       fontWeight: FontWeight.bold,
+                  //       // fontSize: 40,
+                  //     ),
+                  //   ),
+                  //   trailing: IconButton(
+                  //     icon: Icon(
+                  //         (itsMine ? Icons.edit : Icons.chat_bubble_outline),
+                  //         color: Colors.pink,
+                  //         size: 40),
+                  //     onPressed: () {
+                  //       if (itsMine) {
+                  //         //TODO: pantalla de edit
+                  //       } else {
+                  //         Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) => Chat(
+                  //                   user: _user,
+                  //                   product: _product,
+                  //                   interest: Interest.offers)),
+                  //         );
+                  //       }
+                  //     },
+                  //   ),
+                  // ),
                 ),
               ],
             ),
           ),
           Container(
             margin: EdgeInsets.only(right: 10.0),
-            child: (_product.getSold()
+            child: (!_product.checkfForSale()
                 ? Chip(
                     label: Text(
                       Translations.of(context).text('sold_tab'),
@@ -155,8 +169,8 @@ class ProductView extends StatelessWidget {
                     backgroundColor: Colors.pink,
                   )
                 : DistanceChip(
-                    userPosition: LatLng(0.0, 0.0),
-                    targetPosition: LatLng(0.003, 0.0),
+                    userPosition: ScopedModel.of<FilterQuery>(context).position,
+                    targetPosition: _product.getPosition(),
                   )),
           ),
         ]));
@@ -166,42 +180,64 @@ class ProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
-    return Center(
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: height / 50),
-        child: SizedBox(
-          child: Stack(
-            alignment: Alignment.center,
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Positioned(
-                child: Container(
-                  color: Colors.transparent,
-                  width: width / 1.3,
-                  height: height / 2.1,
-                ),
-              ),
-              Positioned(
-                left: 100.0,
-                child: Container(
-                  height: height / 2.1,
-                  width: width / 1.7,
-                  child: imageCard(context),
-                ),
-              ),
-              Positioned(
-                  top: height / 20,
-                  right: width / 3,
+    return GestureDetector(
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: height / 50),
+          child: SizedBox(
+            child: Stack(
+              alignment: Alignment.center,
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned(
                   child: Container(
-                    height: height / 3,
-                    width: width / 2,
-                    child: priceCard(context),
-                  ))
-            ],
+                    color: Colors.transparent,
+                    width: width / 1.3,
+                    height: height / 2.1,
+                  ),
+                ),
+                Positioned(
+                  left: 100.0,
+                  child: Container(
+                    height: height / 2.1,
+                    width: width / 1.7,
+                    child: imageCard(context),
+                  ),
+                ),
+                Positioned(
+                    top: height / 20,
+                    right: width / 3,
+                    child: Container(
+                      height: height / 2.9,
+                      width: width / 2,
+                      child: priceCard(context),
+                    ))
+              ],
+            ),
           ),
         ),
       ),
+      onTap: () {
+        if (!itsMine) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailedProduct(
+                      product: this._product,
+                      user: this._user,
+                      isLiked: this.isLiked,
+                    )),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OwnProduct(
+                      product: this._product,
+                    )),
+          );
+        }
+      },
     );
   }
 }

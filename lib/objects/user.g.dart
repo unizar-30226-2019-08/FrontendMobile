@@ -8,23 +8,23 @@ part of 'user.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
-      json['displayName'] as String,
-      json['pictureURL'] as String,
+      json['nombre'] as String,
+      json['imagen_perfil'] as String,
       json['uid'] as String,
-      json['city'] as String,
-      (json['rating'] as num)?.toDouble(),
-      json['ratingsAmount'] as int,
-      json['online'] as bool,
-      json['banned'] as bool);
+      json['ciudad'] as String,
+      (json['media_valoraciones'] as num)?.toDouble(),
+      json['numValoraciones'] as int,
+      json['ultima_conexion'] == null
+          ? null
+          : DateTime.parse(json['ultima_conexion'] as String));
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'displayName': instance.displayName,
-      'pictureURL': instance.pictureURL,
+      'nombre': instance.displayName,
+      'imagen_perfil': instance.pictureURL,
       'uid': instance.uid,
-      'city': instance.city,
-      'rating': instance.rating,
-      'ratingsAmount': instance.ratingsAmount,
-      'online': instance.online,
-      'banned': instance.banned
+      'ciudad': instance.city,
+      'media_valoraciones': instance.rating,
+      'numValoraciones': instance.ratingsAmount,
+      'ultima_conexion': instance.lastConnection?.toIso8601String()
     };

@@ -27,14 +27,17 @@ const List<String> MONTHS = [
  *        p.e 17 de abril de 2019 o ayer a las 17:22
  */
 String dateToFullString(DateTime date, BuildContext context) {
-  Duration distance = DateTime.now().difference(date);
-  if (distance.inHours < 24) {
+  DateTime justNow = DateTime.now();
+  DateTime todaysMidnight =
+      DateTime(justNow.year, justNow.month, justNow.day, 0, 0, 0);
+  DateTime yesterdaysMidnight = todaysMidnight.subtract(Duration(days: 1));
+  if (justNow.difference(date) < justNow.difference(todaysMidnight)) {
     String today = Translations.of(context).text("today_at");
     String hours = (date.hour < 10 ? '0' : '') + date.hour.toString();
     String minutes = (date.minute < 10 ? '0' : '') + date.minute.toString();
     return today + " " + hours + ":" + minutes;
   }
-  if (distance.inHours < 48) {
+  if (justNow.difference(date) < justNow.difference(yesterdaysMidnight)) {
     String yesterday = Translations.of(context).text("yesterday_at");
     String hours = (date.hour < 10 ? '0' : '') + date.hour.toString();
     String minutes = (date.minute < 10 ? '0' : '') + date.minute.toString();
