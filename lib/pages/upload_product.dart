@@ -3,7 +3,10 @@
  * DESCRIPCIÓN: clases relativas a la pagina de subida de producto
  * CREACIÓN:    15/04/2019
  */
+import 'dart:io';
+
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/utils/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/objects/product.dart';
@@ -28,13 +31,16 @@ class UploadProduct extends StatefulWidget {
 class _UploadProduct extends State<UploadProduct> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   Product newP;
-  List<bool> pagesValited = [true, false, false, false];
+  List<bool> pagesValited = [true, false, true, true];
+  List<File> imagen =[File('/Almacenamiento interno compartido/WhatsApp/Media/WhatsApp Images')];
   var _pageOptions = [];
   @override
   void initState() {
     super.initState();
     newP = new Product(0, '', 0, false, [], '', false, '', 0, 0, 0, []);
     newP.setState('Nuevo');
+    
+    newP.setPrice(13.5);
     //	newP.getTags().forEach((tag) => kk.add(Tag(title: tag)));
     _pageOptions = [
       UploadImages(),
@@ -115,6 +121,7 @@ class _UploadProduct extends State<UploadProduct> {
           onPressed: () {
             if (validarPaginas()) {
               //Subir
+              uploadNewProduct(newP, imagen);
             } else {
               int i = 0;
               while (pagesValited[i] && i < pagesValited.length) {
@@ -166,7 +173,7 @@ class _UploadProduct extends State<UploadProduct> {
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.add_a_photo,
-                  color: (pagesValited[2]) ? Colors.green : Colors.white,
+                  color: Colors.white,
                 ),
                 activeIcon: Icon(
                   Icons.add_a_photo,
@@ -180,7 +187,7 @@ class _UploadProduct extends State<UploadProduct> {
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.edit,
-                  color: (validarNPaginas(1)) ? (pagesValited[1]) ? Colors.green : Colors.white : Colors.grey,
+                  color: (validarNPaginas(1)) ? Colors.white : Colors.grey,
                 ),
                 activeIcon: Icon(
                   Icons.edit,
@@ -194,7 +201,7 @@ class _UploadProduct extends State<UploadProduct> {
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.dashboard,
-                  color: (validarNPaginas(2)) ? (pagesValited[2]) ? Colors.green : Colors.white : Colors.grey,
+                  color: (validarNPaginas(2)) ? Colors.white : Colors.grey,
                 ),
                 activeIcon: Icon(
                   Icons.dashboard,
@@ -208,7 +215,7 @@ class _UploadProduct extends State<UploadProduct> {
                 backgroundColor: Colors.black,
                 icon: Icon(
                   Icons.my_location,
-                  color: (validarNPaginas(3)) ? (pagesValited[3]) ? Colors.green : Colors.white : Colors.grey,
+                  color: (validarNPaginas(3)) ? Colors.white : Colors.grey,
                 ),
                 activeIcon: Icon(
                   Icons.my_location,

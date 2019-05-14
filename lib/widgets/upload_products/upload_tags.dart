@@ -41,7 +41,6 @@ class _UploadTagsState extends State<UploadTags> {
             onInsertTag: (tag) {widget.onInsertTag(tag); widget.validate(widget.initialT.length >0 );},
             onDeleteTag: (tag) {widget.onDeleteTag(tag); widget.validate(widget.initialT.length >0 );},
             initialTags: widget.initialT,
-            
           ),
         ],
       )

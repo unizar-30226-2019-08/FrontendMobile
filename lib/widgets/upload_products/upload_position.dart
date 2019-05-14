@@ -29,15 +29,14 @@ class _UploadPositionState extends State<UploadPosition> {
         child: ListView(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             children: <Widget>[
-          FlatButton.icon(
-            color: Colors.red,
-            icon: Icon(Icons.access_alarm), //`Icon` to display
-            label: Text('Add a Photo'), //`Text` to display
-
-            onPressed: () {
-              setState(() {});
-            },
-          ),
+          //FlatButton.icon(
+          //  color: Colors.red,
+          //  icon: Icon(Icons.access_alarm),
+          //  label: Text('Add a Photo'), 
+          //  onPressed: () {
+          //    setState(() {});
+          //  },
+          //),
           Container(
             child: DistanceMap(
                 //TODO: ver que pàrametros necesita

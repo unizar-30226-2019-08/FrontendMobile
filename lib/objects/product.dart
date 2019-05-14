@@ -137,8 +137,22 @@ class Product {
     this.tags.add(t);
   }
 
+  void setPrice(double p){
+    this.price = p;
+  }
   void deleteTag(t){
     this.tags.remove(t);
+  }
+
+  String getTagsToString(){
+    if(this.tags.length == 0){
+      return '';
+    }
+    String s = tags.first;
+    for(int i = 1; i< tags.length; i++){
+      s = s + ',' + this.tags[i];
+    }
+    return s;
   }
 
   factory Product.fromJson(Map<String, dynamic> json) =>

@@ -129,20 +129,27 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
             : Container()),
         Container(
 				    child: InputTags(
-						tags: widget.selectedTags,
-						columns: _column,
-						fontSize: 14,
-						symmetry: true,
-						iconBackground: Colors.black,
-						color: Colors.pink,
-						lowerCase: true,
-						textFieldHidden: true,
-						alignment: MainAxisAlignment.center,
-						backgroundContainer: Theme.of(context).canvasColor,
-						autofocus: false,
-            onDelete: (tag){widget.onDeleteTag(tag);},
+              tags: widget.selectedTags,
+              columns: _column,
+              fontSize: 14,
+              symmetry: true,
+              iconBackground: Colors.black,
+              color: Colors.pink,
+              lowerCase: true,
+              textFieldHidden: true,
+              alignment: MainAxisAlignment.center,
+              backgroundContainer: Theme.of(context).canvasColor,
+              autofocus: false,
+              onDelete: (tag){widget.onDeleteTag(tag);},
 					),
 				),
+        (widget.selectedTags.isEmpty) ?
+              Text("\nNo tiene tags asignados.", textAlign: TextAlign.center, style: TextStyle(fontSize: 26),)
+              :Container(),
+        (widget.selectedTags.isEmpty) ?
+              Text("\n El uso de tags aumenta la probabilidad de venta.\nLos demás usuarios encontrarán tu prodcuto con mayor facilidad")
+            :
+            Container(),
 			],
 		);
 	}

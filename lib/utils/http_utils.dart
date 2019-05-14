@@ -4,6 +4,9 @@
  * CREACIÓN:    03/05/2019
  */
 
+import 'dart:io';
+
+import 'package:async/async.dart';
 import 'package:tuple/tuple.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -61,4 +64,34 @@ Future<List<Tag>> parseTags(List<Tag> initialTags) async {
     }
   });
   return tagList;
+}
+
+
+
+Future<bool> uploadNewProduct(Product product, List<File> images) async {
+  var uri = Uri.parse('https://bookalo.es/api/create_product');
+  var request = http.MultipartRequest("POST", uri);
+  int i = 0;
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  request.fields['token'] = await user.getIdToken();
+  images.forEach((f) async{
+    var stream = new http.ByteStream(DelegatingStream.typed(f.openRead()));
+    var im = http.MultipartFile('files', stream, await stream.length, filename: 'imagen' + i.toString());
+    request.files.add(im);
+  });
+  print("numImagenes" + request.files.length.toString());
+  request.fields['latitud'] = product.getPosition().latitude.toString();
+  request.fields['longitud'] = product.getPosition().longitude.toString();
+  request.fields['nombre'] = product.getName();
+  request.fields['precio'] = product.getPrice().toString();
+  request.fields['estado_producto'] = product.getState();
+  request.fields['tipo_envio'] = product.isShippingIncluded().toString();
+  request.fields['descripcion'] = product.getDescription();
+  request.fields['tags'] = product.getTagsToString();
+
+  request.headers.addAll(headers);
+
+  var response = await request.send();
+  print("Resultado del envio ha sido "  + response.statusCode.toString());
+  return response.statusCode == 201;
 }
