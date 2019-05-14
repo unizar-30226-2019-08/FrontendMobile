@@ -91,7 +91,9 @@ class ProductView extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(_product.getImages()[0]),
+                image: (_product.getImages().isEmpty) ? 
+                     NetworkImage('assets/images/noImage.jpg')
+                    : NetworkImage(_product.getImages()[0]),
                 fit: BoxFit.fill,
                 alignment: Alignment.topCenter,
               ),
