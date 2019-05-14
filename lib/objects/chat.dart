@@ -5,11 +5,8 @@
  */
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/user.dart';
 
 part 'chat.g.dart';
-
 
 /*
   CLASE: Chat
@@ -17,7 +14,7 @@ part 'chat.g.dart';
  */
 
 @JsonSerializable()
-class Chat{
+class Chat {
   @JsonKey(name: 'texto')
   String body;
   @JsonKey(name: 'hora')
@@ -26,7 +23,6 @@ class Chat{
   bool itsMe;
 
   Chat(this.body, this.timestamp, this.itsMe);
-  factory Chat.fromJson(Map<String, dynamic> json) =>
-      _$ChatFromJson(json);
+  factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
   Map<String, dynamic> toJson() => _$ChatToJson(this);
 }

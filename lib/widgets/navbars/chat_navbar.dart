@@ -9,7 +9,6 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/user_profile.dart';
-import 'package:bookalo/utils/dates_utils.dart';
 
 enum Interest { buys, offers }
 

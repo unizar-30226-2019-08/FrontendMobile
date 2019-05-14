@@ -8,14 +8,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'message.g.dart';
 
-
 /*
   CLASE: Message
   DESCRIPCIÓN: clase objeto que recoge todos los datos asociados a un mensaje de chat
  */
 
 @JsonSerializable()
-class Message{
+class Message {
   @JsonKey(name: 'texto')
   String body;
   @JsonKey(name: 'hora')

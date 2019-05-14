@@ -8,7 +8,7 @@ import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
-import 'package:bookalo/pages/upload_product.dart';
+//import 'package:bookalo/pages/upload_product.dart';
 import 'package:bookalo/utils/http_utils.dart';
 
 /*
@@ -71,8 +71,8 @@ class _SellState extends State<Sell> {
               heroTag: "add", //todo: ver formato tags
               child: Icon(Icons.add),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UploadProduct()));
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => UploadProduct()));
               },
             ),
           ],

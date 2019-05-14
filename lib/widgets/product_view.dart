@@ -4,19 +4,16 @@
  * CREACIÓN:    15/03/2019
  *
  */
-import 'package:bookalo/widgets/navbars/chat_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/widgets/static_stars.dart';
-import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/detailed_product.dart';
 import 'package:bookalo/pages/own_product.dart';
 import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
 
 /*
  * CLASE: ProductView

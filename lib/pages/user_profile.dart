@@ -3,7 +3,6 @@
  * DESCRIPCIÓN: clases relativas a la página personal de un usuario
  * CREACIÓN:    15/03/2019
  */
-import 'package:bookalo/utils/http_utils.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';

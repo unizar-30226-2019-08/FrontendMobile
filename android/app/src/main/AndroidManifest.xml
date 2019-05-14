@@ -28,6 +28,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>            
         </activity>
+        <activity android:name="com.apptreesoftware.barcodescan.BarcodeScannerActivity"/>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
