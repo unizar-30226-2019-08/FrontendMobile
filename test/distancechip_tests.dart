@@ -4,10 +4,10 @@
  * CREACIÓN:    29/03/2019
  */
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geo/geo.dart';
+import 'package:latlong/latlong.dart';
 import 'package:bookalo/utils/test_utils.dart';
 
-import 'package:bookalo/widgets/distance_chip.dart';
+import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 
 void main() {
 

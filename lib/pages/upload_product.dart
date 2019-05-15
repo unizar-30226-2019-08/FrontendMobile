@@ -3,396 +3,292 @@
  * DESCRIPCIÓN: clases relativas a la pagina de subida de producto
  * CREACIÓN:    15/04/2019
  */
-import 'package:flutter/material.dart';
-import 'package:bookalo/widgets/navbars/simple_navbar.dart';
-import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/filter.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:flutter/services.dart';
-import 'package:bookalo/widgets/filter/distance_map.dart';
-import 'package:flutter_tags/selectable_tags.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:bookalo/widgets/list_image.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:bookalo/widgets/add_image.dart';
-import 'package:bookalo/widgets/image_card.dart';
 import 'dart:io';
 
+import 'package:bookalo/translations.dart';
+import 'package:bookalo/utils/http_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:bookalo/widgets/navbars/simple_navbar.dart';
+import 'package:bookalo/objects/product.dart';
+//import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+//import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+import 'package:bookalo/widgets/upload_products/upload_images.dart';
+import 'package:bookalo/widgets/upload_products/upload_title.dart';
+import 'package:bookalo/widgets/upload_products/upload_tags.dart';
+import 'package:bookalo/widgets/upload_products/upload_position.dart';
 
 /*
  *  CLASE:        UploadProduct
- *  DESCRIPCIÓN:  widget para la pagina de subida de un producto.//TODO: add descripcion
+ *  DESCRIPCIÓN:  widget para la pagina de subida de un producto.
+ * //TODO: add descripcion
  */
 class UploadProduct extends StatefulWidget {
   UploadProduct({Key key}) : super(key: key);
- 
   _UploadProduct createState() => _UploadProduct();
 }
 
 class _UploadProduct extends State<UploadProduct> {
-  int _currentStep=0;
-  String _isbn="";
-  String _value1="Nuevo";
-     String _value2="Semi-Nuevo";
-      String _value3="Viejo";
-   String groupValue;
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   Product newP;
-  void _valueChanged(String value) => setState(() => groupValue = value);
-  List <File> _imageList=[];
-  File image;
-  final List<Tag> _tags = [ //TODO: solo para pruebas
-    Tag(
-      id: 1,
-      title: 'mates',
-    ),
-    Tag(
-      id: 1,
-      title: 'uni',
-    ),
-    Tag(
-      id: 1,
-      title: 'primero',
-    ),
-    Tag(
-      id: 1,
-      title: 'universidad',
-    ),
-    Tag(
-      id: 1,
-      title: 'universidad',
-    )
-  ];
-
-
-
-
-
-
-
-
-  Future barcodeScanning() async {
-//imageSelectorGallery();
-
-    try {
-      String barcode = await BarcodeScanner.scan();
-      setState(() => this._isbn = barcode);
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          this._isbn = 'No camera permission!';
-        });
-      } else {
-        setState(() => this._isbn = 'Unknown error: $e');
-      }
-    } on FormatException {
-      setState(() => this._isbn =
-          'Nothing captured.');
-    } catch (e) {
-      setState(() => this._isbn = 'Unknown error: $e');
-    }
+  List<bool> pagesValited = [true, false, true, true];
+  List<File> imagen =[File('/Almacenamiento interno compartido/WhatsApp/Media/WhatsApp Images')];
+  var _pageOptions = [];
+  @override
+  void initState() {
+    super.initState();
+    newP = new Product(0, '', 0, false, [], '', false, '', 0, 0, 0, []);
+    newP.setState('Nuevo');
+    
+    newP.setPrice(13.5);
+    //	newP.getTags().forEach((tag) => kk.add(Tag(title: tag)));
+    _pageOptions = [
+      UploadImages(),
+      UploadTitle(
+        formKey: _formKeys[1],
+        prod: newP,
+        valitedPage: (valited) {
+          setState(() {
+            pagesValited[1] = valited;
+          });
+        },
+        isbnInserted: (isbn) {
+          setState(() {
+            newP.setIsbn(isbn);
+          });
+        },
+        tittleInserted: (tittle) {
+          setState(() {
+            newP.setName(tittle);
+          });
+        },
+        descriptionInserted: (desc) {
+          setState(() {
+            newP.setDesciption(desc);
+          });
+        },
+        stateProductInserted: (_state) {
+          setState(() {
+            newP.setState(_state);
+          });
+        },
+      ),
+      UploadTags(
+        initialT: newP.getTags(),
+        validate: (validado){setState(() {
+          pagesValited[2] = validado;
+        });},
+        onDeleteTag: (tag) {
+          setState(() {
+            newP.deleteTag(tag);
+          });
+        },
+        onInsertTag: (tag) {
+          setState(() {
+            newP.insertTag(tag);
+          });
+        },
+      ),
+      UploadPosition(
+        validate: (validado){setState(() {
+          pagesValited[3] = validado;
+        });},
+      ),
+    ];
   }
 
+  int currentPage = 0;
+  //Contenido de cada página
 
+  List<GlobalKey<FormState>> _formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-    final _formKey = GlobalKey<FormState>();
-   
+    bool upload = false;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
-          body: Stepper(
-            steps: _mySteps(),
-            currentStep: this._currentStep,
-            onStepTapped: (step){
+        key: _scaffoldKey,
+        appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
+        body: _pageOptions[currentPage],
+        //TODO: snackbar -> Mejorar mensaje
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            if (validarPaginas()) {
+              //Subir
+              uploadNewProduct(newP, imagen);
+            } else {
+              int i = 0;
+              while (pagesValited[i] && i < pagesValited.length) {
+                i++;
+              }
               setState(() {
-                this._currentStep = step;
+                currentPage = i;
               });
-            }, //TODO: dejar navegar libremente entre pasos??
-            onStepContinue: (){
-              setState(() {
-                if(_currentStep < this._mySteps().length -1){
-                  _currentStep=_currentStep+1;
-                }//TODO: else--> verificar si todo esta correcto
-                else{
-                  print('Completado');
-                }
-              });
-            },
-            onStepCancel: (){
-              setState(() {
-                if(_currentStep > 0){
-                  _currentStep = _currentStep - 1;
-                } else{
-                  _currentStep = 0;
-                }
-              });
-            },
-          )
+              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                content: Text(
+                  Translations.of(context).text("Por favor, complete los campos obligatorios",
+                      /*params: [provider, (result.index * 100).toString()]*/),
+                  style: TextStyle(fontSize: 17.0),
+                ),
+                action: SnackBarAction(
+                  label: Translations.of(context).text("accept"),
+                  onPressed: () {
+                    _scaffoldKey.currentState.hideCurrentSnackBar();
+                  },
+                ),
+              ));
+            }
+          },
+          child: Icon(Icons.file_upload),
+          backgroundColor: (validarPaginas() ? Colors.green : Colors.grey),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        bottomNavigationBar: BubbleBottomBar(
+          backgroundColor: Colors.pink,
+          opacity: .2,
+          currentIndex: currentPage,
+          onTap: (index) {
+            int i = 0;
+            while (pagesValited[i] && i < index) {
+              i++;
+            }
+            setState(() {
+              currentPage = i;
+            });
+          },
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          elevation: 8,
+          fabLocation: BubbleBottomBarFabLocation.end, //new
+          hasNotch: true, //new
+          hasInk: true, //new, gives a cute ink effect
+          inkColor: Colors.black, //optional, uses theme color if not specified
+          items: <BubbleBottomBarItem>[
+            BubbleBottomBarItem(
+                backgroundColor: Colors.black,
+                icon: Icon(
+                  Icons.add_a_photo,
+                  color: Colors.white,
+                ),
+                activeIcon: Icon(
+                  Icons.add_a_photo,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Fotos",
+                  style: TextStyle(color: Colors.white),
+                )),
+            BubbleBottomBarItem(
+                backgroundColor: Colors.black,
+                icon: Icon(
+                  Icons.edit,
+                  color: (validarNPaginas(1)) ? Colors.white : Colors.grey,
+                ),
+                activeIcon: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Producto",
+                  style: TextStyle(color: Colors.white),
+                )),
+            BubbleBottomBarItem(
+                backgroundColor: Colors.black,
+                icon: Icon(
+                  Icons.dashboard,
+                  color: (validarNPaginas(2)) ? Colors.white : Colors.grey,
+                ),
+                activeIcon: Icon(
+                  Icons.dashboard,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Tags",
+                  style: TextStyle(color: Colors.white),
+                )),
+            BubbleBottomBarItem(
+                backgroundColor: Colors.black,
+                icon: Icon(
+                  Icons.my_location,
+                  color: (validarNPaginas(3)) ? Colors.white : Colors.grey,
+                ),
+                activeIcon: Icon(
+                  Icons.my_location,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  "Posición",
+                  style: TextStyle(color: Colors.white),
+                ))
+          ],
+        ),
+
+        //CurvedNavigationBar(
+        //	backgroundColor: Colors.white,
+        //	color: Colors.pink,
+        //	items: <Widget>[
+        //		Icon(Icons.add, size: 30),
+        //		Icon(Icons.list, size: 30),
+        //		Icon(Icons.compare_arrows, size: 30),
+        //		Icon(Icons.list, size: 30),
+        //	],
+        //	onTap: (index) {
+        //			int i = 0;
+        //	while(pagesValited[i] && i < index){
+        //		i++;
+        //	}
+        //
+        //		setState(() {
+        //			currentPage = i;
+        //		});
+        //	},
+        //),
+        //	bottomNavigationBar: FancyBottomNavigation(
+        //	tabs: [
+        //			//TODO: Añadir a traslate. Modificar Iconos
+        //			TabData(iconData: Icons.add_a_photo, title: 'Fotos'),
+        //			TabData(iconData: Icons.search, title: 'Producto'),
+        //			TabData(iconData: Icons.shopping_cart, title: 'Tags'),
+        //			TabData(iconData: Icons.shopping_cart, title: 'Posición')
+        //	],
+        //	//Ejemplo para escuchar el cambio de estado
+        //
+        //	onTabChangedListener: (position) {
+        ////			_formKeys[1].currentState.validate();
+        //		int i = 0;
+        //		while(pagesValited[i] && i < position){
+        //			i++;
+        //		}
+        //
+        //			setState(() {
+        //				currentPage = i;
+        //			});
+        //		},
+        //),
       ),
     );
   }
 
-  List<Step> _mySteps(){
-    double _height = MediaQuery.of(context).size.height;
-    final _formKey = GlobalKey<FormState>();
-    Image foto=Image.asset("assets/images/boli.png");
-    File image=File("assets/images/boli.png");
-    bool isSelected=false;
-    List<Step> _steps =[
-
-
-      //Image picker
-      Step(
-          title: Text('¡Fotos, por favor!'),
-          content:
-            
-            ListImageCard(),
-            //AddImageCard(),
-           // ImageCard(),
-           
-          
-          
-          
-           /*Row(
-            children:[
-              Column(children:[
-              FloatingActionButton(
-                
-                onPressed: cameraPicker,
-                child:Icon(Icons.add_a_photo)
-              ),
-
-              Container(height: 15.0),
-
-              FloatingActionButton(
-                onPressed: galleryPicker,
-                child:Icon(Icons.image)
-              ),
-              ],),
-             Container(width: 50.0),
-               Container(
-                 
-                 child:
-                 AddImageCard())
-              
-            ],
-            ),*/
-          isActive: _currentStep >= 0
-      ),
-
-
-
-
-
-      Step(
-          title: Text('¿Qué vendes?'),
-          content: Form(
-             key: _formKey,
-            child:Column(children: <Widget>[
-
-              OutlineButton(
-                        borderSide: BorderSide(color: Colors.pink, width: 3.0),
-                        
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        child: Text(
-                          Translations.of(context).text("isbn_scan"),
-                          style: TextStyle(
-                              color: Colors.pink[600],
-                              fontWeight: FontWeight.w700),
-                        ),
-                        onPressed: barcodeScanning,
-                      ),
-
-              
-             TextFormField( //Input ISBN
-                      keyboardType: TextInputType.number,
-                      maxLines: 2,
-                      maxLength: 13, //13 numeros máximo
-                      maxLengthEnforced: false,
-                      onSaved: (String isbnReaded) {
-               newP.isbn(isbnReaded) ;
-                      },
-                      decoration: InputDecoration(
-                          hintText:
-                              Translations.of(context).text("isbn_hint")),
-                      validator: (isbn) {
-                        if (isbn.length < 13) {
-                          //El comentario debe tener al menos 30 caracteres
-                          return Translations.of(context)
-                              .text("isbn_too_short");
-                        }
-                      },
-                    ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-               TextFormField( // Input titulo
-                      keyboardType: TextInputType.text,
-                      maxLines: 1,
-                      maxLength: 50, //1000 caracteres máximo
-                      maxLengthEnforced: true,
-                      onSaved: (String value) {
-               newP.name(value) ;
-                      },
-                      decoration: InputDecoration(
-                          hintText:
-                              Translations.of(context).text("title_hint")),
-                      validator: (title) {
-                        if (title.length < 2) {
-                          //El comentario debe tener al menos 30 caracteres
-                          return Translations.of(context)
-                              .text("title_too_short");
-                        }
-                      },
-                    ),
-
-
-                TextFormField(//Input Descripcion
-                      keyboardType: TextInputType.text,
-                      maxLines: 1,
-                      maxLength: 50, //1000 caracteres máximo
-                      maxLengthEnforced: true,
-                      onSaved: (String value) {
-               newP.description(value) ;
-                      },
-                      decoration: InputDecoration(
-                          hintText:
-                              Translations.of(context).text("description_hint")),
-                      validator: (description) {
-                        if (description.length < 2) {
-                          //El comentario debe tener al menos 30 caracteres
-                          return Translations.of(context)
-                              .text("description_too_short");
-                        }
-                      },
-                    ),
-
-
-                new Row(
-                        children:[
-                             new Text(Translations.of(context).text("New"),style:TextStyle(fontSize:10 )),
-                          new Radio(
-                  value: _value1,
-                  onChanged: (_value1)=>this._valueChanged(_value1),
-                  activeColor: Colors.pink,
-                  groupValue:groupValue,
-                          ),
-
-
-                  new Text(Translations.of(context).text("Almost-New"),style:TextStyle(fontSize:10 )),
-                          new Radio(
-                  value: _value2,
-                  onChanged: (_value2)=>this._valueChanged(_value2),
-                  activeColor: Colors.pink,
-                  groupValue:groupValue,
-                          ),
-
-                  new Text(Translations.of(context).text("Old"),style:TextStyle(fontSize:10 )),
-                          new Radio(
-                  value: _value3,
-                  onChanged: (_value3)=>this._valueChanged(_value3),
-                  activeColor: Colors.pink,
-                  groupValue:groupValue,
-                          ),
-
-
-                
-                         ] ),
-
-
-
-
-
-             ] )
-
-            ),
-         isActive: _currentStep >= 1  
-          ),
-      
-      
-      
-      Step(
-          title: Text('¿Unos tags?'), //TODO: ver logica para guardar tags
-          content: Container(
-            child: Column(
-              children: <Widget>[
-                SelectableTags(
-                  height: _height / 25,
-                  tags: _tags,
-                  fontSize: 15.0,
-                  onPressed: (tag) {},
-                  margin: EdgeInsets.all(5.0),
-                  activeColor: Colors.pink,
-                  backgroundContainer: Colors.transparent,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  autocorrect: false,
-                  /*  onSaved: (String value) {
-                    newP.description(value) ;
-                  },*/  //TODO: ver como guardar tags
-
-                  decoration: new InputDecoration(
-                      hintText: 'tu propio tag',
-                      icon: IconButton(icon: Icon(Icons.add_circle),
-                        highlightColor: Colors.pink,
-                        onPressed: () {},
-                      ) , //TODO: boton para añadir tag
-                      labelStyle:
-                      new TextStyle(decorationStyle: TextDecorationStyle.solid)
-
-                  ),
-                  maxLines: 1,
-                  maxLength: 50,
-                ),
-              ],
-            ),
-          ),
-          isActive: _currentStep >= 2
-      ),
-      Step(
-          title: Text('¿Dónde lo vendes?'),
-          content: DistanceMap( //TODO: ver que pàrametros necesita
-              height: _height / 5, distanceRadius:  1000),
-          isActive: _currentStep >= 3
-      )
-    ];
-
-    return _steps;
+  bool validarPaginas() {
+    bool v = true;
+    pagesValited.forEach((x) {
+      v = v && x;
+    });
+    return v;
   }
 
-   
+  bool validarNPaginas(int n) {
+    bool v = true;
+    for (int i = 0; i < n; i++) {
+      v = v && pagesValited[i];
+    }
+    return v;
+  }
 }
-
-  Widget _imageViewer (){
-    return Card(
-      semanticContainer: true,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Image.network(
-        'https://placeimg.com/640/480/any',
-        fit: BoxFit.fill,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
-      margin: EdgeInsets.all(10),
-    );
-  }
-
 
 

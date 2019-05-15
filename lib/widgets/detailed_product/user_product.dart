@@ -11,6 +11,8 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/utils/objects_generator.dart';
+import 'package:bookalo/pages/user_profile.dart';
+import 'package:bookalo/pages/chat.dart';
 
 /*
   CLASE: UserProduct
@@ -41,14 +43,37 @@ class _UserProductState extends State<UserProduct> {
               )),
           ListTile(
             isThreeLine: false,
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(user.getPicture()),
+            leading: Hero(
+              tag: "profileImage",
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(user.getPicture()),
+              ),
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.chat_bubble_outline,
+                color: Colors.pink,
+                size: 40.0,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Chat()),
+                );
+              },
             ),
             title: Text(user.getName()),
             subtitle: StaticStars(
                 /* usuario.getRating()*/ 6,
                 Colors.black,
                 /*usuario.getReviews()*/ 6), //Todo: rating y reviews
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserProfile(isOwnProfile: false)),
+              );
+            },
           ),
         ],
       ),

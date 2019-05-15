@@ -4,104 +4,159 @@
  * CREACIÓN:    15/03/2019
  */
 
-import 'package:lipsum/lipsum.dart' as lipsum;
-import 'package:flutter/material.dart';
-import 'package:bookalo/translations.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:latlong/latlong.dart';
+
+part 'product.g.dart';
 
 /*
   CLASE: Product
   DESCRIPCIÓN: clase objeto que recoge todos los datos asociados a un producto
                 de la aplicacion
  */
+@JsonSerializable()
 class Product {
-  String _name;
-  String _isbn;
-  double _price;
-  String _state;
-  int _favorites;
-  bool _includesShipping;
-  bool _isSold;
-  String _image;
-  String _description;
+  @JsonKey(name: 'pk')
+  int id;
+  @JsonKey(name: 'nombre')
+  String name;
+  @JsonKey(name: 'precio')
+  double price;
+  @JsonKey(name: 'estado_producto')
+  String state;
+  @JsonKey(name: 'num_likes')
+  int favorites;
+  @JsonKey(name: 'tipo_envio')
+  bool includesShipping;
+  @JsonKey(name: 'estado_venta')
+  bool isSold;
+  @JsonKey(name: 'contenido_multimedia')
+  List<String> images;
+  @JsonKey(name: 'descripcion')
+  String description;
+  @JsonKey(name: 'latitud')
+  double lat;
+  @JsonKey(name: 'longitud')
+  double lng;
+  @JsonKey(name: 'isbn')
+  String isbn;
+  List<String> tags;
 
-  Product(this._name, this._price, this._isSold, this._image, this._description,
-      this._includesShipping, this._state, this._favorites);
+//TODO: Constructor con ISBN
+  Product(
+      this.id,
+      this.name,
+      this.price,
+      this.isSold,
+      this.images,
+      this.description,
+      this.includesShipping,
+      this.state,
+      this.favorites,
+      this.lat,
+      this.lng,
+      this.tags){
+        this.isbn = null;
+      }
 
   String getName() {
-    return this._name;
+    return this.name;
   }
 
   double getPrice() {
-    return this._price;
+    return this.price;
   }
 
   bool getSold() {
-    return this._isSold;
+    return this.isSold;
   }
 
-  String getImage() {
-    return this._image;
+  List<String> getImages() {
+    return this.images;
   }
 
   String getDescription() {
-    return lipsum.createSentence();
+    return this.description;
   }
 
   String priceToString() {
-    if (this._price % 1 == 0) {
-      return this._price.toStringAsFixed(0) + '€';
+    if (this.price % 1 == 0) {
+      return this.price.toStringAsFixed(0) + '€';
     } else {
-      return this._price.toStringAsFixed(2) + '€';
+      return this.price.toStringAsFixed(2) + '€';
     }
   }
 
-  bool includesShipping() {
-    return this._includesShipping;
+  LatLng getPosition() {
+    return LatLng(lat, lng);
+  }
+
+  bool isShippingIncluded() {
+    return this.includesShipping;
   }
 
   int getFavourites() {
-    return this._favorites;
+    return this.favorites;
   }
 
   String getState() {
-    return this._state;
+    return this.state;
+  }
+
+  List<String> getTags() {
+    return this.tags;
   }
 
 
-  void name(String value) {
-    _name = value;
+  int getId() {
+    return this.id;
   }
 
-  void description(String value) {
-    _description = value;
+  void setName(String _name){
+    this.name = _name;
+    print("nombre de prd " + this.name);
   }
 
-  void image(String value) {
-    _image = value;
+ void setDesciption(String _desc){
+    this.description = _desc;
   }
 
-  void isSold(bool value) {
-    _isSold = value;
+  void setIsbn(String _isbn){
+    this.name = _isbn;
   }
 
-  void setIncludesShipping(bool value) {
-    _includesShipping = value;
+  void setState(String _state){
+    this.state = _state;
+    print("estado del producto " + this.state);
+  }
+  String getISBN(){
+    return this.isbn;
   }
 
-  void favorites(int value) {
-    _favorites = value;
+  void insertTag(t){
+    this.tags.add(t);
   }
 
-  void state(String value) {
-    _state = value;
+  void setPrice(double p){
+    this.price = p;
+  }
+  void deleteTag(t){
+    this.tags.remove(t);
   }
 
-  void price(double value) {
-    _price = value;
+  String getTagsToString(){
+    if(this.tags.length == 0){
+      return '';
+    }
+    String s = tags.first;
+    for(int i = 1; i< tags.length; i++){
+      s = s + ',' + this.tags[i];
+    }
+    return s;
   }
 
-  void isbn(String value){
-    _isbn=value;
-  }
-
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
+

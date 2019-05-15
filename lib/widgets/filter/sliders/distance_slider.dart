@@ -4,6 +4,8 @@
  * CREACIÓN:    18/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -26,7 +28,6 @@ class DistanceSlider extends StatefulWidget {
 }
 
 class _DistanceSliderState extends State<DistanceSlider> {
-  double _maxDistance = 10.0;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -47,17 +48,26 @@ class _DistanceSliderState extends State<DistanceSlider> {
               child: Slider(
                 min: 1.0,
                 max: 30.0,
-                value: _maxDistance,
-                onChanged: (Value) {
-                  setState(() => _maxDistance = Value);
-                  widget.onMaxDistanceChange(Value);
+                value: ScopedModel.of<FilterQuery>(context).maxDistance != -1
+                    ? ScopedModel.of<FilterQuery>(context).maxDistance
+                    : 10,
+                onChanged: (value) async {
+                  setState(() => ScopedModel.of<FilterQuery>(context)
+                      .setMaxDistance(value));
+                  widget.onMaxDistanceChange(value);
                 },
               ),
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10.0),
               width: width / 4,
-              child: Text(_maxDistance.toStringAsFixed(1) + ' km',
+              child: Text(
+                  ScopedModel.of<FilterQuery>(context).maxDistance != -1
+                      ? ScopedModel.of<FilterQuery>(context)
+                              .maxDistance
+                              .toStringAsFixed(1) +
+                          ' km'
+                      : '10 km',
                   style:
                       TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300)),
             )
