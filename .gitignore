@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+# Created by https://www.gitignore.io/api/flutter
+# Edit at https://www.gitignore.io/?templates=flutter
+
+### Flutter ###
+=======
 # Miscellaneous
 *.class
 *.lock
@@ -35,6 +41,7 @@ version
 # packages file containing multi-root paths
 .packages.generated
 
+>>>>>>> 07a83925bf91026c23834d9aa54c1ef46d9a7d5f
 # Flutter/Dart/Pub related
 **/doc/api/
 .dart_tool/
@@ -43,10 +50,13 @@ version
 .pub-cache/
 .pub/
 build/
+<<<<<<< HEAD
+=======
 flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
+>>>>>>> 07a83925bf91026c23834d9aa54c1ef46d9a7d5f
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -56,8 +66,11 @@ unlinked_spec.ds
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+<<<<<<< HEAD
+=======
 **/android/key.properties
 *.jks
+>>>>>>> 07a83925bf91026c23834d9aa54c1ef46d9a7d5f
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -92,5 +105,9 @@ unlinked_spec.ds
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
+<<<<<<< HEAD
+# End of https://www.gitignore.io/api/flutter
+=======
 android/api-6438863248431806264-25962-ad84fdcf76de.json
 ./android/key.properties
+>>>>>>> 07a83925bf91026c23834d9aa54c1ef46d9a7d5f
