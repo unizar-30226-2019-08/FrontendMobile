@@ -59,21 +59,24 @@ class _AddImageCardState extends State<AddImageCard>{
 Future cameraPicker() async{
   
  File img= await ImagePicker.pickImage(source:ImageSource.camera);
- setState(() {
+ if(img!=null){
+  setState(() {
    imageToAdd=img;
  });
- widget.onNewPicture(imageToAdd);
+  widget.onNewPicture(imageToAdd);
+  }
 
 }
 
 //Subir fotos de galeria
  Future galleryPicker() async{
   File img= await ImagePicker.pickImage(source:ImageSource.gallery);
+  if(img!=null){
   setState(() {
    imageToAdd=img;
  });
   widget.onNewPicture(imageToAdd);
- 
+  }
 }
 
 

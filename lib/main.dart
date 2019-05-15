@@ -19,7 +19,7 @@ import 'package:bookalo/widgets/navbars/report_navbar.dart';
 import 'package:bookalo/widgets/image_card.dart';
 import 'package:bookalo/widgets/add_image.dart';
 import  'dart:io';
-import 'package:bookalo/widgets/crear_foto.dart';
+
 
 void main() {
   runApp(MyApp());
