@@ -30,7 +30,7 @@ class ListImageCard extends StatefulWidget {
 
 class _ListImageCardState extends State<ListImageCard> {
    List <Widget> imageCards=[];
-     List <File> imagesList;
+     List <File> imagesList=[];
   _ListImageCardState();
   File imageToAdd;
 
@@ -43,19 +43,24 @@ imageCards.add(card);
 
 }
 //Quitar foto de la lista
-void removeFromList(File img,Widget imageCard){
+void removeFromList(File img) {
+
+
   setState(() {
-    
-  //imageCards.remove(imageCard);
-  imagesList.remove(img);
+    var i=imagesList.indexOf(img);
+  imageCards.removeAt(i+1);//i+1 porque el primero es el widget de añadir fotos
+  imagesList.removeAt(i);
   });
+
+
 }
 
 
 //Añadir foto a la lista
  void onNewPicture(File img) async{
   setState(() {
-    imageCards.add(ImageCard(img,removeFromList));
+    ImageCard imgC=ImageCard(img,removeFromList);
+    imageCards.add(imgC);
     imagesList.add(img);
   print("Anyadiendo a lista");
 

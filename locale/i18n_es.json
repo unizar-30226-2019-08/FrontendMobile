@@ -79,6 +79,9 @@
     "description_hint":"Introduce una descripcion",
     "description_too_short":"Descripción demasiado corta",
     "isbn_hint":"Introduce el código isbn (opcional)",
-    "isbn_too_short":"ISBN demasiado corto"
-
+    "isbn_too_short":"ISBN demasiado corto",
+    "Warning":"¡Cuidado!",
+    "confirmation_text":"¿Seguro que quieres eliminar esta foto?",
+    "Continue":"Continuar",
+    "Cancel":"Cancelar"
 }

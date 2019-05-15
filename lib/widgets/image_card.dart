@@ -26,28 +26,33 @@ import 'dart:io';
 
 class ImageCard extends StatelessWidget {
   final File image; //usuario actual
-  final Function (File,Widget) removePicture;
+  final Function (File) removePicture;
   ImageCard(this.image,this.removePicture);//(this.erasePicture);//({this.image});
 
-   onXpressed(){
-    AlertDialog removeWarning =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
-    actions:[
-       // new FlatButton(onPressed: removePicture,child: Text("Continuar"),),
-        new FlatButton(onPressed: null,child: Text("Cancelar"),)
-    ]
-    );
-   // erasePicture();
-  }
+   
   
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-   AlertDialog removeWarning =AlertDialog(title:Text("Cuidado"),content:Text("¿seguro que quieres borrar esta foto"),
+    int i;
+
+    //Eliminar producto al pulsar la X
+   onXpressed(){
+    AlertDialog removeWarning =AlertDialog(title:Text(Translations.of(context).text("Warning")),content:Text(Translations.of(context).text("confirmation_text")),
     actions:[
-       //new FlatButton(onPressed: this.removePicture(),child: Text("Continuar"),),
-        new FlatButton(onPressed: null,child: Text("Cancelar"),)
-    ]);
+        new FlatButton(onPressed:(){ removePicture(this.image);Navigator.pop(context);},child:Text(Translations.of(context).text("Continue"))),
+        new FlatButton(onPressed:(){Navigator.pop(context);},child:Text(Translations.of(context).text("Cancel"),)),
+    ]
+    );
+    showDialog(context: context,builder:(BuildContext context){return removeWarning;});
+   // erasePicture();
+  }
 
 
    return Column(
@@ -71,7 +76,7 @@ class ImageCard extends StatelessWidget {
       ),
     ),
 ),
-   IconButton(icon:Icon(Icons.cancel),onPressed:(){showDialog(context: context,builder: (BuildContext context){return removeWarning;});})
+   IconButton(icon:Icon(Icons.cancel),onPressed:(){onXpressed();})//{showDialog(context: context,builder: (BuildContext context){return removeWarning;});})
  
           
 
