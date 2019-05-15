@@ -62,11 +62,13 @@ class _ChatNavbarState extends State<ChatNavbar> {
               })),
       title: Text(Translations.of(context)
           .text(widget.interest.toString().split('.').last)),
+      
       actions: <Widget>[
         Container(
           margin: EdgeInsets.only(top: topMargin, right: width / 30),
           child: CircleAvatar(
               backgroundImage: AssetImage('assets/images/boli.jpg')),
+              
         ),
       ],
       flexibleSpace: Center(

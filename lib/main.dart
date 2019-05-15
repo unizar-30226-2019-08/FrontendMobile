@@ -23,6 +23,7 @@ void main() async {
  *  DESCRIPCIÓN:  widget principal de la aplicación. Establece configuración general
  *                y declara BuyAndSell como widget principal 
  */
+
 class MyApp extends StatelessWidget {
   final bool isAuthenticated;
 
@@ -69,3 +70,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

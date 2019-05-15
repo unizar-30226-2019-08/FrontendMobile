@@ -88,5 +88,9 @@
     "offensive_comment":"Comentario ofensivo",
     "offensive_content":"Contenido ofensivo",
     "report_to":"REPORTE A",
-    "close_chat":"Cerrar venta"
+    "close_chat":"Cerrar venta",
+    "Warning":"¡Cuidado!",
+    "confirmation_text":"¿Seguro que quieres eliminar esta foto?",
+    "Continue":"Continuar",
+    "Cancel":"Cancelar"
 }
