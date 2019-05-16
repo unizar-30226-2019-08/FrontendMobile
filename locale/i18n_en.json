@@ -52,8 +52,9 @@
     "con_envio" : "shipping",
     "sin_envio" : "NO shipping",
     "price" : "PRICE",
-    "texto_ver_en_venta":"This product will be added to your collection of products for sale, where you can modify it from there if you wish",
+    "text_verify":"Por favor, verifique los datos de su producto",
     "upload_product_ok": "This product has been added to \"My sales\" where you can consult it",
     "cancel_upload" :"Cancelando subida de producto",
-    "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento."
+    "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento.",
+    "description" : "DESCRIPTION"
 }

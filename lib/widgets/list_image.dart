@@ -16,9 +16,10 @@ import 'dart:io';
 
 class ListImageCard extends StatefulWidget {
   //usuario actual
+  final Function validate;
   final List<Widget> imageCards;
   final List<File> imagesList;
-  ListImageCard({Key key, this.imagesList, this.imageCards}) : super(key: key);
+  ListImageCard({Key key, this.imagesList, this.imageCards, this.validate}) : super(key: key);
 
   _ListImageCardState createState() => _ListImageCardState();
 }
@@ -46,6 +47,7 @@ class _ListImageCardState extends State<ListImageCard> {
       widget.imageCards
           .removeAt(i + 1); //i+1 porque el primero es el widget de añadir fotos
       widget.imagesList.removeAt(i);
+      widget.validate(widget.imagesList.length > 0);
     });
   }
 
@@ -56,6 +58,7 @@ class _ListImageCardState extends State<ListImageCard> {
       ImageCard imgC = ImageCard(img, removeFromList);
       widget.imageCards.add(imgC);
       widget.imagesList.add(img);
+      widget.validate(widget.imagesList.length > 0);
     });
   }
 

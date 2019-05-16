@@ -16,23 +16,26 @@ import 'package:flutter/material.dart';
  */
 
 class UploadImages extends StatefulWidget {
+	final Function(bool) validate;
 	final List<File> imagesList;
-	UploadImages({Key key, this.imagesList}) : super(key: key);
-	
+	UploadImages({Key key, this.imagesList, this.validate}) : super(key: key);
+
 	@override
 	_UploadImagesState createState() => _UploadImagesState();
-
 }
 
 class _UploadImagesState extends State<UploadImages> {
-		
-		@override
-		Widget build(BuildContext context) {
+	@override
+	Widget build(BuildContext context) {
 		List<Widget> imageCard = [];
 		return Container(
-					child:ListImageCard(imageCards: imageCard, imagesList: widget.imagesList ,),
+			child: ListImageCard(
+				imageCards: imageCard,
+				imagesList: widget.imagesList,
+				validate: (val) {
+					widget.validate(val);
+				},
+			),
 		);
 	}
-
 }
-

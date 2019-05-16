@@ -96,8 +96,8 @@
     "Gracias": "Gracias",
     "upload_product_ok": "Este producto ha sido añadido a \"Mis ventas\" donde lo podrá consultar",
     "subida_completed":"¡Subida completada!",
-    "subir_nuevo_producto" :"Subir nuevo producto",
-    "texto_ver_en_venta":"'Este producto se añadirá a su colección de productos en venta, dónde podrá modificarlo desde allí si lo desea'",
+    "subir_nuevo_producto" :"Confirmar producto",
+    "text_verify":"Por favor, verifique los datos de su producto",
     "position" : "posición",
     "tags" :"tags",
     "Producto" : "Producto",
@@ -113,8 +113,8 @@
     "con_envio" : "CON ENVIO",
     "sin_envio" : "SIN ENVIO",
     "price" : "PRECIO",
-    "cancel_upload" :"Cancelando subida de producto",
-    "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento."
-    
+    "cancel_upload" :"Cancelando producto",
+    "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento.",
+    "description" : "DESCRIPCIÓN"
 
 }
