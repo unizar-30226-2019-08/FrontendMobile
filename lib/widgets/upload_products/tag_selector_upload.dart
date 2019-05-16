@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:flutter_tags/input_tags.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/translations.dart';
 
 /*
@@ -103,7 +101,7 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
                     .contains(input.toLowerCase());
               },
 							textSubmitted: (inputetx){
-                const maxLong = 3;
+                const maxLong = 50;
                 if(inputetx.length > 0 && inputetx.length < maxLong){
                   setState(() {
                       widget.onInsertTag(inputetx);
@@ -112,7 +110,7 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
                 }else{
                   if(inputetx.length >= maxLong)
                     setState(() {
-                      msgError = "Tag demasiado largo.\nMáximo permitido = 30";
+                      msgError = Translations.of(context).text("error_tag_tamanyo", params: [maxLong.toString()]);
                       showError = true;
                   });
                 }
@@ -144,10 +142,10 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
 					),
 				),
         (widget.selectedTags.isEmpty) ?
-              Text("\nNo tiene tags asignados.", textAlign: TextAlign.center, style: TextStyle(fontSize: 26),)
+              Text(Translations.of(context).text("no_tags"), textAlign: TextAlign.center, style: TextStyle(fontSize: 26),)
               :Container(),
         (widget.selectedTags.isEmpty) ?
-              Text("\n El uso de tags aumenta la probabilidad de venta.\nLos demás usuarios encontrarán tu prodcuto con mayor facilidad")
+              Text(Translations.of(context).text("motivation_tags"))
             :
             Container(),
 			],

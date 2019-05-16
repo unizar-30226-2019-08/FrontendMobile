@@ -10,14 +10,13 @@ import 'package:bookalo/utils/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/widgets/list_image.dart';
-//import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
-//import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:bookalo/widgets/upload_products/upload_images.dart';
 import 'package:bookalo/widgets/upload_products/upload_title.dart';
 import 'package:bookalo/widgets/upload_products/upload_tags.dart';
 import 'package:bookalo/widgets/upload_products/upload_position.dart';
+
+enum ConfirmAction { CANCEL, ACCEPT }
 
 /*
  *  CLASE:        UploadProduct
@@ -32,23 +31,29 @@ class UploadProduct extends StatefulWidget {
 class _UploadProduct extends State<UploadProduct> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   Product newP;
+  bool finalizado = false;
   List<bool> pagesValited = [true, false, true, true];
   List<File> imageneFile = [];
-  
+
   var _pageOptions = [];
+
   @override
   void initState() {
     super.initState();
     newP = new Product(0, '', 0, false, [], '', false, '', 0, 0, 0, []);
     newP.setState('Nuevo');
-    
-    newP.setPrice(13.5);
-    //	newP.getTags().forEach((tag) => kk.add(Tag(title: tag)));
     _pageOptions = [
-      UploadImages(imagesList: imageneFile,),
+      UploadImages(
+        imagesList: imageneFile,
+      ),
       UploadTitle(
         formKey: _formKeys[1],
         prod: newP,
+        priceInserted: (precio) {
+          setState(() {
+            newP.setPrice(precio);
+          });
+        },
         valitedPage: (valited) {
           setState(() {
             pagesValited[1] = valited;
@@ -77,9 +82,11 @@ class _UploadProduct extends State<UploadProduct> {
       ),
       UploadTags(
         initialT: newP.getTags(),
-        validate: (validado){setState(() {
-          pagesValited[2] = validado;
-        });},
+        validate: (validado) {
+          setState(() {
+            pagesValited[2] = validado;
+          });
+        },
         onDeleteTag: (tag) {
           setState(() {
             newP.deleteTag(tag);
@@ -92,9 +99,11 @@ class _UploadProduct extends State<UploadProduct> {
         },
       ),
       UploadPosition(
-        validate: (validado){setState(() {
-          pagesValited[3] = validado;
-        });},
+        validate: (validado) {
+          setState(() {
+            pagesValited[3] = validado;
+          });
+        },
       ),
     ];
   }
@@ -111,24 +120,35 @@ class _UploadProduct extends State<UploadProduct> {
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-    bool upload = false;
-    return DefaultTabController(
+  
+    return WillPopScope(
+    onWillPop: () async {
+      ConfirmAction accion = await _cancelarUpload(context);
+      if(accion == ConfirmAction.ACCEPT){
+        Navigator.pop(context);
+      }
+    }, 
+    child:DefaultTabController(
       length: 2,
       child: Scaffold(
         key: _scaffoldKey,
         appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
         body: _pageOptions[currentPage],
-        //TODO: snackbar -> Mejorar mensaje
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             if (validarPaginas()) {
               //Subir
-             // if(imageneFile.length > 0){
+              // if(imageneFile.length > 0){
               //imageneFile.add(File('/Almacenamiento interno compartido/WhatsApp/Media/WhatsApp Images/IMG-20141026-WA0003.jpg'));
-              uploadNewProduct(newP, imageneFile);
-             // }else{
-             //   print("No images");
-             // }
+
+              ConfirmAction action = await _confirmarUpload(context);
+
+              if (action == ConfirmAction.ACCEPT) {
+                if (await uploadNewProduct(newP, imageneFile)) {
+                  await _ackAlert(context);
+                  Navigator.pop(context);
+                } 
+              }
             } else {
               int i = 0;
               while (pagesValited[i] && i < pagesValited.length) {
@@ -138,9 +158,7 @@ class _UploadProduct extends State<UploadProduct> {
                 currentPage = i;
               });
               _scaffoldKey.currentState.showSnackBar(SnackBar(
-                content: Text(
-                  Translations.of(context).text("Por favor, complete los campos obligatorios",
-                      /*params: [provider, (result.index * 100).toString()]*/),
+                content: Text(Translations.of(context).text("completar_campos"),
                   style: TextStyle(fontSize: 17.0),
                 ),
                 action: SnackBarAction(
@@ -186,8 +204,7 @@ class _UploadProduct extends State<UploadProduct> {
                   Icons.add_a_photo,
                   color: Colors.white,
                 ),
-                title: Text(
-                  "Fotos",
+                title: Text(Translations.of(context).text("Fotos"),
                   style: TextStyle(color: Colors.white),
                 )),
             BubbleBottomBarItem(
@@ -200,8 +217,7 @@ class _UploadProduct extends State<UploadProduct> {
                   Icons.edit,
                   color: Colors.white,
                 ),
-                title: Text(
-                  "Producto",
+                title: Text(Translations.of(context).text("Producto"),
                   style: TextStyle(color: Colors.white),
                 )),
             BubbleBottomBarItem(
@@ -214,8 +230,7 @@ class _UploadProduct extends State<UploadProduct> {
                   Icons.dashboard,
                   color: Colors.white,
                 ),
-                title: Text(
-                  "Tags",
+                title: Text(Translations.of(context).text("tags"),
                   style: TextStyle(color: Colors.white),
                 )),
             BubbleBottomBarItem(
@@ -228,15 +243,86 @@ class _UploadProduct extends State<UploadProduct> {
                   Icons.my_location,
                   color: Colors.white,
                 ),
-                title: Text(
-                  "Posición",
+                title: Text( Translations.of(context).text("position"),
                   style: TextStyle(color: Colors.white),
                 ))
           ],
         ),
-
-     
       ),
+    ));
+  }
+ Future<ConfirmAction> _cancelarUpload(BuildContext context) async {
+    return showDialog<ConfirmAction>(
+      context: context,
+      barrierDismissible: false, // user must tap button for close dialog!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(Translations.of(context).text('cancel_upload')),
+          content: Text(Translations.of(context).text("cancel_upload_text")),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(Translations.of(context).text('Cancel')),
+              onPressed: () {
+                Navigator.of(context).pop(ConfirmAction.CANCEL);
+              },
+            ),
+            FlatButton(
+              child: Text(Translations.of(context).text('Continue')),
+              onPressed: () {
+                Navigator.of(context).pop(ConfirmAction.ACCEPT);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future<ConfirmAction> _confirmarUpload(BuildContext context) async {
+    return showDialog<ConfirmAction>(
+      context: context,
+      barrierDismissible: false, // user must tap button for close dialog!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(Translations.of(context).text('subir_nuevo_producto')),
+          content: Text(Translations.of(context).text("texto_ver_en_venta")),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(Translations.of(context).text('Cancel')),
+              onPressed: () {
+                Navigator.of(context).pop(ConfirmAction.CANCEL);
+              },
+            ),
+            FlatButton(
+              child: Text(Translations.of(context).text('Continue')),
+              onPressed: () {
+                Navigator.of(context).pop(ConfirmAction.ACCEPT);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+
+  Future<void> _ackAlert(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(Translations.of(context).text("subida_completed") ),
+          content: Text( Translations.of(context).text("upload_product_ok")),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(Translations.of(context).text('Gracias')),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -256,5 +342,3 @@ class _UploadProduct extends State<UploadProduct> {
     return v;
   }
 }
-
-

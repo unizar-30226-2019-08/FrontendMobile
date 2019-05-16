@@ -122,6 +122,7 @@ class Product {
   }
 
   void setIsbn(String _isbn){
+    print("ISBN asignado " + isbn);
     this.isbn = _isbn;
   }
 

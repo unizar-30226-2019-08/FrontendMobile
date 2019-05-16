@@ -7,6 +7,7 @@
 import 'dart:io';
 
 import 'package:async/async.dart';
+import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -14,14 +15,8 @@ import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/objects/filter_query.dart';
 
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_tags/selectable_tags.dart';
-import 'package:bookalo/widgets/product_view.dart';
-import 'package:bookalo/widgets/mini_product.dart';
-import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/user.dart';
 
 
 final Map<String, String> headers = {'appmovil': 'true'};
@@ -83,7 +78,7 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
     im.add(http.MultipartFile('files', stream, length, filename: 'imagen' + i.toString()));
     
   }
- // request.files.addAll(im);
+  request.files.addAll(im);
  // print("request Files " + request.fields.toString());
   print("num Imagenes entrantes " + images.length.toString());
   print("numImagenes anyadidas " + request.files.length.toString());
@@ -100,6 +95,21 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
   request.headers.addAll(headers);
   print("Enviando");
   var response = await request.send();
-  print("Resultado del envio ha sido "  + response.statusCode.toString());
+  if(response.statusCode != 201){
+      var _scaffoldKey;
+            _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text( "Lo sentimos, parece que ha habido un error al subir el producto " + response.statusCode.toString(),
+          style: TextStyle(fontSize: 17.0),
+        ),
+        action: SnackBarAction(
+          label: "accept",
+          onPressed: () {
+            _scaffoldKey.currentState.hideCurrentSnackBar();
+          },
+        ),
+      ));
+                
+  }
+  
   return response.statusCode == 201;
 }

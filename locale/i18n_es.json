@@ -92,5 +92,29 @@
     "Warning":"¡Cuidado!",
     "confirmation_text":"¿Seguro que quieres eliminar esta foto?",
     "Continue":"Continuar",
-    "Cancel":"Cancelar"
+    "Cancel":"Cancelar", 
+    "Gracias": "Gracias",
+    "upload_product_ok": "Este producto ha sido añadido a \"Mis ventas\" donde lo podrá consultar",
+    "subida_completed":"¡Subida completada!",
+    "subir_nuevo_producto" :"Subir nuevo producto",
+    "texto_ver_en_venta":"'Este producto se añadirá a su colección de productos en venta, dónde podrá modificarlo desde allí si lo desea'",
+    "position" : "posición",
+    "tags" :"tags",
+    "Producto" : "Producto",
+    "Fotos":"Fotos",
+    "completar_campos": "Por favor, complete los campos obligatorios",
+    "no_camera_persission" : "Bookalo no tiene permisos para emplear la cámara",
+    "unknow_error" : "Error desconocido: {{param1}}",
+    "nothing_caputured" : "No se podido capturar el codigo de barras.",
+    "error_tag_tamanyo": "Tag demasiado largo.\nMáximo permitido = {{param1}}",
+    "no_tags": "\nNo tiene tags asignados.",
+    "motivation_tags" : "\n El uso de tags aumenta la probabilidad de venta.\nLos demás usuarios encontrarán tu prodcuto con mayor facilidad",
+    "tipo_envio" : "ENVÍO",
+    "con_envio" : "CON ENVIO",
+    "sin_envio" : "SIN ENVIO",
+    "price" : "PRECIO",
+    "cancel_upload" :"Cancelando subida de producto",
+    "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento."
+    
+
 }

@@ -4,7 +4,6 @@
  *              por backend para la subida de un nuevo producto
  * CREACIÓN:    07/05/2019
  */
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/upload_products/tag_selector_upload.dart';
@@ -41,13 +40,6 @@ class _TagsUploadProductState extends State<TagsUploadProduct> {
       super.initState();
       widget.initialTags.forEach((tag) => tagsParser.add(Tag(title: tag)));
     }
-	/*
-	 * Pre:   ---
-	 * Post   devolverá una lista de tags. Por el momento, mockup
-	 */
-	Future<List<Tag>> _getTags() async {
-		return await parseTags(tagsParser);
-	}
 
 	@override
 	Widget build(BuildContext context) {

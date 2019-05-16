@@ -56,7 +56,6 @@ class _ListImageCardState extends State<ListImageCard> {
       ImageCard imgC = ImageCard(img, removeFromList);
       widget.imageCards.add(imgC);
       widget.imagesList.add(img);
-      print("Anyadiendo a lista");
     });
   }
 
