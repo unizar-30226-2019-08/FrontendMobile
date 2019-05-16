@@ -4,6 +4,9 @@
  * CREACIÓN:    12/05/2019
  */
 
+import 'dart:io';
+
+import 'package:bookalo/widgets/list_image.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -12,15 +15,24 @@ import 'package:flutter/material.dart';
  *  DESCRIPCIÓN:  
  */
 
-class UploadImages extends StatelessWidget {
-  UploadImages();
+class UploadImages extends StatefulWidget {
+	final List<File> imagesList;
+	UploadImages({Key key, this.imagesList}) : super(key: key);
+	
+	@override
+	_UploadImagesState createState() => _UploadImagesState();
 
-
-  @override
-  Widget build(BuildContext context) {
-    
-    return Container(
-          child: TextField(),
-    );
-  }
 }
+
+class _UploadImagesState extends State<UploadImages> {
+		
+		@override
+		Widget build(BuildContext context) {
+		List<Widget> imageCard = [];
+		return Container(
+					child:ListImageCard(imageCards: imageCard, imagesList: widget.imagesList ,),
+		);
+	}
+
+}
+

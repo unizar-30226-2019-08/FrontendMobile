@@ -56,7 +56,7 @@ class Product {
       this.lat,
       this.lng,
       this.tags){
-        this.isbn = null;
+        this.isbn = '';
       }
 
   String getName() {
@@ -122,7 +122,7 @@ class Product {
   }
 
   void setIsbn(String _isbn){
-    this.name = _isbn;
+    this.isbn = _isbn;
   }
 
   void setState(String _state){
@@ -154,7 +154,12 @@ class Product {
     }
     return s;
   }
-
+  void setShippingIncluded(bool sendInclude) {
+    this.includesShipping = sendInclude;
+  }
+  String getStringShippinIncluded(){
+    return (this.includesShipping) ? "Con envio" : "Sin envio";
+  }
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);

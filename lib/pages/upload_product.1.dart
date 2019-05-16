@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clases relativas a la pagina de subida de producto
  * CREACIÓN:    15/04/2019
  */
+/*
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/translations.dart';
@@ -387,3 +388,4 @@ class _UploadProduct extends State<UploadProduct> {
   }
 
 
+*/

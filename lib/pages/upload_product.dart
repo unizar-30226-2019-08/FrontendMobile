@@ -10,6 +10,7 @@ import 'package:bookalo/utils/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/widgets/list_image.dart';
 //import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 //import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
@@ -32,7 +33,8 @@ class _UploadProduct extends State<UploadProduct> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   Product newP;
   List<bool> pagesValited = [true, false, true, true];
-  List<File> imagen =[File('/Almacenamiento interno compartido/WhatsApp/Media/WhatsApp Images')];
+  List<File> imageneFile = [];
+  
   var _pageOptions = [];
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _UploadProduct extends State<UploadProduct> {
     newP.setPrice(13.5);
     //	newP.getTags().forEach((tag) => kk.add(Tag(title: tag)));
     _pageOptions = [
-      UploadImages(),
+      UploadImages(imagesList: imageneFile,),
       UploadTitle(
         formKey: _formKeys[1],
         prod: newP,
@@ -121,7 +123,12 @@ class _UploadProduct extends State<UploadProduct> {
           onPressed: () {
             if (validarPaginas()) {
               //Subir
-              uploadNewProduct(newP, imagen);
+             // if(imageneFile.length > 0){
+              //imageneFile.add(File('/Almacenamiento interno compartido/WhatsApp/Media/WhatsApp Images/IMG-20141026-WA0003.jpg'));
+              uploadNewProduct(newP, imageneFile);
+             // }else{
+             //   print("No images");
+             // }
             } else {
               int i = 0;
               while (pagesValited[i] && i < pagesValited.length) {
@@ -228,48 +235,7 @@ class _UploadProduct extends State<UploadProduct> {
           ],
         ),
 
-        //CurvedNavigationBar(
-        //	backgroundColor: Colors.white,
-        //	color: Colors.pink,
-        //	items: <Widget>[
-        //		Icon(Icons.add, size: 30),
-        //		Icon(Icons.list, size: 30),
-        //		Icon(Icons.compare_arrows, size: 30),
-        //		Icon(Icons.list, size: 30),
-        //	],
-        //	onTap: (index) {
-        //			int i = 0;
-        //	while(pagesValited[i] && i < index){
-        //		i++;
-        //	}
-        //
-        //		setState(() {
-        //			currentPage = i;
-        //		});
-        //	},
-        //),
-        //	bottomNavigationBar: FancyBottomNavigation(
-        //	tabs: [
-        //			//TODO: Añadir a traslate. Modificar Iconos
-        //			TabData(iconData: Icons.add_a_photo, title: 'Fotos'),
-        //			TabData(iconData: Icons.search, title: 'Producto'),
-        //			TabData(iconData: Icons.shopping_cart, title: 'Tags'),
-        //			TabData(iconData: Icons.shopping_cart, title: 'Posición')
-        //	],
-        //	//Ejemplo para escuchar el cambio de estado
-        //
-        //	onTabChangedListener: (position) {
-        ////			_formKeys[1].currentState.validate();
-        //		int i = 0;
-        //		while(pagesValited[i] && i < position){
-        //			i++;
-        //		}
-        //
-        //			setState(() {
-        //				currentPage = i;
-        //			});
-        //		},
-        //),
+     
       ),
     );
   }
