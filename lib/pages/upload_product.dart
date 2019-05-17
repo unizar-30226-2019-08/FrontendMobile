@@ -31,13 +31,32 @@ class UploadProduct extends StatefulWidget {
 
 class _UploadProduct extends State<UploadProduct> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+  //Producto a subir
+  //TODO: pasar por parámetro.
   Product newP;
-  bool finalizado = false;
+  
+  //validación de pasos. Sólo se permite hacer submit 
+  //    si  para todo 'i' € {0, pagesValited.length}, pagesValited[i] == true
   List<bool> pagesValited = [false, false, true, true];
+  //imagenes del producto
   List<File> imageneFile = [];
+  //Contendra los widgetsa visualizar (ver initState)
+  var _pageOptions = []; 
 
-  var _pageOptions = [];
-
+  //Actual widget a mostrar
+  int currentPage = 0;
+  
+  //Keys que verifican la validación
+  // Actualmente sólo se esta usando _formkeay[1]
+  List<GlobalKey<FormState>> _formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
+  /**
+   * Habrá inicialidado los Widgets de cada página
+   */
   @override
   void initState() {
     super.initState();
@@ -112,41 +131,35 @@ class _UploadProduct extends State<UploadProduct> {
     ];
   }
 
-  int currentPage = 0;
-  //Contenido de cada página
-
-  List<GlobalKey<FormState>> _formKeys = [
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-  ];
+  /**
+   * Habrá contruido la vista general para poder subir un producto nuevo o modificarlo
+   */
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-
-    return WillPopScope(
+    return WillPopScope(//capturar boton atrás para mostrar mensaje
         onWillPop: () async {
           ConfirmAction accion = await _cancelarUpload(context);
           if (accion == ConfirmAction.ACCEPT) {
+            //Salir si el cliente lo pide
             Navigator.pop(context);
           }
         },
         child: DefaultTabController(
           length: 2,
           child: Scaffold(
-            key: _scaffoldKey,
+            //
+            key: _scaffoldKey,//key para mostrar snackbars
             appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
-            body: _pageOptions[currentPage],
+            body: _pageOptions[currentPage],//cuerpo = paginas iniciadas en initState
             floatingActionButton: FloatingActionButton(
+              //Boton Submit
+              child: Icon(Icons.file_upload),
+              backgroundColor: (validarPaginas() ? Colors.green : Colors.grey),
               onPressed: () async {
                 if (validarPaginas()) {
-                  //Subir
-                  // if(imageneFile.length > 0){
-                  //imageneFile.add(File('/Almacenamiento interno compartido/WhatsApp/Media/WhatsApp Images/IMG-20141026-WA0003.jpg'));
-
+                  //popup de confirmacion <-> (validarPaginas == true)
                   ConfirmAction action = await _confirmarUpload(context);
-
                   if (action == ConfirmAction.ACCEPT) {
                     if (await uploadNewProduct(newP, imageneFile)) {
                       await _ackAlert(context);
@@ -154,6 +167,7 @@ class _UploadProduct extends State<UploadProduct> {
                     }
                   }
                 } else {
+                  //Si no se ha validado todo -> mostrar primera pagina no valida
                   int i = 0;
                   while (pagesValited[i] && i < pagesValited.length) {
                     i++;
@@ -161,6 +175,7 @@ class _UploadProduct extends State<UploadProduct> {
                   setState(() {
                     currentPage = i;
                   });
+                  //Mostrar mensaje de error "Rellenar campos"
                   _scaffoldKey.currentState.showSnackBar(SnackBar(
                     content: Text(
                       Translations.of(context).text("completar_campos"),
@@ -175,21 +190,22 @@ class _UploadProduct extends State<UploadProduct> {
                   ));
                 }
               },
-              child: Icon(Icons.file_upload),
-              backgroundColor: (validarPaginas() ? Colors.green : Colors.grey),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BubbleBottomBar(
+              //Bara de navegacion inferior 
               backgroundColor: Colors.pink,
               opacity: .2,
               currentIndex: currentPage,
               onTap: (index) {
+                //Al intentar cambiar de pagina, verificar que todo lo anterior es correcto
                 int i = 0;
                 while (pagesValited[i] && i < index) {
                   i++;
                 }
                 setState(() {
+                  //Mostrar primera pagina con campos incompletos O pagina solicitada
                   currentPage = i;
                 });
               },
@@ -199,9 +215,11 @@ class _UploadProduct extends State<UploadProduct> {
               hasNotch: true, //new
               hasInk: true, //new, gives a cute ink effect
               inkColor:
-                  Colors.black, //optional, uses theme color if not specified
+                  Colors.black, //Color fondo de pagina seleccionada
               items: <BubbleBottomBarItem>[
+                //Botones del menu
                 BubbleBottomBarItem(
+                  //Anyadir fotos
                     backgroundColor: Colors.black,
                     icon: Icon(
                       Icons.add_a_photo,
@@ -216,6 +234,7 @@ class _UploadProduct extends State<UploadProduct> {
                       style: TextStyle(color: Colors.white),
                     )),
                 BubbleBottomBarItem(
+                  //Anyadir descripcion
                     backgroundColor: Colors.black,
                     icon: Icon(
                       Icons.edit,
@@ -230,6 +249,7 @@ class _UploadProduct extends State<UploadProduct> {
                       style: TextStyle(color: Colors.white),
                     )),
                 BubbleBottomBarItem(
+                  //Anyadir tags
                     backgroundColor: Colors.black,
                     icon: Icon(
                       Icons.dashboard,
@@ -244,6 +264,7 @@ class _UploadProduct extends State<UploadProduct> {
                       style: TextStyle(color: Colors.white),
                     )),
                 BubbleBottomBarItem(
+                  //posicion
                     backgroundColor: Colors.black,
                     icon: Icon(
                       Icons.my_location,
@@ -262,6 +283,11 @@ class _UploadProduct extends State<UploadProduct> {
           ),
         ));
   }
+
+/** 
+ * Habrá mostrado un PopUp de advertencia de que si el usuario continua, perderá los datos introducidos
+ * y devuelve la acción € ConfirmAction = {ACEPTAR, CANCELAR} siendo esta la intención del usuario
+ */  
 
   Future<ConfirmAction> _cancelarUpload(BuildContext context) async {
     return showDialog<ConfirmAction>(
@@ -311,9 +337,12 @@ class _UploadProduct extends State<UploadProduct> {
       },
     );
   }
-
-  Future<ConfirmAction> _confirmarUpload(BuildContext context) async {
-    return showDialog<ConfirmAction>(
+/** 
+ *  Habrá mostrado un PopUp de confimación de subida de producto con todos los datos del producto
+ *  Y devolverá una acción perteneciente ConfirmAction ={ACEPTAR, CANCELAR} con la acción elegida
+ * del usuario
+ */
+  Future<ConfirmAction> _confirmarUpload(BuildContext context) async => showDialog<ConfirmAction>(
       context: context,
       barrierDismissible: false, // user must tap button for close dialog!
       builder: (BuildContext context) {
@@ -393,8 +422,9 @@ class _UploadProduct extends State<UploadProduct> {
         );
       },
     );
-  }
-
+/**
+ * Mostrará un mensaje de confimación de que el producto ha subido Correctamente
+ */
   Future<void> _ackAlert(BuildContext context) {
     return showDialog<void>(
       context: context,
@@ -430,7 +460,9 @@ class _UploadProduct extends State<UploadProduct> {
       },
     );
   }
-
+/**
+ * True <-> para todo i € {0, pagesValited.length}, pagesValited[i] == true
+ */
   bool validarPaginas() {
     bool v = true;
     pagesValited.forEach((x) {
@@ -438,7 +470,10 @@ class _UploadProduct extends State<UploadProduct> {
     });
     return v;
   }
-
+/** 
+ * PRE: n <= pagesValited.length
+ * True <-> para todo i € {0, n}, pagesValited[i] == true
+ */
   bool validarNPaginas(int n) {
     bool v = true;
     for (int i = 0; i < n; i++) {
