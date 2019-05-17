@@ -6,7 +6,7 @@
 
 import 'dart:io';
 
-import 'package:bookalo/widgets/list_image.dart';
+import 'package:bookalo/widgets/upload_products/list_image.dart';
 import 'package:flutter/material.dart';
 
 /*
