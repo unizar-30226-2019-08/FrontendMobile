@@ -16,13 +16,16 @@ import 'package:bookalo/widgets/upload_products/upload_title.dart';
 import 'package:bookalo/widgets/upload_products/upload_tags.dart';
 import 'package:bookalo/widgets/upload_products/upload_position.dart';
 
-enum ConfirmAction { CANCEL, ACCEPT }
-const tamanyoMaxpopUp = 144.4;
+enum ConfirmAction { CANCEL, ACCEPT } //Acciones de usuario en PopUps
+const tamanyoMaxpopUp = 144.4;  //Maximo tamaño para PopUps ACK y Cancelar
 
 /*
  *  CLASE:        UploadProduct
  *  DESCRIPCIÓN:  widget para la pagina de subida de un producto.
- * //TODO: add descripcion
+ *                Este widget Construye con una menu inferior todas las vistas necesarias
+ *                Para la subida de un producto nuevo o su modificación.
+ *                Termina cuando el usuario consigue subir un producto nuevo o modificado
+ *                O cuando explicitamente el usuario ha cancelado dicha subida
  */
 class UploadProduct extends StatefulWidget {
   UploadProduct({Key key}) : super(key: key);
