@@ -66,23 +66,38 @@ class MiniatureChat extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0),
           ),
           (chat.getProduct.checkfForSale()
-              ? Container()
-              : DecoratedBox(
-                  decoration: BoxDecoration(color: Colors.pink),
-                  child: Container(
-                      margin: EdgeInsets.all(1.0),
-                      child: Text(
-                        (true //TODO: apañar quién soy
-                            ? Translations.of(context)
-                                .text("chat_finished_sell")
-                            : Translations.of(context)
-                                .text("chat_finished_buy")),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: Colors.white),
-                      )),
-                )),
+              ? Container(width: 0)
+              : Container(
+                  margin: EdgeInsets.only(top: 15.0),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.pink),
+                    child: Container(
+                        margin: EdgeInsets.all(1.0),
+                        child: Text(
+                          Translations.of(context).text("chat_finished"),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.white),
+                        )),
+                  ),
+                )),          
+          (chat.numberOfPending > 0
+          ?           Container(
+            margin: EdgeInsets.only(top: 15.0),
+            child: ClipOval(
+                child: Container(
+              color: Colors.pink,
+              height: 30.0, // height of the button
+              width: 30.0, // width of the button
+              child: Center(
+                child: Text('+9',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500)),
+              ),
+            )),
+          )
+          : Container())
         ]);
   }
 

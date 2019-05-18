@@ -16,8 +16,9 @@ import 'package:bookalo/pages/own_product.dart';
 
 class MiniProduct extends StatelessWidget {
   final Product _product;
+  final Function _onDelete;
 
-  MiniProduct(this._product);
+  MiniProduct(this._product, this._onDelete);
 
 /*
   Pre:---

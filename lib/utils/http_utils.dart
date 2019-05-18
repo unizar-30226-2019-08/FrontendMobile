@@ -75,7 +75,7 @@ Future<List<Tag>> parseTags(List<Tag> initialTags) async {
   return tagList;
 }
 
-Future<List<MiniProduct>> parseOwnProducts(
+Future<List<Product>> parseOwnProducts(
     int currentIndex, int pageSize) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
@@ -85,11 +85,10 @@ Future<List<MiniProduct>> parseOwnProducts(
   };
   var response = await http.post('https://bookalo.es/api/get_user_products',
       headers: headers, body: body);
-  List<MiniProduct> output = List();
+  List<Product> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
       .forEach((x) {
-    Product product = Product.fromJson(x['info_producto']);
-    output.add(MiniProduct(product));
+    output.add(Product.fromJson(x['info_producto']));
   });
   return output;
 }

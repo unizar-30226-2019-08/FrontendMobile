@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clases relativas a la pestaña de venta
  * CREACIÓN:    12/04/2019
  */
+import 'package:bookalo/objects/product.dart';
 import 'package:flutter/material.dart';
 import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/mini_product.dart';
@@ -34,8 +35,8 @@ class _SellState extends State<Sell> {
   Future<List<Widget>> fetchOwnProducts(currentSize, height) async {
     List<Widget> output = new List();
     if (!endReached) {
-      List<MiniProduct> fetchResult = await parseOwnProducts(currentSize, 10);
-      output.addAll(fetchResult);
+      List<Product> fetchResult = await parseOwnProducts(currentSize, 10);
+      output.addAll(fetchResult.map((p) => MiniProduct(p, (){ /*TODO: borrarlo de la lista*/})));
       endReached = fetchResult.length == 0;
       if (endReached) {
         if (firstFecth) {
