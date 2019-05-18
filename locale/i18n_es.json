@@ -115,6 +115,7 @@
     "price" : "PRECIO",
     "cancel_upload" :"Cancelando producto",
     "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento.",
-    "description" : "DESCRIPCIÓN"
+    "description" : "DESCRIPCIÓN",
+    "inserte_precio" : "Inserte el precio del producto"
 
 }

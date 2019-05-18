@@ -42,6 +42,22 @@ class Product {
   String isbn;
   List<String> tags;
 
+  Product.empty(){
+    this.id = 0;
+    this.name = "";
+    this.price = 0;
+    this.isSold= false;
+    this.images= [];
+    this.description= '';
+    this.includesShipping= false;
+    this.state= 'Usado';
+    this.favorites= 0;
+    this.lat= 0;
+    this.lng= 0;
+    this.tags = [];
+    this.isbn = '';
+  }
+
 //TODO: Constructor con ISBN
   Product(
       this.id,
@@ -135,7 +151,9 @@ class Product {
   }
 
   void insertTag(t){
+    print("Insertando tag nuevo " + t);
     this.tags.add(t);
+    print("Tamanyo actual " + this.tags.length.toString());
   }
 
   void setPrice(double p){

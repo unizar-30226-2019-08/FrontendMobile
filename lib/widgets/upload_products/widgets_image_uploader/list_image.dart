@@ -5,8 +5,8 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:bookalo/widgets/upload_products/image_card.dart';
-import 'package:bookalo/widgets/upload_products/add_image.dart';
+import 'package:bookalo/widgets/upload_products/widgets_image_uploader/image_card.dart';
+import 'package:bookalo/widgets/upload_products/widgets_image_uploader/add_image.dart';
 import 'dart:io';
 
 /*

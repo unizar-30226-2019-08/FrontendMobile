@@ -6,7 +6,7 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/selectable_tags.dart';
-import 'package:bookalo/widgets/upload_products/tag_selector_upload.dart';
+import 'package:bookalo/widgets/upload_products/widgets_tags_uploader/tag_selector_upload.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/http_utils.dart';
 

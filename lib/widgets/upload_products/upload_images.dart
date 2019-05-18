@@ -6,7 +6,7 @@
 
 import 'dart:io';
 
-import 'package:bookalo/widgets/upload_products/list_image.dart';
+import 'package:bookalo/widgets/upload_products/widgets_image_uploader/list_image.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -39,3 +39,4 @@ class _UploadImagesState extends State<UploadImages> {
 		);
 	}
 }
+

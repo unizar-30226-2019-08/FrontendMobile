@@ -5,7 +5,7 @@
  */
 
 
-import 'package:bookalo/widgets/upload_products/tags_upload_product.dart';
+import 'package:bookalo/widgets/upload_products/widgets_tags_uploader/tags_upload_product.dart';
 import 'package:flutter/material.dart';
 
 /*

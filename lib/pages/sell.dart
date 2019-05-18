@@ -4,6 +4,7 @@
  * CREACIÓN:    12/04/2019
  */
 import 'dart:math';
+import 'package:bookalo/objects/product.dart';
 import 'package:flutter/material.dart';
 import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/mini_product.dart';

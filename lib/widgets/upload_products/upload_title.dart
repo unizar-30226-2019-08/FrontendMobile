@@ -18,6 +18,7 @@ enum ConfirmAction { CANCEL, ACCEPT }
  */
 
 class UploadTitle extends StatefulWidget {
+  final AutoV autoV;
   final Function(String) isbnInserted;
   final Function(String) tittleInserted;
   final Function(String) descriptionInserted;
@@ -36,7 +37,7 @@ class UploadTitle extends StatefulWidget {
       this.formKey,
       this.valitedPage,
       this.stateProductInserted,
-      this.includeSend, this.priceInserted})
+      this.includeSend, this.priceInserted, this.autoV})
       : super(key: key);
   @override
   _UploadTitleState createState() => _UploadTitleState();
@@ -44,7 +45,6 @@ class UploadTitle extends StatefulWidget {
 
 class _UploadTitleState extends State<UploadTitle> {
   String _isbn = "";
-	
   String _value1 = "Nuevo";
   String _value2 = "Seminuevo";
   String _value3 = "Usado";
@@ -53,15 +53,15 @@ class _UploadTitleState extends State<UploadTitle> {
 
   String _sinEnvio = "Sin envio";
   String _conEnvio = "Con envio";
-  bool titleIni = false,
-      descIni =
-          false; //Indica si se ha iniciado o no el titulo/descIni respectivamente
+  bool titleIni = false, priceIni = false,
+      descIni = false; //Indica si se ha iniciado o no el titulo/descIni respectivamente
   bool validatePage = false,
       titleValited = false,
       isbnValited = false,
+      precioValidet = true,
       descValited = false;
 
-  var controller;
+  var controllerPrice;
 
   void _valueChanged(String value) =>
       setState(() => widget.prod.setState(value));
@@ -71,7 +71,7 @@ class _UploadTitleState extends State<UploadTitle> {
   @override
   void initState() {
     super.initState();
-		controller = new MoneyMaskedTextController(
+		controllerPrice = new MoneyMaskedTextController( precision: 1, 
       decimalSeparator: '.', thousandSeparator: ',', rightSymbol: '€',initialValue: widget.prod.getPrice());
 //			this._valueChanged(widget.prod.getState());
   }
@@ -107,15 +107,13 @@ class _UploadTitleState extends State<UploadTitle> {
       padding: EdgeInsets.symmetric(vertical: 1, horizontal: 15),
       children: <Widget>[
         Form(
+            autovalidate: widget.autoV.autovalidate,
             key: widget.formKey,
             onChanged: () {
+              widget.formKey.currentState.save();
               setState(() {
                 validatePage = widget.formKey.currentState.validate() &&
-                    titleIni &&
-                    descIni;
-                if (validatePage) {
-                  widget.formKey.currentState.save();
-                }
+                              titleIni && priceIni && descIni;
                 //	widget.stateProductInserted(groupValue);
                 widget.valitedPage(validatePage);
               });
@@ -130,7 +128,6 @@ class _UploadTitleState extends State<UploadTitle> {
                   style: TextStyle(
                       color: Colors.pink[600], fontWeight: FontWeight.w700),
                 ),
-                //onPressed: barcodeScanning,
                 onPressed: barcodeScanning,
               ),
               TextFormField(
@@ -172,12 +169,49 @@ class _UploadTitleState extends State<UploadTitle> {
                   if (title.length > 0) {
                     titleIni = true;
                   }
-                  if (titleIni && title.length < 2) {
+                  if ((widget.autoV.autovalidate || titleIni) && title.length < 2) {
                     //El nombre de articulo debe tener al menos 2 caracteres
                     return Translations.of(context).text("title_too_short");
                   }
                 },
               ),
+              Row(children: <Widget>[
+                //Fila para precio
+              Text(Translations.of(context).text("price")+ ": ", style: TextStyle(color: Colors.grey[600])),
+              Container(
+                //El tamaño del textFormField variará dependiendo del cardinal de digitos insertados
+                padding: EdgeInsets.only(left: 10),
+                width: (precioValidet) ? (controllerPrice.text.length) * 10.0 : Translations.of(context).text("description_hint").length*8.0,
+                //SI se desea hacer que ocupe el máximo de la pantalla, cambiar linea anterior por la siguiente
+                //width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
+                child:
+              TextFormField(
+                //Precio
+                    maxLines: 1,
+                    validator: (value){
+                      if(controllerPrice.numberValue > 0.0){
+                        //Si precio superior a 0€, no hacer nada
+                          //Afecta al tamaño del precio
+                          precioValidet = true;
+                          priceIni = true;
+                        
+                      }
+                      if(widget.autoV.autovalidate && !(controllerPrice.numberValue > 0.0) ){
+                        
+                          //Afecta al tamaño del precio
+                        precioValidet = false;
+                        
+                        return Translations.of(context)
+                        .text("inserte_precio");
+                      }
+                    },
+                    controller: controllerPrice,
+                    keyboardType: TextInputType.number,
+										onSaved: (value) {
+											setState(() {
+												widget.priceInserted(controllerPrice.numberValue);
+										});},
+                  ),),],),
               TextFormField(
                 //Input Descripcion
                 keyboardType: TextInputType.text,
@@ -195,7 +229,7 @@ class _UploadTitleState extends State<UploadTitle> {
                   if (description.length > 0) {
                     descIni = true;
                   }
-                  if (descIni && description.length < 2) {
+                  if ( (widget.autoV.autovalidate || descIni )&& description.length < 2) {
                     //El comentario debe tener al menos 30 caracteres
                     return Translations.of(context)
                         .text("description_too_short");
@@ -259,25 +293,7 @@ class _UploadTitleState extends State<UploadTitle> {
                     ]),
                   ]),
 									Divider(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(Translations.of(context).text("price")),
-                  TextField(
-										cursorWidth: 0,
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-										onChanged: (value) {
-										//	print(controller.toString());
-											setState(() {
-											//	print("leido " + controller.numberValue.toString());
-											//	print("precio anyadir es " + (double.parse(value.substring(0,value.length-1))*10).toString());
-												widget.priceInserted(controller.numberValue);
-												
-										});},
-                  )
-                ],
-              )
+             
             ])),
       ],
     );
@@ -294,4 +310,10 @@ class _UploadTitleState extends State<UploadTitle> {
     // widget.includeSend(newState == _conEnvio);
     _valueSendChanged(newState);
   }
+}
+
+class AutoV{
+  bool autovalidate = false;
+
+  AutoV(this.autovalidate);
 }

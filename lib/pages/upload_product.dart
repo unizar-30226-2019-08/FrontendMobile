@@ -28,16 +28,16 @@ const tamanyoMaxpopUp = 144.4;  //Maximo tamaño para PopUps ACK y Cancelar
  *                O cuando explicitamente el usuario ha cancelado dicha subida
  */
 class UploadProduct extends StatefulWidget {
-  UploadProduct({Key key}) : super(key: key);
+  final Product prod;                        
+  UploadProduct({Key key,this.prod }) : super(key: key);
   _UploadProduct createState() => _UploadProduct();
 }
 
 class _UploadProduct extends State<UploadProduct> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   //Producto a subir
-  //TODO: pasar por parámetro.
-  Product newP;
-  
+  Product newP = Product.empty();
+  AutoV autoV = AutoV(false);
   //validación de pasos. Sólo se permite hacer submit 
   //    si  para todo 'i' € {0, pagesValited.length}, pagesValited[i] == true
   List<bool> pagesValited = [false, false, true, true];
@@ -59,12 +59,14 @@ class _UploadProduct extends State<UploadProduct> {
   ];
   /**
    * Habrá inicialidado los Widgets de cada página
+   * y newP
    */
   @override
   void initState() {
     super.initState();
-    newP = new Product(0, '', 0, false, [], '', false, '', 0, 0, 0, []);
-    newP.setState('Nuevo');
+     if(widget.prod != null){
+       newP = widget.prod;
+     }
     _pageOptions = [
       UploadImages(
         imagesList: imageneFile,
@@ -74,35 +76,42 @@ class _UploadProduct extends State<UploadProduct> {
       ),
       UploadTitle(
         formKey: _formKeys[1],
+        autoV: autoV,
         prod: newP,
         priceInserted: (precio) {
           setState(() {
             newP.setPrice(precio);
+            autoV.autovalidate = true;
           });
         },
         valitedPage: (valited) {
           setState(() {
             pagesValited[1] = valited;
+            autoV.autovalidate = true;
           });
         },
         isbnInserted: (isbn) {
           setState(() {
             newP.setIsbn(isbn);
+            autoV.autovalidate = true;
           });
         },
         tittleInserted: (tittle) {
           setState(() {
             newP.setName(tittle);
+            autoV.autovalidate = true;
           });
         },
         descriptionInserted: (desc) {
           setState(() {
             newP.setDesciption(desc);
+            autoV.autovalidate = true;
           });
         },
         stateProductInserted: (_state) {
           setState(() {
             newP.setState(_state);
+            autoV.autovalidate = true;
           });
         },
       ),
