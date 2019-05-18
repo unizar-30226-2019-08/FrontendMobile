@@ -56,5 +56,7 @@
     "upload_product_ok": "This product has been added to \"My sales\" where you can consult it",
     "cancel_upload" :"Cancelando subida de producto",
     "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento.",
-    "description" : "DESCRIPTION"
+    "description" : "DESCRIPTION",
+    "uploading_product" :"Subiendo producto",
+    "wait_uploading" : "Esto puede llegar a tardar algún minuto.\nEspere, por favor"
 }

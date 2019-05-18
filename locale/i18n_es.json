@@ -116,6 +116,8 @@
     "cancel_upload" :"Cancelando producto",
     "cancel_upload_text" : "Si continua, perderá toda las modificaciones introducidas sobre este producto hasta el momento.",
     "description" : "DESCRIPCIÓN",
-    "inserte_precio" : "Inserte el precio del producto"
+    "inserte_precio" : "Inserte el precio del producto",
+    "uploading_product" :"Subiendo producto",
+    "wait_uploading" : "Esto puede llegar a tardar algún minuto.\nEspere, por favor"
 
 }

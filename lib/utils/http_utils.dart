@@ -61,7 +61,42 @@ Future<List<Tag>> parseTags(List<Tag> initialTags) async {
   return tagList;
 }
 
+Future<bool> editProduct(Product product, List<File> images) async{
+var uri = Uri.parse('https://bookalo.es/api/edit_product');
+  var request = http.MultipartRequest("POST", uri);
+  List<http.MultipartFile> im = [];
+  var length = 0;
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  request.fields['token'] = await user.getIdToken();
+  //print("token = " + request.fields['token']);
+  for(int i = 0; i < images.length; i++){
+    var stream = new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
+    print("stream imagen " + stream.toString());
+    length = await images[i].length();
+    im.add(http.MultipartFile('files', stream, length, filename: 'imagen' + i.toString()));
+    
+  }
+  request.files.addAll(im);
+  print("num Imagenes entrantes " + images.length.toString());
+  print("numImagenes anyadidas " + request.files.length.toString());
+  request.fields['id'] = product.getId().toString();
+  request.fields['latitud'] = product.getPosition().latitude.toString();
+  request.fields['longitud'] = product.getPosition().longitude.toString();
+  request.fields['nombre'] = product.getName();
+  request.fields['precio'] = product.getPrice().toString();
+  request.fields['estado_producto'] = product.getState();
+  request.fields['tipo_envio'] = product.isShippingIncluded().toString();
+  request.fields['descripcion'] = product.getDescription();
+  request.fields['tags'] = product.getTagsToString();
+  request.fields['isbn'] = product.getISBN();
 
+  request.headers.addAll(headers);
+  print("Enviando");
+  var response = await request.send();
+ 
+  
+  return response.statusCode == 201;
+}
 
 Future<bool> uploadNewProduct(Product product, List<File> images) async {
   var uri = Uri.parse('https://bookalo.es/api/create_product');
@@ -95,21 +130,7 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
   request.headers.addAll(headers);
   print("Enviando");
   var response = await request.send();
-  if(response.statusCode != 201){
-      var _scaffoldKey;
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text( "Lo sentimos, parece que ha habido un error al subir el producto " + response.statusCode.toString(),
-          style: TextStyle(fontSize: 17.0),
-        ),
-        action: SnackBarAction(
-          label: "accept",
-          onPressed: () {
-            _scaffoldKey.currentState.hideCurrentSnackBar();
-          },
-        ),
-      ));
-                
-  }
+ 
   
   return response.statusCode == 201;
 }
