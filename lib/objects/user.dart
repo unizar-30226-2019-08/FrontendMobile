@@ -50,6 +50,11 @@ class User {
     }
   }
 
+  String getFirstName(){
+    var displayName = this.displayName.split(" ");
+    return displayName[0]; 
+  }
+
   /*
    * Pre:   ---
    * Post:  ha devuelto el URL de la foto de perfil del usuario

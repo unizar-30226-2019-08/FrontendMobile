@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/mini_product.dart';
-import 'package:bookalo/translations.dart';
+import 'package:bookalo/widgets/empty_list.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 //import 'package:bookalo/pages/upload_product.dart';
 import 'package:bookalo/utils/http_utils.dart';
@@ -39,19 +39,9 @@ class _SellState extends State<Sell> {
       endReached = fetchResult.length == 0;
       if (endReached) {
         if (firstFecth) {
-          output.add(Container(
-            margin: EdgeInsets.only(top: 150.0, left: 70.0, right: 70.0),
-            child: Column(
-              children: <Widget>[
-                Icon(Icons.add_shopping_cart, size: 80.0, color: Colors.pink),
-                Text(
-                  Translations.of(context).text('no_productos_uploaded'),
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-          ));
+          output.add(EmptyList(
+                  iconData: Icons.add_shopping_cart,
+                  textKey: "no_products_uploaded"));
         }
       }
       if (firstFecth) {

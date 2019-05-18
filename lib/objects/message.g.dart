@@ -9,12 +9,14 @@ part of 'message.dart';
 Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message(
       json['texto'] as String,
-      json['hora'] == null ? null : DateTime.parse(json['hora'] as String),
+      json['timestamp'] == null
+          ? null
+          : DateTime.parse(json['timestamp'] as String),
       json['es_suyo'] as bool);
 }
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'texto': instance.body,
-      'hora': instance.timestamp?.toIso8601String(),
+      'timestamp': instance.timestamp?.toIso8601String(),
       'es_suyo': instance.itsMe
     };

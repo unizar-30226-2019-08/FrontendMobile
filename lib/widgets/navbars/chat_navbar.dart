@@ -49,7 +49,6 @@ class _ChatNavbarState extends State<ChatNavbar> {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
-      elevation: 0.0,
       leading: Container(
           margin: EdgeInsets.only(top: topMargin, left: width / 30),
           child: GestureDetector(

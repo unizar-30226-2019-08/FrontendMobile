@@ -17,7 +17,7 @@ dependencies:
   share: ^0.6.0+1 
   flutter_range_slider: ^1.1.0
   autocomplete_textfield: ^1.6.4  
-  geolocator: ^3.0.1
+  geolocator: ^4.0.3
   flutter_map: ^0.5.0
   flutter_tags: ^0.2.2
   json_annotation: ^2.0.0  

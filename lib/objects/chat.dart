@@ -5,24 +5,45 @@
  */
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/product.dart';
 
 part 'chat.g.dart';
 
 /*
-  CLASE: Chat
-  DESCRIPCIÓN: clase objeto que recoge todos los datos asociados a un mensaje de chat
+  CLASE:        Chat
+  DESCRIPCIÓN:  clase objeto que recoge todos los datos asociados a una conversación
+                de chat
  */
 
 @JsonSerializable()
 class Chat {
-  @JsonKey(name: 'texto')
-  String body;
-  @JsonKey(name: 'hora')
-  DateTime timestamp;
-  @JsonKey(name: 'es_suyo')
-  bool itsMe;
+  @JsonKey(name: 'pk')
+  int uid;
+  @JsonKey(name: 'comprador')
+  User buyer;
+  @JsonKey(name: 'vendedor')
+  User seller;
+  @JsonKey(name: 'producto')
+  Product product;
+  @JsonKey(name: 'num_pendientes')
+  int pendingMessages;
+  @JsonKey(name: 'soy_vendedor')
+  bool imBuyer;
 
-  Chat(this.body, this.timestamp, this.itsMe);
+  Chat(this.uid, this.buyer, this.seller, this.product, this.pendingMessages);
+
+  Product get getProduct => product;
+  int get numberOfPending => pendingMessages;
+  bool get checkImBuyer => imBuyer;
+  User get getMe => imBuyer ? buyer : seller;
+  User get getOtherUser => imBuyer ? seller : buyer;
+  int get getUID => uid;
+
+  void setImBuyer(bool value){
+    this.imBuyer = value;
+  }
+
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
   Map<String, dynamic> toJson() => _$ChatToJson(this);
 }

@@ -5,13 +5,14 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/pages/filter.dart';
 import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/widgets/social_buttons.dart';
 import 'package:bookalo/widgets/filter_options_selector.dart';
 import 'package:bookalo/utils/http_utils.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/widgets/empty_list.dart';
 
 /*
  *  CLASE:        Buy
@@ -72,38 +73,27 @@ class _ProductListViewerState extends State<ProductListViewer> {
   bool _isLoading = false;
 
   void fetchProducts() {
-    if (!_isLoading) {
-      _isLoading = true;
-      parseProducts(widget.query, widget.query.queryResult.length, 10)
-          .then((newProducts) {
-        _isLoading = false;
-        if (newProducts.isEmpty) {
-          widget.query.setEndReached(true);
-          if (widget.query.queryResult.length == 0) {
-            newProducts.add(Center(
-                child: Container(
-              margin: EdgeInsets.only(top: 150),
-              child: Column(
-                children: <Widget>[
-                  Icon(Icons.remove_shopping_cart,
-                      size: 150, color: Colors.pink),
-                  Container(height: 20),
-                  Text(
-                    Translations.of(context).text("no_products_available"),
-                    style:
-                        TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-                  )
-                ],
-              ),
-            )));
-          } else {
-            newProducts.add(SocialButtons());
+    if (!ScopedModel.of<FilterQuery>(context).endReached) {
+      if (!_isLoading) {
+        _isLoading = true;
+        parseProducts(widget.query, widget.query.queryResult.length, 10)
+            .then((newProducts) {
+          _isLoading = false;
+          if (newProducts.isEmpty) {
+            widget.query.setEndReached(true);
+            if (widget.query.queryResult.length == 0) {
+              newProducts.add(EmptyList(
+                  iconData: Icons.remove_shopping_cart,
+                  textKey: "no_products_available"));
+            } else {
+              newProducts.add(SocialButtons());
+            }
           }
-        }
-        setState(() => widget.query.queryResult.addAll(newProducts));
-      }).catchError((e) {
-        print(e);
-      });
+          setState(() => widget.query.queryResult.addAll(newProducts));
+        }).catchError((e) {
+          print(e);
+        });
+      }
     }
   }
 

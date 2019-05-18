@@ -13,7 +13,7 @@ import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/user_profile.dart';
-import 'package:bookalo/pages/chat.dart';
+import 'package:bookalo/widgets/chat_opener.dart';
 
 /*
   CLASE: UserProduct
@@ -48,23 +48,7 @@ class UserProduct extends StatelessWidget {
                 backgroundImage: NetworkImage(_user.getPicture()),
               ),
             ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.chat_bubble_outline,
-                color: Colors.pink,
-                size: 40.0,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Chat(
-                          user: _user,
-                          product: _product,
-                          interest: Interest.offers)),
-                );
-              },
-            ),
+            trailing: ChatOpener(user: _user, product: _product,),
             title: Text(_user.getName()),
             subtitle: StaticStars(
                 _user.getRating(), Colors.black, _user.getRatingsAmount()),

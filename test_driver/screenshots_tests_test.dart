@@ -6,5 +6,5 @@ void main() {
 
   enableFlutterDriverExtension();
   WidgetsApp.debugAllowBannerOverride = false; // remove debug banner
-  runApp(MyApp());
+  runApp(Bookalo());
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/chat.dart';
+import 'package:bookalo/pages/chat_page.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 class MainNavbar extends StatelessWidget {
@@ -26,7 +26,7 @@ class MainNavbar extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Chat()),
+                          MaterialPageRoute(builder: (context) => ChatPage()),
                         );
                       }),
                 ),
@@ -49,7 +49,6 @@ class MainNavbar extends StatelessWidget {
                       );
                     })
               ],
-              elevation: 0.0,
               bottom: TabBar(
                 indicatorWeight: 3.0,
                 labelStyle:

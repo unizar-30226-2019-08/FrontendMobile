@@ -61,7 +61,6 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
                   );
                 })
           ],
-          elevation: 0.0,
           bottom: TabBar(
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [

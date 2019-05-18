@@ -68,7 +68,7 @@
     "offensive_comment":"Comentario ofensivo",
     "offensive_content":"Contenido ofensivo",
     "report_to":"REPORTE A",
-    "close_chat":"Cerrar venta",
+    "close_chat":"CERRAR VENTA",
     "isbn_scan":"¡Escanea su código de barras! ",
     "title_hint":"Introduce el título",
     "title_too_short":"Título demasiado corto",
@@ -85,9 +85,17 @@
     "min_price_tag" : "precio min.",
     "min_rating_tag" : "calificación mín.",
     "ago": "hace {{param1}}",
-    "no_productos_uploaded" : "¡Aún no has puesto nada a la venta!",
+    "no_products_uploaded" : "¡Aún no has puesto nada a la venta!",
     "edit_product" : "EDITAR",
     "remove_product" : "BORRAR",
     "no_favorites_yes": "¡Aún no has marcado nada como favorito!",
-    "no_reviews_yet" : "¡Aún no hay opiniones!"
+    "no_reviews_yet" : "¡Aún no hay opiniones!",
+    "message_hint" : "escribe un mensaje",
+    "not_yet_chat" : "Aún no habéis hablado",
+    "no_sellers_yet" : "Aún no has hablado con ningún vendedor",
+    "no_buyers_yet" : "Aún no has hablado con ningún comprador",
+    "delete_sure" : "¿Estás seguro?",
+    "cancel_delete" : "CANCELAR",
+    "ok_delete" : "DE ACUERDO, BÓRRALO",
+    "delete_explanation" : "Este proceso es irreversible, si borras {{param1}}, desaparecerá para siempre"
 }

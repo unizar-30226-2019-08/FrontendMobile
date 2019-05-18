@@ -5,9 +5,11 @@
  */
 
 import 'dart:convert';
+import 'package:bookalo/objects/message.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/product_view.dart';
 import 'package:bookalo/widgets/mini_product.dart';
@@ -16,6 +18,8 @@ import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/review.dart';
+import 'package:bookalo/objects/chat.dart';
+import 'package:bookalo/objects/chats_registry.dart';
 
 final Map<String, String> headers = {'appmovil': 'true'};
 
@@ -174,4 +178,87 @@ Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize,
     output.add(ReviewCard(review: Review.fromJson(x)));
   });
   return output;
+}
+
+Future<Chat> createChat(User user, Product product, BuildContext context) async {
+  Chat chat = ScopedModel.of<ChatsRegistry>(context).getSellersChat.singleWhere((c) {
+    return c.getOtherUser.getUID() == user.getUID() && c.getProduct.getId() == product.getId();
+  }, orElse: (){return null;});
+  if (chat == null) {
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    Map<String, String> body = {
+      'token': await firebaseUser.getIdToken(),
+      'uidUsuario': user.getUID(),
+      'idProducto': product.getId().toString()
+    };
+    var response = await http.post('https://bookalo.es/api/create_chat',
+        headers: headers, body: body);
+    chat = Chat.fromJson(json.decode(utf8.decode(response.bodyBytes))['chat_cargado']);
+    chat.setImBuyer(true);
+    ScopedModel.of<ChatsRegistry>(context).addChats('seller', [chat]);
+  }
+  return chat;
+}
+
+Future<List<Chat>> parseChats(
+    bool imBuyer, int currentIndex, int pageSize) async {
+  List<Chat> output = [];
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'tipo_chats': (imBuyer ? 'compra' : 'venta'),
+    'ultimo_indice': currentIndex.toString(),
+    'elementos_pagina': pageSize.toString()
+  };
+  var response = await http.post('https://bookalo.es/api/get_chats',
+      headers: headers, body: body);
+  (json.decode(utf8.decode(response.bodyBytes))['chats'] as List)
+      .forEach((x) {
+    Chat newChat = Chat.fromJson(x);
+    newChat.setImBuyer(imBuyer);
+    output.add(newChat);
+  });
+  return output;
+}
+
+Future<List<Message>> parseMessages(int chatUID, int currentIndex, int pageSize) async{
+  List<Message> output = [];
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'id_chat': chatUID.toString(),
+    'ultimo_indice': currentIndex.toString(),
+    'elementos_pagina': pageSize.toString()    
+  };
+  var response = await http.post('https://bookalo.es/api/get_messages',
+      headers: headers, body: body);
+  (json.decode(utf8.decode(response.bodyBytes))['mensajes'] as List)
+      .forEach((x) {
+    Message newMessage = Message.fromJson(x);
+    output.add(newMessage);
+  });
+  return output;
+}
+
+Future<bool> sendMessage(int chatUID, String message) async{
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'id_chat': chatUID.toString(),
+    'mensaje': message
+  };
+  var response = await http.post('https://bookalo.es/api/send_message',
+      headers: headers, body: body);
+  return response.statusCode == 200;
+}
+
+Future<bool> deleteProduct(int productUID) async{
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'idProducto': productUID.toString(),
+  };
+  var response = await http.post('https://bookalo.es/api/delete_product',
+      headers: headers, body: body);
+  return response.statusCode == 200;
 }
