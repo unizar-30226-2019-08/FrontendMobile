@@ -28,7 +28,6 @@ class Chat {
   Product product;
   @JsonKey(name: 'num_pendientes')
   int pendingMessages;
-  @JsonKey(name: 'soy_vendedor')
   bool imBuyer;
 
   Chat(this.uid, this.buyer, this.seller, this.product, this.pendingMessages);
@@ -40,7 +39,7 @@ class Chat {
   User get getOtherUser => imBuyer ? seller : buyer;
   int get getUID => uid;
 
-  void setImBuyer(bool value){
+  void setImBuyer(bool value) {
     this.imBuyer = value;
   }
 

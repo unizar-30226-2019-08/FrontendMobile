@@ -143,43 +143,46 @@ class _DetailedProductState extends State<OwnProduct> {
                       ),
                       onPressed: () {
                         showDialog(
-                          context: context,
-                          builder: (BuildContext context){
-                            return AlertDialog(
-                              title: Text(Translations.of(context).text("delete_sure")),
-                              content: Text(Translations.of(context).text("delete_explanation", params: [widget.product.getName()])),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text(
-                                    Translations.of(context).text("ok_delete"),
-                                    style: TextStyle(
-                                      color: Colors.pink,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 15.0
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(Translations.of(context)
+                                    .text("delete_sure")),
+                                content: Text(Translations.of(context).text(
+                                    "delete_explanation",
+                                    params: [widget.product.getName()])),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text(
+                                      Translations.of(context)
+                                          .text("ok_delete"),
+                                      style: TextStyle(
+                                          color: Colors.pink,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.0),
                                     ),
+                                    onPressed: () async {
+                                      deleteProduct(widget.product.getId());
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    },
                                   ),
-                                  onPressed: () async {
-                                    deleteProduct(widget.product.getId());
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text(
-                                    Translations.of(context).text("cancel_delete"),
-                                    style: TextStyle(
-                                      color: Colors.pink,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 15.0
+                                  FlatButton(
+                                    child: Text(
+                                      Translations.of(context)
+                                          .text("cancel_delete"),
+                                      style: TextStyle(
+                                          color: Colors.pink,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.0),
                                     ),
-                                  ),
-                                  onPressed: (){
-                                    Navigator.of(context).pop();
-                                  },
-                                )                                
-                              ],
-                            );
-                          }
-                        );
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            });
                       },
                     ),
                   ],

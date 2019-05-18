@@ -40,8 +40,8 @@ class _SellState extends State<Sell> {
       if (endReached) {
         if (firstFecth) {
           output.add(EmptyList(
-                  iconData: Icons.add_shopping_cart,
-                  textKey: "no_products_uploaded"));
+              iconData: Icons.add_shopping_cart,
+              textKey: "no_products_uploaded"));
         }
       }
       if (firstFecth) {

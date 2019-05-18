@@ -59,12 +59,12 @@ class _BookaloState extends State<Bookalo> {
       },
     );
     var geolocator = Geolocator();
-    var locationOptions = LocationOptions(accuracy: LocationAccuracy.medium, distanceFilter: 100);
-    geolocator.getPositionStream(locationOptions).listen(
-      (Position position) {
-          ScopedModel.of<FilterQuery>(context).updatePosition(position.latitude, position.longitude);
-      }
-    );    
+    var locationOptions =
+        LocationOptions(accuracy: LocationAccuracy.medium, distanceFilter: 100);
+    geolocator.getPositionStream(locationOptions).listen((Position position) {
+      ScopedModel.of<FilterQuery>(context)
+          .updatePosition(position.latitude, position.longitude);
+    });
   }
 
   @override

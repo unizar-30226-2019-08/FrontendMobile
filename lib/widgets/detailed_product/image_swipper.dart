@@ -31,10 +31,13 @@ class _ImageSwiperState extends State<ImageSwiper> {
   Widget build(BuildContext context) {
     return Swiper(
       itemBuilder: (BuildContext context, int index) {
-        if(widget.product.getImages().isEmpty){
+        if (widget.product.getImages().isEmpty) {
           //TODO: No Imagen personal
-          var logo = AssetImage('assets/images/noImage.jpg'); 
-          return Image(image: logo, fit: BoxFit.fill,);
+          var logo = AssetImage('assets/images/noImage.jpg');
+          return Image(
+            image: logo,
+            fit: BoxFit.fill,
+          );
         }
         return new Image.network(
           widget.product.getImages()[index],

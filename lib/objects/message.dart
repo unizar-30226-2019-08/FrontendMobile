@@ -23,6 +23,9 @@ class Message {
   bool itsMe;
 
   Message(this.body, this.timestamp, this.itsMe);
+
+  DateTime get getTimestamp => timestamp.toLocal();
+
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
   Map<String, dynamic> toJson() => _$MessageToJson(this);

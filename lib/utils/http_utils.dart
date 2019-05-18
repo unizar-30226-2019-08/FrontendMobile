@@ -29,7 +29,7 @@ Future<List<Widget>> parseProducts(
   Map<String, String> body = {
     'token': await currentUser.getIdToken(),
     'tags': query.tags,
-    'busqueda': '',
+    'busqueda': query.querySearch,
     'precio_minimo': query.usesMinPrice ? query.minPrice.toString() : '0',
     'precio_maximo': query.usesMaxPrice ? query.maxPrice.toString() : '',
     'calificacion_minima': query.usesRating ? query.minRating.toString() : '',
@@ -180,10 +180,15 @@ Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize,
   return output;
 }
 
-Future<Chat> createChat(User user, Product product, BuildContext context) async {
-  Chat chat = ScopedModel.of<ChatsRegistry>(context).getSellersChat.singleWhere((c) {
-    return c.getOtherUser.getUID() == user.getUID() && c.getProduct.getId() == product.getId();
-  }, orElse: (){return null;});
+Future<Chat> createChat(
+    User user, Product product, BuildContext context) async {
+  Chat chat =
+      ScopedModel.of<ChatsRegistry>(context).getSellersChat.singleWhere((c) {
+    return c.getOtherUser.getUID() == user.getUID() &&
+        c.getProduct.getId() == product.getId();
+  }, orElse: () {
+    return null;
+  });
   if (chat == null) {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     Map<String, String> body = {
@@ -193,7 +198,8 @@ Future<Chat> createChat(User user, Product product, BuildContext context) async 
     };
     var response = await http.post('https://bookalo.es/api/create_chat',
         headers: headers, body: body);
-    chat = Chat.fromJson(json.decode(utf8.decode(response.bodyBytes))['chat_cargado']);
+    chat = Chat.fromJson(
+        json.decode(utf8.decode(response.bodyBytes))['chat_cargado']);
     chat.setImBuyer(true);
     ScopedModel.of<ChatsRegistry>(context).addChats('seller', [chat]);
   }
@@ -212,8 +218,7 @@ Future<List<Chat>> parseChats(
   };
   var response = await http.post('https://bookalo.es/api/get_chats',
       headers: headers, body: body);
-  (json.decode(utf8.decode(response.bodyBytes))['chats'] as List)
-      .forEach((x) {
+  (json.decode(utf8.decode(response.bodyBytes))['chats'] as List).forEach((x) {
     Chat newChat = Chat.fromJson(x);
     newChat.setImBuyer(imBuyer);
     output.add(newChat);
@@ -221,14 +226,15 @@ Future<List<Chat>> parseChats(
   return output;
 }
 
-Future<List<Message>> parseMessages(int chatUID, int currentIndex, int pageSize) async{
+Future<List<Message>> parseMessages(
+    int chatUID, int currentIndex, int pageSize) async {
   List<Message> output = [];
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
     'id_chat': chatUID.toString(),
     'ultimo_indice': currentIndex.toString(),
-    'elementos_pagina': pageSize.toString()    
+    'elementos_pagina': pageSize.toString()
   };
   var response = await http.post('https://bookalo.es/api/get_messages',
       headers: headers, body: body);
@@ -240,7 +246,7 @@ Future<List<Message>> parseMessages(int chatUID, int currentIndex, int pageSize)
   return output;
 }
 
-Future<bool> sendMessage(int chatUID, String message) async{
+Future<bool> sendMessage(int chatUID, String message) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
@@ -252,7 +258,7 @@ Future<bool> sendMessage(int chatUID, String message) async{
   return response.statusCode == 200;
 }
 
-Future<bool> deleteProduct(int productUID) async{
+Future<bool> deleteProduct(int productUID) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),

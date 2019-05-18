@@ -42,7 +42,7 @@ class _ChatPageState extends State<ChatPage> {
           registry.addMessage(widget.chat.imBuyer ? 'sellers' : 'buyers',
               widget.chat, newMessages);
           if (newMessages.length == 0) {
-           _endReached = true;
+            _endReached = true;
           }
         }).catchError((e) {
           print(e);
@@ -84,7 +84,8 @@ class _ChatPageState extends State<ChatPage> {
         product: widget.chat.product,
       ),
       body: Column(children: <Widget>[
-        RaisedButton(
+        (!widget.chat.checkImBuyer
+        ? RaisedButton(
           color: Colors.pink,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -95,7 +96,8 @@ class _ChatPageState extends State<ChatPage> {
           onPressed: () {
             setClosed(context);
           },
-        ),
+        )
+        : Container()),
         Container(height: 10),
         ScopedModelDescendant<ChatsRegistry>(
             builder: (context, child, registry) {
@@ -115,8 +117,7 @@ class _ChatPageState extends State<ChatPage> {
                       ? widget.chat.getMe
                       : widget.chat.getOtherUser,
                 );
-              } else if (position == length &&
-                  !_endReached) {
+              } else if (position == length && !_endReached) {
                 fetchMessages(registry, length);
                 return Container(
                     margin: EdgeInsets.symmetric(vertical: 50.0),

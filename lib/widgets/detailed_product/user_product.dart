@@ -48,7 +48,10 @@ class UserProduct extends StatelessWidget {
                 backgroundImage: NetworkImage(_user.getPicture()),
               ),
             ),
-            trailing: ChatOpener(user: _user, product: _product,),
+            trailing: ChatOpener(
+              user: _user,
+              product: _product,
+            ),
             title: Text(_user.getName()),
             subtitle: StaticStars(
                 _user.getRating(), Colors.black, _user.getRatingsAmount()),

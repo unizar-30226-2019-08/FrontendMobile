@@ -50,9 +50,9 @@ class User {
     }
   }
 
-  String getFirstName(){
+  String getFirstName() {
     var displayName = this.displayName.split(" ");
-    return displayName[0]; 
+    return displayName[0];
   }
 
   /*

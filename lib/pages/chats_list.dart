@@ -11,7 +11,6 @@ import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
 import 'package:bookalo/widgets/empty_list.dart';
 
-
 /*
  *  CLASE:        ChatsList
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
@@ -39,7 +38,7 @@ class _ChatsListState extends State<ChatsList> {
         _isLoading = true;
         parseChats(widget.imBuyer, pageSize, 10).then((newChats) {
           _isLoading = false;
-          if(newChats.length == 0){
+          if (newChats.length == 0) {
             _endReached = true;
           }
           registry.addChats(widget.imBuyer ? 'sellers' : 'buyers', newChats);
@@ -51,7 +50,7 @@ class _ChatsListState extends State<ChatsList> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     fetchChats(ScopedModel.of<ChatsRegistry>(context), 0);
   }
@@ -76,11 +75,11 @@ class _ChatsListState extends State<ChatsList> {
                         .length &&
                 !_endReached) {
               fetchChats(
-                  chatsRegistry,
-                  chatsRegistry
-                      .getChats(widget.imBuyer ? 'sellers' : 'buyers')
-                      .length,
-                  );
+                chatsRegistry,
+                chatsRegistry
+                    .getChats(widget.imBuyer ? 'sellers' : 'buyers')
+                    .length,
+              );
               return Container(
                   margin: EdgeInsets.symmetric(vertical: 50.0),
                   child: BookaloProgressIndicator());
@@ -92,9 +91,7 @@ class _ChatsListState extends State<ChatsList> {
       } else {
         return EmptyList(
           iconData: Icons.chat_bubble_outline,
-          textKey: widget.imBuyer
-            ? 'no_sellers_yet'
-            : 'no_buyers_yet',
+          textKey: widget.imBuyer ? 'no_sellers_yet' : 'no_buyers_yet',
         );
       }
     });

@@ -17,24 +17,23 @@ class ChatsRegistry extends Model {
   Map<String, bool> _chatEndReached;
   Map<int, bool> _messagesEndReached;
   Map<int, List<Message>> _messagesMap;
-  
 
   ChatsRegistry() {
-    _chatMap = {'buyers' : [], 'sellers' : []};
-    _chatEndReached = {'buyers' : false, 'sellers' : false};
+    _chatMap = {'buyers': [], 'sellers': []};
+    _chatEndReached = {'buyers': false, 'sellers': false};
     _messagesEndReached = {};
     _messagesMap = {};
   }
 
-  void setChatsEndReached(String kind, bool value){
+  void setChatsEndReached(String kind, bool value) {
     _chatEndReached[kind] = value;
   }
 
-  void setMessagesEndReached(int chatUID, bool value){
+  void setMessagesEndReached(int chatUID, bool value) {
     _messagesEndReached[chatUID] = value;
   }
 
-  List<Chat> getChats(String kind){
+  List<Chat> getChats(String kind) {
     return _chatMap[kind];
   }
 
@@ -46,17 +45,20 @@ class ChatsRegistry extends Model {
     return _chatMap['sellers'];
   }
 
-  bool getChatsEndReached(String kind){
+  bool getChatsEndReached(String kind) {
     return _chatEndReached[kind];
   }
 
-  bool getMessagesEndReached(int chatID){
+  bool getMessagesEndReached(int chatID) {
     return _messagesEndReached[chatID];
   }
 
-  void addChats(String kind, List<Chat> newChats){
-    newChats.forEach((newChat){
-      if(_chatMap[kind].where((oldChat) => oldChat.getUID == newChat.getUID).length == 0){
+  void addChats(String kind, List<Chat> newChats) {
+    newChats.forEach((newChat) {
+      if (_chatMap[kind]
+              .where((oldChat) => oldChat.getUID == newChat.getUID)
+              .length ==
+          0) {
         _chatMap[kind].insert(0, newChat);
         _messagesMap[newChat.getUID] = [];
         _messagesEndReached[newChat.getUID] = false;
@@ -65,13 +67,13 @@ class ChatsRegistry extends Model {
     notifyListeners();
   }
 
-  List<Message> getMessages(int chatUID){
+  List<Message> getMessages(int chatUID) {
     return _messagesMap[chatUID];
   }
 
   void addMessage(String kind, Chat chat, List<Message> messages) {
     addChats(kind, [chat]);
-    messages.forEach((message){
+    messages.forEach((message) {
       _messagesMap[chat.getUID].insert(0, message);
     });
     notifyListeners();

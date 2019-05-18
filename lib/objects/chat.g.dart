@@ -19,7 +19,7 @@ Chat _$ChatFromJson(Map<String, dynamic> json) {
           ? null
           : Product.fromJson(json['producto'] as Map<String, dynamic>),
       json['num_pendientes'] as int)
-    ..imBuyer = json['soy_vendedor'] as bool;
+    ..imBuyer = json['es_vendedor'] as bool;
 }
 
 Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
@@ -28,5 +28,5 @@ Map<String, dynamic> _$ChatToJson(Chat instance) => <String, dynamic>{
       'vendedor': instance.seller,
       'producto': instance.product,
       'num_pendientes': instance.pendingMessages,
-      'soy_vendedor': instance.imBuyer
+      'es_vendedor': instance.imBuyer
     };

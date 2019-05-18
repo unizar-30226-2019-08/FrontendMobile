@@ -42,11 +42,8 @@ class _ChatOpenerState extends State<ChatOpener> {
           setState(() => isLoading = false);
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => ChatPage(
-                  chat: chat
-                )),
-          );          
+            MaterialPageRoute(builder: (context) => ChatPage(chat: chat)),
+          );
         },
       );
     }

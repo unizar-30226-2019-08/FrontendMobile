@@ -24,13 +24,10 @@ class Bubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    final bg = message.itsMe
-        ? Colors.pink[700]
-        : Colors.pink[
-            500];
+    final bg = message.itsMe ? Colors.pink[700] : Colors.pink[500];
     final icon = Icons.done;
-        // ? Icons.done_all
-        // : Icons.done; 
+    // ? Icons.done_all
+    // : Icons.done;
     final radius = message.itsMe
         ? BorderRadius.only(
             //si el mensaje es mio, se redondean todas las esquinas del bubble excepto la superior izq
@@ -51,7 +48,8 @@ class Bubble extends StatelessWidget {
           left: (message.itsMe //si el mensaje es mío se situará a la dcha
               ? 2 * width / 15
               : 0.5 * width / 15),
-          right: (message.itsMe //si el mensaje es del otro usuario estará a la izda
+          right: (message
+                  .itsMe //si el mensaje es del otro usuario estará a la izda
               ? 0.5 * width / 15
               : 2 * width / 15)),
       padding: const EdgeInsets.all(8.0),
@@ -74,7 +72,8 @@ class Bubble extends StatelessWidget {
               Text(
                   message.itsMe
                       ? Translations.of(context).text("you")
-                      : user.getName(), //si no, muestra e nombre del otro usuario
+                      : user
+                          .getName(), //si no, muestra e nombre del otro usuario
                   textAlign: TextAlign.start,
                   style: TextStyle(
                       color: Colors.white,
@@ -92,18 +91,20 @@ class Bubble extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 //fecha de envío del mensaje
-                Text(dateToFullString(message.timestamp, context),
+                Text(dateToFullString(message.getTimestamp, context),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 10.0,
                     )),
                 SizedBox(width: 3.0),
                 //icono que indica si el mensje se ha enviado o no
-                Icon(
+                (message.itsMe
+                ? Icon(
                   icon,
                   size: 12.0,
                   color: Colors.white,
                 )
+                : Container())
               ],
             ),
           )

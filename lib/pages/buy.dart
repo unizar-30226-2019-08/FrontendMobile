@@ -3,6 +3,8 @@
  * DESCRIPCIÓN: clases relativas al la pestaña de compra
  * CREACIÓN:    13/03/2019
  */
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -13,6 +15,7 @@ import 'package:bookalo/widgets/social_buttons.dart';
 import 'package:bookalo/widgets/filter_options_selector.dart';
 import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/empty_list.dart';
+import 'package:bookalo/translations.dart';
 
 /*
  *  CLASE:        Buy
@@ -27,6 +30,8 @@ class Buy extends StatefulWidget {
 }
 
 class _BuyState extends State<Buy> {
+  bool showSearchBar = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +41,11 @@ class _BuyState extends State<Buy> {
             FloatingActionButton.extended(
               heroTag: "searchFAB",
               icon: Icon(Icons.search),
+              backgroundColor: (showSearchBar ? Colors.pink[600] : Colors.pink),
               label: Text(Translations.of(context).text('search')),
-              onPressed: () {},
+              onPressed: () {
+                setState(() => showSearchBar = !showSearchBar);
+              },
             ),
             SizedBox(
               height: 16.0,
@@ -55,7 +63,8 @@ class _BuyState extends State<Buy> {
         ),
         body: ScopedModelDescendant<FilterQuery>(
           builder: (context, child, model) {
-            return new ProductListViewer(query: model);
+            return new ProductListViewer(
+                query: model, showSearchBar: showSearchBar);
           },
         ));
   }
@@ -63,7 +72,9 @@ class _BuyState extends State<Buy> {
 
 class ProductListViewer extends StatefulWidget {
   final FilterQuery query;
-  const ProductListViewer({Key key, this.query}) : super(key: key);
+  final bool showSearchBar;
+  const ProductListViewer({Key key, this.query, this.showSearchBar})
+      : super(key: key);
 
   @override
   _ProductListViewerState createState() => _ProductListViewerState();
@@ -107,6 +118,7 @@ class _ProductListViewerState extends State<ProductListViewer> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        (widget.showSearchBar ? SearchBar() : Container()),
         FilterOptionSelector(),
         Expanded(
           child: ListView.builder(
@@ -125,6 +137,57 @@ class _ProductListViewerState extends State<ProductListViewer> {
             },
           ),
         )
+      ],
+    );
+  }
+}
+
+class SearchBar extends StatefulWidget {
+  SearchBar({Key key}) : super(key: key);
+
+  _SearchBarState createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  TextEditingController _controller;
+  Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: ScopedModel.of<FilterQuery>(context).querySearch);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.search, color: Colors.pink),
+          title: TextField(
+            onChanged: (s) {
+              timer?.cancel();
+
+              timer = Timer(Duration(milliseconds: 300), () {
+                ScopedModel.of<FilterQuery>(context).setQuerySearch(s);
+              });
+            },
+            controller: _controller,
+            cursorColor: Colors.pink,
+            decoration: InputDecoration(
+                hintText: Translations.of(context).text("search") + "...",
+                enabledBorder: InputBorder.none,
+                disabledBorder: InputBorder.none),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.cancel, color: Colors.pink),
+            onPressed: () {
+              setState(() => _controller.clear());
+              ScopedModel.of<FilterQuery>(context).setQuerySearch("");
+            },
+          ),
+        ),
+        Divider()
       ],
     );
   }

@@ -43,7 +43,7 @@ class MiniatureChat extends StatelessWidget {
             style: TextStyle(fontSize: 16),
           ),
           Text(
-            dateToFullString(messagesList.first.timestamp, context),
+            dateToFullString(messagesList.first.getTimestamp, context),
             style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
           )
         ],
@@ -66,21 +66,23 @@ class MiniatureChat extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0),
           ),
           (chat.getProduct.checkfForSale()
-          ? Container()
-          : DecoratedBox(
-            decoration: BoxDecoration(color: Colors.pink),
-            child: Container(
-                margin: EdgeInsets.all(1.0),
-                child: Text(
-                  (chat.checkImBuyer
-                      ? Translations.of(context).text("chat_finished_sell")
-                      : Translations.of(context).text("chat_finished_buy")),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Colors.white),
+              ? Container()
+              : DecoratedBox(
+                  decoration: BoxDecoration(color: Colors.pink),
+                  child: Container(
+                      margin: EdgeInsets.all(1.0),
+                      child: Text(
+                        (true //TODO: apañar quién soy
+                            ? Translations.of(context)
+                                .text("chat_finished_sell")
+                            : Translations.of(context)
+                                .text("chat_finished_buy")),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.white),
+                      )),
                 )),
-          )),
         ]);
   }
 
