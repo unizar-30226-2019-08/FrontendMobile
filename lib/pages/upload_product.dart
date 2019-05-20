@@ -131,12 +131,13 @@ class _UploadProduct extends State<UploadProduct> {
             autoV.autovalidate = true;
           });
         },
-        /* descriptionInserted: (desc) {
+         descriptionInserted: (desc) {
           setState(() {
             newP.setDesciption(desc);
+            pagesValited[1] = (desc.length> 2);
             autoV.autovalidate = true;
           });
-        }, */
+        },
         stateProductInserted: (_state) {
           setState(() {
             newP.setState(_state);
@@ -418,7 +419,7 @@ class _UploadProduct extends State<UploadProduct> {
               textAlign: TextAlign.center,
             ),
             //   content: Container(
-            content: Column(
+            content: ListView(
               children: <Widget>[
                 Icon(
                   Icons.info_outline,

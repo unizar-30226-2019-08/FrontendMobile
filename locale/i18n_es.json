@@ -121,6 +121,7 @@
     "wait_uploading" : "Esto puede llegar a tardar algún minuto.\nEspere, por favor",
     "no_pictures" : "Aún no has subido ninguna imagen del producto",
     "camera" : "CÁMARA",
-    "gallery" : "GALERÍA"
+    "gallery" : "GALERÍA",
+    "isbn_not_valid" :  "El código ISBN introducido no es valido"
 
 }

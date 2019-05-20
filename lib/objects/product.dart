@@ -143,7 +143,7 @@ class Product {
 
   void setState(String _state) {
     this.state = _state;
-    print("estado del producto " + this.state);
+    //print("estado del producto " + this.state);
   }
 
   String getISBN() {
@@ -151,9 +151,9 @@ class Product {
   }
 
   void insertTag(t) {
-    print("Insertando tag nuevo " + t);
+    //print("Insertando tag nuevo " + t);
     this.tags.add(t);
-    print("Tamanyo actual " + this.tags.length.toString());
+    //print("Tamanyo actual " + this.tags.length.toString());
   }
 
   void setPrice(double p) {

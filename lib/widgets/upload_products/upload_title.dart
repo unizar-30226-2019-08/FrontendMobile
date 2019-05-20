@@ -4,6 +4,8 @@
  * CREACIÓN:    12/05/2019
  */
 
+import 'package:bookalo/utils/http_utils.dart';
+import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -11,7 +13,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
-
+import 'package:validators/validators.dart';
 
 enum ConfirmAction { CANCEL, ACCEPT }
 /*
@@ -80,24 +82,25 @@ class _UploadTitleState extends State<UploadTitle> {
   @override
   void initState() {
     super.initState();
+    print("ISBN init state " + widget.prod.getISBN() );
+    print("Titulo init state " + widget.prod.getName() );
     controllerPrice = new MoneyMaskedTextController(
         precision: 1,
         decimalSeparator: '.',
         thousandSeparator: ',',
         rightSymbol: '€',
         initialValue: widget.prod.getPrice());
-        if(widget.prod.getISBN().length > 0){
-          controlerISBN = TextEditingController();
-        }else{
-          controlerISBN = TextEditingController(text: widget.prod.getISBN());
-        }
+    if (widget.prod.getISBN().length > 0) {
+      controlerISBN = TextEditingController(text: widget.prod.getISBN());
+    } else {
+      controlerISBN = TextEditingController();
+    }
 
-        if(widget.prod.getName().length > 0){
-          controlerTitle = TextEditingController();
-        }else{
-          controlerTitle = TextEditingController(text: widget.prod.getName());
-        }
-
+    if (widget.prod.getName().length > 0) {
+      controlerTitle = TextEditingController(text: widget.prod.getName());
+    } else {
+      controlerTitle = TextEditingController();
+    }
   }
 
   Future barcodeScanning() async {
@@ -105,15 +108,9 @@ class _UploadTitleState extends State<UploadTitle> {
 
     try {
       String barcode = await BarcodeScanner.scan();
-      setState(() {
-        _isbn = barcode;
-        widget.isbnInserted(barcode);
-        controlerISBN.text = barcode;
-        controlerTitle.text = "Un titulo rando";
-        widget.formKey.currentState.validate();
-        print("Bar code decetcado = " + barcode);
-        print("ISBN almacenado = " + widget.prod.getISBN());
-      });
+      if (isISBN(barcode, barcode.length)) {
+        gettingISBN(context, barcode);
+      }
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
@@ -145,7 +142,8 @@ class _UploadTitleState extends State<UploadTitle> {
                 setState(() {
                   validatePage = widget.formKey.currentState.validate() &&
                       titleIni &&
-                      priceIni; /* &&
+                      priceIni;
+                  /* &&
                       descIni; */
                   widget.valitedPage(validatePage);
                 });
@@ -169,17 +167,25 @@ class _UploadTitleState extends State<UploadTitle> {
                   maxLines: 1,
                   maxLength: 13, //13 numeros máximo
                   maxLengthEnforced: true,
+                  onEditingComplete: () {
+                    if (isISBN(controlerISBN.text, controlerISBN.text.length)) {
+                    gettingISBN(context, controlerISBN.text);}},
                   onSaved: (String isbnReaded) {
                     setState(() {
-                      widget.isbnInserted(isbnReaded);
+                      widget.isbnInserted(controlerISBN.text);
                     });
                   },
                   decoration: InputDecoration(
                       hintText: Translations.of(context).text("isbn_hint")),
                   validator: (isbn) {
-                    if (isbn.isNotEmpty && isbn.length < 13) {
+                    if(isbn.isNotEmpty){
+                    if (isbn.length < 10) {
                       //El ISBN ha de contener 13 dígitos
                       return Translations.of(context).text("isbn_too_short");
+                    }
+                    if(!(isISBN(controlerISBN.text, controlerISBN.text.length))){
+                      return Translations.of(context).text("isbn_not_valid");
+                    }
                     }
                   },
                 ),
@@ -191,7 +197,7 @@ class _UploadTitleState extends State<UploadTitle> {
                   maxLengthEnforced: true,
                   onSaved: (String value) {
                     setState(() {
-                      widget.tittleInserted(value);
+                      widget.tittleInserted(controlerTitle.text);
                     });
                   },
                   decoration: InputDecoration(
@@ -222,7 +228,7 @@ class _UploadTitleState extends State<UploadTitle> {
                                   .length *
                               8.0,
                       //SI se desea hacer que ocupe el máximo de la pantalla, cambiar linea anterior por la siguiente
-                    //  width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
+                      //  width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
                       child: TextFormField(
                         //Precio
                         maxLines: 1,
@@ -284,51 +290,77 @@ class _UploadTitleState extends State<UploadTitle> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          
                           children: [
                             Text(Translations.of(context).text("state"),
-                            style: TextStyle(fontSize: 20)),
-                            Row(
+                                style: TextStyle(fontSize: 20)),
+                            Column(crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Text(Translations.of(context).text("New"),
-                                    style: TextStyle(fontSize: 10)),
-                                Container(child: Icon(Icons.fiber_new), margin: EdgeInsets.only(left: 5.0),),
-                                Radio(
-                                  value: _value1,
-                                  onChanged: (_value1) => changeState(_value1),
-                                  activeColor: Colors.pink,
-                                  groupValue: widget.prod.getState(),
-                                ),
-                              ],
+                            GestureDetector(
+                              onTap: (){
+                                changeState(_value1);
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(Translations.of(context).text("New"),
+                                      style: TextStyle(fontSize: 10)),
+                                  Container(
+                                    child: Icon(Icons.fiber_new),
+                                    margin: EdgeInsets.only(left: 5.0),
+                                  ),
+                                  Radio(
+                                    value: _value1,
+                                    onChanged: (_value1) => changeState(_value1),
+                                    activeColor: Colors.pink,
+                                    groupValue: widget.prod.getState(),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                    Translations.of(context).text("Almost-New"),
-                                    style: TextStyle(fontSize: 10)),
-                                Container(child: Icon(MdiIcons.walletTravel), margin: EdgeInsets.only(left: 5.0),),
-                                Radio(
-                                  value: _value2,
-                                  onChanged: (_value2) => changeState(_value2),
-                                  activeColor: Colors.pink,
-                                  groupValue: widget.prod.getState(),
-                                ),
-                              ],
+                            GestureDetector(
+                               onTap: (){
+                                changeState(_value2);
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                      Translations.of(context).text("Almost-New"),
+                                      style: TextStyle(fontSize: 10)),
+                                  Container(
+                                    child: Icon(MdiIcons.walletTravel),
+                                    margin: EdgeInsets.only(left: 5.0),
+                                  ),
+                                  Radio(
+                                    value: _value2,
+                                    onChanged: (_value2) => changeState(_value2),
+                                    activeColor: Colors.pink,
+                                    groupValue: widget.prod.getState(),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Row(
-                              children: <Widget>[
-                                
-                                Text(Translations.of(context).text("Old"),
-                                    style: TextStyle(fontSize: 10)),
-                                Container(child: Icon(Icons.restore_page), margin: EdgeInsets.only(left: 5.0),),
-                                Radio(
-                                  value: _value3,
-                                  onChanged: (_value3) => changeState(_value3),
-                                  activeColor: Colors.pink,
-                                  groupValue: widget.prod.getState(),
-                                ),
-                              ],
+                            GestureDetector(
+                               onTap: (){
+                                changeState(_value3);
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(Translations.of(context).text("Old"),
+                                      style: TextStyle(fontSize: 10)),
+                                  Container(
+                                    child: Icon(Icons.restore_page),
+                                    margin: EdgeInsets.only(left: 5.0),
+                                  ),
+                                  Radio(
+                                    value: _value3,
+                                    onChanged: (_value3) => changeState(_value3),
+                                    activeColor: Colors.pink,
+                                    groupValue: widget.prod.getState(),
+                                  ),
+                                ],
+                              ),
                             ),
+                            ],)
                           ]),
                       Container(
                         height: 130.0,
@@ -337,45 +369,112 @@ class _UploadTitleState extends State<UploadTitle> {
                         //margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                       ),
                       Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(Translations.of(context).text("state"),
-                            style: TextStyle(fontSize: 20)),
-                            Row(
+                                style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                Text(Translations.of(context).text("con_envio"),
-                                    style: TextStyle(fontSize: 10)),
-                                Container(child: Icon(Icons.local_shipping), margin: EdgeInsets.only(left: 5.0),),
-                                Radio(
-                                  value: _conEnvio,
-                                  onChanged: (_conEnvio) =>
-                                      changeSend(_conEnvio),
-                                  activeColor: Colors.pink,
-                                  groupValue:
-                                      widget.prod.getStringShippinIncluded(),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(Translations.of(context).text("sin_envio"),
-                                    style: TextStyle(fontSize: 10)),
-                                Container(child: Icon(MdiIcons.accountRemove), margin: EdgeInsets.only(left: 5.0),),
-                                Radio(
-                                    value: _sinEnvio,
-                                    onChanged: (_sinEnvio) =>
-                                        changeSend(_sinEnvio),
+                            GestureDetector(
+                               onTap: (){
+                                changeSend(_conEnvio);
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(Translations.of(context).text("con_envio"),
+                                      style: TextStyle(fontSize: 10)),
+                                  Container(
+                                    child: Icon(Icons.local_shipping),
+                                    margin: EdgeInsets.only(left: 5.0),
+                                  ),
+                                  Radio(
+                                    value: _conEnvio,
+                                    onChanged: (_conEnvio) =>
+                                        changeSend(_conEnvio),
                                     activeColor: Colors.pink,
                                     groupValue:
-                                        widget.prod.getStringShippinIncluded()),
-                              ],
+                                        widget.prod.getStringShippinIncluded(),
+                                  )
+                                ],
+                              ),
                             ),
+                            GestureDetector(
+                               onTap: (){
+                                changeSend(_sinEnvio);
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Text(Translations.of(context).text("sin_envio"),
+                                      style: TextStyle(fontSize: 10)),
+                                  Container(
+                                    child: Icon(MdiIcons.accountRemove),
+                                    margin: EdgeInsets.only(left: 5.0),
+                                  ),
+                                  Radio(
+                                      value: _sinEnvio,
+                                      onChanged: (_sinEnvio) =>
+                                          changeSend(_sinEnvio),
+                                      activeColor: Colors.pink,
+                                      groupValue:
+                                          widget.prod.getStringShippinIncluded()),
+                                ],
+                              ),
+                            ),
+                            ],)
                           ]),
                     ]),
               ]))
         ]);
   }
+ Future<void> _rellenarInfo(String barcode) async{
+        List<String> s = await getInfoISBN(barcode);
+        setState(() {
+          _isbn = barcode;
+          widget.isbnInserted(barcode);
+          controlerISBN.text = barcode;
+          //print(s);
+          controlerTitle.text = s[0];
+          widget.descriptionInserted(s[1]);
+          widget.formKey.currentState.validate();
+          widget.formKey.currentState.save();
+          //print("Bar code decetcado = " + barcode);
+          //print("ISBN almacenado = " + widget.prod.getISBN());
+        });
+    }
 
+  Future<void> gettingISBN(BuildContext context, String barcode) async{
+    print("getting ISBN");
+    const tamanyoMaxpopUp = 144.4; 
+      _rellenarInfo(barcode).then((onValue){
+        Navigator.of(context).pop();
+      });   
+       return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              //capturar boton atrás para mostrar mensaje
+              onWillPop: () {/* No dejar cancelar */},
+              child: AlertDialog(
+                title: Text(
+                  Translations.of(context).text("uploading_product"),
+                  textAlign: TextAlign.center,
+                ),
+                content: Container(
+                    height: tamanyoMaxpopUp,
+                    child: Column(
+                      children: <Widget>[
+                        Center(child: BookaloProgressIndicator()),
+                        Text(
+                          Translations.of(context).text("wait_uploading"),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    )),
+              ));
+        });
+  }
+
+ 
   void changeState(String newState) {
     widget.stateProductInserted(newState);
     _valueChanged(newState);

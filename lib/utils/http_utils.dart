@@ -134,3 +134,23 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
 
   return response.statusCode == 201;
 }
+
+Future<List<String>> getInfoISBN(String isbn) async {
+  
+  Map<String, String> body = {'isbn': isbn};
+
+  var response = await http.get('https://bookalo.es/api/get_info_isbn?isbn=' + isbn,
+      headers: headers);
+
+  print("status = " + response.statusCode.toString());
+  //print(response.body);
+  if (response.statusCode == 200) {
+ //   print("mapenado json");
+    var libro  = json.decode(utf8.decode(response.bodyBytes));
+  //  print(libro['Descripcion']);
+    return [libro['Titulo'], libro['Descripcion'],];
+
+   
+  }
+  return ['',''];
+}

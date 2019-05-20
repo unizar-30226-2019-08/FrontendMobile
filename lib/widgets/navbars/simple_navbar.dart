@@ -34,7 +34,7 @@ class _SimpleNavbarState extends State<SimpleNavbar> {
     double topMargin = height / 60;
     return AppBar(
       automaticallyImplyLeading: false,
-      elevation: 0.0,
+   //   elevation: 0.0,
       title: Container(
         margin: EdgeInsets.only(top: topMargin),
         child: Image.asset('assets/images/bookalo_logo.png', width: width / 2),
