@@ -141,7 +141,10 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
             backgroundContainer: Theme.of(context).canvasColor,
             autofocus: false,
             onDelete: (tag) {
-              widget.onDeleteTag(tag);
+              setState(() {
+                widget.onDeleteTag(tag);  
+              });
+              
             },
           ),
         ),

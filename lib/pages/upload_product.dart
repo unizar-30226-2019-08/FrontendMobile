@@ -46,7 +46,7 @@ class _UploadProduct extends State<UploadProduct> {
   AutoV autoV = AutoV(false);
   //validación de pasos. Sólo se permite hacer submit
   //    si  para todo 'i' € {0, pagesValited.length}, pagesValited[i] == true
-  List<bool> pagesValited = [false, false, true, true];
+  List<bool> pagesValited = [false, false, false, true];
   //imagenes del producto
   List<File> imageneFile = [];
   //Contendra los widgetsa visualizar (ver initState)
@@ -131,12 +131,12 @@ class _UploadProduct extends State<UploadProduct> {
             autoV.autovalidate = true;
           });
         },
-        descriptionInserted: (desc) {
+        /* descriptionInserted: (desc) {
           setState(() {
             newP.setDesciption(desc);
             autoV.autovalidate = true;
           });
-        },
+        }, */
         stateProductInserted: (_state) {
           setState(() {
             newP.setState(_state);
@@ -145,10 +145,19 @@ class _UploadProduct extends State<UploadProduct> {
         },
       ),
       UploadTags(
-        initialT: newP.getTags(),
-        validate: (validado) {
+        descriptionInserted: (desc) {
           setState(() {
-            pagesValited[2] = validado;
+            newP.setDesciption(desc);
+            autoV.autovalidate = true;
+          });
+        },
+        prod: newP,
+
+        initialT: newP.getTags(),
+        valitedPage: (valited) {
+          setState(() {
+            pagesValited[2] = valited;
+            //autoV.autovalidate = true;
           });
         },
         onDeleteTag: (tag) {

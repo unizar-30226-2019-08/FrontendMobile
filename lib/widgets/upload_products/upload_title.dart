@@ -69,6 +69,8 @@ class _UploadTitleState extends State<UploadTitle> {
       descValited = false;
 
   var controllerPrice;
+  var controlerISBN;
+  var controlerTitle;
 
   void _valueChanged(String value) =>
       setState(() => widget.prod.setState(value));
@@ -84,7 +86,18 @@ class _UploadTitleState extends State<UploadTitle> {
         thousandSeparator: ',',
         rightSymbol: '€',
         initialValue: widget.prod.getPrice());
-//			this._valueChanged(widget.prod.getState());
+        if(widget.prod.getISBN().length > 0){
+          controlerISBN = TextEditingController();
+        }else{
+          controlerISBN = TextEditingController(text: widget.prod.getISBN());
+        }
+
+        if(widget.prod.getName().length > 0){
+          controlerTitle = TextEditingController();
+        }else{
+          controlerTitle = TextEditingController(text: widget.prod.getName());
+        }
+
   }
 
   Future barcodeScanning() async {
@@ -95,7 +108,11 @@ class _UploadTitleState extends State<UploadTitle> {
       setState(() {
         _isbn = barcode;
         widget.isbnInserted(barcode);
+        controlerISBN.text = barcode;
+        controlerTitle.text = "Un titulo rando";
         widget.formKey.currentState.validate();
+        print("Bar code decetcado = " + barcode);
+        print("ISBN almacenado = " + widget.prod.getISBN());
       });
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -128,50 +145,50 @@ class _UploadTitleState extends State<UploadTitle> {
                 setState(() {
                   validatePage = widget.formKey.currentState.validate() &&
                       titleIni &&
-                      priceIni &&
-                      descIni;
+                      priceIni; /* &&
+                      descIni; */
                   widget.valitedPage(validatePage);
                 });
               },
               child: Column(children: <Widget>[
-                // OutlineButton(
-                //   borderSide: BorderSide(color: Colors.pink, width: 3.0),
-                //   shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                //   child: Text(
-                //     Translations.of(context).text("isbn_scan"),
-                //     style: TextStyle(
-                //         color: Colors.pink[600], fontWeight: FontWeight.w700),
-                //   ),
-                //   onPressed: barcodeScanning,
-                // ),
-                // TextFormField(
-                //   //Input ISBN
-                //   keyboardType: TextInputType.number,
-                //   maxLines: 1,
-                //   maxLength: 13, //13 numeros máximo
-                //   maxLengthEnforced: true,
-                //   initialValue: widget.prod.getISBN(),
-                //   onSaved: (String isbnReaded) {
-                //     setState(() {
-                //       widget.isbnInserted(isbnReaded);
-                //     });
-                //   },
-                //   decoration: InputDecoration(
-                //       hintText: Translations.of(context).text("isbn_hint")),
-                //   validator: (isbn) {
-                //     if (isbn.isNotEmpty && isbn.length < 13) {
-                //       //El ISBN ha de contener 13 dígitos
-                //       return Translations.of(context).text("isbn_too_short");
-                //     }
-                //   },
-                // ),
+                OutlineButton(
+                  borderSide: BorderSide(color: Colors.pink, width: 3.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  child: Text(
+                    Translations.of(context).text("isbn_scan"),
+                    style: TextStyle(
+                        color: Colors.pink[600], fontWeight: FontWeight.w700),
+                  ),
+                  onPressed: barcodeScanning,
+                ),
+                TextFormField(
+                  //Input ISBN
+                  keyboardType: TextInputType.number,
+                  controller: controlerISBN,
+                  maxLines: 1,
+                  maxLength: 13, //13 numeros máximo
+                  maxLengthEnforced: true,
+                  onSaved: (String isbnReaded) {
+                    setState(() {
+                      widget.isbnInserted(isbnReaded);
+                    });
+                  },
+                  decoration: InputDecoration(
+                      hintText: Translations.of(context).text("isbn_hint")),
+                  validator: (isbn) {
+                    if (isbn.isNotEmpty && isbn.length < 13) {
+                      //El ISBN ha de contener 13 dígitos
+                      return Translations.of(context).text("isbn_too_short");
+                    }
+                  },
+                ),
                 TextFormField(
                   keyboardType: TextInputType.text,
+                  controller: controlerTitle,
                   maxLines: 1,
                   maxLength: 50, //1000 caracteres máximo
                   maxLengthEnforced: true,
-                  initialValue: widget.prod.getName(),
                   onSaved: (String value) {
                     setState(() {
                       widget.tittleInserted(value);
@@ -205,7 +222,7 @@ class _UploadTitleState extends State<UploadTitle> {
                                   .length *
                               8.0,
                       //SI se desea hacer que ocupe el máximo de la pantalla, cambiar linea anterior por la siguiente
-                      //width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
+                    //  width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
                       child: TextFormField(
                         //Precio
                         maxLines: 1,
@@ -236,7 +253,7 @@ class _UploadTitleState extends State<UploadTitle> {
                     ),
                   ],
                 ),
-                TextFormField(
+                /* TextFormField(
                   //Input Descripcion
                   keyboardType: TextInputType.text,
                   maxLines: 4,
@@ -260,7 +277,7 @@ class _UploadTitleState extends State<UploadTitle> {
                           .text("description_too_short");
                     }
                   },
-                ),
+                ), */
                 Container(height: 50.0),
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
