@@ -538,12 +538,12 @@ class _UploadProduct extends State<UploadProduct> {
       });
     } else {
       editProduct(newP, imageneFile).then((suc) {
-          print("Done");
-          setState(() {
-            this.success = suc;
-          });
-          Navigator.of(context).pop(this.success);
+        print("Done");
+        setState(() {
+          this.success = suc;
         });
+        Navigator.of(context).pop(this.success);
+      });
     }
 
     return showDialog<bool>(

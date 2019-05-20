@@ -7,6 +7,7 @@ import 'package:bookalo/objects/filter_query.dart';
 typedef PaginationBuilder<T> = Future<List<T>> Function(int currentListSize);
 
 typedef ItemWidgetBuilder<T> = Widget Function(int index, T item);
+
 class ProductPagination<T> extends StatefulWidget {
   ProductPagination({
     Key key,
@@ -60,7 +61,9 @@ class _ProductPaginationState<T> extends State<ProductPagination<T>> {
   void fetchMore(BuildContext context) {
     if (!_isLoading) {
       _isLoading = true;
-      widget.pageBuilder(ScopedModel.of<FilterQuery>(context).queryResult.length).then((list) {
+      widget
+          .pageBuilder(ScopedModel.of<FilterQuery>(context).queryResult.length)
+          .then((list) {
         _isLoading = false;
         if (list.isEmpty) {
           _isEndOfList = true;
@@ -102,9 +105,13 @@ class _ProductPaginationState<T> extends State<ProductPagination<T>> {
       addSemanticIndexes: widget.addSemanticIndexes,
       scrollDirection: widget.scrollDirection,
       itemBuilder: (context, position) {
-        if (position < ScopedModel.of<FilterQuery>(context).queryResult.length) {
-          return widget.itemBuilder(position, ScopedModel.of<FilterQuery>(context).queryResult[position]);
-        } else if (position == ScopedModel.of<FilterQuery>(context).queryResult.length && !_isEndOfList) {
+        if (position <
+            ScopedModel.of<FilterQuery>(context).queryResult.length) {
+          return widget.itemBuilder(position,
+              ScopedModel.of<FilterQuery>(context).queryResult[position]);
+        } else if (position ==
+                ScopedModel.of<FilterQuery>(context).queryResult.length &&
+            !_isEndOfList) {
           fetchMore(context);
           return widget.progress ?? defaultLoading();
         }

@@ -32,7 +32,7 @@ class _UploadPositionState extends State<UploadPosition> {
           Container(
             child: DistanceMap(
                 //TODO: ver que pàrametros necesita
-                height: _height*0.65,
+                height: _height * 0.65,
                 distanceRadius: 5000),
           ),
         ]));

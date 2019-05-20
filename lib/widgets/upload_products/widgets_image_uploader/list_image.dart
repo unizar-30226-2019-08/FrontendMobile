@@ -4,10 +4,11 @@
  * CREACIÓN:    20/03/2019
  */
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:bookalo/widgets/upload_products/widgets_image_uploader/image_card.dart';
 import 'package:bookalo/widgets/upload_products/widgets_image_uploader/add_image.dart';
-import 'dart:io';
+import 'package:bookalo/widgets/empty_list.dart';
 
 /*
   CLASE: ImageCard
@@ -19,22 +20,20 @@ class ListImageCard extends StatefulWidget {
   final Function validate;
   final List<Widget> imageCards;
   final List<File> imagesList;
-  ListImageCard({Key key, this.imagesList, this.imageCards, this.validate}) : super(key: key);
+  ListImageCard({Key key, this.imagesList, this.imageCards, this.validate})
+      : super(key: key);
 
   _ListImageCardState createState() => _ListImageCardState();
 }
 
 class _ListImageCardState extends State<ListImageCard> {
-
   _ListImageCardState();
   File imageToAdd;
 
 //Estado inicial de la lista
   void initState() {
     super.initState();
-    Widget card = AddImageCard(onNewPicture);
-    widget.imageCards.add(card);
-    widget.imagesList.forEach((image){
+    widget.imagesList.forEach((image) {
       ImageCard imgC = ImageCard(image, removeFromList);
       widget.imageCards.add(imgC);
     });
@@ -45,12 +44,11 @@ class _ListImageCardState extends State<ListImageCard> {
     setState(() {
       var i = widget.imagesList.indexOf(img);
       widget.imageCards
-          .removeAt(i + 1); //i+1 porque el primero es el widget de añadir fotos
+          .removeAt(i); //i+1 porque el primero es el widget de añadir fotos
       widget.imagesList.removeAt(i);
       widget.validate(widget.imagesList.length > 0);
     });
   }
-
 
 //Añadir foto a la lista
   void onNewPicture(File img) async {
@@ -69,23 +67,22 @@ class _ListImageCardState extends State<ListImageCard> {
     return Container(
       width: width,
       height: height,
-      child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.all(10),
-          itemCount: widget.imageCards.length,
-          itemBuilder: (BuildContext context, int index) {
-            return widget.imageCards[index];
-          }),
-      // child: Image.file(widget.image)
-    );
-  }
-
-//Mostrar imágenes de la lista
-  Widget showImage(int index) {
-    return new Container(
-      padding: EdgeInsets.all(5.0),
-      child: widget.imageCards[index],
+      child: Column(
+        children: <Widget>[
+          ImageAdder(onNewPicture),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                (widget.imageCards.length > 0
+                    ? Wrap(
+                        children: widget.imageCards,
+                      )
+                    : EmptyList(iconData: Icons.image, textKey: "no_pictures"))
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

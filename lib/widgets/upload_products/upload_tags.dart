@@ -4,7 +4,6 @@
  * CREACIÓN:    12/05/2019
  */
 
-
 import 'package:bookalo/widgets/upload_products/widgets_tags_uploader/tags_upload_product.dart';
 import 'package:flutter/material.dart';
 
@@ -23,28 +22,36 @@ class UploadTags extends StatefulWidget {
   final Function(String) onDeleteTag;
   final Function(bool) validate;
   final List<String> initialT;
-  UploadTags({Key key, this.onInsertTag, this.onDeleteTag, this.initialT, this.validate}) : super(key: key);
+  UploadTags(
+      {Key key,
+      this.onInsertTag,
+      this.onDeleteTag,
+      this.initialT,
+      this.validate})
+      : super(key: key);
   @override
   _UploadTagsState createState() => _UploadTagsState();
-
 }
 
 class _UploadTagsState extends State<UploadTags> {
-  
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      child: Column(
-      children: <Widget>[
-          TagsUploadProduct(
-            onInsertTag: (tag) {widget.onInsertTag(tag); widget.validate(widget.initialT.length >0 );},
-            onDeleteTag: (tag) {widget.onDeleteTag(tag); widget.validate(widget.initialT.length >0 );},
-            initialTags: widget.initialT,
-          ),
-        ],
-      )
-    );
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        child: Column(
+          children: <Widget>[
+            TagsUploadProduct(
+              onInsertTag: (tag) {
+                widget.onInsertTag(tag);
+                widget.validate(widget.initialT.length > 0);
+              },
+              onDeleteTag: (tag) {
+                widget.onDeleteTag(tag);
+                widget.validate(widget.initialT.length > 0);
+              },
+              initialTags: widget.initialT,
+            ),
+          ],
+        ));
   }
-  
 }

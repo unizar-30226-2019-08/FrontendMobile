@@ -33,42 +33,40 @@ class _BuyState extends State<Buy> {
   bool firstFetch = true;
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     ScopedModel.of<FilterQuery>(context).queryResult.clear();
   }
 
-  Future<List<Widget>> fetchProducts(currentSize, height, FilterQuery query) async{
+  Future<List<Widget>> fetchProducts(
+      currentSize, height, FilterQuery query) async {
     List<Widget> output = new List();
-    if(!endReached){
-      Tuple2<List<ProductView>, bool> fetchResult = await parseProducts(query, currentSize);
+    if (!endReached) {
+      Tuple2<List<ProductView>, bool> fetchResult =
+          await parseProducts(query, currentSize);
       endReached = fetchResult.item2;
       output.addAll(fetchResult.item1);
-      if(endReached){
-        if(firstFetch){
-         output.add(
-           Container(
-             margin: EdgeInsets.only(top: 200.0),
-             child: Column(
-               children: <Widget>[
-                 Icon(Icons.remove_shopping_cart, size: 80.0, color: Colors.pink),
-                 Text(
-                   Translations.of(context).text('no_products_available'),
-                   style: TextStyle(
-                     fontSize: 25.0,
-                     fontWeight: FontWeight.w300
-                   ),
-                 )
-               ],
-             ),
-           )
-         ); 
-        }else{
+      if (endReached) {
+        if (firstFetch) {
+          output.add(Container(
+            margin: EdgeInsets.only(top: 200.0),
+            child: Column(
+              children: <Widget>[
+                Icon(Icons.remove_shopping_cart,
+                    size: 80.0, color: Colors.pink),
+                Text(
+                  Translations.of(context).text('no_products_available'),
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                )
+              ],
+            ),
+          ));
+        } else {
           output.add(SocialButtons());
         }
       }
     }
-    if(firstFetch){
+    if (firstFetch) {
       firstFetch = false;
     }
     return output;
@@ -111,12 +109,13 @@ class _BuyState extends State<Buy> {
             FilterOptionSelector(),
             Expanded(
               child: ScopedModelDescendant<FilterQuery>(
-                builder: (context, child, model){     
+                builder: (context, child, model) {
                   return ProductPagination<Widget>(
                     progress: Container(
                         margin: EdgeInsets.symmetric(vertical: height / 20),
                         child: BookaloProgressIndicator()),
-                    pageBuilder: (currentSize) => fetchProducts(currentSize, height, model),
+                    pageBuilder: (currentSize) =>
+                        fetchProducts(currentSize, height, model),
                     itemBuilder: (index, item) {
                       return item;
                     },

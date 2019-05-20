@@ -16,55 +16,54 @@ import 'package:bookalo/translations.dart';
  *                algunos y permite la adición de nuevos
  */
 class TagsSelectorUplod extends StatefulWidget {
-	List<Tag> suggestedTags = [];
+  List<Tag> suggestedTags = [];
   final List<String> selectedTags;
-	final int previousTagsLength;
-	final Function(String) onDeleteTag;
+  final int previousTagsLength;
+  final Function(String) onDeleteTag;
   final Function(String) onInsertTag;
   final Function(bool) validatedPage;
 
-	/*
+  /*
 	 * Pre:   suggestedTags es una lista de cero o más tags y onTagsChanged es una
 	 *        función void
 	 * Post:  ha generado el widget de tal forma que al modificarse la lista de tags
 	 *        activos, ha ejecutado la callack onTagsChanged
 	 */
-	TagsSelectorUplod(
-			{Key key,
-			this.onDeleteTag,
+  TagsSelectorUplod(
+      {Key key,
+      this.onDeleteTag,
       this.onInsertTag,
-			this.suggestedTags,
-			this.previousTagsLength, 
+      this.suggestedTags,
+      this.previousTagsLength,
       this.selectedTags,
       this.validatedPage})
-			: super(key: key);
+      : super(key: key);
 
-	_TagsSelectorUplodState createState() => _TagsSelectorUplodState();
+  _TagsSelectorUplodState createState() => _TagsSelectorUplodState();
 }
 
 class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
-	GlobalKey<AutoCompleteTextFieldState<Tag>> key = GlobalKey();
-	List<String> selectedTagsIn = [];
+  GlobalKey<AutoCompleteTextFieldState<Tag>> key = GlobalKey();
+  List<String> selectedTagsIn = [];
   bool showError = false;
   String msgError = "";
 //	List<Tag> inputTags = [];
 
-	@override
-	void initState() {
-		super.initState();
-	}
-  
-	@override
-	Widget build(BuildContext context) {	
-		int _column = 3;
-		double width = MediaQuery.of(context).size.width;
-		return Column(
-			children: <Widget>[
-				Container(
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int _column = 3;
+    double width = MediaQuery.of(context).size.width;
+    return Column(
+      children: <Widget>[
+        Container(
             margin: EdgeInsets.only(right: width / 3),
             width: width / 2,
             child: AutoCompleteTextField<Tag>(
-              
               decoration: InputDecoration(
                   hintText: Translations.of(context).text("tag_example"),
                   labelText: Translations.of(context).text("add_tags")),
@@ -100,59 +99,63 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
                     .toLowerCase()
                     .contains(input.toLowerCase());
               },
-							textSubmitted: (inputetx){
+              textSubmitted: (inputetx) {
                 const maxLong = 50;
-                if(inputetx.length > 0 && inputetx.length < maxLong){
+                if (inputetx.length > 0 && inputetx.length < maxLong) {
                   setState(() {
-                      widget.onInsertTag(inputetx);
-                      showError = false;
-                    });
-                }else{
-                  if(inputetx.length >= maxLong)
-                    setState(() {
-                      msgError = Translations.of(context).text("error_tag_tamanyo", params: [maxLong.toString()]);
-                      showError = true;
+                    widget.onInsertTag(inputetx);
+                    showError = false;
                   });
+                } else {
+                  if (inputetx.length >= maxLong)
+                    setState(() {
+                      msgError = Translations.of(context).text(
+                          "error_tag_tamanyo",
+                          params: [maxLong.toString()]);
+                      showError = true;
+                    });
                 }
-                
-							},
-            )
-					),
-        ((showError)  
-            ?  Container(
+              },
+            )),
+        ((showError)
+            ? Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text(msgError, textAlign: TextAlign.left, style: TextStyle(color: Colors.redAccent),)
-              ) 
+                child: Text(
+                  msgError,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.redAccent),
+                ))
             : Container()),
         Container(
-				    child: InputTags(
-              tags: widget.selectedTags,
-              columns: _column,
-              fontSize: 14,
-              symmetry: true,
-              iconBackground: Colors.black,
-              color: Colors.pink,
-              lowerCase: true,
-              textFieldHidden: true,
-              alignment: MainAxisAlignment.center,
-              backgroundContainer: Theme.of(context).canvasColor,
-              autofocus: false,
-              onDelete: (tag){widget.onDeleteTag(tag);},
-					),
-				),
-        (widget.selectedTags.isEmpty) ?
-              Text(Translations.of(context).text("no_tags"), textAlign: TextAlign.center, style: TextStyle(fontSize: 26),)
-              :Container(),
-        (widget.selectedTags.isEmpty) ?
-              Text(Translations.of(context).text("motivation_tags"))
-            :
-            Container(),
-			],
-		);
-	}
-
-
-
+          child: InputTags(
+            tags: widget.selectedTags,
+            columns: _column,
+            fontSize: 14,
+            symmetry: true,
+            iconBackground: Colors.black,
+            color: Colors.pink,
+            lowerCase: true,
+            textFieldHidden: true,
+            alignment: MainAxisAlignment.center,
+            backgroundContainer: Theme.of(context).canvasColor,
+            autofocus: false,
+            onDelete: (tag) {
+              widget.onDeleteTag(tag);
+            },
+          ),
+        ),
+        (widget.selectedTags.isEmpty)
+            ? Text(
+                Translations.of(context).text("no_tags"),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 26),
+              )
+            : Container(),
+        (widget.selectedTags.isEmpty)
+            ? Text(Translations.of(context).text("motivation_tags"))
+            : Container(),
+      ],
+    );
+  }
 }
-

@@ -89,7 +89,7 @@
     "offensive_content":"Contenido ofensivo",
     "report_to":"REPORTE A",
     "close_chat":"Cerrar venta",
-    "Warning":"¡Cuidado!",
+    "warning":"¿Estás seguro?",
     "confirmation_text":"¿Seguro que quieres eliminar esta foto?",
     "Continue":"Continuar",
     "Cancel":"Cancelar", 
@@ -118,6 +118,9 @@
     "description" : "DESCRIPCIÓN",
     "inserte_precio" : "Inserte el precio del producto",
     "uploading_product" :"Subiendo producto",
-    "wait_uploading" : "Esto puede llegar a tardar algún minuto.\nEspere, por favor"
+    "wait_uploading" : "Esto puede llegar a tardar algún minuto.\nEspere, por favor",
+    "no_pictures" : "Aún no has subido ninguna imagen del producto",
+    "camera" : "CÁMARA",
+    "gallery" : "GALERÍA"
 
 }

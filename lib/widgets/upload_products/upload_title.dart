@@ -4,12 +4,15 @@
  * CREACIÓN:    12/05/2019
  */
 
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/translations.dart';
+
+
 enum ConfirmAction { CANCEL, ACCEPT }
 /*
  *  CLASE:        UploadTitle
@@ -23,7 +26,7 @@ class UploadTitle extends StatefulWidget {
   final Function(String) tittleInserted;
   final Function(String) descriptionInserted;
   final Function(String) stateProductInserted;
-	final Function(double) priceInserted;
+  final Function(double) priceInserted;
   final Function(bool) includeSend;
   final Function(bool) valitedPage;
   final formKey;
@@ -37,7 +40,9 @@ class UploadTitle extends StatefulWidget {
       this.formKey,
       this.valitedPage,
       this.stateProductInserted,
-      this.includeSend, this.priceInserted, this.autoV})
+      this.includeSend,
+      this.priceInserted,
+      this.autoV})
       : super(key: key);
   @override
   _UploadTitleState createState() => _UploadTitleState();
@@ -53,8 +58,10 @@ class _UploadTitleState extends State<UploadTitle> {
 
   String _sinEnvio = "Sin envio";
   String _conEnvio = "Con envio";
-  bool titleIni = false, priceIni = false,
-      descIni = false; //Indica si se ha iniciado o no el titulo/descIni respectivamente
+  bool titleIni = false,
+      priceIni = false,
+      descIni =
+          false; //Indica si se ha iniciado o no el titulo/descIni respectivamente
   bool validatePage = false,
       titleValited = false,
       isbnValited = false,
@@ -71,8 +78,12 @@ class _UploadTitleState extends State<UploadTitle> {
   @override
   void initState() {
     super.initState();
-		controllerPrice = new MoneyMaskedTextController( precision: 1, 
-      decimalSeparator: '.', thousandSeparator: ',', rightSymbol: '€',initialValue: widget.prod.getPrice());
+    controllerPrice = new MoneyMaskedTextController(
+        precision: 1,
+        decimalSeparator: '.',
+        thousandSeparator: ',',
+        rightSymbol: '€',
+        initialValue: widget.prod.getPrice());
 //			this._valueChanged(widget.prod.getState());
   }
 
@@ -92,214 +103,261 @@ class _UploadTitleState extends State<UploadTitle> {
           this._isbn = Translations.of(context).text("no_camera_persission");
         });
       } else {
-        setState(() => this._isbn = Translations.of(context).text("unknow_error",params: [e.toString()]));
+        setState(() => this._isbn = Translations.of(context)
+            .text("unknow_error", params: [e.toString()]));
       }
     } on FormatException {
-      setState(() => this._isbn = Translations.of(context).text('nothing_caputured'));
+      setState(() =>
+          this._isbn = Translations.of(context).text('nothing_caputured'));
     } catch (e) {
-      setState(() => this._isbn = Translations.of(context).text("unknow_error",params: [e.toString()]));
+      setState(() => this._isbn = Translations.of(context)
+          .text("unknow_error", params: [e.toString()]));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.symmetric(vertical: 1, horizontal: 15),
-      children: <Widget>[
-        Form(
-            autovalidate: widget.autoV.autovalidate,
-            key: widget.formKey,
-            onChanged: () {
-              widget.formKey.currentState.save();
-              setState(() {
-                validatePage = widget.formKey.currentState.validate() &&
-                              titleIni && priceIni && descIni;
-                //	widget.stateProductInserted(groupValue);
-                widget.valitedPage(validatePage);
-              });
-            },
-            child: Column(children: <Widget>[
-              OutlineButton(
-                borderSide: BorderSide(color: Colors.pink, width: 3.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                child: Text(
-                  Translations.of(context).text("isbn_scan"),
-                  style: TextStyle(
-                      color: Colors.pink[600], fontWeight: FontWeight.w700),
+        padding: EdgeInsets.symmetric(vertical: 1, horizontal: 15),
+        children: <Widget>[
+          Form(
+              autovalidate: widget.autoV.autovalidate,
+              key: widget.formKey,
+              onChanged: () {
+                widget.formKey.currentState.save();
+                setState(() {
+                  validatePage = widget.formKey.currentState.validate() &&
+                      titleIni &&
+                      priceIni &&
+                      descIni;
+                  widget.valitedPage(validatePage);
+                });
+              },
+              child: Column(children: <Widget>[
+                // OutlineButton(
+                //   borderSide: BorderSide(color: Colors.pink, width: 3.0),
+                //   shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                //   child: Text(
+                //     Translations.of(context).text("isbn_scan"),
+                //     style: TextStyle(
+                //         color: Colors.pink[600], fontWeight: FontWeight.w700),
+                //   ),
+                //   onPressed: barcodeScanning,
+                // ),
+                // TextFormField(
+                //   //Input ISBN
+                //   keyboardType: TextInputType.number,
+                //   maxLines: 1,
+                //   maxLength: 13, //13 numeros máximo
+                //   maxLengthEnforced: true,
+                //   initialValue: widget.prod.getISBN(),
+                //   onSaved: (String isbnReaded) {
+                //     setState(() {
+                //       widget.isbnInserted(isbnReaded);
+                //     });
+                //   },
+                //   decoration: InputDecoration(
+                //       hintText: Translations.of(context).text("isbn_hint")),
+                //   validator: (isbn) {
+                //     if (isbn.isNotEmpty && isbn.length < 13) {
+                //       //El ISBN ha de contener 13 dígitos
+                //       return Translations.of(context).text("isbn_too_short");
+                //     }
+                //   },
+                // ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  maxLength: 50, //1000 caracteres máximo
+                  maxLengthEnforced: true,
+                  initialValue: widget.prod.getName(),
+                  onSaved: (String value) {
+                    setState(() {
+                      widget.tittleInserted(value);
+                    });
+                  },
+                  decoration: InputDecoration(
+                      hintText: Translations.of(context).text("title_hint")),
+                  validator: (title) {
+                    if (title.length > 0) {
+                      titleIni = true;
+                    }
+                    if ((widget.autoV.autovalidate || titleIni) &&
+                        title.length < 2) {
+                      //El nombre de articulo debe tener al menos 2 caracteres
+                      return Translations.of(context).text("title_too_short");
+                    }
+                  },
                 ),
-                onPressed: barcodeScanning,
-              ),
-              TextFormField(
-                //Input ISBN
-                keyboardType: TextInputType.number,
-                maxLines: 1,
-                maxLength: 13, //13 numeros máximo
-                maxLengthEnforced: true,
-                initialValue: widget.prod.getISBN(),
-                onSaved: (String isbnReaded) {
-                  setState(() {
-                    widget.isbnInserted(isbnReaded);
-                  });
-                },
-                decoration: InputDecoration(
-                    hintText: Translations.of(context).text("isbn_hint")),
-                validator: (isbn) {
-                  if (isbn.isNotEmpty && isbn.length < 13) {
-                    //El ISBN ha de contener 13 dígitos
-                    return Translations.of(context).text("isbn_too_short");
-                  }
-                },
-              ),
-              TextFormField(
-                // Input titulo
-                keyboardType: TextInputType.text,
-                maxLines: 1,
-                maxLength: 50, //1000 caracteres máximo
-                maxLengthEnforced: true,
-                initialValue: widget.prod.getName(),
-                onSaved: (String value) {
-                  setState(() {
-                    widget.tittleInserted(value);
-                  });
-                },
-                decoration: InputDecoration(
-                    hintText: Translations.of(context).text("title_hint")),
-                validator: (title) {
-                  if (title.length > 0) {
-                    titleIni = true;
-                  }
-                  if ((widget.autoV.autovalidate || titleIni) && title.length < 2) {
-                    //El nombre de articulo debe tener al menos 2 caracteres
-                    return Translations.of(context).text("title_too_short");
-                  }
-                },
-              ),
-              Row(children: <Widget>[
-                //Fila para precio
-              Text(Translations.of(context).text("price")+ ": ", style: TextStyle(color: Colors.grey[600])),
-              Container(
-                //El tamaño del textFormField variará dependiendo del cardinal de digitos insertados
-                padding: EdgeInsets.only(left: 10),
-                width: (precioValidet) ? (controllerPrice.text.length) * 10.0 : Translations.of(context).text("description_hint").length*8.0,
-                //SI se desea hacer que ocupe el máximo de la pantalla, cambiar linea anterior por la siguiente
-                //width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
-                child:
-              TextFormField(
-                //Precio
-                    maxLines: 1,
-                    validator: (value){
-                      if(controllerPrice.numberValue > 0.0){
-                        //Si precio superior a 0€, no hacer nada
-                          //Afecta al tamaño del precio
-                          precioValidet = true;
-                          priceIni = true;
-                        
-                      }
-                      if(widget.autoV.autovalidate && !(controllerPrice.numberValue > 0.0) ){
-                        
-                          //Afecta al tamaño del precio
-                        precioValidet = false;
-                        
-                        return Translations.of(context)
-                        .text("inserte_precio");
-                      }
-                    },
-                    controller: controllerPrice,
-                    keyboardType: TextInputType.number,
-										onSaved: (value) {
-											setState(() {
-												widget.priceInserted(controllerPrice.numberValue);
-										});},
-                  ),),],),
-              TextFormField(
-                //Input Descripcion
-                keyboardType: TextInputType.text,
-                maxLines: 4,
-                maxLength: 1000, //1000 caracteres máximo
-                maxLengthEnforced: true,
-                onSaved: (String value) {
-                  widget.descriptionInserted(value);
-                },
-                initialValue: widget.prod.getDescription(),
-                decoration: InputDecoration(
-                    hintText:
-                        Translations.of(context).text("description_hint")),
-                validator: (description) {
-                  if (description.length > 0) {
-                    descIni = true;
-                  }
-                  if ( (widget.autoV.autovalidate || descIni )&& description.length < 2) {
-                    //El comentario debe tener al menos 30 caracteres
-                    return Translations.of(context)
-                        .text("description_too_short");
-                  }
-                },
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(Translations.of(context).text("state")),
-                  Row(children: [
-                    Text(Translations.of(context).text("New"),
-                        style: TextStyle(fontSize: 10)),
-                    Radio(
-                      value: _value1,
-                      onChanged: (_value1) => changeState(_value1),
-                      activeColor: Colors.pink,
-                      groupValue: widget.prod.getState(),
-                    ),
-                    Text(Translations.of(context).text("Almost-New"),
-                        style: TextStyle(fontSize: 10)),
-                    Radio(
-                      value: _value2,
-                      onChanged: (_value2) => changeState(_value2),
-                      activeColor: Colors.pink,
-                      groupValue: widget.prod.getState(),
-                    ),
-                    Text(Translations.of(context).text("Old"),
-                        style: TextStyle(fontSize: 10)),
-                    Radio(
-                      value: _value3,
-                      onChanged: (_value3) => changeState(_value3),
-                      activeColor: Colors.pink,
-                      groupValue: widget.prod.getState(),
-                    ),
-                  ]),
-                ],
-              ),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: <Widget>[
-                    Divider(),
-                    Text(Translations.of(context).text("tipo_envio")),
-                    Row(children: [
-                      Text(Translations.of(context).text("con_envio"),
-                          style: TextStyle(fontSize: 10)),
-                      Radio(
-                        value: _conEnvio,
-                        onChanged: (_conEnvio) => changeSend(_conEnvio),
-                        activeColor: Colors.pink,
-                        groupValue: widget.prod.getStringShippinIncluded(),
-                      ),
-                      Text(
-                          Translations.of(context).text("sin_envio"),
-                          style: TextStyle(fontSize: 10)),
-                      Radio(
-                          value: _sinEnvio,
-                          onChanged: (_sinEnvio) => changeSend(_sinEnvio),
-                          activeColor: Colors.pink,
-                          groupValue: widget.prod.getStringShippinIncluded()),
-                    ]),
-                  ]),
-									Divider(),
-             
-            ])),
-      ],
-    );
-  }
+                    //Fila para precio
+                    Text(Translations.of(context).text("price") + ": ",
+                        style: TextStyle(color: Colors.grey[600])),
+                    Container(
+                      //El tamaño del textFormField variará dependiendo del cardinal de digitos insertados
+                      padding: EdgeInsets.only(left: 10),
+                      width: (precioValidet)
+                          ? (controllerPrice.text.length) * 10.0
+                          : Translations.of(context)
+                                  .text("description_hint")
+                                  .length *
+                              8.0,
+                      //SI se desea hacer que ocupe el máximo de la pantalla, cambiar linea anterior por la siguiente
+                      //width: MediaQuery.of(context).size.width - (2+(Translations.of(context).text("price").length)*15),
+                      child: TextFormField(
+                        //Precio
+                        maxLines: 1,
+                        validator: (value) {
+                          if (controllerPrice.numberValue > 0.0) {
+                            //Si precio superior a 0€, no hacer nada
+                            //Afecta al tamaño del precio
+                            precioValidet = true;
+                            priceIni = true;
+                          }
+                          if (widget.autoV.autovalidate &&
+                              !(controllerPrice.numberValue > 0.0)) {
+                            //Afecta al tamaño del precio
+                            precioValidet = false;
 
- 
+                            return Translations.of(context)
+                                .text("inserte_precio");
+                          }
+                        },
+                        controller: controllerPrice,
+                        keyboardType: TextInputType.number,
+                        onSaved: (value) {
+                          setState(() {
+                            widget.priceInserted(controllerPrice.numberValue);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                TextFormField(
+                  //Input Descripcion
+                  keyboardType: TextInputType.text,
+                  maxLines: 4,
+                  maxLength: 1000, //1000 caracteres máximo
+                  maxLengthEnforced: true,
+                  onSaved: (String value) {
+                    widget.descriptionInserted(value);
+                  },
+                  initialValue: widget.prod.getDescription(),
+                  decoration: InputDecoration(
+                      hintText:
+                          Translations.of(context).text("description_hint")),
+                  validator: (description) {
+                    if (description.length > 0) {
+                      descIni = true;
+                    }
+                    if ((widget.autoV.autovalidate || descIni) &&
+                        description.length < 2) {
+                      //El comentario debe tener al menos 30 caracteres
+                      return Translations.of(context)
+                          .text("description_too_short");
+                    }
+                  },
+                ),
+                Container(height: 50.0),
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(Translations.of(context).text("state"),
+                            style: TextStyle(fontSize: 20)),
+                            Row(
+                              children: <Widget>[
+                                Text(Translations.of(context).text("New"),
+                                    style: TextStyle(fontSize: 10)),
+                                Container(child: Icon(Icons.fiber_new), margin: EdgeInsets.only(left: 5.0),),
+                                Radio(
+                                  value: _value1,
+                                  onChanged: (_value1) => changeState(_value1),
+                                  activeColor: Colors.pink,
+                                  groupValue: widget.prod.getState(),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                    Translations.of(context).text("Almost-New"),
+                                    style: TextStyle(fontSize: 10)),
+                                Container(child: Icon(MdiIcons.walletTravel), margin: EdgeInsets.only(left: 5.0),),
+                                Radio(
+                                  value: _value2,
+                                  onChanged: (_value2) => changeState(_value2),
+                                  activeColor: Colors.pink,
+                                  groupValue: widget.prod.getState(),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                
+                                Text(Translations.of(context).text("Old"),
+                                    style: TextStyle(fontSize: 10)),
+                                Container(child: Icon(Icons.restore_page), margin: EdgeInsets.only(left: 5.0),),
+                                Radio(
+                                  value: _value3,
+                                  onChanged: (_value3) => changeState(_value3),
+                                  activeColor: Colors.pink,
+                                  groupValue: widget.prod.getState(),
+                                ),
+                              ],
+                            ),
+                          ]),
+                      Container(
+                        height: 130.0,
+                        width: 1.0,
+                        color: Colors.black12,
+                        //margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(Translations.of(context).text("state"),
+                            style: TextStyle(fontSize: 20)),
+                            Row(
+                              children: <Widget>[
+                                Text(Translations.of(context).text("con_envio"),
+                                    style: TextStyle(fontSize: 10)),
+                                Container(child: Icon(Icons.local_shipping), margin: EdgeInsets.only(left: 5.0),),
+                                Radio(
+                                  value: _conEnvio,
+                                  onChanged: (_conEnvio) =>
+                                      changeSend(_conEnvio),
+                                  activeColor: Colors.pink,
+                                  groupValue:
+                                      widget.prod.getStringShippinIncluded(),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(Translations.of(context).text("sin_envio"),
+                                    style: TextStyle(fontSize: 10)),
+                                Container(child: Icon(MdiIcons.accountRemove), margin: EdgeInsets.only(left: 5.0),),
+                                Radio(
+                                    value: _sinEnvio,
+                                    onChanged: (_sinEnvio) =>
+                                        changeSend(_sinEnvio),
+                                    activeColor: Colors.pink,
+                                    groupValue:
+                                        widget.prod.getStringShippinIncluded()),
+                              ],
+                            ),
+                          ]),
+                    ]),
+              ]))
+        ]);
+  }
 
   void changeState(String newState) {
     widget.stateProductInserted(newState);
@@ -312,7 +370,7 @@ class _UploadTitleState extends State<UploadTitle> {
   }
 }
 
-class AutoV{
+class AutoV {
   bool autovalidate = false;
 
   AutoV(this.autovalidate);

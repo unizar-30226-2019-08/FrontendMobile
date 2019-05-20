@@ -4,7 +4,6 @@
  * CREACIÓN:    19/04/2019
  */
 
-
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:bookalo/objects/product.dart';
@@ -132,5 +131,3 @@ class _DetailedProductState extends State<DetailedProduct> {
     );
   }
 }
-
-

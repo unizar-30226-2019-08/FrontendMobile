@@ -16,11 +16,11 @@ import 'package:bookalo/utils/http_utils.dart';
  *                TagSelector
  */
 class TagsUploadProduct extends StatefulWidget {
-	final Function(String) onInsertTag;
+  final Function(String) onInsertTag;
   final Function(String) onDeleteTag;
-	final List<String> initialTags;
+  final List<String> initialTags;
 
-	/*
+  /*
 	 * Pre:   initialTags es una lista de cero o más tags y onTagsChanged es una
 	 *        función void
 	 * Post:  ha generado el widget de tal forma que al modificarse la lista de tags
@@ -28,40 +28,46 @@ class TagsUploadProduct extends StatefulWidget {
 	 *        lista vacía, ha cargado tags iniciales de forma asíncrona de acuerdo a
 	 *        la función _getTags(). En caso contrario, ha cargado los tags suministrados
 	 */
-	TagsUploadProduct({Key key, this.initialTags, this.onInsertTag,this.onDeleteTag}) : super(key: key);
+  TagsUploadProduct(
+      {Key key, this.initialTags, this.onInsertTag, this.onDeleteTag})
+      : super(key: key);
 
-	_TagsUploadProductState createState() => _TagsUploadProductState();
+  _TagsUploadProductState createState() => _TagsUploadProductState();
 }
 
 class _TagsUploadProductState extends State<TagsUploadProduct> {
-    List<Tag> tagsParser = [];
-    @override
-    void initState(){
-      super.initState();
-      widget.initialTags.forEach((tag) => tagsParser.add(Tag(title: tag)));
-    }
+  List<Tag> tagsParser = [];
+  @override
+  void initState() {
+    super.initState();
+    widget.initialTags.forEach((tag) => tagsParser.add(Tag(title: tag)));
+  }
 
-	@override
-	Widget build(BuildContext context) {
-		double height = MediaQuery.of(context).size.height;
-		return FutureBuilder(
-			future: parseTags(tagsParser),
-			builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
-				if (snapshot.hasData) {
-					return TagsSelectorUplod(
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    return FutureBuilder(
+      future: parseTags(tagsParser),
+      builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
+        if (snapshot.hasData) {
+          return TagsSelectorUplod(
             selectedTags: widget.initialTags,
-						onInsertTag: (tag) {widget.onInsertTag(tag);},
-						suggestedTags: snapshot.data,
-						previousTagsLength: widget.initialTags.length,
-            onDeleteTag: (tag){widget.onDeleteTag(tag);},
-					);
-				} else {
-					return Container(
-						height: height / 4,
-						child: Center(child: BookaloProgressIndicator()),
-					);
-				}
-			},
-		);
-	}
+            onInsertTag: (tag) {
+              widget.onInsertTag(tag);
+            },
+            suggestedTags: snapshot.data,
+            previousTagsLength: widget.initialTags.length,
+            onDeleteTag: (tag) {
+              widget.onDeleteTag(tag);
+            },
+          );
+        } else {
+          return Container(
+            height: height / 4,
+            child: Center(child: BookaloProgressIndicator()),
+          );
+        }
+      },
+    );
+  }
 }

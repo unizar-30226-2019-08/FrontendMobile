@@ -18,10 +18,10 @@ import 'dart:convert';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/objects/product.dart';
 
-
 final Map<String, String> headers = {'appmovil': 'true'};
 
-Future<Tuple2<List<ProductView>, bool>> parseProducts(FilterQuery query, int currentSize) async {
+Future<Tuple2<List<ProductView>, bool>> parseProducts(
+    FilterQuery query, int currentSize) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
   Map<String, String> body = {
@@ -61,20 +61,21 @@ Future<List<Tag>> parseTags(List<Tag> initialTags) async {
   return tagList;
 }
 
-Future<bool> editProduct(Product product, List<File> images) async{
-var uri = Uri.parse('https://bookalo.es/api/edit_product');
+Future<bool> editProduct(Product product, List<File> images) async {
+  var uri = Uri.parse('https://bookalo.es/api/edit_product');
   var request = http.MultipartRequest("POST", uri);
   List<http.MultipartFile> im = [];
   var length = 0;
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   request.fields['token'] = await user.getIdToken();
   //print("token = " + request.fields['token']);
-  for(int i = 0; i < images.length; i++){
-    var stream = new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
+  for (int i = 0; i < images.length; i++) {
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
     print("stream imagen " + stream.toString());
     length = await images[i].length();
-    im.add(http.MultipartFile('files', stream, length, filename: 'imagen' + i.toString()));
-    
+    im.add(http.MultipartFile('files', stream, length,
+        filename: 'imagen' + i.toString()));
   }
   request.files.addAll(im);
   print("num Imagenes entrantes " + images.length.toString());
@@ -93,8 +94,7 @@ var uri = Uri.parse('https://bookalo.es/api/edit_product');
   request.headers.addAll(headers);
   print("Enviando");
   var response = await request.send();
- 
-  
+
   return response.statusCode == 201;
 }
 
@@ -106,15 +106,16 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   request.fields['token'] = await user.getIdToken();
   //print("token = " + request.fields['token']);
-  for(int i = 0; i < images.length; i++){
-    var stream = new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
+  for (int i = 0; i < images.length; i++) {
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
     print("stream imagen " + stream.toString());
     length = await images[i].length();
-    im.add(http.MultipartFile('files', stream, length, filename: 'imagen' + i.toString()));
-    
+    im.add(http.MultipartFile('files', stream, length,
+        filename: 'imagen' + i.toString()));
   }
   request.files.addAll(im);
- // print("request Files " + request.fields.toString());
+  // print("request Files " + request.fields.toString());
   print("num Imagenes entrantes " + images.length.toString());
   print("numImagenes anyadidas " + request.files.length.toString());
   request.fields['latitud'] = product.getPosition().latitude.toString();
@@ -130,7 +131,6 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
   request.headers.addAll(headers);
   print("Enviando");
   var response = await request.send();
- 
-  
+
   return response.statusCode == 201;
 }

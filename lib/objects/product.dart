@@ -42,18 +42,18 @@ class Product {
   String isbn;
   List<String> tags;
 
-  Product.empty(){
+  Product.empty() {
     this.id = 0;
     this.name = "";
     this.price = 0;
-    this.isSold= false;
-    this.images= [];
-    this.description= '';
-    this.includesShipping= false;
-    this.state= 'Usado';
-    this.favorites= 0;
-    this.lat= 0;
-    this.lng= 0;
+    this.isSold = false;
+    this.images = [];
+    this.description = '';
+    this.includesShipping = false;
+    this.state = 'Usado';
+    this.favorites = 0;
+    this.lat = 0;
+    this.lng = 0;
     this.tags = [];
     this.isbn = '';
   }
@@ -71,9 +71,9 @@ class Product {
       this.favorites,
       this.lat,
       this.lng,
-      this.tags){
-        this.isbn = '';
-      }
+      this.tags) {
+    this.isbn = '';
+  }
 
   String getName() {
     return this.name;
@@ -123,64 +123,67 @@ class Product {
     return this.tags;
   }
 
-
   int getId() {
     return this.id;
   }
 
-  void setName(String _name){
+  void setName(String _name) {
     this.name = _name;
     print("nombre de prd " + this.name);
   }
 
- void setDesciption(String _desc){
+  void setDesciption(String _desc) {
     this.description = _desc;
   }
 
-  void setIsbn(String _isbn){
+  void setIsbn(String _isbn) {
     print("ISBN asignado " + isbn);
     this.isbn = _isbn;
   }
 
-  void setState(String _state){
+  void setState(String _state) {
     this.state = _state;
     print("estado del producto " + this.state);
   }
-  String getISBN(){
+
+  String getISBN() {
     return this.isbn;
   }
 
-  void insertTag(t){
+  void insertTag(t) {
     print("Insertando tag nuevo " + t);
     this.tags.add(t);
     print("Tamanyo actual " + this.tags.length.toString());
   }
 
-  void setPrice(double p){
+  void setPrice(double p) {
     this.price = p;
   }
-  void deleteTag(t){
+
+  void deleteTag(t) {
     this.tags.remove(t);
   }
 
-  String getTagsToString(){
-    if(this.tags.length == 0){
+  String getTagsToString() {
+    if (this.tags.length == 0) {
       return '';
     }
     String s = tags.first;
-    for(int i = 1; i< tags.length; i++){
+    for (int i = 1; i < tags.length; i++) {
       s = s + ',' + this.tags[i];
     }
     return s;
   }
+
   void setShippingIncluded(bool sendInclude) {
     this.includesShipping = sendInclude;
   }
-  String getStringShippinIncluded(){
+
+  String getStringShippinIncluded() {
     return (this.includesShipping) ? "Con envio" : "Sin envio";
   }
+
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
-

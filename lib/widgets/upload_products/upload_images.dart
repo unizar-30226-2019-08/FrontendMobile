@@ -33,37 +33,39 @@ class _UploadImagesState extends State<UploadImages> {
   Widget build(BuildContext context) {
     List<Widget> imageCard = [];
     return Container(
-      child: (widget.imagesList != null && widget.imagesList.length < 1 && widget.imagesNW.length > 0)? 
-          FutureBuilder<List<File>>(
-          future: _getImagesProduct(widget.imagesNW),
-          builder: (BuildContext context, AsyncSnapshot<List<File>> snapshot) {
-            if (snapshot.hasData) {
-              widget.imagesList.addAll(snapshot.data);
-              return ListImageCard(
+        child: (widget.imagesList != null &&
+                widget.imagesList.length < 1 &&
+                widget.imagesNW.length > 0)
+            ? FutureBuilder<List<File>>(
+                future: _getImagesProduct(widget.imagesNW),
+                builder:
+                    (BuildContext context, AsyncSnapshot<List<File>> snapshot) {
+                  if (snapshot.hasData) {
+                    widget.imagesList.addAll(snapshot.data);
+                    return ListImageCard(
+                      imageCards: imageCard,
+                      imagesList: widget.imagesList,
+                      validate: (val) {
+                        widget.validate(val);
+                      },
+                    );
+                  } else {
+                    return Center(child: BookaloProgressIndicator());
+                  }
+                })
+            : ListImageCard(
                 imageCards: imageCard,
                 imagesList: widget.imagesList,
                 validate: (val) {
                   widget.validate(val);
                 },
-              );
-            }else {
-            return Center(child: BookaloProgressIndicator());
-          }
-          })
-    : ListImageCard(
-                imageCards: imageCard,
-                imagesList: widget.imagesList,
-                validate: (val) {
-                  widget.validate(val);
-                },
-              )
-    );
+              ));
   }
 
   Future<List<File>> _getImagesProduct(List<String> urls) async {
     List<File> files = [];
     print("Cargando imagenes");
-    for(int i = 0; i < urls.length; i++){
+    for (int i = 0; i < urls.length; i++) {
       var cacheManager = await CacheManager.getInstance();
       File file = await cacheManager.getFile(urls[i]);
       files.add(file);

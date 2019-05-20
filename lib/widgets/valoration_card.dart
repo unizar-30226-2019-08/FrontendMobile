@@ -149,11 +149,14 @@ class _ValorationCardState extends State<ValorationCard> {
                               fontWeight: FontWeight.w700),
                         ),
                         onPressed: () {
-                           Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Report(currentUser:widget.currentUser,userToValorate: widget.userToValorate,)),
-                );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Report(
+                                      currentUser: widget.currentUser,
+                                      userToValorate: widget.userToValorate,
+                                    )),
+                          );
                         },
                       ),
                     ],
