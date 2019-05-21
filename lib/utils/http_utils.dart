@@ -19,6 +19,7 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/objects/chats_registry.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 final Map<String, String> headers = {'appmovil': 'true'};
 
@@ -194,7 +195,7 @@ Future<Chat> createChat(
     chat = Chat.fromJson(
         json.decode(utf8.decode(response.bodyBytes))['chat_cargado']);
     chat.setImBuyer(true);
-    ScopedModel.of<ChatsRegistry>(context).addChats('seller', [chat]);
+    ScopedModel.of<ChatsRegistry>(context).addChats('sellers', [chat]);
   }
   return chat;
 }
@@ -271,4 +272,13 @@ Future<bool> markAsSold(int chatUID) async {
   var response = await http.post('https://bookalo.es/api/marcar_vendido',
       headers: headers, body: body);
   return response.statusCode == 200;
+}
+
+Future<void> logout() async{
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  Map<String, String> body = {
+    'fcm_token': await _firebaseMessaging.getToken(),
+  };
+  await http.post('https://bookalo.es/logout',
+      headers: headers, body: body);
 }
