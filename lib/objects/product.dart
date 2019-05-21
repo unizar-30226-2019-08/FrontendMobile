@@ -31,7 +31,7 @@ class Product {
   @JsonKey(name: 'estado_venta')
   bool isForSale;
   @JsonKey(name: 'contenido_multimedia')
-  List<Map> images;
+  List<String> images;
   @JsonKey(name: 'descripcion')
   String description;
   @JsonKey(name: 'latitud')
@@ -39,7 +39,7 @@ class Product {
   @JsonKey(name: 'longitud')
   double lng;
   @JsonKey(name: 'tiene_tags')
-  List<Map> tags;
+  List<String> tags;
 
   Product(
       this.id,
@@ -68,11 +68,7 @@ class Product {
   }
 
   List<String> getImages() {
-    List<String> output = List();
-    this.images.forEach((x) {
-      output.add('https://bookalo.es' + x['contenido_url']);
-    });
-    return output;
+    return List.generate(this.images.length, (i) => "https://bookalo.es/" + this.images.elementAt(i));
   }
 
   String getDescription() {
@@ -104,18 +100,23 @@ class Product {
   }
 
   List<String> getTags() {
-    List<String> output = List();
-    this.tags.forEach((x) {
-      output.add(x['nombre']);
-    });
-    return output;
+    return this.tags;
   }
 
   int getId() {
     return this.id;
   }
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json){
+    json['tiene_tags'] =
+        (json['tiene_tags'] as List)
+            .map((m) => m.values.toString().substring(1, m.values.toString().length -1))
+            .toList();
+    json['contenido_multimedia'] =
+        (json['contenido_multimedia'] as List)
+            .map((m) => m.values.toString().substring(1, m.values.toString().length -1))
+            .toList();    
+      return _$ProductFromJson(json);
+    }
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 }

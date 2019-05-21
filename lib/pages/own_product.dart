@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/utils/silver_header.dart';
+import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/detailed_product/product_map.dart';
 import 'package:bookalo/widgets/detailed_product/product_info.dart';
 import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
@@ -52,15 +53,17 @@ class _DetailedProductState extends State<OwnProduct> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            width: width / 1.6,
-                            margin: EdgeInsets.only(left: 20),
-                            child: Text(
-                              widget.product.getName(),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 35.0, fontWeight: FontWeight.w300),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: Text(
+                                widget.product.getName(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
                           ),
                           Container(
@@ -140,7 +143,48 @@ class _DetailedProductState extends State<OwnProduct> {
                           ),
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(Translations.of(context)
+                                    .text("delete_sure")),
+                                content: Text(Translations.of(context).text(
+                                    "delete_explanation",
+                                    params: [widget.product.getName()])),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text(
+                                      Translations.of(context)
+                                          .text("ok_delete"),
+                                      style: TextStyle(
+                                          color: Colors.pink,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.0),
+                                    ),
+                                    onPressed: () async {
+                                      deleteProduct(widget.product.getId());
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    },
+                                  ),
+                                  FlatButton(
+                                    child: Text(
+                                      Translations.of(context).text("cancel"),
+                                      style: TextStyle(
+                                          color: Colors.pink,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.0),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                      },
                     ),
                   ],
                 ),

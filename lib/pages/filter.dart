@@ -33,7 +33,6 @@ class _FilterState extends State<Filter> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
           title: Text(Translations.of(context).text("filter_title"),
               style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300)),
           leading: Icon(Icons.sort),

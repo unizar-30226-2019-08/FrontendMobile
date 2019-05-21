@@ -4,6 +4,7 @@ import 'package:latlong/latlong.dart';
 import 'package:bookalo/translations.dart';
 
 class FilterQuery extends Model {
+  String _querySearch;
   List _queryResult = List();
   Set<String> _tags = Set();
   double _latitude;
@@ -19,6 +20,7 @@ class FilterQuery extends Model {
   bool _endReached;
 
   FilterQuery() {
+    _querySearch = "";
     _latitude = 0.0;
     _longitude = 0.0;
     _maxDistance = 15.0;
@@ -84,16 +86,21 @@ class FilterQuery extends Model {
   void updatePosition(double latitude, double longitude) {
     _latitude = latitude;
     _longitude = longitude;
-    //TODO: handleQueryChange();
   }
 
   void setEndReached(bool value) {
     _endReached = value;
   }
 
+  void setQuerySearch(String query){
+    _querySearch = query;
+    handleQueryChange();
+  }
+
   String get tags => isFiltering ? _tags.join(',') : "";
   List<String> get tagList => _tags.toList();
   LatLng get position => LatLng(_latitude, _longitude);
+  String get querySearch => _querySearch;
   bool get usesDistance => _usesDistance;
   bool get usesMinPrice => _usesMinPrice;
   bool get usesMaxPrice => _usesMaxPrice;

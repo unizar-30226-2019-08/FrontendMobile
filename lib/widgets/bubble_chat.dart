@@ -5,9 +5,10 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:bookalo/utils/dates_utils.dart';
+import 'package:bookalo/objects/message.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/utils/dates_utils.dart';
 
 /*
  *  CLASE:        Bubble
@@ -15,26 +16,19 @@ import 'package:bookalo/utils/dates_utils.dart';
  */
 
 class Bubble extends StatelessWidget {
-  Bubble({this.message, this.user, this.time, this.sent, this.isMe});
+  Bubble({this.message, this.user});
 
-  final String message; //mensaje del usuario
-  final DateTime time; //tiempo de ultimo mensaje
-  final User user; //nombre de usuario
-  final bool sent; //vale true si el mensaje se ha enviado
-  final bool isMe; //vale true si el mensajelo envío yo
+  final Message message;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    final bg = isMe
-        ? Colors.pink[900]
-        : Colors.pink[
-            500]; //el color del bubble cambia dependiendo de quién envía el mensaje
-    //o a otro de la pantalla depndeiendo de quién envía el mensaje
-    final icon = sent
-        ? Icons.done_all
-        : Icons.done; //si el mensaje se ha enviado saldrán dos tics y si no uno
-    final radius = isMe
+    final bg = message.itsMe ? Colors.pink[700] : Colors.pink[500];
+    final icon = Icons.done;
+    // ? Icons.done_all
+    // : Icons.done;
+    final radius = message.itsMe
         ? BorderRadius.only(
             //si el mensaje es mio, se redondean todas las esquinas del bubble excepto la superior izq
             topLeft: Radius.circular(15.0),
@@ -51,10 +45,11 @@ class Bubble extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
           top: 10.0,
-          left: (isMe //si el mensaje es mío se situará a la dcha
+          left: (message.itsMe //si el mensaje es mío se situará a la dcha
               ? 2 * width / 15
               : 0.5 * width / 15),
-          right: (isMe //si el mensaje es del otro usuario estará a la izda
+          right: (message
+                  .itsMe //si el mensaje es del otro usuario estará a la izda
               ? 0.5 * width / 15
               : 2 * width / 15)),
       padding: const EdgeInsets.all(8.0),
@@ -75,7 +70,7 @@ class Bubble extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                  isMe //si el mensaje es mío, muestra "Tu"
+                  message.itsMe
                       ? Translations.of(context).text("you")
                       : user
                           .getName(), //si no, muestra e nombre del otro usuario
@@ -85,7 +80,7 @@ class Bubble extends StatelessWidget {
                       fontSize: 15.0,
                       fontWeight: FontWeight.w700)),
               Text(
-                message + '\n',
+                message.body + '\n',
                 style: TextStyle(color: Colors.white, fontSize: 15.0),
               )
             ],
@@ -96,18 +91,20 @@ class Bubble extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 //fecha de envío del mensaje
-                Text(dateToFullString(time, context),
+                Text(dateToFullString(message.getTimestamp, context),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 10.0,
                     )),
                 SizedBox(width: 3.0),
                 //icono que indica si el mensje se ha enviado o no
-                Icon(
+                (message.itsMe
+                ? Icon(
                   icon,
                   size: 12.0,
                   color: Colors.white,
                 )
+                : Container())
               ],
             ),
           )
