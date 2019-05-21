@@ -55,15 +55,21 @@ class ChatsRegistry extends Model {
 
   void addChats(String kind, List<Chat> newChats) {
     newChats.forEach((newChat) {
-      if (_chatMap[kind]
-              .where((oldChat) => oldChat.getUID == newChat.getUID)
-              .length ==
-          0) {
+      var oldChat = _chatMap[kind].where((oldChat) => oldChat.getUID == newChat.getUID);
+      if (oldChat.length == 0) {
         _chatMap[kind].insert(0, newChat);
         _messagesMap[newChat.getUID] = [];
         _messagesEndReached[newChat.getUID] = false;
+      } else {
+        
+        int index = _chatMap[kind].indexOf(oldChat.first);
+        Chat updatingChat = oldChat.first;
+        updatingChat.setLastMessage(newChat.getLastMessage);
+        updatingChat.setPendingMessages(newChat.pendingMessages);
+        _chatMap[kind].replaceRange(index, index+1, [updatingChat]);
       }
     });
+    _chatMap[kind].sort((c1, c2) => c2.getLastMessage.getTimestamp.compareTo(c1.getLastMessage.getTimestamp));
     notifyListeners();
   }
 
@@ -71,11 +77,14 @@ class ChatsRegistry extends Model {
     return _messagesMap[chatUID];
   }
 
-  void addMessage(String kind, Chat chat, List<Message> messages) {
+  void addMessage(String kind, Chat chat, Message message) {
     addChats(kind, [chat]);
-    messages.forEach((message) {
-      _messagesMap[chat.getUID].insert(0, message);
-    });
+    _messagesMap[chat.getUID].insert(0, message);
+    notifyListeners();
+  }
+
+  void appendMessage(String kind, Chat chat, List<Message> messages){
+    _messagesMap[chat.getUID].addAll(messages);
     notifyListeners();
   }
 }

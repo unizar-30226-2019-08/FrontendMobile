@@ -34,17 +34,11 @@ class _SimpleNavbarState extends State<SimpleNavbar> {
     double topMargin = height / 60;
     return AppBar(
       automaticallyImplyLeading: false,
+      
       title: Container(
         margin: EdgeInsets.only(top: topMargin),
         child: Image.asset('assets/images/bookalo_logo.png', width: width / 2),
       ),
-      actions: <Widget>[
-        Container(
-          margin: EdgeInsets.only(top: topMargin, right: width / 30),
-          child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/user_picture.jpg')),
-        )
-      ],
     );
   }
 }

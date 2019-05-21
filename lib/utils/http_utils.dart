@@ -12,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/product_view.dart';
-import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/review_card.dart';
 import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/objects/product.dart';
@@ -43,10 +42,6 @@ Future<List<Widget>> parseProducts(
         ? ''
         : query.position.longitude.toString(),
   };
-  // DEBUG
-  // body.forEach((k, v) {
-  //   print('[' + k + ']: ' + v);
-  // });
   var response = await http.post('https://bookalo.es/api/filter_product',
       headers: headers, body: body);
   List<Widget> output = List();
@@ -75,8 +70,7 @@ Future<List<Tag>> parseTags(List<Tag> initialTags) async {
   return tagList;
 }
 
-Future<List<Product>> parseOwnProducts(
-    int currentIndex, int pageSize) async {
+Future<List<Product>> parseOwnProducts(int currentIndex, int pageSize) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'uid': user.uid,
@@ -87,7 +81,7 @@ Future<List<Product>> parseOwnProducts(
       headers: headers, body: body);
   List<Product> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
-      .forEach((x) {
+      .forEach((x) {     
     output.add(Product.fromJson(x['info_producto']));
   });
   return output;
@@ -104,7 +98,7 @@ Future<List<ProductView>> parseUserProducts(
       headers: headers, body: body);
   List<ProductView> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
-      .forEach((x) {
+      .forEach((x) {     
     Product product = Product.fromJson(x['info_producto']);
     output.add(ProductView(product, productOwner, false, x['le_gusta']));
   });
@@ -123,7 +117,7 @@ Future<List<ProductView>> parseUserFavorites(
       headers: headers, body: body);
   List<ProductView> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos_favoritos'] as List)
-      .forEach((x) {
+      .forEach((x) {      
     Product product = Product.fromJson(x['info_producto']);
     User owner = User.fromJson(x['vendido_por']);
     output.add(ProductView(product, owner, false, true));
@@ -264,6 +258,17 @@ Future<bool> deleteProduct(int productUID) async {
     'idProducto': productUID.toString(),
   };
   var response = await http.post('https://bookalo.es/api/delete_product',
+      headers: headers, body: body);
+  return response.statusCode == 200;
+}
+
+Future<bool> markAsSold(int chatUID) async {
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'id_chat': chatUID.toString(),
+  };
+  var response = await http.post('https://bookalo.es/api/marcar_vendido',
       headers: headers, body: body);
   return response.statusCode == 200;
 }

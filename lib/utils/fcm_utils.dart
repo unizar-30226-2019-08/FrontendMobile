@@ -15,12 +15,13 @@ void handleChatMessage(Map<String, dynamic> message, BuildContext context) {
   try {
     Chat chat = Chat.fromJson(jsonDecode(message['data']['chat']));
     chat.setImBuyer(message['data']['soy_vendedor'] == 'true');
+    
     Message newMessage =
         Message.fromJson(jsonDecode(message['data']['mensaje']));
     registry.addMessage(
         message['data']['soy_vendedor'] == 'true' ? 'sellers' : 'buyers',
         chat,
-        [newMessage]);
+        newMessage);
   } catch (e) {
     print(e);
   }

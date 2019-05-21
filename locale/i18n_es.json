@@ -94,7 +94,9 @@
     "no_sellers_yet" : "Aún no has hablado con ningún vendedor",
     "no_buyers_yet" : "Aún no has hablado con ningún comprador",
     "delete_sure" : "¿Estás seguro?",
-    "cancel_delete" : "CANCELAR",
+    "cancel" : "CANCELAR",
     "ok_delete" : "DE ACUERDO, BÓRRALO",
+    "ok_sold" : "DE ACUERDO, VENDER",
+    "sell_explanation" : "Si marcas {{param1}} como vendido, te estás comprometiendo a quedar con {{param2}} y venderlo por el precio acordado",
     "delete_explanation" : "Este proceso es irreversible, si borras {{param1}}, desaparecerá para siempre"
 }

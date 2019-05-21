@@ -15,7 +15,6 @@ import 'package:bookalo/widgets/social_buttons.dart';
 import 'package:bookalo/widgets/filter_options_selector.dart';
 import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/empty_list.dart';
-import 'package:bookalo/translations.dart';
 
 /*
  *  CLASE:        Buy

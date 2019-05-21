@@ -27,7 +27,6 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  bool closed = false;
   bool _endReached = false;
   bool _isLoading = false;
 
@@ -39,7 +38,7 @@ class _ChatPageState extends State<ChatPage> {
         _isLoading = true;
         parseMessages(widget.chat.getUID, pageSize, 10).then((newMessages) {
           _isLoading = false;
-          registry.addMessage(widget.chat.imBuyer ? 'sellers' : 'buyers',
+          registry.appendMessage(widget.chat.imBuyer ? 'sellers' : 'buyers',
               widget.chat, newMessages);
           if (newMessages.length == 0) {
             _endReached = true;
@@ -51,15 +50,58 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void setClosed(BuildContext context) => setState(() => closed = true);
+  void setClosed(BuildContext context){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(Translations.of(context)
+                .text("delete_sure")),
+            content: Text(Translations.of(context).text(
+                "sell_explanation",
+                params: [widget.chat.getProduct.getName(), widget.chat.getOtherUser.getName()])),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  Translations.of(context)
+                      .text("ok_sold"),
+                  style: TextStyle(
+                      color: Colors.pink,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15.0),
+                ),
+                onPressed: () async {
+                  markAsSold(widget.chat.getUID);
+                  Navigator.pop(context);
+                },
+              ),
+              FlatButton(
+                child: Text(
+                  Translations.of(context)
+                      .text("cancel"),
+                  style: TextStyle(
+                      color: Colors.pink,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15.0),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });    
+  }
 
   void _handleSumbit(String text) {
-    _textController.clear();
-    sendMessage(widget.chat.getUID, text);
-    ScopedModel.of<ChatsRegistry>(context).addMessage(
-        widget.chat.imBuyer ? 'sellers' : 'buyers',
-        widget.chat,
-        [Message(text, DateTime.now(), true)]);
+    if(text.length > 0){
+      _textController.clear();
+      sendMessage(widget.chat.getUID, text);
+      ScopedModel.of<ChatsRegistry>(context).addMessage(
+          widget.chat.imBuyer ? 'sellers' : 'buyers',
+          widget.chat,
+          Message(text, DateTime.now(), true, false, null));
+    }
   }
 
   @override
@@ -84,7 +126,7 @@ class _ChatPageState extends State<ChatPage> {
         product: widget.chat.product,
       ),
       body: Column(children: <Widget>[
-        (!widget.chat.checkImBuyer
+        (!widget.chat.checkImBuyer && widget.chat.getProduct.checkfForSale()
         ? RaisedButton(
           color: Colors.pink,
           shape: RoundedRectangleBorder(

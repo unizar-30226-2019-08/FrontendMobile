@@ -53,15 +53,17 @@ class _DetailedProductState extends State<OwnProduct> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            width: width / 1.6,
-                            margin: EdgeInsets.only(left: 20),
-                            child: Text(
-                              widget.product.getName(),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 35.0, fontWeight: FontWeight.w300),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: Text(
+                                widget.product.getName(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
                           ),
                           Container(
@@ -169,8 +171,7 @@ class _DetailedProductState extends State<OwnProduct> {
                                   ),
                                   FlatButton(
                                     child: Text(
-                                      Translations.of(context)
-                                          .text("cancel_delete"),
+                                      Translations.of(context).text("cancel"),
                                       style: TextStyle(
                                           color: Colors.pink,
                                           fontWeight: FontWeight.w700,

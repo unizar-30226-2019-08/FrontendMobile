@@ -31,6 +31,7 @@ class ChatsList extends StatefulWidget {
 class _ChatsListState extends State<ChatsList> {
   bool _isLoading = false;
   bool _endReached = false;
+  bool _noFirstFetch = true;
 
   void fetchChats(ChatsRegistry registry, int pageSize) async {
     if (!_endReached) {
@@ -42,6 +43,7 @@ class _ChatsListState extends State<ChatsList> {
             _endReached = true;
           }
           registry.addChats(widget.imBuyer ? 'sellers' : 'buyers', newChats);
+          setState(() => _noFirstFetch = false);
         }).catchError((e) {
           print(e);
         });
@@ -89,10 +91,14 @@ class _ChatsListState extends State<ChatsList> {
           },
         );
       } else {
+        if(_noFirstFetch){
+          return BookaloProgressIndicator();
+        }else{
         return EmptyList(
           iconData: Icons.chat_bubble_outline,
           textKey: widget.imBuyer ? 'no_sellers_yet' : 'no_buyers_yet',
-        );
+        );          
+        }
       }
     });
   }

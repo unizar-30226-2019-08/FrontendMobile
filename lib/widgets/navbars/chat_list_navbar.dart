@@ -37,30 +37,12 @@ class ChatListNavbar extends StatefulWidget implements PreferredSizeWidget {
 class _ChatListNavbarState extends State<ChatListNavbar> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    double topMargin = height / 40;
     return PreferredSize(
-      preferredSize: Size.fromHeight(height / 5),
+      preferredSize: Size.fromHeight(height / 7),
       child: AppBar(
           automaticallyImplyLeading: false,
-          actions: <Widget>[
-            GestureDetector(
-                child: Container(
-                    margin: EdgeInsets.only(top: topMargin, right: width / 30),
-                    child: Hero(
-                      tag: "profileImage",
-                      child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/user_picture.jpg')),
-                    )),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserProfile()),
-                  );
-                })
-          ],
+          //leading: Icon(Icons.chat_bubble_outline, size: 35.0),
           bottom: TabBar(
             labelStyle: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
             tabs: [
@@ -69,10 +51,13 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
             ],
           ),
           title: Container(
-            margin: EdgeInsets.only(top: topMargin),
-            child:
-                Image.asset('assets/images/bookalo_logo.png', width: width / 2),
-          )),
+            margin: EdgeInsets.only(top: 5.0, left: 10.0),
+            child: Text(
+              'Chats',
+              style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.w300),
+            ),
+          )
+        ),
     );
   }
 }

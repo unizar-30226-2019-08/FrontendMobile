@@ -9,7 +9,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/objects/chat.dart';
-import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chat_page.dart';
 
@@ -27,11 +26,8 @@ class MiniatureChat extends StatelessWidget {
    * Post: construye el título de la miniatura con el último mensaje y su autor
    */
   Widget buildSubtitle(BuildContext context) {
-    var messagesList =
-        ScopedModel.of<ChatsRegistry>(context).getMessages(chat.uid);
-    if (messagesList != null && messagesList.length > 0) {
-      String message = "   ";
-      message = messagesList.first.body;
+    if (chat.lastMessage != null) {
+      String message = chat.lastMessage.body;
       if (message.length > 30) {
         message = message.substring(0, 30) + '...';
       }
@@ -40,10 +36,14 @@ class MiniatureChat extends StatelessWidget {
         children: <Widget>[
           Text(
             message,
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: chat.numberOfPending > 0
+                    ? FontWeight.bold
+                    : FontWeight.w400),
           ),
           Text(
-            dateToFullString(messagesList.first.getTimestamp, context),
+            dateToFullString(chat.lastMessage.getTimestamp, context),
             style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
           )
         ],
@@ -81,23 +81,7 @@ class MiniatureChat extends StatelessWidget {
                               color: Colors.white),
                         )),
                   ),
-                )),          
-          (chat.numberOfPending > 0
-          ?           Container(
-            margin: EdgeInsets.only(top: 15.0),
-            child: ClipOval(
-                child: Container(
-              color: Colors.pink,
-              height: 30.0, // height of the button
-              width: 30.0, // width of the button
-              child: Center(
-                child: Text('+9',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500)),
-              ),
-            )),
-          )
-          : Container())
+                )),
         ]);
   }
 
@@ -110,8 +94,34 @@ class MiniatureChat extends StatelessWidget {
       subtitle: buildSubtitle(context),
       isThreeLine: true,
       enabled: true,
-      trailing: CircleAvatar(
-          backgroundImage: NetworkImage(chat.getProduct.getImages()[0])),
+      trailing: chat.numberOfPending > 0
+          ? Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(chat.getProduct.getImages()[0])),
+                ClipOval(
+                  child: Container(
+                    color: Colors.pink.withOpacity(0.7),
+                    height: 30.0, // height of the button
+                    width: 30.0, // width of the button
+                    child: Center(
+                      child: Text(
+                          chat.numberOfPending > 9
+                              ? '+9'
+                              : chat.numberOfPending.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                  ),
+                )
+              ],
+            )
+          : CircleAvatar(
+              backgroundImage: NetworkImage(chat.getProduct.getImages()[0]),
+            ),
       onTap: () {
         Navigator.push(
             context,

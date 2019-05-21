@@ -5,6 +5,7 @@
  */
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:bookalo/objects/review.dart';
 
 part 'message.g.dart';
 
@@ -21,8 +22,12 @@ class Message {
   DateTime timestamp;
   @JsonKey(name: 'es_suyo')
   bool itsMe;
+  @JsonKey(name: 'es_valoracion')
+  bool itsReview;
+  @JsonKey(name: 'valoracion', nullable: true)
+  Review review;
 
-  Message(this.body, this.timestamp, this.itsMe);
+  Message(this.body, this.timestamp, this.itsMe, this.itsReview, this.review);
 
   DateTime get getTimestamp => timestamp.toLocal();
 

@@ -78,15 +78,17 @@ class _DetailedProductState extends State<DetailedProduct> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            width: width / 1.6,
-                            margin: EdgeInsets.only(left: 20),
-                            child: Text(
-                              widget.product.getName(),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 35.0, fontWeight: FontWeight.w300),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: Text(
+                                widget.product.getName(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
                           ),
                           Container(
