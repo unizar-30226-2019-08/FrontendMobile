@@ -87,4 +87,17 @@ class ChatsRegistry extends Model {
     _messagesMap[chat.getUID].addAll(messages);
     notifyListeners();
   }
+
+  bool areTherePending(){
+    _chatMap.values.forEach((list){
+      list.forEach((chat){
+        if(chat.numberOfPending > 0){
+          print('HAY PENDIETES');
+          return true;
+        }
+      });
+    });
+    print('NO HAY PENDIETES');
+    return false;
+  }
 }

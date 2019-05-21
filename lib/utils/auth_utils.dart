@@ -11,6 +11,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:bookalo/utils/http_utils.dart';
+
 
 enum LoginResult {
   first_time,
@@ -28,8 +31,7 @@ enum LoginResult {
  */
 Future<LoginResult> completeLogin() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  Position position = await Geolocator()
-      .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  Position position = await Geolocator().getLastKnownPosition(desiredAccuracy: LocationAccuracy.medium);
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   _firebaseMessaging.requestNotificationPermissions();
   var response = await http.post('https://bookalo.es/api/login', headers: {
@@ -121,9 +123,13 @@ Future<void> signInFirebase(String provider) async {
  */
 Future<void> signOut() async {
   String provider = "";
+  await logout();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  await _firebaseMessaging.deleteInstanceID();
   await FirebaseAuth.instance.currentUser().then((user) {
     provider = user.providerData[1].providerId;
   });
+
   try {
     switch (provider) {
       case "google.com":
