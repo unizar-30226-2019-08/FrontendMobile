@@ -14,7 +14,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:bookalo/utils/http_utils.dart';
 
-
 enum LoginResult {
   first_time,
   completed,
@@ -31,7 +30,8 @@ enum LoginResult {
  */
 Future<LoginResult> completeLogin() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  Position position = await Geolocator().getLastKnownPosition(desiredAccuracy: LocationAccuracy.medium);
+  Position position = await Geolocator()
+      .getLastKnownPosition(desiredAccuracy: LocationAccuracy.medium);
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   _firebaseMessaging.requestNotificationPermissions();
   var response = await http.post('https://bookalo.es/api/login', headers: {

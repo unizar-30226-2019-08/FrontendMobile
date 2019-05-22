@@ -4,6 +4,7 @@
  * CREACIÓN:    15/03/2019
  *
  */
+import 'package:bookalo/pages/upload_product.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/objects/product.dart';
@@ -14,6 +15,7 @@ import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/detailed_product.dart';
 import 'package:bookalo/pages/own_product.dart';
 import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/widgets/chat_opener.dart';
 
 /*
  * CLASE: ProductView
@@ -34,20 +36,51 @@ class ProductView extends StatelessWidget {
   Widget priceCard(BuildContext context) {
     return Card(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 16, top: 16, bottom: 8),
-                child: Text(_product.priceToString(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                    )),
-              )
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16, top: 16, bottom: 8),
+                  child: Text(_product.priceToString(),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      )),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(right: 16),
+                  child: (itsMine
+                      ? IconButton(
+                          icon: Icon(
+                              (itsMine
+                                  ? Icons.edit
+                                  : Icons.chat_bubble_outline),
+                              color: Colors.pink,
+                              size: 40),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UploadProduct(
+                                          product: _product,
+                                        )));
+                          },
+                        )
+                      : ChatOpener(product: _product, user: _user)))
             ],
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+            child: Text(
+              _product.getName(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 30.0),
+            ),
           ),
           Container(
             width: MediaQuery.of(context).size.width,
@@ -65,16 +98,6 @@ class ProductView extends StatelessWidget {
             child: StaticStars(
                 _user.getRating(), Colors.black, _user.getRatingsAmount()),
           ),
-          // Container(
-          //   padding: EdgeInsets.only(left: 16, bottom: 8),
-          //   child: Text(
-          //     _product.getName(),
-          //     style: TextStyle(
-          //       fontWeight: FontWeight.w500,
-          //       fontSize: 30.0
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
@@ -121,37 +144,6 @@ class ProductView extends StatelessWidget {
                           ),
                         );
                       })),
-
-                  // child: ListTile(
-                  //   title: Text(
-                  //     this._product.getName(),
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontWeight: FontWeight.bold,
-                  //       // fontSize: 40,
-                  //     ),
-                  //   ),
-                  //   trailing: IconButton(
-                  //     icon: Icon(
-                  //         (itsMine ? Icons.edit : Icons.chat_bubble_outline),
-                  //         color: Colors.pink,
-                  //         size: 40),
-                  //     onPressed: () {
-                  //       if (itsMine) {
-                  //         //TODO: pantalla de edit
-                  //       } else {
-                  //         Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) => Chat(
-                  //                   user: _user,
-                  //                   product: _product,
-                  //                   interest: Interest.offers)),
-                  //         );
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
                 ),
               ],
             ),

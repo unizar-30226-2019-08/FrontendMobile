@@ -5,9 +5,12 @@
  */
 
 import 'dart:convert';
+import 'dart:io';
+import 'package:async/async.dart';
 import 'package:bookalo/objects/message.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_tags/selectable_tags.dart';
@@ -19,7 +22,6 @@ import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/objects/chats_registry.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 final Map<String, String> headers = {'appmovil': 'true'};
 
@@ -82,7 +84,7 @@ Future<List<Product>> parseOwnProducts(int currentIndex, int pageSize) async {
       headers: headers, body: body);
   List<Product> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
-      .forEach((x) {     
+      .forEach((x) {
     output.add(Product.fromJson(x['info_producto']));
   });
   return output;
@@ -99,7 +101,7 @@ Future<List<ProductView>> parseUserProducts(
       headers: headers, body: body);
   List<ProductView> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
-      .forEach((x) {     
+      .forEach((x) {
     Product product = Product.fromJson(x['info_producto']);
     output.add(ProductView(product, productOwner, false, x['le_gusta']));
   });
@@ -118,7 +120,7 @@ Future<List<ProductView>> parseUserFavorites(
       headers: headers, body: body);
   List<ProductView> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos_favoritos'] as List)
-      .forEach((x) {      
+      .forEach((x) {
     Product product = Product.fromJson(x['info_producto']);
     User owner = User.fromJson(x['vendido_por']);
     output.add(ProductView(product, owner, false, true));
@@ -242,8 +244,10 @@ Future<List<Message>> parseMessages(
 
 Future<bool> sendMessage(int chatUID, String message) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
+    'token_fcm' : await _firebaseMessaging.getToken(),
     'id_chat': chatUID.toString(),
     'mensaje': message
   };
@@ -274,11 +278,99 @@ Future<bool> markAsSold(int chatUID) async {
   return response.statusCode == 200;
 }
 
-Future<void> logout() async{
+Future<void> logout() async {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Map<String, String> body = {
     'fcm_token': await _firebaseMessaging.getToken(),
   };
-  await http.post('https://bookalo.es/logout',
-      headers: headers, body: body);
+  await http.post('https://bookalo.es/logout', headers: headers, body: body);
+}
+
+Future<bool> editProduct(Product product, List<File> images) async {
+  var uri = Uri.parse('https://bookalo.es/api/edit_product');
+  var request = http.MultipartRequest("POST", uri);
+  List<http.MultipartFile> im = [];
+  var length = 0;
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  request.fields['token'] = await user.getIdToken();
+  //print("token = " + request.fields['token']);
+  for (int i = 0; i < images.length; i++) {
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
+    print("stream imagen " + stream.toString());
+    length = await images[i].length();
+    im.add(http.MultipartFile('files', stream, length,
+        filename: 'imagen' + i.toString()));
+  }
+  request.files.addAll(im);
+  print("num Imagenes entrantes " + images.length.toString());
+  print("numImagenes anyadidas " + request.files.length.toString());
+  request.fields['id'] = product.getId().toString();
+  request.fields['latitud'] = product.getPosition().latitude.toString();
+  request.fields['longitud'] = product.getPosition().longitude.toString();
+  request.fields['nombre'] = product.getName();
+  request.fields['precio'] = product.getPrice().toString();
+  request.fields['estado_producto'] = product.getState();
+  request.fields['tipo_envio'] = product.isShippingIncluded().toString();
+  request.fields['descripcion'] = product.getDescription();
+  request.fields['tags'] = product.getTagsToString();
+  request.fields['isbn'] = product.getISBN();
+
+  request.headers.addAll(headers);
+  print("Enviando");
+  var response = await request.send();
+
+  return response.statusCode == 201;
+}
+
+Future<bool> uploadNewProduct(Product product, List<File> images) async {
+  var uri = Uri.parse('https://bookalo.es/api/create_product');
+  var request = http.MultipartRequest("POST", uri);
+  List<http.MultipartFile> im = [];
+  var length = 0;
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  request.fields['token'] = await user.getIdToken();
+  for (int i = 0; i < images.length; i++) {
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
+    length = await images[i].length();
+    im.add(http.MultipartFile('files', stream, length,
+        filename: 'imagen' + i.toString()));
+  }
+  request.files.addAll(im);
+  request.fields['latitud'] = product.getPosition().latitude.toString();
+  request.fields['longitud'] = product.getPosition().longitude.toString();
+  request.fields['nombre'] = product.getName();
+  request.fields['precio'] = product.getPrice().toString();
+  request.fields['estado_producto'] = product.getState();
+  request.fields['tipo_envio'] = product.isShippingIncluded().toString();
+  request.fields['descripcion'] = product.getDescription();
+  request.fields['tags'] = product.getTagsToString();
+  request.fields['isbn'] = product.getISBN();
+
+  request.headers.addAll(headers);
+  var response = await request.send();
+
+  return response.statusCode == 201;
+}
+
+Future<List<String>> getInfoISBN(String isbn) async {
+  Map<String, String> body = {'isbn': isbn};
+
+  var response = await http.get(
+      'https://bookalo.es/api/get_info_isbn?isbn=' + isbn,
+      headers: headers);
+
+  print("status = " + response.statusCode.toString());
+  //print(response.body);
+  if (response.statusCode == 200) {
+    //   print("mapenado json");
+    var libro = json.decode(utf8.decode(response.bodyBytes));
+    //  print(libro['Descripcion']);
+    return [
+      libro['Titulo'],
+      libro['Descripcion'],
+    ];
+  }
+  return ['', ''];
 }

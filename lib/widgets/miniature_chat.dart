@@ -3,10 +3,9 @@
  * DESCRIPCIÓN: clases relativas a la  miniatura de un chat
  * CREACIÓN:    14/03/2019
  */
-
-import 'package:flutter/widgets.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/translations.dart';
@@ -123,6 +122,8 @@ class MiniatureChat extends StatelessWidget {
               backgroundImage: NetworkImage(chat.getProduct.getImages()[0]),
             ),
       onTap: () {
+        ScopedModel.of<ChatsRegistry>(context).removePending(chat.imBuyer ? 'sellers' : 'buyers', chat);
+        //TODO: borrado de pendientes en HTTP
         Navigator.push(
             context,
             MaterialPageRoute(

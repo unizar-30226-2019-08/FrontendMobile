@@ -4,10 +4,13 @@
  * CREACIÓN:    19/04/2019
  */
 
+import 'package:bookalo/widgets/detailed_product/isbn_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/utils/silver_header.dart';
 import 'package:bookalo/utils/http_utils.dart';
+import 'package:bookalo/pages/upload_product.dart';
+import 'package:bookalo/widgets/confirmation_dialog.dart';
 import 'package:bookalo/widgets/detailed_product/product_map.dart';
 import 'package:bookalo/widgets/detailed_product/product_info.dart';
 import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
@@ -93,13 +96,15 @@ class _DetailedProductState extends State<OwnProduct> {
                   ),
                 ),
                 Container(height: 10.0),
+                Divider(),
                 Center(
                   child: Container(
                     child: TagWraper(product: widget.product),
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
                 ),
-                Container(height: 10.0),
+                Divider(),
+                ISBNViewer(product: widget.product),
                 ProductInfo(widget.product, false, false),
                 Container(height: 30.0),
                 Row(
@@ -122,7 +127,14 @@ class _DetailedProductState extends State<OwnProduct> {
                           ),
                         ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadProduct(
+                                      product: widget.product,
+                                    )));
+                      },
                     ),
                     OutlineButton(
                       borderSide:
@@ -143,47 +155,19 @@ class _DetailedProductState extends State<OwnProduct> {
                           ),
                         ],
                       ),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(Translations.of(context)
-                                    .text("delete_sure")),
-                                content: Text(Translations.of(context).text(
-                                    "delete_explanation",
-                                    params: [widget.product.getName()])),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text(
-                                      Translations.of(context)
-                                          .text("ok_delete"),
-                                      style: TextStyle(
-                                          color: Colors.pink,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 15.0),
-                                    ),
-                                    onPressed: () async {
-                                      deleteProduct(widget.product.getId());
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
-                                    },
-                                  ),
-                                  FlatButton(
-                                    child: Text(
-                                      Translations.of(context).text("cancel"),
-                                      style: TextStyle(
-                                          color: Colors.pink,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 15.0),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  )
-                                ],
-                              );
-                            });
+                      onPressed: () async {
+                        ConfirmAction action = await askConfirmation(
+                            context,
+                            "delete_sure",
+                            "ok_delete",
+                            "cancel",
+                            Text(Translations.of(context).text(
+                                "delete_explanation",
+                                params: [widget.product.getName()])));
+                        if (action == ConfirmAction.ACCEPT) {
+                          deleteProduct(widget.product.getId());
+                          Navigator.of(context).pop();
+                        }
                       },
                     ),
                   ],

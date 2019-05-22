@@ -99,12 +99,12 @@ class Bubble extends StatelessWidget {
                 SizedBox(width: 3.0),
                 //icono que indica si el mensje se ha enviado o no
                 (message.itsMe
-                ? Icon(
-                  icon,
-                  size: 12.0,
-                  color: Colors.white,
-                )
-                : Container())
+                    ? Icon(
+                        icon,
+                        size: 12.0,
+                        color: Colors.white,
+                      )
+                    : Container())
               ],
             ),
           )

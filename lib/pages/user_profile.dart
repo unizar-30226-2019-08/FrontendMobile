@@ -12,7 +12,6 @@ import 'package:bookalo/widgets/navbars/profile_navbar.dart';
 import 'package:bookalo/widgets/navbars/own_profile_navbar.dart';
 import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/product_view.dart';
 
 /*

@@ -92,7 +92,7 @@ class FilterQuery extends Model {
     _endReached = value;
   }
 
-  void setQuerySearch(String query){
+  void setQuerySearch(String query) {
     _querySearch = query;
     handleQueryChange();
   }

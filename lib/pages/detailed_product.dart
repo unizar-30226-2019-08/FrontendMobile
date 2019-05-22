@@ -17,6 +17,7 @@ import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
 import 'package:bookalo/widgets/detailed_product/image_swipper.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/widgets/detailed_product/isbn_viewer.dart';
 
 class DetailedProduct extends StatefulWidget {
   final bool isLiked;
@@ -40,7 +41,6 @@ class _DetailedProductState extends State<DetailedProduct> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     bool longTitle = widget.product.getName().length > 17;
     return Scaffold(
@@ -130,12 +130,15 @@ class _DetailedProductState extends State<DetailedProduct> {
                   ),
                 ),
                 Container(height: 10.0),
+                Divider(),
                 Center(
                   child: Container(
                     child: TagWraper(product: widget.product),
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
                 ),
+                Divider(),
+                ISBNViewer(product: widget.product),
                 Container(height: 10.0),
                 ProductInfo(
                     widget.product,

@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "305041397855-6hm2qkqb7gsfs5vm495o04d30o2uvbn8.apps.googleusercontent.com",
+          "client_id": "305041397855-uhc12n3o6op0bav061n7egt5vvrt69pr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "es.bookalo.bookalo",
-            "certificate_hash": "b9fdbc06798c9213f2c06d98e6b086fed694e823"
+            "certificate_hash": "12b2bdaa09dadeb9326d8536c5aca9d36e7dc8f0"
+          }
+        },
+        {
+          "client_id": "305041397855-k850m9v87f5l2pq71p8d7e8khp9sidn5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.bookalo.bookalo",
+            "certificate_hash": "32ecd39df86ef553b013dae672d2326762ff5107"
+          }
+        },
+        {
+          "client_id": "305041397855-9f5j0omn8tvnnhdnc4vue0urnh9h0u1o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "es.bookalo.bookalo",
+            "certificate_hash": "ce19e419e95dd2764047a352a022f15215b72c8c"
           }
         },
         {
@@ -31,11 +47,11 @@
           }
         },
         {
-          "client_id": "305041397855-9f5j0omn8tvnnhdnc4vue0urnh9h0u1o.apps.googleusercontent.com",
+          "client_id": "305041397855-6hm2qkqb7gsfs5vm495o04d30o2uvbn8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "es.bookalo.bookalo",
-            "certificate_hash": "ce19e419e95dd2764047a352a022f15215b72c8c"
+            "certificate_hash": "b9fdbc06798c9213f2c06d98e6b086fed694e823"
           }
         },
         {

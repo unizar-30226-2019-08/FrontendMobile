@@ -52,17 +52,18 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
             Container(
               margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
               child: IconButton(
-                      icon: Icon(
-                        ScopedModel.of<ChatsRegistry>(context).areTherePending()
-                        ? Icons.message
-                        : Icons.chat_bubble_outline,
-                          color: Colors.white, size: 35.0),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ChatMenu()),
-                        );
-                      }),
+                  icon: Icon(
+                      ScopedModel.of<ChatsRegistry>(context).areTherePending()
+                          ? Icons.message
+                          : Icons.chat_bubble_outline,
+                      color: Colors.white,
+                      size: 35.0),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatMenu()),
+                    );
+                  }),
             ),
             GestureDetector(
                 child: Container(

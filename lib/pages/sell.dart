@@ -9,8 +9,8 @@ import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/empty_list.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
-//import 'package:bookalo/pages/upload_product.dart';
 import 'package:bookalo/utils/http_utils.dart';
+import 'package:bookalo/pages/upload_product.dart';
 
 /*
  *  CLASE:        Sell
@@ -36,7 +36,8 @@ class _SellState extends State<Sell> {
     List<Widget> output = new List();
     if (!endReached) {
       List<Product> fetchResult = await parseOwnProducts(currentSize, 10);
-      output.addAll(fetchResult.map((p) => MiniProduct(p, (){ /*TODO: borrarlo de la lista*/})));
+      output.addAll(fetchResult
+          .map((p) => MiniProduct(p, () {/*TODO: borrarlo de la lista*/})));
       endReached = fetchResult.length == 0;
       if (endReached) {
         if (firstFecth) {
@@ -62,8 +63,8 @@ class _SellState extends State<Sell> {
               heroTag: "add", //todo: ver formato tags
               child: Icon(Icons.add),
               onPressed: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => UploadProduct()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UploadProduct()));
               },
             ),
           ],

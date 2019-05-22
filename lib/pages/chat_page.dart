@@ -50,21 +50,21 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void setClosed(BuildContext context){
+  void setClosed(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(Translations.of(context)
-                .text("delete_sure")),
-            content: Text(Translations.of(context).text(
-                "sell_explanation",
-                params: [widget.chat.getProduct.getName(), widget.chat.getOtherUser.getName()])),
+            title: Text(Translations.of(context).text("delete_sure")),
+            content: Text(Translations.of(context).text("sell_explanation",
+                params: [
+                  widget.chat.getProduct.getName(),
+                  widget.chat.getOtherUser.getName()
+                ])),
             actions: <Widget>[
               FlatButton(
                 child: Text(
-                  Translations.of(context)
-                      .text("ok_sold"),
+                  Translations.of(context).text("ok_sold"),
                   style: TextStyle(
                       color: Colors.pink,
                       fontWeight: FontWeight.w700,
@@ -77,8 +77,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               FlatButton(
                 child: Text(
-                  Translations.of(context)
-                      .text("cancel"),
+                  Translations.of(context).text("cancel"),
                   style: TextStyle(
                       color: Colors.pink,
                       fontWeight: FontWeight.w700,
@@ -90,11 +89,11 @@ class _ChatPageState extends State<ChatPage> {
               )
             ],
           );
-        });    
+        });
   }
 
   void _handleSumbit(String text) {
-    if(text.length > 0){
+    if (text.length > 0) {
       _textController.clear();
       sendMessage(widget.chat.getUID, text);
       ScopedModel.of<ChatsRegistry>(context).addMessage(
@@ -118,90 +117,98 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: ChatNavbar(
-        preferredSize: Size.fromHeight(height / 10),
-        interest: widget.chat.imBuyer ? Interest.offers : Interest.buys,
-        user: widget.chat.getOtherUser,
-        product: widget.chat.product,
-      ),
-      body: Column(children: <Widget>[
-        (!widget.chat.checkImBuyer && widget.chat.getProduct.checkfForSale()
-        ? RaisedButton(
-          color: Colors.pink,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0))),
-          child: Text(
-            Translations.of(context).text("close_chat"),
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-          onPressed: () {
-            setClosed(context);
-          },
-        )
-        : Container()),
-        Container(height: 10),
-        ScopedModelDescendant<ChatsRegistry>(
-            builder: (context, child, registry) {
-          return Expanded(
-              child: ListView.builder(
-            reverse: true,
-            itemBuilder: (context, position) {
-              int length = ScopedModel.of<ChatsRegistry>(context)
-                  .getMessages(widget.chat.getUID)
-                  .length;
-              if (position < length) {
-                Message currentMessage =
-                    registry.getMessages(widget.chat.getUID)[position];
-                return Bubble(
-                  message: currentMessage,
-                  user: currentMessage.itsMe
-                      ? widget.chat.getMe
-                      : widget.chat.getOtherUser,
-                );
-              } else if (position == length && !_endReached) {
-                fetchMessages(registry, length);
-                return Container(
-                    margin: EdgeInsets.symmetric(vertical: 50.0),
-                    child: BookaloProgressIndicator());
-              } else {
-                return null;
-              }
-            },
-          ));
-        }),
-        Container(height: 10),
-        Material(
-          elevation: 30,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(5.0),
-                width: width / 1.2,
-                child: TextField(
-                  textInputAction: TextInputAction.send,
-                  controller: _textController,
-                  onSubmitted: (text) {
-                    _handleSumbit(text);
+    return WillPopScope(
+      onWillPop: () async {
+        //TODO: poner pendientes a cero y llamada HTTP
+        return true;
+      },
+      child: Scaffold(
+        appBar: ChatNavbar(
+          preferredSize: Size.fromHeight(height / 10),
+          interest: widget.chat.imBuyer ? Interest.offers : Interest.buys,
+          user: widget.chat.getOtherUser,
+          product: widget.chat.product,
+        ),
+        body: Column(children: <Widget>[
+          (!widget.chat.checkImBuyer && widget.chat.getProduct.checkfForSale()
+              ? RaisedButton(
+                  color: Colors.pink,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  child: Text(
+                    Translations.of(context).text("close_chat"),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w700),
+                  ),
+                  onPressed: () {
+                    setClosed(context);
                   },
-                  decoration: InputDecoration(
-                      hintText: Translations.of(context).text("message_hint")),
-                  autofocus: true,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 1,
+                )
+              : Container()),
+          Container(height: 10),
+          ScopedModelDescendant<ChatsRegistry>(
+              builder: (context, child, registry) {
+            return Expanded(
+                child: ListView.builder(
+              reverse: true,
+              itemBuilder: (context, position) {
+                int length = ScopedModel.of<ChatsRegistry>(context)
+                    .getMessages(widget.chat.getUID)
+                    .length;
+                if (position < length) {
+                  Message currentMessage =
+                      registry.getMessages(widget.chat.getUID)[position];
+                  return Bubble(
+                    message: currentMessage,
+                    user: currentMessage.itsMe
+                        ? widget.chat.getMe
+                        : widget.chat.getOtherUser,
+                  );
+                } else if (position == length && !_endReached) {
+                  fetchMessages(registry, length);
+                  return Container(
+                      margin: EdgeInsets.symmetric(vertical: 50.0),
+                      child: BookaloProgressIndicator());
+                } else {
+                  return null;
+                }
+              },
+            ));
+          }),
+          Container(height: 10),
+          Material(
+            elevation: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(5.0),
+                  width: width / 1.2,
+                  child: TextField(
+                    textInputAction: TextInputAction.send,
+                    controller: _textController,
+                    onSubmitted: (text) {
+                      _handleSumbit(text);
+                    },
+                    decoration: InputDecoration(
+                        hintText:
+                            Translations.of(context).text("message_hint")),
+                    autofocus: true,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 1,
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.send, size: 30.0, color: Colors.pink),
-                onPressed: () {
-                  _handleSumbit(_textController.text);
-                },
-              )
-            ],
-          ),
-        )
-      ]),
+                IconButton(
+                  icon: Icon(Icons.send, size: 30.0, color: Colors.pink),
+                  onPressed: () {
+                    _handleSumbit(_textController.text);
+                  },
+                )
+              ],
+            ),
+          )
+        ]),
+      ),
     );
   }
 }

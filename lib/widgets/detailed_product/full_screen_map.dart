@@ -23,10 +23,7 @@ class FullScreenMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Hero(
-        tag: "productMap",
-        child: ProductMap(position: position, expandible: false),
-      ),
+      body: ProductMap(position: position, expandible: false)
     );
   }
 }

@@ -154,7 +154,8 @@ class _SearchBarState extends State<SearchBar> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: ScopedModel.of<FilterQuery>(context).querySearch);
+    _controller = TextEditingController(
+        text: ScopedModel.of<FilterQuery>(context).querySearch);
   }
 
   @override

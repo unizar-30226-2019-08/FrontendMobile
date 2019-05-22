@@ -91,12 +91,14 @@ class _RadialButtonState extends State<RadialButton>
             children: <Widget>[
               _buildExpandedBackground(expandedSize, hiddenSize),
               _buildFabCore(),
-              _buildOption(Icons.chat_bubble_outline, 0.0, share),
               _buildOption(
                   (isMarkedAsFavorite ? Icons.favorite : Icons.favorite_border),
                   math.pi,
                   markAsFavorite),
-              _buildOption(Icons.share, -(math.pi / 2), share)
+              (widget.product.checkfForSale()
+              ? _buildOption(Icons.chat_bubble_outline, -(math.pi / 2), share)
+              : Container()),
+              _buildOption(Icons.share, 0.0, share)
             ],
           );
         },

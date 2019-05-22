@@ -43,11 +43,11 @@ class Chat {
   User get getOtherUser => imBuyer ? seller : buyer;
   int get getUID => uid;
 
-  void setLastMessage(Message newLast){
+  void setLastMessage(Message newLast) {
     this.lastMessage = newLast;
   }
 
-  void setPendingMessages(int value){
+  void setPendingMessages(int value) {
     this.pendingMessages = value;
   }
 

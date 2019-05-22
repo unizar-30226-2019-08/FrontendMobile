@@ -55,21 +55,27 @@ class ChatsRegistry extends Model {
 
   void addChats(String kind, List<Chat> newChats) {
     newChats.forEach((newChat) {
-      var oldChat = _chatMap[kind].where((oldChat) => oldChat.getUID == newChat.getUID);
+      var oldChat =
+          _chatMap[kind].where((oldChat) => oldChat.getUID == newChat.getUID);
       if (oldChat.length == 0) {
         _chatMap[kind].insert(0, newChat);
         _messagesMap[newChat.getUID] = [];
         _messagesEndReached[newChat.getUID] = false;
       } else {
-        
         int index = _chatMap[kind].indexOf(oldChat.first);
         Chat updatingChat = oldChat.first;
         updatingChat.setLastMessage(newChat.getLastMessage);
         updatingChat.setPendingMessages(newChat.pendingMessages);
-        _chatMap[kind].replaceRange(index, index+1, [updatingChat]);
+        _chatMap[kind].replaceRange(index, index + 1, [updatingChat]);
       }
     });
-    _chatMap[kind].sort((c1, c2) => c2.getLastMessage.getTimestamp.compareTo(c1.getLastMessage.getTimestamp));
+    _chatMap[kind].sort((c1, c2){
+      if(c1.lastMessage != null && c2.lastMessage != null){
+        return c2.getLastMessage.getTimestamp.compareTo(c1.getLastMessage.getTimestamp);
+      }else{
+        return -1;
+      }
+    });
     notifyListeners();
   }
 
@@ -83,21 +89,24 @@ class ChatsRegistry extends Model {
     notifyListeners();
   }
 
-  void appendMessage(String kind, Chat chat, List<Message> messages){
+  void appendMessage(String kind, Chat chat, List<Message> messages) {
     _messagesMap[chat.getUID].addAll(messages);
     notifyListeners();
   }
 
-  bool areTherePending(){
-    _chatMap.values.forEach((list){
-      list.forEach((chat){
-        if(chat.numberOfPending > 0){
-          print('HAY PENDIETES');
+  void removePending(String kind, Chat chat){
+    _chatMap[kind].singleWhere((c) => c.getUID == chat.getUID).pendingMessages = 0;
+    notifyListeners();
+  }
+
+  bool areTherePending() {
+    _chatMap.values.forEach((list) {
+      list.forEach((chat) {
+        if (chat.numberOfPending > 0) {
           return true;
         }
       });
     });
-    print('NO HAY PENDIETES');
     return false;
   }
 }

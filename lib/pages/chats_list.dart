@@ -91,13 +91,13 @@ class _ChatsListState extends State<ChatsList> {
           },
         );
       } else {
-        if(_noFirstFetch){
+        if (_noFirstFetch) {
           return BookaloProgressIndicator();
-        }else{
-        return EmptyList(
-          iconData: Icons.chat_bubble_outline,
-          textKey: widget.imBuyer ? 'no_sellers_yet' : 'no_buyers_yet',
-        );          
+        } else {
+          return EmptyList(
+            iconData: Icons.chat_bubble_outline,
+            textKey: widget.imBuyer ? 'no_sellers_yet' : 'no_buyers_yet',
+          );
         }
       }
     });

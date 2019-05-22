@@ -56,8 +56,7 @@ class _ChatListNavbarState extends State<ChatListNavbar> {
               'Chats',
               style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.w300),
             ),
-          )
-        ),
+          )),
     );
   }
 }
