@@ -29,8 +29,8 @@ class ReviewCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                  backgroundImage: NetworkImage(review.getUser.getPicture())),
-              title: Text(review.getUser.getName(),
+                  backgroundImage: NetworkImage(review.getReviewer.getPicture())),
+              title: Text(review.getReviewer.getName(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 21,
@@ -62,7 +62,7 @@ class ReviewCard extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 16),
-                    child: StaticStars(review.getStarts, Colors.black, null),
+                    child: StaticStars(review.getStars, Colors.black, null),
                   )
                 ]),
             Column(

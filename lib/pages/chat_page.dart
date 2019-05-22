@@ -13,6 +13,8 @@ import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
+import 'package:bookalo/widgets/valoration_card.dart';
+import 'package:bookalo/widgets/review_card.dart';
 
 /*
  *  CLASE:        Chat
@@ -158,12 +160,20 @@ class _ChatPageState extends State<ChatPage> {
                 if (position < length) {
                   Message currentMessage =
                       registry.getMessages(widget.chat.getUID)[position];
-                  return Bubble(
-                    message: currentMessage,
-                    user: currentMessage.itsMe
-                        ? widget.chat.getMe
-                        : widget.chat.getOtherUser,
-                  );
+                  if (!currentMessage.itsReview) {
+                    return Bubble(
+                      message: currentMessage,
+                      user: currentMessage.itsMe
+                          ? widget.chat.getMe
+                          : widget.chat.getOtherUser,
+                    );
+                  } else {
+                    if (currentMessage.review != null) {
+                      return ReviewCard(review: currentMessage.review);
+                    } else {
+                      return ValorationCard(chat: widget.chat);
+                    }
+                  }
                 } else if (position == length && !_endReached) {
                   fetchMessages(registry, length);
                   return Container(
@@ -176,37 +186,40 @@ class _ChatPageState extends State<ChatPage> {
             ));
           }),
           Container(height: 10),
-          Material(
-            elevation: 30,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(5.0),
-                  width: width / 1.2,
-                  child: TextField(
-                    textInputAction: TextInputAction.send,
-                    controller: _textController,
-                    onSubmitted: (text) {
-                      _handleSumbit(text);
-                    },
-                    decoration: InputDecoration(
-                        hintText:
-                            Translations.of(context).text("message_hint")),
-                    autofocus: true,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 1,
+          (widget.chat.getLastMessage.itsReview &&
+                  widget.chat.getLastMessage.review == null
+              ? Container()
+              : Material(
+                  elevation: 30,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.all(5.0),
+                        width: width / 1.2,
+                        child: TextField(
+                          textInputAction: TextInputAction.send,
+                          controller: _textController,
+                          onSubmitted: (text) {
+                            _handleSumbit(text);
+                          },
+                          decoration: InputDecoration(
+                              hintText: Translations.of(context)
+                                  .text("message_hint")),
+                          autofocus: true,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 1,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.send, size: 30.0, color: Colors.pink),
+                        onPressed: () {
+                          _handleSumbit(_textController.text);
+                        },
+                      )
+                    ],
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send, size: 30.0, color: Colors.pink),
-                  onPressed: () {
-                    _handleSumbit(_textController.text);
-                  },
-                )
-              ],
-            ),
-          )
+                ))
         ]),
       ),
     );

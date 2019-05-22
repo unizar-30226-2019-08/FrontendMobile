@@ -174,7 +174,10 @@ class _UploadProduct extends State<UploadProduct> {
           length: 2,
           child: Scaffold(
             key: _scaffoldKey, //key para mostrar snackbars
-            appBar: SimpleNavbar(preferredSize: Size.fromHeight(_height / 7.6)),
+            appBar: SimpleNavbar(
+              title: Translations.of(context).text("upload_product"),
+              iconData: Icons.add_shopping_cart,
+              preferredSize: Size.fromHeight(_height / 10)),
             body: _pageOptions[_currentPage],
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.file_upload),

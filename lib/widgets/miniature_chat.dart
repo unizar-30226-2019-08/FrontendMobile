@@ -26,7 +26,12 @@ class MiniatureChat extends StatelessWidget {
    */
   Widget buildSubtitle(BuildContext context) {
     if (chat.lastMessage != null) {
-      String message = chat.lastMessage.body;
+      String message;
+      if(chat.lastMessage.itsReview){
+        message = Translations.of(context).text("rate_user", params: [chat.getOtherUser.getName()]);
+      }else{
+        message = chat.lastMessage.body;
+      }
       if (message.length > 30) {
         message = message.substring(0, 30) + '...';
       }
