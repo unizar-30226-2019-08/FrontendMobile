@@ -48,12 +48,7 @@ class _UploadProduct extends State<UploadProduct> {
   var _pageOptions = [];
   int _currentPage = 0;
 
-  List<GlobalKey<FormState>> _formKeys = [
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-    GlobalKey<FormState>(),
-  ];
+
 
   @override
   void initState() {
@@ -61,6 +56,9 @@ class _UploadProduct extends State<UploadProduct> {
     if (widget.product != null) {
       _isNewProduct = false;
       newProduct = widget.product;
+      pagesValited[0] = newProduct.getImages().length > 1;
+      pagesValited[1] = newProduct.getName().length > 2 && newProduct.price > 0.0;
+      pagesValited[2] = newProduct.getDescription().length > 2;
       widget.product.getImages().forEach((image) async {
         var cacheManager = await CacheManager.getInstance();
         File file = await cacheManager.getFile(image);
@@ -83,7 +81,6 @@ class _UploadProduct extends State<UploadProduct> {
         }),
       ),
       UploadTitle(
-        formKey: _formKeys[1],
         autoV: autoV,
         prod: newProduct,
         priceInserted: (precio) {

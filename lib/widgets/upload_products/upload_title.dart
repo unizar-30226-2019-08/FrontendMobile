@@ -29,7 +29,6 @@ class UploadTitle extends StatefulWidget {
   final Function(double) priceInserted;
   final Function(bool) includeSend;
   final Function(bool) valitedPage;
-  final formKey;
   final Product prod;
   
   const UploadTitle(
@@ -38,7 +37,6 @@ class UploadTitle extends StatefulWidget {
       this.tittleInserted,
       this.descriptionInserted,
       this.prod,
-      this.formKey,
       this.valitedPage,
       this.stateProductInserted,
       this.includeSend,
@@ -54,7 +52,7 @@ class _UploadTitleState extends State<UploadTitle> {
   String _value1 = "Nuevo";
   String _value2 = "Seminuevo";
   String _value3 = "Usado";
-
+  var formKey = GlobalKey<FormState>();
   String groupValue;
 
   String _sinEnvio = "Sin envio";
@@ -81,8 +79,8 @@ class _UploadTitleState extends State<UploadTitle> {
   @override
   void initState() {
     super.initState();
-    print("ISBN init state " + widget.prod.getISBN());
-    print("Titulo init state " + widget.prod.getName());
+    //print("ISBN init state " + widget.prod.getISBN());
+    //print("Titulo init state " + widget.prod.getName());
     controllerPrice = new MoneyMaskedTextController(
         precision: 1,
         decimalSeparator: '.',
@@ -135,11 +133,11 @@ class _UploadTitleState extends State<UploadTitle> {
         children: <Widget>[
           Form(
               autovalidate: widget.autoV.autovalidate,
-              key: widget.formKey,
+              key: formKey,
               onChanged: () {
-                widget.formKey.currentState.save();
+                formKey.currentState.save();
                 setState(() {
-                  validatePage = widget.formKey.currentState.validate() &&
+                  validatePage = formKey.currentState.validate() &&
                       titleIni &&
                       priceIni;
                   /* &&
@@ -433,8 +431,8 @@ class _UploadTitleState extends State<UploadTitle> {
       //print(s);
       controlerTitle.text = s[0];
       widget.descriptionInserted(s[1]);
-      widget.formKey.currentState.validate();
-      widget.formKey.currentState.save();
+      formKey.currentState.validate();
+      formKey.currentState.save();
       //print("Bar code decetcado = " + barcode);
       //print("ISBN almacenado = " + widget.prod.getISBN());
     });
