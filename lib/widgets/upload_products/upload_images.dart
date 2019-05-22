@@ -63,14 +63,11 @@ class _UploadImagesState extends State<UploadImages> {
 
   Future<List<File>> _getImagesProduct(List<String> urls) async {
     List<File> files = [];
-    print("Cargando imagenes");
     for (int i = 0; i < urls.length; i++) {
       var cacheManager = await CacheManager.getInstance();
       File file = await cacheManager.getFile(urls[i]);
       files.add(file);
     }
-    print("numero de imagenes a cargar = " + urls.length.toString());
-    print("numero de imagenes cargadas = " + files.length.toString());
     return files;
   }
 }

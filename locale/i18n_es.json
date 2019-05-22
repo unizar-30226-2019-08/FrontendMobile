@@ -92,7 +92,7 @@
     "gallery" : "GALERÍA",
     "isbn_not_valid" :  "El código ISBN introducido no es valido",
     "close_chat":"CERRAR VENTA",
-    "isbn_scan":"¡Escanea su código de barras! ",
+    "isbn_scan":"ESCANEAR ISBN",
     "title_hint":"Introduce el título",
     "title_too_short":"Título demasiado corto",
     "description_hint":"Introduce una descripcion",
@@ -128,4 +128,5 @@
     "Usado": "Usado",
     "Nuevo": "Nuevo",
     "Seminuevo": "Seminuevo"
+
 }

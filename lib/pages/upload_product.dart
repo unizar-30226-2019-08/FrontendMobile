@@ -42,7 +42,6 @@ class _UploadProduct extends State<UploadProduct> {
   bool _isNewProduct = true;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   Product newProduct = Product.empty();
-  AutoV autoV = AutoV(false);
   List<bool> pagesValited = [false, false, false, true];
   List<File> imageFiles = [];
   var _pageOptions = [];
@@ -54,10 +53,10 @@ class _UploadProduct extends State<UploadProduct> {
   void initState() {
     super.initState();
     if (widget.product != null) {
-      
+      //Si el producto existe
       _isNewProduct = false;
       newProduct = widget.product.clone();
-      print("Editando pronducto: " + newProduct.getName());
+      //Inicializar paginas validas con los campos del producto
       pagesValited[0] = newProduct.getImages().length > 1;
       pagesValited[1] = newProduct.getName().length > 1 && newProduct.price > 0.0;
       pagesValited[2] = newProduct.getDescription().length > 20;
@@ -78,43 +77,41 @@ class _UploadProduct extends State<UploadProduct> {
         }),
       ),
       UploadTitle(
-        autoV: autoV,
         prod: newProduct,
         priceInserted: (precio) {
           setState(() {
             newProduct.setPrice(precio);
-            autoV.autovalidate = true;
+            
           });
         },
         valitedPage: (valited) {
           setState(() {
             pagesValited[1] = valited;
-            autoV.autovalidate = true;
           });
         },
         isbnInserted: (isbn) {
           setState(() {
             newProduct.setIsbn(isbn);
-            autoV.autovalidate = true;
+            
           });
         },
         tittleInserted: (tittle) {
           setState(() {
             newProduct.setName(tittle);
-            autoV.autovalidate = true;
+            
           });
         },
         descriptionInserted: (desc) {
           setState(() {
             newProduct.setDesciption(desc);
-            pagesValited[1] = (desc.length > 2);
-            autoV.autovalidate = true;
+            pagesValited[2] = (desc.length > 20);
+            
           });
         },
         stateProductInserted: (_state) {
           setState(() {
             newProduct.setState(_state);
-            autoV.autovalidate = true;
+            
           });
         },
       ),
@@ -122,7 +119,7 @@ class _UploadProduct extends State<UploadProduct> {
         descriptionInserted: (desc) {
           setState(() {
             newProduct.setDesciption(desc);
-            autoV.autovalidate = true;
+            
           });
         },
         prod: newProduct,
@@ -130,7 +127,7 @@ class _UploadProduct extends State<UploadProduct> {
         valitedPage: (valited) {
           setState(() {
             pagesValited[2] = valited;
-            //autoV.autovalidate = true;
+            
           });
         },
         onDeleteTag: (tag) {
