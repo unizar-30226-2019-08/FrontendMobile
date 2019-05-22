@@ -1,6 +1,6 @@
 /*
  * FICHERO:     upload_title.dart
- * DESCRIPCIÓN: clases relativas a la nombre, descripcion y titulo de un usuario
+ * DESCRIPCIÓN: clases relativas a la nombre, precio, tipo de envío y estado de un producto
  * CREACIÓN:    12/05/2019
  */
 
@@ -21,7 +21,6 @@ import 'package:validators/validators.dart';
  */
 
 class UploadTitle extends StatefulWidget {
-  final AutoV autoV;
   final Function(String) isbnInserted;
   final Function(String) tittleInserted;
   final Function(String) descriptionInserted;
@@ -29,7 +28,6 @@ class UploadTitle extends StatefulWidget {
   final Function(double) priceInserted;
   final Function(bool) includeSend;
   final Function(bool) valitedPage;
-  final formKey;
   final Product prod;
   
   const UploadTitle(
@@ -38,12 +36,11 @@ class UploadTitle extends StatefulWidget {
       this.tittleInserted,
       this.descriptionInserted,
       this.prod,
-      this.formKey,
       this.valitedPage,
       this.stateProductInserted,
       this.includeSend,
       this.priceInserted,
-      this.autoV})
+      })
       : super(key: key);
   @override
   _UploadTitleState createState() => _UploadTitleState();
@@ -54,7 +51,7 @@ class _UploadTitleState extends State<UploadTitle> {
   String _value1 = "Nuevo";
   String _value2 = "Seminuevo";
   String _value3 = "Usado";
-
+  var formKey = GlobalKey<FormState>();
   String groupValue;
 
   String _sinEnvio = "Sin envio";
@@ -81,8 +78,6 @@ class _UploadTitleState extends State<UploadTitle> {
   @override
   void initState() {
     super.initState();
-    print("ISBN init state " + widget.prod.getISBN());
-    print("Titulo init state " + widget.prod.getName());
     controllerPrice = new MoneyMaskedTextController(
         precision: 1,
         decimalSeparator: '.',
@@ -100,10 +95,11 @@ class _UploadTitleState extends State<UploadTitle> {
     } else {
       controlerTitle = TextEditingController();
     }
+    titleIni = widget.prod.getName().length > 1;
+    priceIni = widget.prod.getPrice() > 0.0;
   }
 
   Future barcodeScanning() async {
-//imageSelectorGallery();
 
     try {
       String barcode = await BarcodeScanner.scan();
@@ -134,16 +130,17 @@ class _UploadTitleState extends State<UploadTitle> {
         padding: EdgeInsets.symmetric(vertical: 1, horizontal: 15),
         children: <Widget>[
           Form(
-              autovalidate: widget.autoV.autovalidate,
-              key: widget.formKey,
+              autovalidate: true,
+              key: formKey,
               onChanged: () {
-                widget.formKey.currentState.save();
+                formKey.currentState.save();
+                print("formKey = " + formKey.currentState.validate().toString());
+                print("titleIni = " + titleIni.toString());
+                print("priceIni = " + priceIni.toString());
                 setState(() {
-                  validatePage = widget.formKey.currentState.validate() &&
+                  validatePage = formKey.currentState.validate() &&
                       titleIni &&
                       priceIni;
-                  /* &&
-                      descIni; */
                   widget.valitedPage(validatePage);
                 });
               },
@@ -156,8 +153,7 @@ class _UploadTitleState extends State<UploadTitle> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "ESCANEAR ISBN" ,
-                        //Translations.of(context).text("ESCANEAR ISBN"),
+                        Translations.of(context).text("isbn_scan"),
                         style: TextStyle(
                             color: Colors.pink[600], fontWeight: FontWeight.w700),
                       ),
@@ -217,8 +213,8 @@ class _UploadTitleState extends State<UploadTitle> {
                     if (title.length > 0) {
                       titleIni = true;
                     }
-                    if ((widget.autoV.autovalidate || titleIni) &&
-                        title.length < 2) {
+                    if (titleIni &&
+                        title.length < 1) {
                       //El nombre de articulo debe tener al menos 2 caracteres
                       return Translations.of(context).text("title_too_short");
                     }
@@ -250,8 +246,7 @@ class _UploadTitleState extends State<UploadTitle> {
                             precioValidet = true;
                             priceIni = true;
                           }
-                          if (widget.autoV.autovalidate &&
-                              !(controllerPrice.numberValue > 0.0)) {
+                          if (!(controllerPrice.numberValue > 0.0)) {
                             //Afecta al tamaño del precio
                             precioValidet = false;
 
@@ -430,18 +425,14 @@ class _UploadTitleState extends State<UploadTitle> {
       _isbn = barcode;
       widget.isbnInserted(barcode);
       controlerISBN.text = barcode;
-      //print(s);
       controlerTitle.text = s[0];
       widget.descriptionInserted(s[1]);
-      widget.formKey.currentState.validate();
-      widget.formKey.currentState.save();
-      //print("Bar code decetcado = " + barcode);
-      //print("ISBN almacenado = " + widget.prod.getISBN());
+      formKey.currentState.validate();
+      formKey.currentState.save();
     });
   }
 
   Future<void> gettingISBN(BuildContext context, String barcode) async {
-    print("getting ISBN");
     const tamanyoMaxpopUp = 144.4;
     _rellenarInfo(barcode).then((onValue) {
       Navigator.of(context).pop();
@@ -481,10 +472,4 @@ class _UploadTitleState extends State<UploadTitle> {
     // widget.includeSend(newState == _conEnvio);
     _valueSendChanged(newState);
   }
-}
-
-class AutoV {
-  bool autovalidate = false;
-
-  AutoV(this.autovalidate);
 }

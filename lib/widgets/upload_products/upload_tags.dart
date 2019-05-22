@@ -24,7 +24,6 @@ class UploadTags extends StatefulWidget {
    * Post:  Ha insertado un nuevo tag a Product
    */
   final Function(String) onDeleteTag;
-  // final Function(bool) validate;
   final List<String> initialT;
   UploadTags(
       {Key key,
@@ -51,11 +50,9 @@ class _UploadTagsState extends State<UploadTags> {
           TagsUploadProduct(
             onInsertTag: (tag) {
               widget.onInsertTag(tag);
-              //  widget.validate(widget.initialT.length > 0 && validatePage);
             },
             onDeleteTag: (tag) {
               widget.onDeleteTag(tag);
-              // widget.validate(widget.initialT.length > 0 && validatePage);
             },
             initialTags: widget.initialT,
           ),
@@ -75,7 +72,7 @@ class _UploadTagsState extends State<UploadTags> {
             },
             child: TextFormField(
               keyboardType: TextInputType.multiline,
-              //maxLines: 4,
+              maxLines: null,
               maxLength: 1000, //1000 caracteres máximo
               maxLengthEnforced: true,
               onSaved: (String value) {
@@ -86,7 +83,7 @@ class _UploadTagsState extends State<UploadTags> {
                   hintText: Translations.of(context).text("description_hint")),
               validator: (description) {
                 if (description.length < 20) {
-                  //El comentario debe tener al menos 30 caracteres
+                  //El comentario debe tener al menos 20 caracteres
                   return Translations.of(context).text("description_too_short");
                 }
               },

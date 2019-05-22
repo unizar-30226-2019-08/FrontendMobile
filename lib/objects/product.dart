@@ -59,6 +59,22 @@ class Product {
     this.isbn = '';
   }
 
+  Product clone(){
+    return Product(this.id,
+      this.name,
+      this.price,
+      this.isForSale,
+      this.images.toList(),
+      this.description,
+      this.includesShipping,
+      this.state,
+      this.favorites,
+      this.lat,
+      this.lng,
+      this.tags.toList(),
+      this.isbn);
+  }
+
   Product(
       this.id,
       this.name,
@@ -196,3 +212,4 @@ class Product {
   }
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
+
