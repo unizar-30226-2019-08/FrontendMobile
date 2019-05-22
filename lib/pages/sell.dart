@@ -11,6 +11,7 @@ import 'package:bookalo/widgets/empty_list.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/pages/upload_product.dart';
+import 'package:bookalo/translations.dart';
 
 /*
  *  CLASE:        Sell
@@ -59,14 +60,15 @@ class _SellState extends State<Sell> {
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            FloatingActionButton(
-              heroTag: "add", //todo: ver formato tags
-              child: Icon(Icons.add),
+            FloatingActionButton.extended(
+              heroTag: "addFAB",
+              icon: Icon(Icons.add),
+              label: Text(Translations.of(context).text('upload_product')),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UploadProduct()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => UploadProduct()));
               },
-            ),
+            )
           ],
         ),
         body: Pagination<Widget>(

@@ -17,10 +17,12 @@ class SimpleNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        navegación
      * Post:  ha construido el widget
      */
-  SimpleNavbar({Key key, this.preferredSize}) : super(key: key);
+  SimpleNavbar({Key key, this.preferredSize, this.title, this.iconData}) : super(key: key);
 
   @override
   final Size preferredSize;
+  final String title;
+  final IconData iconData;
 
   @override
   _SimpleNavbarState createState() => _SimpleNavbarState();
@@ -29,15 +31,23 @@ class SimpleNavbar extends StatefulWidget implements PreferredSizeWidget {
 class _SimpleNavbarState extends State<SimpleNavbar> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double topMargin = height / 60;
     return AppBar(
-      automaticallyImplyLeading: false,
-      title: Container(
-        margin: EdgeInsets.only(top: topMargin),
-        child: Image.asset('assets/images/bookalo_logo.png', width: width / 2),
-      ),
-    );
+        automaticallyImplyLeading: false,
+        title: Container(
+          margin: EdgeInsets.only(top: 5.0, left: 10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 10, top: 2),
+                child: Icon(widget.iconData, size: 40.0)
+              ),
+              Text(
+                widget.title,
+                style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w300),
+              ),
+            ],
+          ),
+        ));
   }
 }

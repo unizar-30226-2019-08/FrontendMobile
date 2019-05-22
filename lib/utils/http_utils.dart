@@ -21,6 +21,7 @@ import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/objects/chat.dart';
+import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/objects/chats_registry.dart';
 
 final Map<String, String> headers = {'appmovil': 'true'};
@@ -273,7 +274,7 @@ Future<bool> markAsSold(int chatUID) async {
     'token': await firebaseUser.getIdToken(),
     'id_chat': chatUID.toString(),
   };
-  var response = await http.post('https://bookalo.es/api/marcar_vendido',
+  var response = await http.post('https://bookalo.es/api/sell_product',
       headers: headers, body: body);
   return response.statusCode == 200;
 }
@@ -361,16 +362,27 @@ Future<List<String>> getInfoISBN(String isbn) async {
       'https://bookalo.es/api/get_info_isbn?isbn=' + isbn,
       headers: headers);
 
-  print("status = " + response.statusCode.toString());
-  //print(response.body);
   if (response.statusCode == 200) {
-    //   print("mapenado json");
     var libro = json.decode(utf8.decode(response.bodyBytes));
-    //  print(libro['Descripcion']);
     return [
       libro['Titulo'],
       libro['Descripcion'],
     ];
   }
   return ['', ''];
+}
+
+Future<bool> rateUser(Chat chat, Review review) async {
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'estrellas': review.getStars.toInt().toString(),
+    'comentario' : review.getReview,
+    'uid_usuario_valorado' : chat.getOtherUser.getUID(),
+    'id_producto_valorado' : chat.getProduct.getId().toString()
+  };
+  var response = await http.post(
+      'https://bookalo.es/api/rate_user',
+      headers: headers, body: body);
+  return response.statusCode == 200;
 }
