@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/widgets/navbars/report_navbar.dart';
+import 'package:bookalo/widgets/navbars/simple_navbar.dart';
 
 /*
   CLASE: ValorationCard
@@ -15,10 +15,8 @@ import 'package:bookalo/widgets/navbars/report_navbar.dart';
  */
 
 class Report extends StatefulWidget {
-  final User currentUser; //usuario actual
-  final User userToValorate; //usuario a valorar
-  Report({this.currentUser, this.userToValorate});
-
+  final User userToReport; //usuario a valorar
+  Report({ this.userToReport});
   _ReportState createState() => _ReportState();
 }
 
@@ -37,7 +35,7 @@ class _ReportState extends State<Report> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        appBar: ReportNavbar(preferredSize: Size.fromHeight(height / 10)),
+        appBar: SimpleNavbar(title: Translations.of(context).text("report_title"), iconData: Icons.flag, preferredSize: Size.fromHeight(height / 10)),
         body: Padding(
             padding: EdgeInsets.all(20),
             child: Column(children: [
@@ -45,97 +43,70 @@ class _ReportState extends State<Report> {
                   key: _formKey,
                   child: Column(children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      /*decoration: BoxDecoration(
-                      color: Colors.pink,
-                      borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(15.0),
-                          topRight: const Radius.circular(15.0))),*/
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(right: 15.0),
-                              child: Icon(
-                                Icons.rate_review,
-                                // color: Colors.white,
-                                size: 30.0,
-                              ),
-                            ),
-                            Text(
-                              Translations.of(context).text("report_title"),
-                              style: TextStyle(
-                                  // color: Colors.white,
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    //Texto de presentación
-                    Container(
-                      margin: EdgeInsets.all(20.0),
-                      child: Text(Translations.of(context).text("report_text"),
+                      margin: EdgeInsets.all(5.0),
+                      child: Text(Translations.of(context).text("report_text", params: [widget.userToReport.getFirstName()]),
                           style: TextStyle(height: 1.0, fontSize: 20)),
                     ),
+                    Divider(),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          child: Icon(Icons.receipt, size: 40)
+                        ),
+                        Text(
+                          Translations.of(context).text("what_happened"),
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w300
+                          ),
+                        )
+                      ],
+                    ),
                     Padding(
-                        //Campo que debe ser rellenado obligatoriamene
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Container(
                           height: height / 4,
                           child: ListView(children: [
-                            new Row(children: [
-                              new Radio(
+                             Row(children: [
+                               Radio(
                                 value: _value1,
                                 onChanged: (_value1) => _valueChanged(_value1),
                                 activeColor: Colors.pink,
                                 groupValue: groupValue,
                               ),
-                              new Text(Translations.of(context).text("fraud")),
+                               Text(Translations.of(context).text("fraud")),
                             ]),
-                            new Row(children: [
-                              new Radio(
+                             Row(children: [
+                               Radio(
                                 value: _value2,
                                 onChanged: (_value2) => _valueChanged(_value2),
                                 activeColor: Colors.pink,
                                 groupValue: groupValue,
                               ),
-                              new Text(Translations.of(context)
+                               Text(Translations.of(context)
                                   .text("offensive_comment")),
                             ]),
-                            new Row(children: [
-                              new Radio(
+                             Row(children: [
+                               Radio(
                                 value: _value3,
                                 onChanged: (_value3) => _valueChanged(_value3),
                                 activeColor: Colors.pink,
                                 groupValue: groupValue,
                               ),
-                              new Text(Translations.of(context)
+                               Text(Translations.of(context)
                                   .text("offensive_content")),
                             ]),
                           ]),
                         )),
                     Padding(
-                        //Campo que debe ser rellenado obligatoriamene
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20.0, vertical: 10),
                         child: TextFormField(
                           keyboardType: TextInputType.multiline,
-                          maxLines: null,
                           maxLength: 1000, //1000 caracteres máximo
                           maxLengthEnforced: true,
-
                           decoration: InputDecoration(
-                              border: new OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(0.0),
-                                borderSide: new BorderSide(),
-                              ),
-                              //fillColor: Colors.green
-
                               hintText: Translations.of(context)
                                   .text("report_comment")),
 

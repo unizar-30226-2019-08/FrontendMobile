@@ -3,12 +3,15 @@
  * DESCRIPCIÓN: clases relativas al widget de valoración de usuario al cerrar una venta
  * CREACIÓN:    20/03/2019
  */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
-import 'package:bookalo/objects/user.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/report.dart';
+import 'package:bookalo/objects/review.dart';
+import 'package:bookalo/utils/http_utils.dart';
+import 'package:bookalo/objects/chats_registry.dart';
 
 /*
   CLASE: ValorationCard
@@ -16,17 +19,23 @@ import 'package:bookalo/pages/report.dart';
  */
 
 class ValorationCard extends StatefulWidget {
-  final User currentUser; //usuario actual
-  final User userToValorate; //usuario a valorar
-  ValorationCard({this.currentUser, this.userToValorate});
+  final Chat chat;
+  ValorationCard({this.chat});
 
   _ValorationCardState createState() => _ValorationCardState();
 }
 
 class _ValorationCardState extends State<ValorationCard> {
-  double rating = 3.0; //valoración proporcionada por las estrellas
+  TextEditingController _controller;
+  double _rating = 3.0;
   final _formKey = GlobalKey<FormState>();
   _ValorationCardState();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +70,7 @@ class _ValorationCardState extends State<ValorationCard> {
                         ),
                         Text(
                           Translations.of(context).text("rate_user",
-                              params: [widget.userToValorate.getName()]),
+                              params: [widget.chat.getOtherUser.getName()]),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 25.0,
@@ -79,11 +88,10 @@ class _ValorationCardState extends State<ValorationCard> {
                       style: TextStyle(height: 1.0, fontSize: 20)),
                 ),
                 Padding(
-                    //Campo que debe ser rellenado obligatoriamene
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextFormField(
+                      controller: _controller,
                       keyboardType: TextInputType.multiline,
-                      maxLines: null,
                       maxLength: 1000, //1000 caracteres máximo
                       maxLengthEnforced: true,
                       decoration: InputDecoration(
@@ -91,7 +99,6 @@ class _ValorationCardState extends State<ValorationCard> {
                               Translations.of(context).text("how_was_it")),
                       validator: (review) {
                         if (review.length < 15) {
-                          //El comentario debe tener al menos 30 caracteres
                           return Translations.of(context)
                               .text("review_too_short");
                         }
@@ -101,20 +108,17 @@ class _ValorationCardState extends State<ValorationCard> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: StarRating(
                     size: 40.0,
-                    rating: rating,
+                    rating: _rating,
                     color: Colors.pink,
                     borderColor: Colors.grey,
                     starCount: 5,
                     onRatingChanged: (rating) => setState(
                           () {
-                            this.rating =
-                                rating; //la variable "rating" cambia al pulsar las estrellas
+                            this._rating = rating;
                           },
                         ),
                   ),
                 ),
-
-                //confirmar y enviar valoración
                 Container(
                   margin: EdgeInsets.only(bottom: 10.0),
                   child: Row(
@@ -131,9 +135,19 @@ class _ValorationCardState extends State<ValorationCard> {
                               color: Colors.pink[600],
                               fontWeight: FontWeight.w700),
                         ),
-                        onPressed: () {
-                          //comprobar si la información introducida es válida al pulsar
-                          _formKey.currentState.validate();
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            Review review = Review(
+                                widget.chat.getOtherUser,
+                                widget.chat.getMe,
+                                DateTime.now(),
+                                !widget.chat.imBuyer,
+                                widget.chat.getProduct,
+                                _controller.text,
+                                _rating*2);
+                            await rateUser(widget.chat, review);
+                            ScopedModel.of<ChatsRegistry>(context).setReview(review, widget.chat.getUID);
+                          }
                         },
                       ),
                       Container(width: 15.0),
@@ -153,8 +167,7 @@ class _ValorationCardState extends State<ValorationCard> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Report(
-                                      currentUser: widget.currentUser,
-                                      userToValorate: widget.userToValorate,
+                                      userToReport: widget.chat.getOtherUser,
                                     )),
                           );
                         },

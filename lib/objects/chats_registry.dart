@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clase Chat Registry
  * CREACIÓN:    15/05/2019
  */
+import 'package:bookalo/objects/review.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/objects/message.dart';
@@ -108,5 +109,10 @@ class ChatsRegistry extends Model {
       });
     });
     return false;
+  }
+
+  void setReview(Review review, int chatUID){
+    _messagesMap[chatUID].singleWhere((message) => message.itsReview).review = review;
+    notifyListeners();
   }
 }
