@@ -1,6 +1,21 @@
+/*
+ * FICHERO:     social_buttons.dart
+ * DESCRIPCIÓN: clases relativas a los botones de redes sociales
+ * CREACIÓN:    17/03/2019
+ */
+
+
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+
+/*
+ * FICHERO:     SociaButtons.dart
+ * DESCRIPCIÓN: botones para compartir en redes sociales.Estas son:Twitter,Facebook e Instagram
+ */
+
+
 
 class SocialButtons extends StatelessWidget {
   _launchURL(String url) async {

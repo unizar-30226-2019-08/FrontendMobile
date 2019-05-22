@@ -1,17 +1,15 @@
 /*
- * FICHERO:     simple_navbar.dart
- * DESCRIPCIÓN: clases relativas al widget de barra de navegación simple
+ * FICHERO:     report_navbar.dart
+ * DESCRIPCIÓN: clases relativas al widget de barra de navegación de la pantalla de reporte
  * CREACIÓN:    12/03/2019
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/user_profile.dart';
-import 'package:bookalo/utils/dates_utils.dart';
 
 /*
- *  CLASE:        SimpleNavbar
- *  DESCRIPCIÓN:  widget para barra de navegación simple, mostrando únicamente
- *                el logo de Bookalo y el avatar clickable del usuario
+ *  CLASE:        ReportNavbar
+ *  DESCRIPCIÓN:  widget para barra de navegación de reporte, en el que se muestra el nombre
+ *                del usuario al que se reporta
  */
 class ReportNavbar extends StatefulWidget implements PreferredSizeWidget {
   /*
@@ -31,42 +29,16 @@ class ReportNavbar extends StatefulWidget implements PreferredSizeWidget {
 
 class _ReportNavbarState extends State<ReportNavbar> {
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double topMargin = height / 40;
     return AppBar(
       centerTitle: true,
       leading: Container(
-        
-            margin: EdgeInsets.only(top: topMargin/3, right: width / 20),
-        child: Icon(Icons.flag,size:50.0)
-      ),
+          margin: EdgeInsets.only(top: topMargin / 3, right: width / 20),
+          child: Icon(Icons.flag, size: 50.0)),
       title: Text(Translations.of(context).text("report_to")),
-      actions: <Widget>[
-        Container(
-          
-          margin: EdgeInsets.only(top: topMargin, right: width /30),
-          child:  CircleAvatar(
-              backgroundImage: AssetImage('assets/images/user_picture.jpg')),
-        )
-      ],
-      
-    );
-  }
-}
- /* Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    double topMargin = height / 60;
-    return Pre(
-      automaticallyImplyLeading: false,
-      elevation: 0.0,
-      leading: Container(
-            margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
-        child: Icon(Icons.flag)
-      ),
-      title: Text("Report a "),
       actions: <Widget>[
         Container(
           margin: EdgeInsets.only(top: topMargin, right: width / 30),
@@ -76,4 +48,5 @@ class _ReportNavbarState extends State<ReportNavbar> {
       ],
     );
   }
-}*/
+}
+

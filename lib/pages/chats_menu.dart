@@ -1,5 +1,5 @@
 /*
- * FICHERO:     buy_and_sell.dart
+ * FICHERO:     chats_menu.dart
  * DESCRIPCIÓN: clases relativas al la página de selección de compra/venta
  * CREACIÓN:    13/03/2019
  */
@@ -8,9 +8,9 @@ import 'package:bookalo/widgets/navbars/chat_list_navbar.dart';
 import 'package:bookalo/pages/chats_list.dart';
 
 /*
- *  CLASE:        BuyAndSell
- *  DESCRIPCIÓN:  widget para la selección de bien la pestaña de compra,
- *                bien la de venta. Permite deslizado de una a otra
+ *  CLASE:        ChatMenu
+ *  DESCRIPCIÓN:  menú para cambiar entre lista de chats de compra y de venta
+ *                
  */
 class ChatMenu extends StatelessWidget {
   ChatMenu();

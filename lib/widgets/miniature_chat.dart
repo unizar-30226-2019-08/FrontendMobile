@@ -14,7 +14,9 @@ import 'package:bookalo/pages/chat.dart';
 
 /*
  *  CLASE:        MiniatureChat
- *  DESCRIPCIÓN:  widget para mostrar la información de un chat aún vigente
+ *  DESCRIPCIÓN:  widget para mostrar la información de un chat aún vigente, como el usuario
+ *                con el que se mantiene el chat,el ultimo mensaje del chat y la fecha de envío
+ *                de este
  */
 
 class MiniatureChat extends StatelessWidget {
@@ -106,8 +108,8 @@ class MiniatureChat extends StatelessWidget {
       title: title(context),
       subtitle: Text(dateToFullString(this.lastTimeDate, context)),
       enabled: true,
-      trailing:
-          CircleAvatar(backgroundImage: NetworkImage(this.product.getImage())),
+      trailing: CircleAvatar(
+          backgroundImage: NetworkImage(this.product.getImages()[0])),
       onTap: () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Chat()));

@@ -1,7 +1,21 @@
+/*
+ * FICHERO:     main_navbar.dart
+ * DESCRIPCIÓN: clases relativas al widget de barra de navegación principal
+ * CREACIÓN:    13/03/2019
+ */
+
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chat.dart';
 import 'package:bookalo/pages/user_profile.dart';
+
+
+
+/*
+ * CLASE:        MainNavbar.dart
+ * DESCRIPCIÓN: widget de la barra de navegación principal que contiene el logo de la aplicación,
+ *               la opción de chat,la foto de usuario
+ */
 
 class MainNavbar extends StatelessWidget {
   MainNavbar();

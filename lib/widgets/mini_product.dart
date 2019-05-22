@@ -7,10 +7,12 @@
 import 'package:bookalo/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/pages/own_product.dart';
 
 /*
   CLASE: MiniProduct
-  DESCRIPCIÓN: widget de miniatura de producto
+  DESCRIPCIÓN: widget de miniatura de producto mostrado en la lista de productos
+*               a la venta y muestra un foto del producto,su nombre y su precio
  */
 
 class MiniProduct extends StatelessWidget {
@@ -26,7 +28,7 @@ class MiniProduct extends StatelessWidget {
 
   Widget priceBody(BuildContext context) {
     Widget b;
-    if (_product.getSold()) {
+    if (!_product.checkfForSale()) {
       b = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -72,36 +74,46 @@ class MiniProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[400], width: 0.4)),
-        child: ListTile(
-          leading: CircleAvatar(
-              backgroundImage: NetworkImage(this._product.getImage())),
-          title: Container(
-            margin: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  child: Text(
-                    this._product.getName(),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 19,
+    return GestureDetector(
+      child: Container(
+          padding: const EdgeInsets.all(4.0),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[400], width: 0.4)),
+          child: ListTile(
+            leading: CircleAvatar(
+                backgroundImage: NetworkImage(this._product.getImages()[0])),
+            title: Container(
+              margin: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      this._product.getName(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 19,
+                      ),
                     ),
                   ),
-                ),
-                priceBody(context),
-              ],
+                  priceBody(context),
+                ],
+              ),
             ),
-          ),
-          isThreeLine: false,
-          enabled: true,
-          //trailing:PriceBody(context),
-          dense: true,
-        ));
+            isThreeLine: false,
+            enabled: true,
+            dense: true,
+          )),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => OwnProduct(
+                    product: this._product,
+                  )),
+        );
+      },
+    );
   }
 }

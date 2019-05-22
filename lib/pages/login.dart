@@ -8,16 +8,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:bookalo/widgets/login/login_header.dart';
 import 'package:bookalo/widgets/login/login_button.dart';
 import 'package:bookalo/translations.dart';
+import 'package:bookalo/utils/auth_utils.dart';
 
 /*
  *  CLASE:        Login
- *  DESCRIPCIÓN:  Pantalla de inicio de sesión
+ *  DESCRIPCIÓN:  pantalla de inicio de sesión
  */
 
 class Login extends StatefulWidget {
@@ -30,9 +28,11 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool googleLoginInProgress = false;
-  bool facebookLoginInProgress = false;
-  bool twitterLoginInProgress = false;
+  Map<String, bool> loginInProgress = {
+    'Google': false,
+    'Twitter': false,
+    'Facebook': false
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -44,108 +44,57 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             LoginHeader(),
             LoginButton(
-              inProgress: facebookLoginInProgress,
+              inProgress: loginInProgress['Facebook'],
               iconData: MdiIcons.facebook,
               callback: () {
-                _signInWithFacebook();
+                _signIn('Facebook');
               },
               color: Colors.blue[900],
-              key: Key("facebook_login"),
             ),
             LoginButton(
-              inProgress: googleLoginInProgress,
+              inProgress: loginInProgress['Google'],
               iconData: MdiIcons.google,
               callback: () {
-                _signInWithGoogle();
+                _signIn('Google');
               },
               color: Colors.red[700],
-              key: Key("google_login"),
             ),
             LoginButton(
-                inProgress: twitterLoginInProgress,
+                inProgress: loginInProgress['Twitter'],
                 iconData: MdiIcons.twitter,
                 callback: () {
-                  _signInWithTwitter();
+                  _signIn('Twitter');
                 },
-                color: Colors.blue,
-                key: Key("twitter_login"))
+                color: Colors.blue)
           ],
         ));
   }
 
   /*
    * Pre:   ---
-   * Post:  ha lanzado el proceso de inicio de sesión con Google
+   * Post:  ha iniciado el proceso de inicio de sesión con el proveedor indicado
    */
-  void _signInWithGoogle() async {
-    if (!(googleLoginInProgress ||
-        facebookLoginInProgress ||
-        twitterLoginInProgress)) {
+  void _signIn(String provider) async {
+    if (!loginInProgress.containsValue(true)) {
       setState(() {
-        googleLoginInProgress = true;
+        loginInProgress[provider] = true;
       });
       try {
-        final GoogleSignIn _googleSignIn = GoogleSignIn();
-        final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final AuthCredential credential = GoogleAuthProvider.getCredential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        await signInFirebase(provider);
+        LoginResult result = await completeLogin();
+        switch (result) {
+          case LoginResult.completed:
+            Navigator.pushReplacementNamed(context, '/buy_and_sell');
+            break;
+          case LoginResult.first_time:
+            //TODO: mostrar algún tipo de bienvenida
+            Navigator.pushReplacementNamed(context, '/buy_and_sell');
+            break;
+          default:
+            _handleError(provider, result);
+        }
       } catch (e) {
-        _handleError("Google");
-      }
-    }
-  }
-
-  /*
-   * Pre:   ---
-   * Post:  ha lanzado el proceso de inicio de sesión con Facebook
-   */
-  void _signInWithFacebook() async {
-    if (!(googleLoginInProgress ||
-        facebookLoginInProgress ||
-        twitterLoginInProgress)) {
-      setState(() {
-        facebookLoginInProgress = true;
-      });
-      try {
-        final facebookLogin = FacebookLogin();
-        final result = await facebookLogin.logInWithReadPermissions(['email']);
-        final AuthCredential credential = FacebookAuthProvider.getCredential(
-            accessToken: result.accessToken.token);
-        FirebaseAuth.instance.signInWithCredential(credential);
-      } catch (e) {
-        _handleError("Facebook");
-      }
-    }
-  }
-
-  /*
-   * Pre:   ---
-   * Post:  ha lanzado el proceso de inicio de sesión con Twitter
-   */
-  void _signInWithTwitter() async {
-    if (!(googleLoginInProgress ||
-        facebookLoginInProgress ||
-        twitterLoginInProgress)) {
-      setState(() {
-        twitterLoginInProgress = true;
-      });
-      try {
-        var twitterLogin = TwitterLogin(
-          consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
-          consumerSecret: 'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',
-        );
-        final TwitterLoginResult result = await twitterLogin.authorize();
-        final AuthCredential credential = TwitterAuthProvider.getCredential(
-            authToken: result.session.token,
-            authTokenSecret: result.session.secret);
-        FirebaseAuth.instance.signInWithCredential(credential);
-      } catch (e) {
-        _handleError("Twitter");
+        _handleError(provider, LoginResult.firebase_errored);
       }
     }
   }
@@ -155,15 +104,21 @@ class _LoginState extends State<Login> {
    * Post:  ha cancelado el proceso de inicio de sesión y ha informado
    *        al usuario de la incidencia
    */
-  void _handleError(String platform) {
+  void _handleError(String provider, LoginResult result) async {
     setState(() {
-      googleLoginInProgress = false;
-      facebookLoginInProgress = false;
-      twitterLoginInProgress = false;
+      loginInProgress.updateAll((k, v) {
+        return false;
+      });
     });
+    try {
+      if (await FirebaseAuth.instance.currentUser() != null) {
+        signOut();
+      }
+    } catch (e) {}
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       content: Text(
-        Translations.of(context).text("login_error", params: [platform]),
+        Translations.of(context).text("login_error",
+            params: [provider, (result.index * 100).toString()]),
         style: TextStyle(fontSize: 17.0),
       ),
       action: SnackBarAction(

@@ -21,8 +21,13 @@ import 'dart:io';
 
 /*
  *  CLASE:        UploadProduct
- *  DESCRIPCIÓN:  widget para la pagina de subida de un producto.//TODO: add descripcion
+ *  DESCRIPCIÓN:  widget para la pagina de subida de un producto.Consta de 4 pasos:
+ *                Paso 1: Subida de imágenes
+ *                Paso 2: Añadir descripción 
+ *                Paso 3: Añadir tags
+ *                Paso 4: Añadir localización geográfica
  */
+
 class UploadProduct extends StatefulWidget {
   UploadProduct({Key key}) : super(key: key);
  
@@ -145,40 +150,12 @@ class _UploadProduct extends State<UploadProduct> {
 
       //Image picker
       Step(
-          title: Text('¡Fotos, por favor!'),
+          title: Text(Translations.of(context)
+                              .text("upload_description_title")),
           content:
             
             ListImageCard(),
-            //AddImageCard(),
-           // ImageCard(),
            
-          
-          
-          
-           /*Row(
-            children:[
-              Column(children:[
-              FloatingActionButton(
-                
-                onPressed: cameraPicker,
-                child:Icon(Icons.add_a_photo)
-              ),
-
-              Container(height: 15.0),
-
-              FloatingActionButton(
-                onPressed: galleryPicker,
-                child:Icon(Icons.image)
-              ),
-              ],),
-             Container(width: 50.0),
-               Container(
-                 
-                 child:
-                 AddImageCard())
-              
-            ],
-            ),*/
           isActive: _currentStep >= 0
       ),
 
@@ -187,7 +164,8 @@ class _UploadProduct extends State<UploadProduct> {
 
 
       Step(
-          title: Text('¿Qué vendes?'),
+          title: Text(Translations.of(context)
+                              .text("upload_description_title")),
           content: Form(
              key: _formKey,
             child:Column(children: <Widget>[
@@ -214,7 +192,7 @@ class _UploadProduct extends State<UploadProduct> {
                       maxLength: 13, //13 numeros máximo
                       maxLengthEnforced: false,
                       onSaved: (String isbnReaded) {
-               newP.isbn(isbnReaded) ;
+              // newP.isbn=isbnReaded;
                       },
                       decoration: InputDecoration(
                           hintText:
@@ -228,25 +206,13 @@ class _UploadProduct extends State<UploadProduct> {
                       },
                     ),
 
-
-
-
-
-
-
-
-
-
-
-
-
                TextFormField( // Input titulo
                       keyboardType: TextInputType.text,
                       maxLines: 1,
                       maxLength: 50, //1000 caracteres máximo
                       maxLengthEnforced: true,
                       onSaved: (String value) {
-               newP.name(value) ;
+               newP.name=value;
                       },
                       decoration: InputDecoration(
                           hintText:
@@ -267,7 +233,7 @@ class _UploadProduct extends State<UploadProduct> {
                       maxLength: 50, //1000 caracteres máximo
                       maxLengthEnforced: true,
                       onSaved: (String value) {
-               newP.description(value) ;
+               newP.description=value;
                       },
                       decoration: InputDecoration(
                           hintText:

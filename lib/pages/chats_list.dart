@@ -1,5 +1,5 @@
 /*
- * FICHERO:     menu_chats_buy.dart
+ * FICHERO:     chats_list.dart
  * DESCRIPCIÓN: clases relativas a la pestaña de chats de compra
  * CREACIÓN:    20/04/2019
  */

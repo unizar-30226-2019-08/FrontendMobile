@@ -1,40 +1,34 @@
 /*
- * FICHERO:     valoration_card.dart
- * DESCRIPCIÓN: clases relativas al widget de valoración de usuario al cerrar una venta
+ * FICHERO:    list_image.dart
+ * DESCRIPCIÓN: clases relativas a la visualización de fotos subidas
  * CREACIÓN:    20/03/2019
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
-import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/report.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:bookalo/widgets/image_card.dart';
 import 'package:bookalo/widgets/add_image.dart';
 import 'dart:io';
 
-
 /*
-  CLASE: ImageCard
-  DESCRIPCIÓN: widget de valoración de un usuario al cerrar una venta
+  CLASE: ListImageCard
+  DESCRIPCIÓN: widget de visualización de fotos añadidas del producto
  */
 
 class ListImageCard extends StatefulWidget {
-   //usuario actual
   
+
   ListImageCard();
 
   _ListImageCardState createState() => _ListImageCardState();
 }
 
 class _ListImageCardState extends State<ListImageCard> {
-   List <Widget> imageCards=[];
-     List <File> imagesList=[];
+  List<Widget> imageCards = []; //lista de widgets con lo que se visualizan las imágenes 
+  List<File> imagesList;//lista de imágenes guardadas
   _ListImageCardState();
-  File imageToAdd;
+  File imageToAdd; //imagen a añadir
 
-//Estado inicial de la lista
+//Estado inicial de la lista (solo widget de añadir fotos)
 void initState() {
 super.initState();
 Widget card=AddImageCard(onNewPicture);
@@ -62,7 +56,6 @@ void removeFromList(File img) {
     ImageCard imgC=ImageCard(img,removeFromList);
     imageCards.add(imgC);
     imagesList.add(img);
-  print("Anyadiendo a lista");
 
   });
  
@@ -75,7 +68,7 @@ void removeFromList(File img) {
 
   @override
   Widget build(BuildContext context) {
-     double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Container(
        width:width,
