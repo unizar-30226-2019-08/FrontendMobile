@@ -61,11 +61,6 @@ class _UploadProduct extends State<UploadProduct> {
       pagesValited[0] = newProduct.getImages().length > 1;
       pagesValited[1] = newProduct.getName().length > 1 && newProduct.price > 0.0;
       pagesValited[2] = newProduct.getDescription().length > 20;
-      widget.product.getImages().forEach((image) async {
-        var cacheManager = await CacheManager.getInstance();
-        File file = await cacheManager.getFile(image);
-        imageFiles.add(file);
-      });
     }else{
       newProduct.setPosition(ScopedModel.of<FilterQuery>(context).position);
     }
