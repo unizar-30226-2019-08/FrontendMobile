@@ -54,11 +54,13 @@ class _UploadProduct extends State<UploadProduct> {
   void initState() {
     super.initState();
     if (widget.product != null) {
+      
       _isNewProduct = false;
-      newProduct = widget.product;
+      newProduct = widget.product.clone();
+      print("Editando pronducto: " + newProduct.getName());
       pagesValited[0] = newProduct.getImages().length > 1;
-      pagesValited[1] = newProduct.getName().length > 2 && newProduct.price > 0.0;
-      pagesValited[2] = newProduct.getDescription().length > 2;
+      pagesValited[1] = newProduct.getName().length > 1 && newProduct.price > 0.0;
+      pagesValited[2] = newProduct.getDescription().length > 20;
       widget.product.getImages().forEach((image) async {
         var cacheManager = await CacheManager.getInstance();
         File file = await cacheManager.getFile(image);
