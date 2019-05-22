@@ -4,11 +4,12 @@
  *              de las pestañas de compra/venta
  * CREACIÓN:    13/03/2019
  */
+import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chats_menu.dart';
-import 'package:bookalo/pages/menu_chats.dart';
+import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/pages/user_profile.dart';
 
 /*
@@ -51,8 +52,12 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
             Container(
               margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
               child: IconButton(
-                  icon: Icon(Icons.chat_bubble_outline,
-                      color: Colors.white, size: 35.0),
+                  icon: Icon(
+                      ScopedModel.of<ChatsRegistry>(context).areTherePending()
+                          ? Icons.message
+                          : Icons.chat_bubble_outline,
+                      color: Colors.white,
+                      size: 35.0),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -64,7 +69,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                 child: Container(
                     margin: EdgeInsets.only(top: topMargin, right: width / 30),
                     child: Hero(
-                      tag: "profileImage",
+                      tag: "ownProfileImage",
                       child: FutureBuilder<FirebaseUser>(
                           future: FirebaseAuth.instance.currentUser(),
                           builder: (context, snapshot) {

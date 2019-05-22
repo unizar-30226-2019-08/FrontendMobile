@@ -25,7 +25,7 @@ class ChatMenu extends StatelessWidget {
           preferredSize: Size.fromHeight(height / 5),
         ),
         body: TabBarView(
-          children: [ChatsList(buyChats: true), ChatsList(buyChats: false)],
+          children: [ChatsList(imBuyer: false), ChatsList(imBuyer: true)],
         ),
       ),
     );

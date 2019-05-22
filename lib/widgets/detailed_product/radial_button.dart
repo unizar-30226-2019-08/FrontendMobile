@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/utils/http_utils.dart';
 
 /*
  *  CLASE:        RadialButton
@@ -17,9 +18,15 @@ import 'package:bookalo/objects/product.dart';
  */
 class RadialButton extends StatefulWidget {
   final String sellerId;
-  final String buyerId;
   final Product product;
-  RadialButton({Key key, this.product, this.sellerId, this.buyerId})
+  final Function() onFavorite;
+  final bool wasMarkedAsFavorite;
+  RadialButton(
+      {Key key,
+      this.product,
+      this.sellerId,
+      this.onFavorite,
+      this.wasMarkedAsFavorite})
       : super(key: key);
 
   _RadialButtonState createState() => _RadialButtonState();
@@ -27,6 +34,7 @@ class RadialButton extends StatefulWidget {
 
 class _RadialButtonState extends State<RadialButton>
     with SingleTickerProviderStateMixin {
+  bool isMarkedAsFavorite;
   AnimationController _animationController;
   Animation<Color> _colorAnimation;
 
@@ -43,6 +51,14 @@ class _RadialButtonState extends State<RadialButton>
     close();
   }
 
+  void markAsFavorite() async {
+    registerFavorite(widget.product);
+    setState(() {
+      widget.onFavorite();
+      isMarkedAsFavorite = !isMarkedAsFavorite;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +66,7 @@ class _RadialButtonState extends State<RadialButton>
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     _colorAnimation = ColorTween(begin: Colors.pink, end: Colors.pink[700])
         .animate(_animationController);
+    isMarkedAsFavorite = widget.wasMarkedAsFavorite;
   }
 
   @override
@@ -74,9 +91,14 @@ class _RadialButtonState extends State<RadialButton>
             children: <Widget>[
               _buildExpandedBackground(expandedSize, hiddenSize),
               _buildFabCore(),
-              _buildOption(Icons.chat_bubble_outline, 0.0, share),
-              _buildOption(Icons.favorite, math.pi, share),
-              _buildOption(Icons.share, -(math.pi / 2), share)
+              _buildOption(
+                  (isMarkedAsFavorite ? Icons.favorite : Icons.favorite_border),
+                  math.pi,
+                  markAsFavorite),
+              (widget.product.checkfForSale()
+              ? _buildOption(Icons.chat_bubble_outline, -(math.pi / 2), share)
+              : Container()),
+              _buildOption(Icons.share, 0.0, share)
             ],
           );
         },

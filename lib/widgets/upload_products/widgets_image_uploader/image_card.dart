@@ -25,7 +25,7 @@ class ImageCard extends StatelessWidget {
 
     return Column(children: [
       Container(
-        width: width /2,
+        width: width / 2,
         height: height / 2,
         child: Padding(
           padding: EdgeInsets.all(5),

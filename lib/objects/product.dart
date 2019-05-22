@@ -29,7 +29,7 @@ class Product {
   @JsonKey(name: 'tipo_envio')
   bool includesShipping;
   @JsonKey(name: 'estado_venta')
-  bool isSold;
+  bool isForSale;
   @JsonKey(name: 'contenido_multimedia')
   List<String> images;
   @JsonKey(name: 'descripcion')
@@ -40,13 +40,14 @@ class Product {
   double lng;
   @JsonKey(name: 'isbn')
   String isbn;
+  @JsonKey(name: 'tiene_tags')
   List<String> tags;
 
   Product.empty() {
     this.id = 0;
     this.name = "";
     this.price = 0;
-    this.isSold = false;
+    this.isForSale = true;
     this.images = [];
     this.description = '';
     this.includesShipping = false;
@@ -58,12 +59,11 @@ class Product {
     this.isbn = '';
   }
 
-//TODO: Constructor con ISBN
   Product(
       this.id,
       this.name,
       this.price,
-      this.isSold,
+      this.isForSale,
       this.images,
       this.description,
       this.includesShipping,
@@ -71,9 +71,8 @@ class Product {
       this.favorites,
       this.lat,
       this.lng,
-      this.tags) {
-    this.isbn = '';
-  }
+      this.tags,
+      this.isbn);
 
   String getName() {
     return this.name;
@@ -83,12 +82,13 @@ class Product {
     return this.price;
   }
 
-  bool getSold() {
-    return this.isSold;
+  bool checkfForSale() {
+    return this.isForSale;
   }
 
   List<String> getImages() {
-    return this.images;
+    return List.generate(this.images.length,
+        (i) => "https://bookalo.es/" + this.images.elementAt(i));
   }
 
   String getDescription() {
@@ -129,21 +129,18 @@ class Product {
 
   void setName(String _name) {
     this.name = _name;
-    print("nombre de prd " + this.name);
   }
 
-  void setDesciption(String _desc) {
-    this.description = _desc;
+  void setDesciption(String _description) {
+    this.description = _description;
   }
 
   void setIsbn(String _isbn) {
-    print("ISBN asignado " + isbn);
     this.isbn = _isbn;
   }
 
   void setState(String _state) {
     this.state = _state;
-    //print("estado del producto " + this.state);
   }
 
   String getISBN() {
@@ -151,17 +148,15 @@ class Product {
   }
 
   void insertTag(t) {
-    //print("Insertando tag nuevo " + t);
     this.tags.add(t);
-    //print("Tamanyo actual " + this.tags.length.toString());
   }
 
-  void setPrice(double p) {
-    this.price = p;
+  void setPrice(double _price) {
+    this.price = _price;
   }
 
-  void deleteTag(t) {
-    this.tags.remove(t);
+  void deleteTag(_tag) {
+    this.tags.remove(_tag);
   }
 
   String getTagsToString() {
@@ -179,11 +174,25 @@ class Product {
     this.includesShipping = sendInclude;
   }
 
+  void setPosition(LatLng position){
+    this.lat = position.latitude;
+    this.lng = position.longitude;
+  }
+
   String getStringShippinIncluded() {
     return (this.includesShipping) ? "Con envio" : "Sin envio";
   }
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) {
+    json['tiene_tags'] = (json['tiene_tags'] as List)
+        .map((m) =>
+            m.values.toString().substring(1, m.values.toString().length - 1))
+        .toList();
+    json['contenido_multimedia'] = (json['contenido_multimedia'] as List)
+        .map((m) =>
+            m.values.toString().substring(1, m.values.toString().length - 1))
+        .toList();
+    return _$ProductFromJson(json);
+  }
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 }

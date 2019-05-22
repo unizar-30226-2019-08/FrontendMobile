@@ -15,10 +15,8 @@ import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
 import 'package:validators/validators.dart';
 
-enum ConfirmAction { CANCEL, ACCEPT }
 /*
  *  CLASE:        UploadTitle
- *  TODO: Widget sin implementar
  *  DESCRIPCIÓN:  
  */
 
@@ -33,6 +31,7 @@ class UploadTitle extends StatefulWidget {
   final Function(bool) valitedPage;
   final formKey;
   final Product prod;
+  
   const UploadTitle(
       {Key key,
       this.isbnInserted,
@@ -82,8 +81,8 @@ class _UploadTitleState extends State<UploadTitle> {
   @override
   void initState() {
     super.initState();
-    print("ISBN init state " + widget.prod.getISBN() );
-    print("Titulo init state " + widget.prod.getName() );
+    print("ISBN init state " + widget.prod.getISBN());
+    print("Titulo init state " + widget.prod.getName());
     controllerPrice = new MoneyMaskedTextController(
         precision: 1,
         decimalSeparator: '.',
@@ -153,15 +152,24 @@ class _UploadTitleState extends State<UploadTitle> {
                   borderSide: BorderSide(color: Colors.pink, width: 3.0),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                  child: Text(
-                    Translations.of(context).text("isbn_scan"),
-                    style: TextStyle(
-                        color: Colors.pink[600], fontWeight: FontWeight.w700),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "ESCANEAR ISBN" ,
+                        //Translations.of(context).text("ESCANEAR ISBN"),
+                        style: TextStyle(
+                            color: Colors.pink[600], fontWeight: FontWeight.w700),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Icon(MdiIcons.barcodeScan, color: Colors.pink, size: 30,)
+                      )
+                    ],
                   ),
                   onPressed: barcodeScanning,
                 ),
                 TextFormField(
-                  //Input ISBN
                   keyboardType: TextInputType.number,
                   controller: controlerISBN,
                   maxLines: 1,
@@ -169,7 +177,9 @@ class _UploadTitleState extends State<UploadTitle> {
                   maxLengthEnforced: true,
                   onEditingComplete: () {
                     if (isISBN(controlerISBN.text, controlerISBN.text.length)) {
-                    gettingISBN(context, controlerISBN.text);}},
+                      gettingISBN(context, controlerISBN.text);
+                    }
+                  },
                   onSaved: (String isbnReaded) {
                     setState(() {
                       widget.isbnInserted(controlerISBN.text);
@@ -178,22 +188,23 @@ class _UploadTitleState extends State<UploadTitle> {
                   decoration: InputDecoration(
                       hintText: Translations.of(context).text("isbn_hint")),
                   validator: (isbn) {
-                    if(isbn.isNotEmpty){
-                    if (isbn.length < 10) {
-                      //El ISBN ha de contener 13 dígitos
-                      return Translations.of(context).text("isbn_too_short");
-                    }
-                    if(!(isISBN(controlerISBN.text, controlerISBN.text.length))){
-                      return Translations.of(context).text("isbn_not_valid");
-                    }
+                    if (isbn.isNotEmpty) {
+                      if (isbn.length < 10) {
+                        //El ISBN ha de contener 13 dígitos
+                        return Translations.of(context).text("isbn_too_short");
+                      }
+                      if (!(isISBN(
+                          controlerISBN.text, controlerISBN.text.length))) {
+                        return Translations.of(context).text("isbn_not_valid");
+                      }
                     }
                   },
                 ),
                 TextFormField(
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.multiline,
                   controller: controlerTitle,
                   maxLines: 1,
-                  maxLength: 50, //1000 caracteres máximo
+                  maxLength: 25,
                   maxLengthEnforced: true,
                   onSaved: (String value) {
                     setState(() {
@@ -259,50 +270,24 @@ class _UploadTitleState extends State<UploadTitle> {
                     ),
                   ],
                 ),
-                /* TextFormField(
-                  //Input Descripcion
-                  keyboardType: TextInputType.text,
-                  maxLines: 4,
-                  maxLength: 1000, //1000 caracteres máximo
-                  maxLengthEnforced: true,
-                  onSaved: (String value) {
-                    widget.descriptionInserted(value);
-                  },
-                  initialValue: widget.prod.getDescription(),
-                  decoration: InputDecoration(
-                      hintText:
-                          Translations.of(context).text("description_hint")),
-                  validator: (description) {
-                    if (description.length > 0) {
-                      descIni = true;
-                    }
-                    if ((widget.autoV.autovalidate || descIni) &&
-                        description.length < 2) {
-                      //El comentario debe tener al menos 30 caracteres
-                      return Translations.of(context)
-                          .text("description_too_short");
-                    }
-                  },
-                ), */
                 Container(height: 50.0),
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Column(
-                          
-                          children: [
-                            Text(Translations.of(context).text("state"),
-                                style: TextStyle(fontSize: 20)),
-                            Column(crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
+                      Column(children: [
+                        Text(Translations.of(context).text("state"),
+                            style: TextStyle(fontSize: 20)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 changeState(_value1);
                               },
                               child: Row(
                                 children: <Widget>[
-                                  Text(Translations.of(context).text("New"),
+                                  Text(Translations.of(context).text("Nuevo"),
                                       style: TextStyle(fontSize: 10)),
                                   Container(
                                     child: Icon(Icons.fiber_new),
@@ -310,7 +295,8 @@ class _UploadTitleState extends State<UploadTitle> {
                                   ),
                                   Radio(
                                     value: _value1,
-                                    onChanged: (_value1) => changeState(_value1),
+                                    onChanged: (_value1) =>
+                                        changeState(_value1),
                                     activeColor: Colors.pink,
                                     groupValue: widget.prod.getState(),
                                   ),
@@ -318,13 +304,14 @@ class _UploadTitleState extends State<UploadTitle> {
                               ),
                             ),
                             GestureDetector(
-                               onTap: (){
+                              onTap: () {
                                 changeState(_value2);
                               },
                               child: Row(
                                 children: <Widget>[
                                   Text(
-                                      Translations.of(context).text("Almost-New"),
+                                      Translations.of(context)
+                                          .text("Seminuevo"),
                                       style: TextStyle(fontSize: 10)),
                                   Container(
                                     child: Icon(MdiIcons.walletTravel),
@@ -332,7 +319,8 @@ class _UploadTitleState extends State<UploadTitle> {
                                   ),
                                   Radio(
                                     value: _value2,
-                                    onChanged: (_value2) => changeState(_value2),
+                                    onChanged: (_value2) =>
+                                        changeState(_value2),
                                     activeColor: Colors.pink,
                                     groupValue: widget.prod.getState(),
                                   ),
@@ -340,12 +328,12 @@ class _UploadTitleState extends State<UploadTitle> {
                               ),
                             ),
                             GestureDetector(
-                               onTap: (){
+                              onTap: () {
                                 changeState(_value3);
                               },
                               child: Row(
                                 children: <Widget>[
-                                  Text(Translations.of(context).text("Old"),
+                                  Text(Translations.of(context).text("Usado"),
                                       style: TextStyle(fontSize: 10)),
                                   Container(
                                     child: Icon(Icons.restore_page),
@@ -353,35 +341,41 @@ class _UploadTitleState extends State<UploadTitle> {
                                   ),
                                   Radio(
                                     value: _value3,
-                                    onChanged: (_value3) => changeState(_value3),
+                                    onChanged: (_value3) =>
+                                        changeState(_value3),
                                     activeColor: Colors.pink,
                                     groupValue: widget.prod.getState(),
                                   ),
                                 ],
                               ),
                             ),
-                            ],)
-                          ]),
+                          ],
+                        )
+                      ]),
                       Container(
                         height: 130.0,
                         width: 1.0,
                         color: Colors.black12,
                         //margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                       ),
-                      Column(
-                          children: [
-                            Text(Translations.of(context).text("state"),
-                                style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
+                      Column(children: [
+                        Text(
+                          Translations.of(context).text("state"),
+                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
                             GestureDetector(
-                               onTap: (){
+                              onTap: () {
                                 changeSend(_conEnvio);
                               },
                               child: Row(
                                 children: <Widget>[
-                                  Text(Translations.of(context).text("con_envio"),
+                                  Text(
+                                      Translations.of(context)
+                                          .text("include_shipping"),
                                       style: TextStyle(fontSize: 10)),
                                   Container(
                                     child: Icon(Icons.local_shipping),
@@ -399,12 +393,14 @@ class _UploadTitleState extends State<UploadTitle> {
                               ),
                             ),
                             GestureDetector(
-                               onTap: (){
+                              onTap: () {
                                 changeSend(_sinEnvio);
                               },
                               child: Row(
                                 children: <Widget>[
-                                  Text(Translations.of(context).text("sin_envio"),
+                                  Text(
+                                      Translations.of(context)
+                                          .text("not_shipping"),
                                       style: TextStyle(fontSize: 10)),
                                   Container(
                                     child: Icon(MdiIcons.accountRemove),
@@ -415,40 +411,42 @@ class _UploadTitleState extends State<UploadTitle> {
                                       onChanged: (_sinEnvio) =>
                                           changeSend(_sinEnvio),
                                       activeColor: Colors.pink,
-                                      groupValue:
-                                          widget.prod.getStringShippinIncluded()),
+                                      groupValue: widget.prod
+                                          .getStringShippinIncluded()),
                                 ],
                               ),
                             ),
-                            ],)
-                          ]),
+                          ],
+                        )
+                      ]),
                     ]),
               ]))
         ]);
   }
- Future<void> _rellenarInfo(String barcode) async{
-        List<String> s = await getInfoISBN(barcode);
-        setState(() {
-          _isbn = barcode;
-          widget.isbnInserted(barcode);
-          controlerISBN.text = barcode;
-          //print(s);
-          controlerTitle.text = s[0];
-          widget.descriptionInserted(s[1]);
-          widget.formKey.currentState.validate();
-          widget.formKey.currentState.save();
-          //print("Bar code decetcado = " + barcode);
-          //print("ISBN almacenado = " + widget.prod.getISBN());
-        });
-    }
 
-  Future<void> gettingISBN(BuildContext context, String barcode) async{
+  Future<void> _rellenarInfo(String barcode) async {
+    List<String> s = await getInfoISBN(barcode);
+    setState(() {
+      _isbn = barcode;
+      widget.isbnInserted(barcode);
+      controlerISBN.text = barcode;
+      //print(s);
+      controlerTitle.text = s[0];
+      widget.descriptionInserted(s[1]);
+      widget.formKey.currentState.validate();
+      widget.formKey.currentState.save();
+      //print("Bar code decetcado = " + barcode);
+      //print("ISBN almacenado = " + widget.prod.getISBN());
+    });
+  }
+
+  Future<void> gettingISBN(BuildContext context, String barcode) async {
     print("getting ISBN");
-    const tamanyoMaxpopUp = 144.4; 
-      _rellenarInfo(barcode).then((onValue){
-        Navigator.of(context).pop();
-      });   
-       return showDialog<bool>(
+    const tamanyoMaxpopUp = 144.4;
+    _rellenarInfo(barcode).then((onValue) {
+      Navigator.of(context).pop();
+    });
+    return showDialog<bool>(
         context: context,
         builder: (BuildContext context) {
           return WillPopScope(
@@ -474,7 +472,6 @@ class _UploadTitleState extends State<UploadTitle> {
         });
   }
 
- 
   void changeState(String newState) {
     widget.stateProductInserted(newState);
     _valueChanged(newState);

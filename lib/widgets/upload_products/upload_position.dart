@@ -4,37 +4,73 @@
  * CREACIÓN:    12/05/2019
  */
 
-import 'package:bookalo/widgets/filter/distance_map.dart';
+import 'package:bookalo/widgets/detailed_product/product_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong/latlong.dart';
 import 'package:flutter/material.dart';
+import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 
 /*
  *  CLASE:        UploadPosition
- *  TODO: Widget sin implementar
  *  DESCRIPCIÓN:  
  */
 
 class UploadPosition extends StatefulWidget {
   final Function(bool) validate;
-
-  const UploadPosition({Key key, this.validate}) : super(key: key);
+  final Function(LatLng) onPositionChange;
+  final LatLng initialPosition;
+  const UploadPosition({Key key, this.validate, this.initialPosition, this.onPositionChange})
+      : super(key: key);
   @override
   _UploadPositionState createState() => _UploadPositionState();
 }
 
 class _UploadPositionState extends State<UploadPosition> {
+  LatLng _position;
+  bool _loadingNewLocation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _position = widget.initialPosition;
+  }
+
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-    return Center(
-        child: ListView(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            children: <Widget>[
-          Container(
-            child: DistanceMap(
-                //TODO: ver que pàrametros necesita
-                height: _height * 0.65,
-                distanceRadius: 5000),
-          ),
-        ]));
+    return Stack(
+      alignment: Alignment.topRight,
+      children: <Widget>[
+        ProductMap(
+          expandible: false,
+          position: _position,
+          height: _height,
+        ),
+        (_loadingNewLocation
+            ? BookaloProgressIndicator()
+            : Material(
+                color: Colors.transparent,
+                elevation: 10.0,
+                child: IconButton(
+                    icon:
+                        Icon(Icons.location_on, size: 40.0, color: Colors.pink),
+                    onPressed: () async {
+                      setState(() => _loadingNewLocation = true);
+                      Geolocator()
+                          .getCurrentPosition(
+                              desiredAccuracy: LocationAccuracy.high)
+                          .then((newPosition) {
+                        setState(() {
+                          _loadingNewLocation = false;
+                          _position = LatLng(
+                              newPosition.latitude, newPosition.longitude);
+                        });
+                        widget.onPositionChange(LatLng(
+                            newPosition.latitude, newPosition.longitude));
+                      });
+                    }),
+              ))
+      ],
+    );
   }
 }

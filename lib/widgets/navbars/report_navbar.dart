@@ -5,8 +5,6 @@
  */
 import 'package:flutter/material.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/user_profile.dart';
-import 'package:bookalo/utils/dates_utils.dart';
 
 /*
  *  CLASE:        SimpleNavbar
@@ -57,7 +55,6 @@ class _ReportNavbarState extends State<ReportNavbar> {
     double topMargin = height / 60;
     return Pre(
       automaticallyImplyLeading: false,
-      elevation: 0.0,
       leading: Container(
             margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
         child: Icon(Icons.flag)

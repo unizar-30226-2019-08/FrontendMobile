@@ -1,29 +1,26 @@
 /*
- * FICHERO:     menu_chats_buy.dart
+ * FICHERO:     chats_list.dart
  * DESCRIPCIÓN: clases relativas a la pestaña de chats de compra
  * CREACIÓN:    20/04/2019
  */
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:bookalo/translations.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
-import 'package:bookalo/utils/objects_generator.dart';
+import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/miniature_chat.dart';
-import 'package:paging/paging.dart';
+import 'package:bookalo/widgets/empty_list.dart';
 
 /*
  *  CLASE:        ChatsList
  *  DESCRIPCIÓN:  widget para el cuerpo principal de la pestaña
  *                de chats de compra. Contiene una lista con las miniaturas
-  *               de los chats iniciados con vendedores
-  *               
+ *                de los chats iniciados con vendedores
+ *               
  */
 class ChatsList extends StatefulWidget {
-  final bool buyChats;
-  bool _hasChats;
-  ChatsList({Key key, this.buyChats}) : super(key: key) {
-    this._hasChats = Random().nextDouble() > 0.2;
-  }
+  final bool imBuyer;
+  ChatsList({Key key, this.imBuyer}) : super(key: key);
 
   @override
   State<ChatsList> createState() {
@@ -32,70 +29,77 @@ class ChatsList extends StatefulWidget {
 }
 
 class _ChatsListState extends State<ChatsList> {
-  bool alreadyChecked = false;
+  bool _isLoading = false;
+  bool _endReached = false;
+  bool _noFirstFetch = true;
 
-  Future<List<Widget>> _fetchPage(int pageSize, double height) async {
-    await Future.delayed(Duration(seconds: 1));
-    if (widget._hasChats) {
-      return List<MiniatureChat>.generate(8, (index) {
-        return widget.buyChats
-            ? MiniatureChat(
-                user: generateRandomUser(),
-                product: generateRandomProduct(),
-                lastWasMe: true,
-                lastMessage: 'Soy un vendedor',
-                closed: false,
-                lastTimeDate: DateTime.now(),
-                isBuyer: false)
-            : MiniatureChat(
-                user: generateRandomUser(),
-                product: generateRandomProduct(),
-                lastWasMe: true,
-                lastMessage: 'Soy un comprador',
-                closed: false,
-                lastTimeDate: DateTime.now(),
-                isBuyer: true);
-      });
-    } else {
-      if (!alreadyChecked) {
-        alreadyChecked = true;
-        return List.of([
-          Center(
-            child: Container(
-              margin: EdgeInsets.only(top: height / 5),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      margin: EdgeInsets.only(bottom: height / 25),
-                      child: Icon(Icons.remove_shopping_cart,
-                          size: 80.0, color: Colors.pink)),
-                  Text(
-                    Translations.of(context).text("no_products_available"),
-                    style:
-                        TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-                  )
-                ],
-              ),
-            ),
-          )
-        ]);
-      } else {
-        return List.of([]);
+  void fetchChats(ChatsRegistry registry, int pageSize) async {
+    if (!_endReached) {
+      if (!_isLoading) {
+        _isLoading = true;
+        parseChats(widget.imBuyer, pageSize, 10).then((newChats) {
+          _isLoading = false;
+          if (newChats.length == 0) {
+            _endReached = true;
+          }
+          registry.addChats(widget.imBuyer ? 'sellers' : 'buyers', newChats);
+          setState(() => _noFirstFetch = false);
+        }).catchError((e) {
+          print(e);
+        });
       }
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    fetchChats(ScopedModel.of<ChatsRegistry>(context), 0);
+  }
+
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        body: Pagination<Widget>(
-      progress: Container(
-          margin: EdgeInsets.symmetric(vertical: height / 20),
-          child: BookaloProgressIndicator()),
-      pageBuilder: (currentSize) => _fetchPage(currentSize, height),
-      itemBuilder: (index, item) {
-        return item;
-      },
-    ));
+    return ScopedModelDescendant<ChatsRegistry>(
+        builder: (context, child, chatsRegistry) {
+      if (chatsRegistry.getChats(widget.imBuyer ? 'sellers' : 'buyers').length >
+          0) {
+        return ListView.builder(
+          itemBuilder: (context, position) {
+            if (position <
+                chatsRegistry
+                    .getChats(widget.imBuyer ? 'sellers' : 'buyers')
+                    .length) {
+              return MiniatureChat(
+                  chat: chatsRegistry.getChats(
+                      widget.imBuyer ? 'sellers' : 'buyers')[position]);
+            } else if (position ==
+                    chatsRegistry
+                        .getChats(widget.imBuyer ? 'sellers' : 'buyers')
+                        .length &&
+                !_endReached) {
+              fetchChats(
+                chatsRegistry,
+                chatsRegistry
+                    .getChats(widget.imBuyer ? 'sellers' : 'buyers')
+                    .length,
+              );
+              return Container(
+                  margin: EdgeInsets.symmetric(vertical: 50.0),
+                  child: BookaloProgressIndicator());
+            } else {
+              return null;
+            }
+          },
+        );
+      } else {
+        if (_noFirstFetch) {
+          return BookaloProgressIndicator();
+        } else {
+          return EmptyList(
+            iconData: Icons.chat_bubble_outline,
+            textKey: widget.imBuyer ? 'no_sellers_yet' : 'no_buyers_yet',
+          );
+        }
+      }
+    });
   }
 }

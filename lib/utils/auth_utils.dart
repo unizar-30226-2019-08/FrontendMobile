@@ -5,10 +5,14 @@
  */
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:bookalo/utils/http_utils.dart';
 
 enum LoginResult {
   first_time,
@@ -26,8 +30,18 @@ enum LoginResult {
  */
 Future<LoginResult> completeLogin() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  var response = await http.post('https://bookalo.es/api/login',
-      headers: {'appmovil': 'true'}, body: {'token': await user.getIdToken()});
+  Position position = await Geolocator()
+      .getLastKnownPosition(desiredAccuracy: LocationAccuracy.medium);
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  _firebaseMessaging.requestNotificationPermissions();
+  var response = await http.post('https://bookalo.es/api/login', headers: {
+    'appmovil': 'true'
+  }, body: {
+    'token': await user.getIdToken(),
+    'fcm_token': await _firebaseMessaging.getToken(),
+    'latitud': position.latitude.toString(),
+    'longitud': position.longitude.toString()
+  });
   switch (response.statusCode) {
     case 200:
       return LoginResult.completed;
@@ -109,25 +123,31 @@ Future<void> signInFirebase(String provider) async {
  */
 Future<void> signOut() async {
   String provider = "";
+  await logout();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  await _firebaseMessaging.deleteInstanceID();
   await FirebaseAuth.instance.currentUser().then((user) {
     provider = user.providerData[1].providerId;
   });
-  switch (provider) {
-    case "google.com":
-      final GoogleSignIn g = GoogleSignIn();
-      await g.disconnect();
-      break;
-    case "twitter.com":
-      var twitterLogin = TwitterLogin(
-        consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
-        consumerSecret: 'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',
-      );
-      await twitterLogin.logOut();
-      break;
-    case "facebook.com":
-      final facebookLogin = FacebookLogin();
-      await facebookLogin.logOut();
-      break;
-  }
+
+  try {
+    switch (provider) {
+      case "google.com":
+        final GoogleSignIn g = GoogleSignIn();
+        await g.disconnect();
+        break;
+      case "twitter.com":
+        var twitterLogin = TwitterLogin(
+          consumerKey: '7GfNxhqmPRol06FtTbprVA0Nk',
+          consumerSecret: 'cDVemq5RmvHxt1oqhX2Qg0fPTrYDPjjziwZxbbtBTiSnQw5ne8',
+        );
+        await twitterLogin.logOut();
+        break;
+      case "facebook.com":
+        final facebookLogin = FacebookLogin();
+        await facebookLogin.logOut();
+        break;
+    }
+  } catch (e) {}
   FirebaseAuth.instance.signOut();
 }

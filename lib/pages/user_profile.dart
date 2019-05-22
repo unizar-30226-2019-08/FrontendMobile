@@ -4,15 +4,15 @@
  * CREACIÓN:    15/03/2019
  */
 import 'package:flutter/material.dart';
-import 'package:lipsum/lipsum.dart' as lipsum;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:bookalo/widgets/navbars/profile_navbar.dart';
-import 'package:bookalo/widgets/review_card.dart';
-import 'package:bookalo/widgets/product_view.dart';
+import 'package:paging/paging.dart';
+import 'package:bookalo/widgets/empty_list.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
-import 'package:bookalo/utils/list_viewer.dart';
-import 'package:bookalo/utils/objects_generator.dart';
+import 'package:bookalo/widgets/review_card.dart';
+import 'package:bookalo/widgets/navbars/profile_navbar.dart';
+import 'package:bookalo/widgets/navbars/own_profile_navbar.dart';
+import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/widgets/product_view.dart';
 
 /*
  *  CLASE:        UserProfile
@@ -22,174 +22,134 @@ import 'package:bookalo/objects/user.dart';
  */
 class UserProfile extends StatefulWidget {
   final bool isOwnProfile;
+  final User user;
 
-  UserProfile({Key key, this.isOwnProfile}) : super(key: key);
+  UserProfile({Key key, this.isOwnProfile, this.user}) : super(key: key);
 
   _UserProfileState createState() => _UserProfileState();
 }
 
-//TODO: clase page_view que encapsule list.builder??
-//TODO: _fetch page con productos o con widget visor??
-class _UserProfileState extends State<UserProfile> {
-  /*
-      Pre: pageNumber >=0 y pageSize > 0
-      Post: devuelve una lista con pageSize ProductView
-   */
-  _fetchFeatured(int pageNumber, int pageSize) async {
-    await Future.delayed(
-        Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
+class _UserProfileState extends State<UserProfile>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: (widget.isOwnProfile
+                ? OwnProfileNavbar(preferredSize: Size.fromHeight(height / 3.3))
+                : ProfileNavbar(
+                    preferredSize: Size.fromHeight(height / 3.3),
+                    user: widget.user)),
+            body: TabBarView(
+              children: [
+                FeaturedProducts(
+                    isOwnProfile: widget.isOwnProfile, user: widget.user),
+                ReviewViewer(user: widget.user),
+              ],
+            )));
+  }
+}
 
-    return List.generate(pageSize, (index) {
-      if (index % 2 == 0) {
-        return ProductView(generateRandomProduct(), 6.1, 39);
-      } else {
-        return ProductView(generateRandomProduct(), 6.1, 39);
+class FeaturedProducts extends StatefulWidget {
+  final bool isOwnProfile;
+  final User user;
+  FeaturedProducts({Key key, this.isOwnProfile, this.user}) : super(key: key);
+
+  @override
+  _FeaturedProductsState createState() => _FeaturedProductsState();
+}
+
+class _FeaturedProductsState extends State<FeaturedProducts> {
+  bool featuredEndReached = false;
+  bool featuredFirstFecth = true;
+
+  Future<List<Widget>> fetchUserProducts(currentSize, height) async {
+    List<Widget> output = new List();
+    if (!featuredEndReached) {
+      List<ProductView> fetchResult = widget.isOwnProfile
+          ? await parseUserFavorites(currentSize, 10)
+          : await parseUserProducts(widget.user, currentSize, 10);
+      featuredEndReached = fetchResult.length == 0;
+      output.addAll(fetchResult);
+      if (featuredEndReached) {
+        if (featuredFirstFecth) {
+          output.add(EmptyList(
+              iconData: widget.isOwnProfile
+                  ? Icons.favorite_border
+                  : Icons.remove_shopping_cart,
+              textKey: widget.isOwnProfile
+                  ? 'no_favorites_yes'
+                  : 'no_productos_uploaded'));
+        }
       }
-    });
-  }
-
-  /*
-      Pre: ---
-      Post: devuelve una ListView con la lista de elementos en page
-   */
-  Widget _buildPage(List page) {
-    return ListView(shrinkWrap: true, primary: false, children: page);
-  }
-
-  /*
-      Pre:---
-      Post: devuelve una listView de productos destacados con product view
-   */
-
-  Widget _featuredProducts(bool isOwnProfile) {
-    return ListView.builder(
-      itemBuilder: (context, pageNumber) {
-        return KeepAliveFutureBuilder(
-          future: this._fetchFeatured(pageNumber, 3), //TODO: cambiar función
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: BookaloProgressIndicator(),
-                );
-              case ConnectionState.waiting:
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: BookaloProgressIndicator(),
-                );
-              case ConnectionState.done:
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return this._buildPage(snapshot.data);
-                }
-                break;
-              case ConnectionState.active:
-            }
-          },
-        );
-      },
-    );
-  }
-
-  /*
-      Pre: pageNumber >=0 y pageSize > 0
-      Post: devuelve una lista con pageSize ReviewCard
-   */
-  _fetchReviews(String uid, int pageNumber, int pageSize) async {
-    await Future.delayed(
-        Duration(seconds: 1)); //TODO: solo para visualizacion  de prueba
-
-    return List.generate(pageSize, (index) {
-      if (index % 2 == 0) {
-        return ReviewCard(
-            generateRandomUser(),
-            DateTime.utc(2019, 03, 9),
-            false,
-            generateRandomProduct(),
-            lipsum.createSentence(numSentences: 3),
-            8.4);
-      } else {
-        return ReviewCard(
-            generateRandomUser(),
-            DateTime.utc(2019, 02, 15),
-            true,
-            generateRandomProduct(),
-            lipsum.createSentence(numSentences: 2),
-            2);
+      if (featuredFirstFecth) {
+        featuredFirstFecth = false;
       }
-    });
-  }
-
-  /*
-      Pre:---
-      Post: devuelve una listView de  valoraciones con ReviewCard
-   */
-
-  Widget _userReviews(User user) {
-    return ListView.builder(
-      itemBuilder: (context, pageNumber) {
-        return KeepAliveFutureBuilder(
-          future: this._fetchReviews(user.getUID(), pageNumber, 4),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: BookaloProgressIndicator(),
-                );
-              case ConnectionState.waiting:
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: BookaloProgressIndicator(),
-                );
-              case ConnectionState.done:
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return this._buildPage(snapshot.data);
-                }
-                break;
-              case ConnectionState.active:
-            }
-          },
-        );
-      },
-    );
-  }
-
-  Future<User> getUser(bool isOwnProfile) async {
-    if (isOwnProfile) {
-      return generatePseudoUser(await FirebaseAuth.instance.currentUser());
-    } else {
-      return generateRandomUser();
     }
+    return output;
   }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    return FutureBuilder<User>(
-        future: getUser(widget.isOwnProfile),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return DefaultTabController(
-                length: 2,
-                child: Scaffold(
-                    appBar: ProfileNavbar(
-                        preferredSize: Size.fromHeight(height / 3.3),
-                        user: snapshot.data,
-                        isOwnProfile: widget.isOwnProfile),
-                    body: TabBarView(
-                      children: [
-                        _featuredProducts(widget.isOwnProfile),
-                        _userReviews(snapshot.data)
-                      ],
-                    )));
-          } else {
-            return Scaffold(body: BookaloProgressIndicator());
-          }
-        });
+    return Pagination<Widget>(
+      progress: Container(
+          margin: EdgeInsets.symmetric(vertical: height / 20),
+          child: BookaloProgressIndicator()),
+      pageBuilder: (currentSize) => (widget.isOwnProfile
+          ? fetchUserProducts(currentSize, height)
+          : fetchUserProducts(currentSize, height)),
+      itemBuilder: (index, item) {
+        return item;
+      },
+    );
+  }
+}
+
+class ReviewViewer extends StatefulWidget {
+  final User user;
+  ReviewViewer({Key key, this.user}) : super(key: key);
+  @override
+  _ReviewViewerState createState() => _ReviewViewerState();
+}
+
+class _ReviewViewerState extends State<ReviewViewer> {
+  bool reviewsEndReached = false;
+  bool reviewsFirstFecth = true;
+
+  Future<List<Widget>> fetchReviews(currentSize, height) async {
+    List<Widget> output = new List();
+    if (!reviewsEndReached) {
+      List<ReviewCard> fetchResult =
+          await parseReviews(currentSize, 10, user: widget.user);
+      reviewsEndReached = fetchResult.length == 0;
+      output.addAll(fetchResult);
+      if (reviewsEndReached) {
+        if (reviewsFirstFecth) {
+          output.add(EmptyList(
+              iconData: Icons.rate_review, textKey: "no_reviews_yet"));
+        }
+      }
+      if (reviewsFirstFecth) {
+        reviewsFirstFecth = false;
+      }
+    }
+    return output;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    return Pagination<Widget>(
+      progress: Container(
+          margin: EdgeInsets.symmetric(vertical: height / 20),
+          child: BookaloProgressIndicator()),
+      pageBuilder: (currentSize) => fetchReviews(currentSize, height),
+      itemBuilder: (index, item) {
+        return item;
+      },
+    );
   }
 }

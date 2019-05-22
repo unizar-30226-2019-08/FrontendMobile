@@ -91,11 +91,9 @@ class _LoginState extends State<Login> {
             Navigator.pushReplacementNamed(context, '/buy_and_sell');
             break;
           default:
-            print('HA SALTADO POR A');
             _handleError(provider, result);
         }
       } catch (e) {
-        print('HA SALTADO POR B: ' + e.toString());
         _handleError(provider, LoginResult.firebase_errored);
       }
     }

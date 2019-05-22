@@ -16,14 +16,18 @@ import 'package:bookalo/objects/product.dart';
  */
 
 class ProductInfo extends StatelessWidget {
+  final bool addExtraLike;
+  final bool removeMinusLike;
   final Product _product;
 
-  ProductInfo(this._product);
+  ProductInfo(this._product, this.addExtraLike, this.removeMinusLike);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    int extraLike = addExtraLike ? 1 : 0;
+    int minusLike = removeMinusLike ? -1 : 0;
 
     return SizedBox(
         width: width,
@@ -77,7 +81,12 @@ class ProductInfo extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(this._product.getFavourites().toString() + ' x ',
+                      Text(
+                          (this._product.getFavourites() +
+                                      extraLike +
+                                      minusLike)
+                                  .toString() +
+                              ' x ',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontWeight: FontWeight.w300)),
                       Icon(Icons.favorite, color: Colors.pink)

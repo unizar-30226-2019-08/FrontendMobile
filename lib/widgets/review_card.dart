@@ -5,8 +5,7 @@
  *
  */
 import 'package:flutter/material.dart';
-import 'package:bookalo/objects/product.dart';
-import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/translations.dart';
@@ -16,17 +15,9 @@ import 'package:bookalo/translations.dart';
   DESCRIPCIÓN: widget de miniatura de transaccion
  */
 class ReviewCard extends StatelessWidget {
-  final User _user;
-  //final int _reviewDate;
-  final DateTime _reviewDate;
-  final bool _seller; //true: vendió, false: compró
+  final Review review;
 
-  final Product _product;
-  final String _review;
-  final double _stars;
-
-  ReviewCard(this._user, this._reviewDate, this._seller, this._product,
-      this._review, this._stars);
+  ReviewCard({Key key, this.review}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +29,23 @@ class ReviewCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                  backgroundImage: NetworkImage(_user.getPicture())),
-              title: Text(_user.getName(),
+                  backgroundImage: NetworkImage(review.getUser.getPicture())),
+              title: Text(review.getUser.getName(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 21,
                   )),
               subtitle: Text(
-                this._seller == true
-                    ? Translations.of(context).text("seller_tab")
-                    : Translations.of(context).text("buyer_tab"),
+                //TODO: apañar etiqueta
+                Translations.of(context).text("seller_tab"),
                 style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 17,
                 ),
               ),
               trailing: CircleAvatar(
-                  backgroundImage: NetworkImage(_product.getImages()[0])),
+                  backgroundImage:
+                      NetworkImage(review.getProduct.getImages()[0])),
             ),
             Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,16 +53,16 @@ class ReviewCard extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 16),
-                    child:
-                        Text(dateToNumbers(_reviewDate, context), //DateToString
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontSize: 19,
-                            )),
+                    child: Text(
+                        dateToNumbers(review.getDate, context), //DateToString
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 19,
+                        )),
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 16),
-                    child: StaticStars(this._stars, Colors.black, null),
+                    child: StaticStars(review.getStarts, Colors.black, null),
                   )
                 ]),
             Column(
@@ -82,7 +73,7 @@ class ReviewCard extends StatelessWidget {
                   margin:
                       EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 10),
                   child: Text(
-                    this._review,
+                    review.getReview,
                     textAlign: TextAlign.justify,
                     maxLines: 5,
                     overflow: TextOverflow.ellipsis,

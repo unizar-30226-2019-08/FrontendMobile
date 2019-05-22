@@ -6,13 +6,14 @@
 *
  */
 
+import 'package:bookalo/widgets/navbars/chat_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/widgets/static_stars.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/utils/objects_generator.dart';
 import 'package:bookalo/pages/user_profile.dart';
-import 'package:bookalo/pages/chat.dart';
+import 'package:bookalo/widgets/chat_opener.dart';
 
 /*
   CLASE: UserProduct
@@ -20,13 +21,11 @@ import 'package:bookalo/pages/chat.dart';
             usuario vendedor en la página de producto detallado
  */
 
-class UserProduct extends StatefulWidget {
-  UserProduct();
-  _UserProductState createState() => _UserProductState();
-}
+class UserProduct extends StatelessWidget {
+  final User _user;
+  final Product _product;
 
-class _UserProductState extends State<UserProduct> {
-  User user = generateRandomUser();
+  UserProduct(this._user, this._product);
 
   @override
   Widget build(BuildContext context) {
@@ -46,32 +45,24 @@ class _UserProductState extends State<UserProduct> {
             leading: Hero(
               tag: "profileImage",
               child: CircleAvatar(
-                backgroundImage: NetworkImage(user.getPicture()),
+                backgroundImage: NetworkImage(_user.getPicture()),
               ),
             ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.chat_bubble_outline,
-                color: Colors.pink,
-                size: 40.0,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Chat()),
-                );
-              },
+            trailing: ChatOpener(
+              user: _user,
+              product: _product,
             ),
-            title: Text(user.getName()),
+            title: Text(_user.getName()),
             subtitle: StaticStars(
-                /* usuario.getRating()*/ 6,
-                Colors.black,
-                /*usuario.getReviews()*/ 6), //Todo: rating y reviews
+                _user.getRating(), Colors.black, _user.getRatingsAmount()),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserProfile(isOwnProfile: false)),
+                    builder: (context) => UserProfile(
+                          isOwnProfile: false,
+                          user: _user,
+                        )),
               );
             },
           ),

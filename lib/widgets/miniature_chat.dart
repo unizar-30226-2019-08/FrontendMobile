@@ -3,14 +3,13 @@
  * DESCRIPCIÓN: clases relativas a la  miniatura de un chat
  * CREACIÓN:    14/03/2019
  */
-
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/utils/dates_utils.dart';
-import 'package:bookalo/objects/user.dart';
-import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/translations.dart';
-import 'package:bookalo/pages/chat.dart';
+import 'package:bookalo/pages/chat_page.dart';
 
 /*
  *  CLASE:        MiniatureChat
@@ -18,100 +17,120 @@ import 'package:bookalo/pages/chat.dart';
  */
 
 class MiniatureChat extends StatelessWidget {
-  final User user; //Usuario con el que se chatea
-  final Product product; //Producto sobre el que trata el chat
-  final bool lastWasMe; //vale true si el usuario es el autor del ultimo mensaje
-  final String lastMessage; //ultimo mensaje enviado en el chat
-  final bool closed; //vale true si la transacción está cerrada
-  final DateTime lastTimeDate; //indica la fecha de la última conexión
-  final bool isBuyer;
-
-  MiniatureChat(
-      {Key key,
-      this.user,
-      this.product,
-      this.lastWasMe,
-      this.lastMessage,
-      this.closed,
-      this.lastTimeDate,
-      this.isBuyer})
-      : super(key: key);
+  final Chat chat;
+  MiniatureChat({Key key, this.chat}) : super(key: key);
 
   /*
    * Pre:  ---
    * Post: construye el título de la miniatura con el último mensaje y su autor
    */
-  Text buildTitle(BuildContext context) {
-    String message = ""; //ultimo mensaje enviado
-    String author = ""; //nombre de el autor del último mensaje
-    if (this.lastMessage.length > 10) {
-      //si el mensaje tiene más de 10 caracteres
-      message = this.lastMessage.substring(1, 10) +
-          "..."; // se muestran los 10 primeros
+  Widget buildSubtitle(BuildContext context) {
+    if (chat.lastMessage != null) {
+      String message = chat.lastMessage.body;
+      if (message.length > 30) {
+        message = message.substring(0, 30) + '...';
+      }
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            message,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: chat.numberOfPending > 0
+                    ? FontWeight.bold
+                    : FontWeight.w400),
+          ),
+          Text(
+            dateToFullString(chat.lastMessage.getTimestamp, context),
+            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+          )
+        ],
+      );
     } else {
-      //si no,se muestra entero
-      message = this.lastMessage;
+      return Text(Translations.of(context).text("not_yet_chat"));
     }
-
-    if (lastWasMe) {
-      // si el autor fui yo
-      author = Translations.of(context).text("you"); //Muestra "tu"
-    } else {
-      //si no, muestra el nombre del usuario
-      this.user.getName();
-    }
-    String toShow = author + ': ' + message; //construye mensaje completo
-    return Text(toShow);
   }
   /*
    * Pre:   ---
    * Post:  crea un widget que representa el título de la miniatura
    */
 
-  Widget title(BuildContext context) {
-    Widget b;
-    if (closed) {
-      //si la venta está cerrada
-      b = Row(children: <Widget>[
-        buildTitle(context),
-        Container(width: 100.0),
-        Container(
-          margin: EdgeInsets.only(top: 15.0),
-          child: DecoratedBox(
-            //incluir mensaje de cerrado
-            decoration: BoxDecoration(color: Colors.pink),
-            child: Container(
-                margin: EdgeInsets.all(1.0),
-                child: Text(
-                  (isBuyer
-                      ? Translations.of(context).text("chat_finished_buy")
-                      : Translations.of(context).text("chat_finished_sell")),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                )),
+  Widget buildTitle(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            chat.getOtherUser.getName(),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0),
           ),
-        )
-      ]);
-    } else {
-      //si no, se construye el título sin cajita
-      b = buildTitle(context);
-    }
-    return b;
+          (chat.getProduct.checkfForSale()
+              ? Container(width: 0)
+              : Container(
+                  margin: EdgeInsets.only(top: 15.0),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.pink),
+                    child: Container(
+                        margin: EdgeInsets.all(1.0),
+                        child: Text(
+                          Translations.of(context).text("chat_finished"),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: Colors.white),
+                        )),
+                  ),
+                )),
+        ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading:
-          CircleAvatar(backgroundImage: NetworkImage(this.user.getPicture())),
-      title: title(context),
-      subtitle: Text(dateToFullString(this.lastTimeDate, context)),
+      leading: CircleAvatar(
+          backgroundImage: NetworkImage(chat.getOtherUser.getPicture())),
+      title: buildTitle(context),
+      subtitle: buildSubtitle(context),
+      isThreeLine: true,
       enabled: true,
-      trailing: CircleAvatar(
-          backgroundImage: NetworkImage(this.product.getImages()[0])),
+      trailing: chat.numberOfPending > 0
+          ? Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(chat.getProduct.getImages()[0])),
+                ClipOval(
+                  child: Container(
+                    color: Colors.pink.withOpacity(0.7),
+                    height: 30.0, // height of the button
+                    width: 30.0, // width of the button
+                    child: Center(
+                      child: Text(
+                          chat.numberOfPending > 9
+                              ? '+9'
+                              : chat.numberOfPending.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                  ),
+                )
+              ],
+            )
+          : CircleAvatar(
+              backgroundImage: NetworkImage(chat.getProduct.getImages()[0]),
+            ),
       onTap: () {
+        ScopedModel.of<ChatsRegistry>(context).removePending(chat.imBuyer ? 'sellers' : 'buyers', chat);
+        //TODO: borrado de pendientes en HTTP
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Chat()));
-      }, //imagen del producto sobre el que se chatea
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatPage(
+                      chat: chat,
+                    )));
+      },
     );
   }
 }

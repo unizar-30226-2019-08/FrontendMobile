@@ -4,12 +4,11 @@
  *              widget de selección de tags
  * CREACIÓN:    20/03/2019
  */
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:bookalo/widgets/filter/tags_selector.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
+import 'package:bookalo/utils/http_utils.dart';
 
 /*
  *  CLASE:        TagsLoader
@@ -34,28 +33,11 @@ class TagsLoader extends StatefulWidget {
 }
 
 class _TagsLoaderState extends State<TagsLoader> {
-  /*
-   * Pre:   ---
-   * Post   devolverá una lista de tags. Por el momento, mockup
-   */
-  Future<List<Tag>> _getTags() async {
-    List<Tag> mockTagList = [];
-    mockTagList.addAll(widget.initialTags);
-    nouns.take(100).forEach((noun) {
-      if (!widget.initialTags.map((tag) {
-        return tag.title;
-      }).contains(noun)) {
-        mockTagList.add(Tag(title: noun, active: false));
-      }
-    });
-    return mockTagList;
-  }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return FutureBuilder(
-      future: _getTags(),
+      future: parseTags(widget.initialTags),
       builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
         if (snapshot.hasData) {
           return TagsSelector(

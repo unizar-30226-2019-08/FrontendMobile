@@ -5,8 +5,9 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
 import 'package:bookalo/objects/product.dart';
+import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/filter_query.dart';
 import 'package:bookalo/utils/silver_header.dart';
 import 'package:bookalo/widgets/detailed_product/radial_button.dart';
 import 'package:bookalo/widgets/detailed_product/user_product.dart';
@@ -15,19 +16,31 @@ import 'package:bookalo/widgets/detailed_product/product_info.dart';
 import 'package:bookalo/widgets/detailed_product/distance_chip.dart';
 import 'package:bookalo/widgets/detailed_product/tag_wraper.dart';
 import 'package:bookalo/widgets/detailed_product/image_swipper.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:bookalo/widgets/detailed_product/isbn_viewer.dart';
 
 class DetailedProduct extends StatefulWidget {
+  final bool isLiked;
   final Product product;
-  DetailedProduct({Key key, this.product}) : super(key: key);
+  final User user;
+  DetailedProduct({Key key, this.product, this.user, this.isLiked})
+      : super(key: key);
 
   @override
   _DetailedProductState createState() => _DetailedProductState();
 }
 
 class _DetailedProductState extends State<DetailedProduct> {
+  bool isMarkedAsFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    isMarkedAsFavorite = widget.isLiked;
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     bool longTitle = widget.product.getName().length > 17;
     return Scaffold(
@@ -47,7 +60,8 @@ class _DetailedProductState extends State<DetailedProduct> {
                       child: Container(
                         margin: EdgeInsets.only(top: 20.0, right: 20.0),
                         child: DistanceChip(
-                            userPosition: LatLng(0.0, 0.0),
+                            userPosition:
+                                ScopedModel.of<FilterQuery>(context).position,
                             targetPosition: widget.product.getPosition()),
                       ),
                     ),
@@ -64,15 +78,17 @@ class _DetailedProductState extends State<DetailedProduct> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            width: width / 1.6,
-                            margin: EdgeInsets.only(left: 20),
-                            child: Text(
-                              widget.product.getName(),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 35.0, fontWeight: FontWeight.w300),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: Text(
+                                widget.product.getName(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 35.0,
+                                    fontWeight: FontWeight.w300),
+                              ),
                             ),
                           ),
                           Container(
@@ -91,8 +107,13 @@ class _DetailedProductState extends State<DetailedProduct> {
                             bottom: (longTitle ? height / 25 : 0)),
                         child: RadialButton(
                             product: widget.product,
-                            sellerId: "123",
-                            buyerId: "123")),
+                            sellerId: widget.user.uid,
+                            wasMarkedAsFavorite: widget.isLiked,
+                            onFavorite: () {
+                              setState(() {
+                                isMarkedAsFavorite = !isMarkedAsFavorite;
+                              });
+                            })),
                   ],
                 )),
           ),
@@ -109,16 +130,22 @@ class _DetailedProductState extends State<DetailedProduct> {
                   ),
                 ),
                 Container(height: 10.0),
+                Divider(),
                 Center(
                   child: Container(
                     child: TagWraper(product: widget.product),
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
                 ),
+                Divider(),
+                ISBNViewer(product: widget.product),
                 Container(height: 10.0),
-                ProductInfo(widget.product),
+                ProductInfo(
+                    widget.product,
+                    (!widget.isLiked && isMarkedAsFavorite),
+                    (widget.isLiked && !isMarkedAsFavorite)),
                 Container(height: 10.0),
-                Center(child: UserProduct()),
+                Center(child: UserProduct(widget.user, widget.product)),
                 ProductMap(
                     position: widget.product.getPosition(),
                     height: height / 5,

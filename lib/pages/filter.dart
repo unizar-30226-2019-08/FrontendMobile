@@ -33,7 +33,6 @@ class _FilterState extends State<Filter> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
           title: Text(Translations.of(context).text("filter_title"),
               style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300)),
           leading: Icon(Icons.sort),
@@ -75,8 +74,8 @@ class _FilterState extends State<Filter> {
               ),
               DistanceMap(
                   height: height / 5, distanceRadius: _maxDistance * 1000),
-              PriceSlider(onPriceChanged: (minPrice, maxPrice) {}),
-              RatingSlider(onMinRatingChanged: (minRate) {}),
+              PriceSlider(),
+              RatingSlider(),
               Container(
                 margin: EdgeInsets.only(top: 20.0),
                 child: Center(

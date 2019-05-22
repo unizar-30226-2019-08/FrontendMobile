@@ -28,6 +28,14 @@ class DistanceSlider extends StatefulWidget {
 }
 
 class _DistanceSliderState extends State<DistanceSlider> {
+  double distance;
+
+  @override
+  void initState() {
+    super.initState();
+    distance = ScopedModel.of<FilterQuery>(context).maxDistance;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -47,27 +55,23 @@ class _DistanceSliderState extends State<DistanceSlider> {
               width: width / 1.5,
               child: Slider(
                 min: 1.0,
-                max: 30.0,
-                value: ScopedModel.of<FilterQuery>(context).maxDistance != -1
-                    ? ScopedModel.of<FilterQuery>(context).maxDistance
-                    : 10,
-                onChanged: (value) async {
-                  setState(() => ScopedModel.of<FilterQuery>(context)
-                      .setMaxDistance(value));
+                max: 150.0,
+                value: distance,
+                onChanged: (value) {
+                  setState(() {
+                    distance = value;
+                  });
                   widget.onMaxDistanceChange(value);
+                },
+                onChangeEnd: (value) {
+                  ScopedModel.of<FilterQuery>(context).setMaxDistance(value);
                 },
               ),
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10.0),
               width: width / 4,
-              child: Text(
-                  ScopedModel.of<FilterQuery>(context).maxDistance != -1
-                      ? ScopedModel.of<FilterQuery>(context)
-                              .maxDistance
-                              .toStringAsFixed(1) +
-                          ' km'
-                      : '10 km',
+              child: Text(distance.toStringAsFixed(1) + ' km',
                   style:
                       TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300)),
             )

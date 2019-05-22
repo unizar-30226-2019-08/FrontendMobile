@@ -9,6 +9,7 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter_tags/selectable_tags.dart';
 import 'package:flutter_tags/input_tags.dart';
 import 'package:bookalo/translations.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 /*
  *  CLASE:        TagsSelectorUplod
@@ -59,11 +60,13 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
     int _column = 3;
     double width = MediaQuery.of(context).size.width;
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(
             margin: EdgeInsets.only(right: width / 3),
             width: width / 2,
             child: AutoCompleteTextField<Tag>(
+              textCapitalization: TextCapitalization.none,
               decoration: InputDecoration(
                   hintText: Translations.of(context).text("tag_example"),
                   labelText: Translations.of(context).text("add_tags")),
@@ -129,11 +132,12 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
             : Container()),
         Container(
           child: InputTags(
+            iconColor: Colors.black,
             tags: widget.selectedTags,
             columns: _column,
             fontSize: 14,
             symmetry: true,
-            iconBackground: Colors.black,
+            iconBackground: Colors.white,
             color: Colors.pink,
             lowerCase: true,
             textFieldHidden: true,
@@ -142,21 +146,31 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
             autofocus: false,
             onDelete: (tag) {
               setState(() {
-                widget.onDeleteTag(tag);  
+                widget.onDeleteTag(tag);
               });
-              
             },
           ),
         ),
         (widget.selectedTags.isEmpty)
-            ? Text(
-                Translations.of(context).text("no_tags"),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 26),
+            ? Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  Translations.of(context).text("no_tags"),
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: 26),
+                ),
               )
             : Container(),
         (widget.selectedTags.isEmpty)
-            ? Text(Translations.of(context).text("motivation_tags"))
+            ? Row(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(right: 20.0),
+                  child: Icon(MdiIcons.tagPlus, color: Colors.pink, size: 40.0)
+                ),
+                Expanded(child: Text(Translations.of(context).text("motivation_tags")))
+              ],
+            )
             : Container(),
       ],
     );

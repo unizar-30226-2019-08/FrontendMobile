@@ -5,9 +5,10 @@
  * CREACIÓN:    13/03/2019
  */
 import 'package:flutter/material.dart';
+import 'package:bookalo/objects/user.dart';
+import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/user_profile.dart';
-import 'package:bookalo/utils/dates_utils.dart';
 
 enum Interest { buys, offers }
 
@@ -25,9 +26,13 @@ class ChatNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        enumeración de Interest
      * Post:  ha construido el widget
      */
-  ChatNavbar({Key key, this.preferredSize, this.interest}) : super(key: key);
+  ChatNavbar(
+      {Key key, this.preferredSize, this.interest, this.user, this.product})
+      : super(key: key);
 
   final Interest interest;
+  final User user;
+  final Product product;
   @override
   final Size preferredSize;
 
@@ -44,20 +49,19 @@ class _ChatNavbarState extends State<ChatNavbar> {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
-      elevation: 0.0,
       leading: Container(
           margin: EdgeInsets.only(top: topMargin, left: width / 30),
           child: GestureDetector(
               child: Hero(
                   tag: "profileImage",
                   child: CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/user_picture.jpg'))),
+                      backgroundImage: NetworkImage(widget.user.getPicture()))),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => UserProfile(isOwnProfile: false)),
+                      builder: (context) =>
+                          UserProfile(isOwnProfile: false, user: widget.user)),
                 );
               })),
       title: Text(Translations.of(context)
@@ -66,7 +70,7 @@ class _ChatNavbarState extends State<ChatNavbar> {
         Container(
           margin: EdgeInsets.only(top: topMargin, right: width / 30),
           child: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/boli.jpg')),
+              backgroundImage: NetworkImage(widget.product.getImages()[0])),
         ),
       ],
       flexibleSpace: Center(
@@ -74,7 +78,7 @@ class _ChatNavbarState extends State<ChatNavbar> {
           child: Text(
             Translations.of(context).text("last_time") +
                 ' ' +
-                dateToFullString(DateTime.now(), context),
+                widget.user.getLastConnection(context),
             style: TextStyle(color: Colors.white),
           ),
           margin: EdgeInsets.only(top: topMargin * 3),

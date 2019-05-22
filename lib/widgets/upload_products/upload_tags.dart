@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 
 /*
  *  CLASE:        UploadTags
- *  TODO: Widget sin implementar
  *  DESCRIPCIÓN:  
  */
 
@@ -25,14 +24,13 @@ class UploadTags extends StatefulWidget {
    * Post:  Ha insertado un nuevo tag a Product
    */
   final Function(String) onDeleteTag;
- // final Function(bool) validate;
+  // final Function(bool) validate;
   final List<String> initialT;
   UploadTags(
       {Key key,
       this.onInsertTag,
       this.onDeleteTag,
       this.initialT,
- //     this.validate,
       this.descriptionInserted,
       this.prod,
       this.valitedPage})
@@ -53,15 +51,17 @@ class _UploadTagsState extends State<UploadTags> {
           TagsUploadProduct(
             onInsertTag: (tag) {
               widget.onInsertTag(tag);
-            //  widget.validate(widget.initialT.length > 0 && validatePage);
+              //  widget.validate(widget.initialT.length > 0 && validatePage);
             },
             onDeleteTag: (tag) {
               widget.onDeleteTag(tag);
-             // widget.validate(widget.initialT.length > 0 && validatePage);
+              // widget.validate(widget.initialT.length > 0 && validatePage);
             },
             initialTags: widget.initialT,
           ),
-          Container(height: 15,),
+          Container(
+            height: 15,
+          ),
           Divider(),
           Form(
             autovalidate: true,
@@ -74,9 +74,8 @@ class _UploadTagsState extends State<UploadTags> {
               });
             },
             child: TextFormField(
-              //Input Descripcion
-              keyboardType: TextInputType.text,
-              maxLines: 4,
+              keyboardType: TextInputType.multiline,
+              //maxLines: 4,
               maxLength: 1000, //1000 caracteres máximo
               maxLengthEnforced: true,
               onSaved: (String value) {
@@ -86,7 +85,7 @@ class _UploadTagsState extends State<UploadTags> {
               decoration: InputDecoration(
                   hintText: Translations.of(context).text("description_hint")),
               validator: (description) {
-                if (description.length < 2) {
+                if (description.length < 20) {
                   //El comentario debe tener al menos 30 caracteres
                   return Translations.of(context).text("description_too_short");
                 }
