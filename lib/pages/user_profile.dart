@@ -69,8 +69,8 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
     List<Widget> output = new List();
     if (!featuredEndReached) {
       List<ProductView> fetchResult = widget.isOwnProfile
-          ? await parseUserFavorites(currentSize, 10)
-          : await parseUserProducts(widget.user, currentSize, 10);
+          ? await parseUserFavorites(currentSize, 10, seeErrorWith: context)
+          : await parseUserProducts(widget.user, currentSize, 10, seeErrorWith: context);
       featuredEndReached = fetchResult.length == 0;
       output.addAll(fetchResult);
       if (featuredEndReached) {
@@ -123,7 +123,7 @@ class _ReviewViewerState extends State<ReviewViewer> {
     List<Widget> output = new List();
     if (!reviewsEndReached) {
       List<ReviewCard> fetchResult =
-          await parseReviews(currentSize, 10, user: widget.user);
+          await parseReviews(currentSize, 10, user: widget.user, seeErrorWith: context);
       reviewsEndReached = fetchResult.length == 0;
       output.addAll(fetchResult);
       if (reviewsEndReached) {

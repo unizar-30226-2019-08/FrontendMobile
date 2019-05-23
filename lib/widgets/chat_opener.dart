@@ -39,7 +39,7 @@ class _ChatOpenerState extends State<ChatOpener> {
           ),
           onPressed: () async {
             setState(() => isLoading = true);
-            Chat chat = await createChat(widget.user, widget.product, context);
+            Chat chat = await createChat(widget.user, widget.product, context, seeErrorWith: context);
             setState(() => isLoading = false);
             Navigator.push(
               context,

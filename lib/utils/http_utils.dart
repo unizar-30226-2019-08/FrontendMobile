@@ -21,13 +21,12 @@ import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/objects/user.dart';
 import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/objects/chat.dart';
-import 'package:bookalo/objects/review.dart';
 import 'package:bookalo/objects/chats_registry.dart';
 
 final Map<String, String> headers = {'appmovil': 'true'};
-
+const int code_ok = 200;
 Future<List<Widget>> parseProducts(
-    FilterQuery query, int currentIndex, int pageSize) async {
+    FilterQuery query, int currentIndex, int pageSize, {var seeErrorWith}) async {
   FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await currentUser.getIdToken(),
@@ -48,6 +47,9 @@ Future<List<Widget>> parseProducts(
   };
   var response = await http.post('https://bookalo.es/api/filter_product',
       headers: headers, body: body);
+  if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   List<Widget> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
       .forEach((x) {
@@ -60,10 +62,13 @@ Future<List<Widget>> parseProducts(
   return output;
 }
 
-Future<List<Tag>> parseTags(List<Tag> initialTags) async {
+Future<List<Tag>> parseTags(List<Tag> initialTags, {var seeErrorWith}) async {
   List<Tag> tagList = [];
   var response = await http.post('https://bookalo.es/api/get_tags');
   tagList.addAll(initialTags);
+  if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }  
   (json.decode(response.body)['tags'] as List).forEach((x) {
     if (!initialTags.map((tag) {
       return tag.title;
@@ -74,7 +79,7 @@ Future<List<Tag>> parseTags(List<Tag> initialTags) async {
   return tagList;
 }
 
-Future<List<Product>> parseOwnProducts(int currentIndex, int pageSize) async {
+Future<List<Product>> parseOwnProducts(int currentIndex, int pageSize, {var seeErrorWith}) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'uid': user.uid,
@@ -83,6 +88,9 @@ Future<List<Product>> parseOwnProducts(int currentIndex, int pageSize) async {
   };
   var response = await http.post('https://bookalo.es/api/get_user_products',
       headers: headers, body: body);
+  if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   List<Product> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
       .forEach((x) {
@@ -92,7 +100,7 @@ Future<List<Product>> parseOwnProducts(int currentIndex, int pageSize) async {
 }
 
 Future<List<ProductView>> parseUserProducts(
-    User productOwner, int currentIndex, int pageSize) async {
+    User productOwner, int currentIndex, int pageSize, {var seeErrorWith}) async {
   Map<String, String> body = {
     'uid': productOwner.getUID(),
     'ultimo_indice': currentIndex.toString(),
@@ -100,6 +108,9 @@ Future<List<ProductView>> parseUserProducts(
   };
   var response = await http.post('https://bookalo.es/api/get_user_products',
       headers: headers, body: body);
+  if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   List<ProductView> output = List();
   (json.decode(utf8.decode(response.bodyBytes))['productos'] as List)
       .forEach((x) {
@@ -110,7 +121,7 @@ Future<List<ProductView>> parseUserProducts(
 }
 
 Future<List<ProductView>> parseUserFavorites(
-    int currentIndex, int pageSize) async {
+    int currentIndex, int pageSize, {var seeErrorWith}) async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await user.getIdToken(),
@@ -120,6 +131,9 @@ Future<List<ProductView>> parseUserFavorites(
   var response = await http.post('https://bookalo.es/api/get_favorites',
       headers: headers, body: body);
   List<ProductView> output = List();
+  if ( response.statusCode > 300  &&  seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   (json.decode(utf8.decode(response.bodyBytes))['productos_favoritos'] as List)
       .forEach((x) {
     Product product = Product.fromJson(x['info_producto']);
@@ -139,7 +153,7 @@ void registerFavorite(Product product) async {
       headers: headers, body: body);
 }
 
-Future<User> fetchOwnProfile() async {
+Future<User> fetchOwnProfile({var seeErrorWith}) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
@@ -147,13 +161,16 @@ Future<User> fetchOwnProfile() async {
   };
   var response = await http.post('https://bookalo.es/api/get_user_info',
       headers: headers, body: body);
+  if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   User user = User.fromJson(
       json.decode(utf8.decode(response.bodyBytes))['informacion_basica']);
   return user;
 }
 
 Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize,
-    {User user}) async {
+    {User user, var seeErrorWith}) async {
   String uid;
   List<ReviewCard> output = [];
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
@@ -170,6 +187,9 @@ Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize,
   };
   var response = await http.post('https://bookalo.es/api/get_ratings',
       headers: headers, body: body);
+  if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   (json.decode(utf8.decode(response.bodyBytes))['valoraciones'] as List)
       .forEach((x) {
     output.add(ReviewCard(review: Review.fromJson(x)));
@@ -178,7 +198,7 @@ Future<List<ReviewCard>> parseReviews(int currentIndex, int pageSize,
 }
 
 Future<Chat> createChat(
-    User user, Product product, BuildContext context) async {
+    User user, Product product, BuildContext context, {var seeErrorWith}) async {
   Chat chat =
       ScopedModel.of<ChatsRegistry>(context).getSellersChat.singleWhere((c) {
     return c.getOtherUser.getUID() == user.getUID() &&
@@ -195,6 +215,10 @@ Future<Chat> createChat(
     };
     var response = await http.post('https://bookalo.es/api/create_chat',
         headers: headers, body: body);
+
+    if (response.statusCode > 300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
     chat = Chat.fromJson(
         json.decode(utf8.decode(response.bodyBytes))['chat_cargado']);
     chat.setImBuyer(true);
@@ -204,7 +228,7 @@ Future<Chat> createChat(
 }
 
 Future<List<Chat>> parseChats(
-    bool imBuyer, int currentIndex, int pageSize) async {
+    bool imBuyer, int currentIndex, int pageSize, {var seeErrorWith}) async {
   List<Chat> output = [];
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
@@ -215,6 +239,9 @@ Future<List<Chat>> parseChats(
   };
   var response = await http.post('https://bookalo.es/api/get_chats',
       headers: headers, body: body);
+  if ( response.statusCode > 300  &&  seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   (json.decode(utf8.decode(response.bodyBytes))['chats'] as List).forEach((x) {
     Chat newChat = Chat.fromJson(x);
     newChat.setImBuyer(imBuyer);
@@ -224,7 +251,7 @@ Future<List<Chat>> parseChats(
 }
 
 Future<List<Message>> parseMessages(
-    int chatUID, int currentIndex, int pageSize) async {
+    int chatUID, int currentIndex, int pageSize, {var seeErrorWith}) async {
   List<Message> output = [];
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
@@ -235,6 +262,9 @@ Future<List<Message>> parseMessages(
   };
   var response = await http.post('https://bookalo.es/api/get_messages',
       headers: headers, body: body);
+  if (response.statusCode >300  && seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
   (json.decode(utf8.decode(response.bodyBytes))['mensajes'] as List)
       .forEach((x) {
     Message newMessage = Message.fromJson(x);
@@ -243,21 +273,26 @@ Future<List<Message>> parseMessages(
   return output;
 }
 
-Future<bool> sendMessage(int chatUID, String message) async {
+Future<bool> sendMessage(int chatUID, String message, {var seeErrorWith}) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
-    'token_fcm' : await _firebaseMessaging.getToken(),
+    'token_fcm': await _firebaseMessaging.getToken(),
     'id_chat': chatUID.toString(),
     'mensaje': message
   };
   var response = await http.post('https://bookalo.es/api/send_message',
       headers: headers, body: body);
-  return response.statusCode == 200;
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  return false;
 }
 
-Future<bool> deleteProduct(int productUID) async {
+Future<bool> deleteProduct(int productUID, {var seeErrorWith}) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
@@ -265,10 +300,15 @@ Future<bool> deleteProduct(int productUID) async {
   };
   var response = await http.post('https://bookalo.es/api/delete_product',
       headers: headers, body: body);
-  return response.statusCode == 200;
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  return response.statusCode == code_ok;
 }
 
-Future<bool> markAsSold(int chatUID) async {
+Future<bool> markAsSold(int chatUID, {var seeErrorWith}) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
@@ -276,7 +316,13 @@ Future<bool> markAsSold(int chatUID) async {
   };
   var response = await http.post('https://bookalo.es/api/sell_product',
       headers: headers, body: body);
-  return response.statusCode == 200;
+
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  return false;
 }
 
 Future<void> logout() async {
@@ -287,7 +333,8 @@ Future<void> logout() async {
   await http.post('https://bookalo.es/logout', headers: headers, body: body);
 }
 
-Future<bool> editProduct(Product product, List<File> images) async {
+Future<bool> editProduct(Product product, List<File> images,
+    {var seeErrorWith}) async {
   var uri = Uri.parse('https://bookalo.es/api/edit_product');
   var request = http.MultipartRequest("POST", uri);
   List<http.MultipartFile> im = [];
@@ -315,10 +362,16 @@ Future<bool> editProduct(Product product, List<File> images) async {
 
   request.headers.addAll(headers);
   var response = await request.send();
-  return response.statusCode == 200;
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  return false;
 }
 
-Future<bool> uploadNewProduct(Product product, List<File> images) async {
+Future<bool> uploadNewProduct(Product product, List<File> images, {var seeErrorWith}) async {
+  const int code_ok = 201;
   var uri = Uri.parse('https://bookalo.es/api/create_product');
   var request = http.MultipartRequest("POST", uri);
   List<http.MultipartFile> im = [];
@@ -346,35 +399,83 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
   request.headers.addAll(headers);
   var response = await request.send();
 
-  return response.statusCode == 201;
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  return false;
 }
 
-Future<List<String>> getInfoISBN(String isbn) async {
+Future<List<String>> getInfoISBN(String isbn, {var seeErrorWith}) async {
   var response = await http.get(
       'https://bookalo.es/api/get_info_isbn?isbn=' + isbn,
       headers: headers);
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == code_ok) {
     var libro = json.decode(utf8.decode(response.bodyBytes));
     return [
       libro['Titulo'],
       libro['Descripcion'],
     ];
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
   }
   return ['', ''];
 }
 
-Future<bool> rateUser(Chat chat, Review review) async {
+Future<bool> rateUser(Chat chat, Review review, {var seeErrorWith}) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   Map<String, String> body = {
     'token': await firebaseUser.getIdToken(),
     'estrellas': review.getStars.toInt().toString(),
-    'comentario' : review.getReview,
-    'uid_usuario_valorado' : chat.getOtherUser.getUID(),
-    'id_producto_valorado' : chat.getProduct.getId().toString()
+    'comentario': review.getReview,
+    'uid_usuario_valorado': chat.getOtherUser.getUID(),
+    'id_producto_valorado': chat.getProduct.getId().toString()
   };
-  var response = await http.post(
-      'https://bookalo.es/api/rate_user',
+  var response = await http.post('https://bookalo.es/api/rate_user',
       headers: headers, body: body);
-  return response.statusCode == 200;
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  return false;
+}
+
+
+void showError(var error, var seeErrorWith){
+    if (seeErrorWith is GlobalKey<ScaffoldState>) {
+      showErrorsSC(error, seeErrorWith);
+    } else if (seeErrorWith is BuildContext) {
+      showErrorsBC(error, seeErrorWith);
+    }
+}
+
+void showErrorsBC(var error, BuildContext bc) {
+  try {
+    Scaffold.of(bc).showSnackBar(SnackBar(
+      content: Text(
+        "Error al realizar la petión. Código " + error.toString(),
+        //Translations.of(context).text("completar_campos"),
+        style: TextStyle(fontSize: 17.0),
+      ),
+    ));
+  } catch (e) {
+    print(e);
+  }
+}
+
+void showErrorsSC(var error, GlobalKey<ScaffoldState> _scaffoldState) {
+  try {
+    _scaffoldState.currentState.showSnackBar(SnackBar(
+      content: Text(
+        "Error al realizar la petión. Código " + error.toString(),
+        //Translations.of(context).text("completar_campos"),
+        style: TextStyle(fontSize: 17.0),
+      ),
+    ));
+  } catch (e) {
+    print(e);
+  }
 }

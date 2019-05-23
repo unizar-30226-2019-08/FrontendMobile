@@ -179,7 +179,8 @@ class _UploadProduct extends State<UploadProduct> {
               iconData: Icons.add_shopping_cart,
               preferredSize: Size.fromHeight(_height / 10)),
             body: _pageOptions[_currentPage],
-            floatingActionButton: FloatingActionButton(
+            floatingActionButton:Builder(builder: (contextButton){
+                return FloatingActionButton(
               child: Icon(Icons.file_upload),
               backgroundColor: (validatePages() ? Colors.green : Colors.grey),
               onPressed: () async {
@@ -191,7 +192,7 @@ class _UploadProduct extends State<UploadProduct> {
                       "cancel",
                       Text("")); //TODO: revisión del producto
                   if (action == ConfirmAction.ACCEPT) {
-                    bool result = await _uploading(context);
+                    bool result = await _uploading(contextButton);
                     if (result) {
                       await _ackAlert(context);
                       Navigator.pop(context);
@@ -210,7 +211,7 @@ class _UploadProduct extends State<UploadProduct> {
                   ));
                 }
               },
-            ),
+            );},),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             bottomNavigationBar: BubbleBottomBar(
@@ -341,7 +342,7 @@ class _UploadProduct extends State<UploadProduct> {
         });
   }
 
-  Future<bool> _uploading(BuildContext context) async {
+  Future<bool> _uploading(BuildContext contextPadre) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -367,9 +368,9 @@ class _UploadProduct extends State<UploadProduct> {
     });
     bool result = false;
     if (_isNewProduct) {
-      result = await uploadNewProduct(newProduct, imageFiles);
+      result = await uploadNewProduct(newProduct, imageFiles, seeErrorWith: contextPadre);
     } else {
-      result = await editProduct(newProduct, imageFiles);
+      result = await editProduct(newProduct, imageFiles, seeErrorWith: contextPadre);
     }
     Navigator.pop(context);
     return result;

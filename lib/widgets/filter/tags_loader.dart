@@ -37,7 +37,7 @@ class _TagsLoaderState extends State<TagsLoader> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return FutureBuilder(
-      future: parseTags(widget.initialTags),
+      future: parseTags(widget.initialTags, seeErrorWith: context),
       builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
         if (snapshot.hasData) {
           return TagsSelector(

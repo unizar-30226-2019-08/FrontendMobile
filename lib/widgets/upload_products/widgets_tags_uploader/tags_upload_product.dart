@@ -47,7 +47,7 @@ class _TagsUploadProductState extends State<TagsUploadProduct> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return FutureBuilder(
-      future: parseTags(tagsParser),
+      future: parseTags(tagsParser, seeErrorWith: context),
       builder: (BuildContext context, AsyncSnapshot<List<Tag>> snapshot) {
         if (snapshot.hasData) {
           return TagsSelectorUplod(

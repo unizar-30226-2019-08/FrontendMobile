@@ -86,7 +86,7 @@ class _ProductListViewerState extends State<ProductListViewer> {
     if (!ScopedModel.of<FilterQuery>(context).endReached) {
       if (!_isLoading) {
         _isLoading = true;
-        parseProducts(widget.query, widget.query.queryResult.length, 10)
+        parseProducts(widget.query, widget.query.queryResult.length, 10, seeErrorWith: context)
             .then((newProducts) {
           _isLoading = false;
           if (newProducts.isEmpty) {

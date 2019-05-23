@@ -37,7 +37,7 @@ class _ChatsListState extends State<ChatsList> {
     if (!_endReached) {
       if (!_isLoading) {
         _isLoading = true;
-        parseChats(widget.imBuyer, pageSize, 10).then((newChats) {
+        parseChats(widget.imBuyer, pageSize, 10, seeErrorWith: context).then((newChats) {
           _isLoading = false;
           if (newChats.length == 0) {
             _endReached = true;

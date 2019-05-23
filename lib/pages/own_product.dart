@@ -165,7 +165,7 @@ class _DetailedProductState extends State<OwnProduct> {
                                 "delete_explanation",
                                 params: [widget.product.getName()])));
                         if (action == ConfirmAction.ACCEPT) {
-                          deleteProduct(widget.product.getId());
+                          deleteProduct(widget.product.getId(), seeErrorWith: context);
                           Navigator.of(context).pop();
                         }
                       },

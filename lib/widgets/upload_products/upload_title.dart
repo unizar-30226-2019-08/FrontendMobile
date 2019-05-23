@@ -417,7 +417,7 @@ class _UploadTitleState extends State<UploadTitle> {
   }
 
   Future<void> _rellenarInfo(String barcode) async {
-    List<String> s = await getInfoISBN(barcode);
+    List<String> s = await getInfoISBN(barcode, seeErrorWith: context);
     setState(() {
       _isbn = barcode;
       widget.isbnInserted(barcode);
