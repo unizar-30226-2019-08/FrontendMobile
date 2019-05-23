@@ -306,7 +306,7 @@ Future<bool> editProduct(Product product, List<File> images) async {
   request.files.addAll(im);
   print("num Imagenes entrantes " + images.length.toString());
   print("numImagenes anyadidas " + request.files.length.toString());
-  request.fields['id'] = product.getId().toString();
+  request.fields['id_producto'] = product.getId().toString();
   request.fields['latitud'] = product.getPosition().latitude.toString();
   request.fields['longitud'] = product.getPosition().longitude.toString();
   request.fields['nombre'] = product.getName();
@@ -318,10 +318,8 @@ Future<bool> editProduct(Product product, List<File> images) async {
   request.fields['isbn'] = product.getISBN();
 
   request.headers.addAll(headers);
-  print("Enviando");
   var response = await request.send();
-
-  return response.statusCode == 201;
+  return response.statusCode == 200;
 }
 
 Future<bool> uploadNewProduct(Product product, List<File> images) async {
@@ -356,8 +354,6 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
 }
 
 Future<List<String>> getInfoISBN(String isbn) async {
-  Map<String, String> body = {'isbn': isbn};
-
   var response = await http.get(
       'https://bookalo.es/api/get_info_isbn?isbn=' + isbn,
       headers: headers);
