@@ -319,7 +319,6 @@ Future<bool> editProduct(Product product, List<File> images) async {
 
   request.headers.addAll(headers);
   var response = await request.send();
-  print("resposta Back de editar " + response.statusCode.toString());
   return response.statusCode == 200;
 }
 
@@ -355,8 +354,6 @@ Future<bool> uploadNewProduct(Product product, List<File> images) async {
 }
 
 Future<List<String>> getInfoISBN(String isbn) async {
-  Map<String, String> body = {'isbn': isbn};
-
   var response = await http.get(
       'https://bookalo.es/api/get_info_isbn?isbn=' + isbn,
       headers: headers);
