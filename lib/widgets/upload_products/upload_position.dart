@@ -53,7 +53,7 @@ class _UploadPositionState extends State<UploadPosition> {
                 elevation: 10.0,
                 child: IconButton(
                     icon:
-                        Icon(Icons.location_on, size: 40.0, color: Colors.pink),
+                        Icon(Icons.my_location, size: 40.0, color: Colors.pink),
                     onPressed: () async {
                       setState(() => _loadingNewLocation = true);
                       Geolocator()
