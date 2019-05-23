@@ -32,10 +32,8 @@ class _ListImageCardState extends State<ListImageCard> {
 //Estado inicial de la lista
   void initState() {
     widget.imageCards.clear();
-    print("tamanyo a mostrar " + widget.imagesList.length.toString());
     super.initState();
     widget.imagesList.forEach((image) {
-      print("Se estan añadiendo imagenes a ImageCard");
       ImageCard imgC = ImageCard(image, removeFromList);
       widget.imageCards.add(imgC);
     });
@@ -54,7 +52,6 @@ class _ListImageCardState extends State<ListImageCard> {
 
 //Añadir foto a la lista
   void onNewPicture(File img) async {
-    print("nueva imagen ");
     setState(() {
       ImageCard imgC = ImageCard(img, removeFromList);
       widget.imageCards.add(imgC);

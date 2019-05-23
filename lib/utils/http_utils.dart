@@ -294,18 +294,14 @@ Future<bool> editProduct(Product product, List<File> images) async {
   var length = 0;
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   request.fields['token'] = await user.getIdToken();
-  //print("token = " + request.fields['token']);
   for (int i = 0; i < images.length; i++) {
     var stream =
         new http.ByteStream(DelegatingStream.typed(images[i].openRead()));
-    print("stream imagen " + stream.toString());
     length = await images[i].length();
     im.add(http.MultipartFile('files', stream, length,
         filename: 'imagen' + i.toString()));
   }
   request.files.addAll(im);
-  print("num Imagenes entrantes " + images.length.toString());
-  print("numImagenes anyadidas " + request.files.length.toString());
   request.fields['id_producto'] = product.getId().toString();
   request.fields['latitud'] = product.getPosition().latitude.toString();
   request.fields['longitud'] = product.getPosition().longitude.toString();

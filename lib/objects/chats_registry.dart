@@ -85,6 +85,7 @@ class ChatsRegistry extends Model {
   }
 
   void addMessage(String kind, Chat chat, Message message) {
+    chat.setLastMessage(message);
     addChats(kind, [chat]);
     _messagesMap[chat.getUID].insert(0, message);
     notifyListeners();

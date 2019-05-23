@@ -134,9 +134,6 @@ class _UploadTitleState extends State<UploadTitle> {
               key: formKey,
               onChanged: () {
                 formKey.currentState.save();
-                print("formKey = " + formKey.currentState.validate().toString());
-                print("titleIni = " + titleIni.toString());
-                print("priceIni = " + priceIni.toString());
                 setState(() {
                   validatePage = formKey.currentState.validate() &&
                       titleIni &&

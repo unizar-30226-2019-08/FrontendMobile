@@ -186,7 +186,8 @@ class _ChatPageState extends State<ChatPage> {
             ));
           }),
           Container(height: 10),
-          (widget.chat.getLastMessage.itsReview &&
+          (widget.chat.getLastMessage != null &&
+                  widget.chat.getLastMessage.itsReview &&
                   widget.chat.getLastMessage.review == null
               ? Container()
               : Material(
