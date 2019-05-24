@@ -4,11 +4,13 @@
  * CREACIÓN:    19/03/2019
  */
 import 'dart:math' as math;
+import 'package:bookalo/objects/user.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/utils/http_utils.dart';
+import 'package:bookalo/pages/report.dart';
 
 /*
  *  CLASE:        RadialButton
@@ -19,6 +21,7 @@ import 'package:bookalo/utils/http_utils.dart';
 class RadialButton extends StatefulWidget {
   final String sellerId;
   final Product product;
+  final User user;
   final Function() onFavorite;
   final bool wasMarkedAsFavorite;
   RadialButton(
@@ -26,7 +29,7 @@ class RadialButton extends StatefulWidget {
       this.product,
       this.sellerId,
       this.onFavorite,
-      this.wasMarkedAsFavorite})
+      this.wasMarkedAsFavorite, this.user})
       : super(key: key);
 
   _RadialButtonState createState() => _RadialButtonState();
@@ -49,6 +52,15 @@ class _RadialButtonState extends State<RadialButton>
         widget.product.getId().toString());
     //TODO: actualizar ruta del producto
     close();
+  }
+
+  void report(){
+    Navigator.push( context,
+        MaterialPageRoute(
+          builder: (context) => Report(
+              userToReport: widget.user
+            )),
+    );
   }
 
   void markAsFavorite() async {
@@ -98,7 +110,8 @@ class _RadialButtonState extends State<RadialButton>
               (widget.product.checkfForSale()
               ? _buildOption(Icons.chat_bubble_outline, -(math.pi / 2), share)
               : Container()),
-              _buildOption(Icons.share, 0.0, share)
+              _buildOption(Icons.share, 0.0, share),
+              _buildOption(Icons.flag, math.pi/2, report)
             ],
           );
         },

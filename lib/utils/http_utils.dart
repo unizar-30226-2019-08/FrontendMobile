@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
 import 'package:bookalo/objects/message.dart';
+import 'package:bookalo/translations.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -554,12 +555,49 @@ Future<bool> rateUser(Chat chat, Review review, {var seeErrorWith}) async {
   return false;
 }
 
+Future<bool> reportUser(User userToReport, String motive, String comment, {var seeErrorWith}) async {
+  try{
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  const int code_ok = 201;
+  Map<String, String> body = {
+    'token': await firebaseUser.getIdToken(),
+    'uid' : userToReport.getUID(),
+    'causa': motive,
+    'comentario': comment
+  };
+  print("Enviando Reporte");
+  var response = await http.post('https://bookalo.es/api/create_report',
+      headers: headers, body: body);
+  print("Reporte recibido con codigo " + response.statusCode.toString());
+  if (response.statusCode == code_ok) {
+    return true;
+  } else if (seeErrorWith != null) {
+    showError(response.statusCode, seeErrorWith);
+  }
+  }catch (e) {
+    print(e);
+    showError(e.osError, seeErrorWith);
+  }
+  return false;
+}
+
 void showError(var error, var seeErrorWith) {
+  BuildContext context;
   var snackbar = SnackBar(
     content: Text( (error.toString().length < 5) ?
-      "Error al realizar la petión. Código " + error.toString() : error.toString(),
+      Translations.of(context).text("error_http") + error.toString() : error.toString(),
       //Translations.of(context).text("completar_campos"),
       style: TextStyle(fontSize: 17.0),
+    ),
+    duration: Duration(seconds: 3),
+    action: SnackBarAction(
+      label:Translations.of(context).text(
+          "understand"),
+      onPressed: () {
+        (seeErrorWith is GlobalKey<ScaffoldState>) 
+        ? seeErrorWith.currentState.hideCurrentSnackBar()
+        : Scaffold.of(seeErrorWith).hideCurrentSnackBar();
+      },
     ),
   );
 
