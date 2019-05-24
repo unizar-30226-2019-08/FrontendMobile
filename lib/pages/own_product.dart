@@ -26,12 +26,14 @@ class OwnProduct extends StatefulWidget {
 }
 
 class _DetailedProductState extends State<OwnProduct> {
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     bool longTitle = widget.product.getName().length > 17;
     return Scaffold(
+      key: _scaffoldKey,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverPersistentHeader(
@@ -165,8 +167,10 @@ class _DetailedProductState extends State<OwnProduct> {
                                 "delete_explanation",
                                 params: [widget.product.getName()])));
                         if (action == ConfirmAction.ACCEPT) {
-                          deleteProduct(widget.product.getId(), seeErrorWith: context);
-                          Navigator.of(context).pop();
+                          if(await deleteProduct(widget.product.getId(), seeErrorWith: _scaffoldKey)){
+                              Navigator.of(context).pop();
+                          }
+                          
                         }
                       },
                     ),

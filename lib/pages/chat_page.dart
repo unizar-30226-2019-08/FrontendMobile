@@ -31,14 +31,14 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   bool _endReached = false;
   bool _isLoading = false;
-
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _textController;
 
   void fetchMessages(ChatsRegistry registry, int pageSize) async {
     if (!_endReached) {
       if (!_isLoading) {
         _isLoading = true;
-        parseMessages(widget.chat.getUID, pageSize, 10).then((newMessages) {
+        parseMessages(widget.chat.getUID, pageSize, 10, seeErrorWith: _scaffoldKey).then((newMessages) {
           _isLoading = false;
           registry.appendMessage(widget.chat.imBuyer ? 'sellers' : 'buyers',
               widget.chat, newMessages);
@@ -52,7 +52,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void setClosed(BuildContext context) {
+  void setClosed(BuildContext contextPadre) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -73,7 +73,7 @@ class _ChatPageState extends State<ChatPage> {
                       fontSize: 15.0),
                 ),
                 onPressed: () async {
-                  markAsSold(widget.chat.getUID);
+                  markAsSold(widget.chat.getUID, seeErrorWith: _scaffoldKey);
                   Navigator.pop(context);
                 },
               ),
@@ -97,7 +97,7 @@ class _ChatPageState extends State<ChatPage> {
   void _handleSumbit(String text) {
     if (text.length > 0) {
       _textController.clear();
-      sendMessage(widget.chat.getUID, text);
+      sendMessage(widget.chat.getUID, text, seeErrorWith: _scaffoldKey);
       ScopedModel.of<ChatsRegistry>(context).addMessage(
           widget.chat.imBuyer ? 'sellers' : 'buyers',
           widget.chat,
@@ -125,6 +125,7 @@ class _ChatPageState extends State<ChatPage> {
         return true;
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: ChatNavbar(
           preferredSize: Size.fromHeight(height / 10),
           interest: widget.chat.imBuyer ? Interest.offers : Interest.buys,
