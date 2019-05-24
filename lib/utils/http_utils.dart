@@ -53,7 +53,7 @@ Future<List<Widget>> parseProducts(
 
     var response = await http.post('https://bookalo.es/api/filter_product',
         headers: headers, body: body);
-    if (response.statusCode > 300 && seeErrorWith != null) {
+    if ( response.statusCode > 300 && seeErrorWith != null) {
       showError(response.statusCode, seeErrorWith);
     }
 
@@ -582,23 +582,23 @@ Future<bool> reportUser(User userToReport, String motive, String comment, {var s
 }
 
 void showError(var error, var seeErrorWith) {
-  BuildContext context;
-  var snackbar = SnackBar(
-    content: Text( (error.toString().length < 5) ?
-      Translations.of(context).text("error_http") + error.toString() : error.toString(),
-      //Translations.of(context).text("completar_campos"),
-      style: TextStyle(fontSize: 17.0),
+  var snackbar =  SnackBar(
+    content:  Builder(
+          builder: (context) {return Text( (error.toString().length < 5) ?
+        Translations.of(context).text("error_http") + error.toString() : error.toString(),
+        style: TextStyle(fontSize: 17.0),
+      );}
     ),
     duration: Duration(seconds: 3),
-    action: SnackBarAction(
-      label:Translations.of(context).text(
+    /* action: SnackBarAction(
+      label: Translations.of(context1).text(
           "understand"),
       onPressed: () {
         (seeErrorWith is GlobalKey<ScaffoldState>) 
         ? seeErrorWith.currentState.hideCurrentSnackBar()
         : Scaffold.of(seeErrorWith).hideCurrentSnackBar();
       },
-    ),
+    ), */
   );
 
   try {

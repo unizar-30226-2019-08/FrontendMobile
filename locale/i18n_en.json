@@ -65,5 +65,5 @@
     "report_succes" : "Reportado con éxito",
     "write_comment" : "Escriba un comentario sobre lo sucedido",
     "seleccione_motivo" : "Seleccione un motivo de reporte",
-    "error_http":"Error al realizar la petión. Código"
+    "error_http":"Error al realizar la petión. Código: "
 }
