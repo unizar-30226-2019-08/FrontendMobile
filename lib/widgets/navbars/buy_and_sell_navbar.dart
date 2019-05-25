@@ -55,7 +55,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
                   icon: Icon(
                       ScopedModel.of<ChatsRegistry>(context).areTherePending()
                           ? Icons.message
-                          : Icons.chat_bubble_outline,
+                          : Icons.chat,
                       color: Colors.white,
                       size: 35.0),
                   onPressed: () {
