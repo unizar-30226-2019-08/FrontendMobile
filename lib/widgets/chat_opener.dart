@@ -33,7 +33,7 @@ class _ChatOpenerState extends State<ChatOpener> {
       } else {
         return IconButton(
           icon: Icon(
-            Icons.chat_bubble_outline,
+            Icons.chat,
             color: Colors.pink,
             size: 40.0,
           ),

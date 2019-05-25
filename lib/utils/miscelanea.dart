@@ -14,5 +14,15 @@ String parseISBN(String _isbn) {
         _isbn[11] +
         '-' +
         _isbn[12];
+  }else if(_isbn.length == 10){
+    return _isbn.substring(0, 2) +
+        '-' +
+        _isbn.substring(2, 5) +
+        '-' +
+        _isbn.substring(5, 10) +
+        '-' +
+        _isbn[9];
+  }else{
+    return "ERROR";
   }
 }

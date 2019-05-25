@@ -103,7 +103,9 @@ class _DetailedProductState extends State<OwnProduct> {
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
                 ),
-                Divider(),
+                (widget.product.tags.length > 0
+                ? Divider()
+                : Container()),
                 ISBNViewer(product: widget.product),
                 ProductInfo(widget.product, false, false),
                 Container(height: 30.0),

@@ -67,7 +67,7 @@ class ProductInfo extends StatelessWidget {
             VerticalDivider(color: Colors.black, indent: 3.0),
             //Columna de Favoritos
             Container(
-              width: width / 3.5,
+              width: width / 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
