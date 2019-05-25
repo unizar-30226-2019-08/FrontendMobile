@@ -4,6 +4,7 @@
  * CREACIÓN:    15/04/2019
  */
 import 'dart:io';
+import 'package:bookalo/widgets/upload_products/content_info_confirm.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -181,11 +182,17 @@ class _UploadProduct extends State<UploadProduct> {
                           "check_product",
                           "ok_upload",
                           "cancel",
-                          Text("")); //TODO: revisión del producto
+                          ContentInfoConfirm(newProduct: newProduct)); //TODO: revisión del producto
                       if (action == ConfirmAction.ACCEPT) {
                         bool result = await _uploading(contextButton);
                         if (result) {
-                          await _ackAlert(context);
+                          await askConfirmation(
+                              context,
+                              "subida_completed",
+                              "understand",
+                              "",
+                              Text(Translations.of(context)
+                                  .text("upload_product_ok")));
                           Navigator.pop(context);
                         }
                       }
@@ -196,8 +203,16 @@ class _UploadProduct extends State<UploadProduct> {
                       });
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
                         content: Text(
-                          Translations.of(context).text("completar_campos"),
+                          Translations.of(context).text("empty_fields"),
                           style: TextStyle(fontSize: 17.0),
+                        ),
+                        duration: Duration(seconds: 3),
+                        action: SnackBarAction(
+                          label: Translations.of(context).text(
+                              "understand"),
+                          onPressed: () {
+                            _scaffoldKey.currentState.hideCurrentSnackBar();
+                          },
                         ),
                       ));
                     }
@@ -297,45 +312,8 @@ class _UploadProduct extends State<UploadProduct> {
         ));
   }
 
-/*
- * Mostrará un mensaje de confimación de que el producto ha subido Correctamente
- */
-  Future<void> _ackAlert(BuildContext context) async {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              Translations.of(context).text("subida_completed"),
-              textAlign: TextAlign.center,
-            ),
-            content: Container(
-              height: 400,
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.done_all,
-                    size: 35,
-                    color: Colors.green,
-                  ),
-                  Divider(),
-                  Text(Translations.of(context).text("upload_product_ok")),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(Translations.of(context).text('Gracias')),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   Future<bool> _uploading(BuildContext contextPadre) async {
+    double _height = MediaQuery.of(context).size.height;
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -347,7 +325,7 @@ class _UploadProduct extends State<UploadProduct> {
                   textAlign: TextAlign.center,
                 ),
                 content: Container(
-                    height: 500,
+                    height: 1.5 * (_height / 5),
                     child: Column(
                       children: <Widget>[
                         Center(child: BookaloProgressIndicator()),
@@ -393,4 +371,6 @@ class _UploadProduct extends State<UploadProduct> {
     }
     return v;
   }
+
+
 }

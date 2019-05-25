@@ -4,8 +4,9 @@ import 'package:bookalo/objects/product.dart';
 
 class ISBNViewer extends StatelessWidget {
   final Product product;
+  final double sizeISBN;
 
-  ISBNViewer({Key key, this.product}) : super(key: key);
+  ISBNViewer({Key key, this.product, this.sizeISBN}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class ISBNViewer extends StatelessWidget {
                     Text(
                       parseISBN(product.getISBN()),
                       style:
-                          TextStyle(fontSize: 35, fontWeight: FontWeight.w300),
+                          TextStyle(fontSize: (sizeISBN == null) ? 35 : sizeISBN, fontWeight: FontWeight.w300),
                     ),
                   ],
                 ),
