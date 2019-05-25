@@ -15,7 +15,7 @@ Future<ConfirmAction> askConfirmation(BuildContext context, String titleKey, Str
           style: TextStyle(fontSize: 24),
         ),
         content: body,
-        actions: <Widget>[
+        actions: <Widget>[(cancelKey.length > 0) ?
           FlatButton(
             child: Text(
               Translations.of(context).text(cancelKey),
@@ -27,7 +27,8 @@ Future<ConfirmAction> askConfirmation(BuildContext context, String titleKey, Str
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.CANCEL);
             },
-          ),
+          )
+          : Container(),
           FlatButton(
             child: Text(
               Translations.of(context).text(acceptKey),

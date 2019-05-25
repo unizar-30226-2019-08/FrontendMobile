@@ -43,7 +43,7 @@ class _OwnProfileNavbarState extends State<OwnProfileNavbar> {
     return PreferredSize(
       preferredSize: Size.fromHeight(height / 3.3),
       child: FutureBuilder(
-        future: fetchOwnProfile(),
+        future: fetchOwnProfile(seeErrorWith: context),
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
           return AppBar(
               automaticallyImplyLeading: false,

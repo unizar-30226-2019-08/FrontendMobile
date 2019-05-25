@@ -36,7 +36,7 @@ class _SellState extends State<Sell> {
   Future<List<Widget>> fetchOwnProducts(currentSize, height) async {
     List<Widget> output = new List();
     if (!endReached) {
-      List<Product> fetchResult = await parseOwnProducts(currentSize, 10);
+      List<Product> fetchResult = await parseOwnProducts(currentSize, 10, seeErrorWith: context);
       output.addAll(fetchResult
           .map((p) => MiniProduct(p, () {/*TODO: borrarlo de la lista*/})));
       endReached = fetchResult.length == 0;

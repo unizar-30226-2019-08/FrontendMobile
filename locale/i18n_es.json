@@ -128,5 +128,11 @@
     "Usado": "Usado",
     "Nuevo": "Nuevo",
     "Seminuevo": "Seminuevo",
-    "upload_product" : "Subir producto"
+    "upload_product" : "Subir producto",
+    "understand" : "Entendido",
+    "report_succes_text" : "Se ha reportado al usuario {{param1}} correctamente",
+    "report_succes" : "Reportado con éxito",
+    "write_comment" : "Escriba un comentario sobre lo sucedido",
+    "seleccione_motivo" : "Seleccione un motivo de reporte",
+    "error_http":"Error al realizar la petión. Código: "
 }

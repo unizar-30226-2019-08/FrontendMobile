@@ -59,5 +59,11 @@
     "description" : "DESCRIPTION",
     "uploading_product" :"Subiendo producto",
     "wait_uploading" : "Esto puede llegar a tardar algún minuto.\nEspere, por favor",
-    "isbn_not_valid" :  "El código ISBN introducido no es valido"
+    "isbn_not_valid" :  "El código ISBN introducido no es valido",
+    "understand" : "understand",
+    "report_succes_text" : "Se ha reportado al usuario {{param1}} correctamente",
+    "report_succes" : "Reportado con éxito",
+    "write_comment" : "Escriba un comentario sobre lo sucedido",
+    "seleccione_motivo" : "Seleccione un motivo de reporte",
+    "error_http":"Error al realizar la petión. Código: "
 }

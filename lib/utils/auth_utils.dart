@@ -11,7 +11,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:bookalo/utils/http_utils.dart';
 
 enum LoginResult {

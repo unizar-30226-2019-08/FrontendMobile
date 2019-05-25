@@ -108,6 +108,7 @@ class _DetailedProductState extends State<DetailedProduct> {
                         child: RadialButton(
                             product: widget.product,
                             sellerId: widget.user.uid,
+                            user: widget.user,
                             wasMarkedAsFavorite: widget.isLiked,
                             onFavorite: () {
                               setState(() {
