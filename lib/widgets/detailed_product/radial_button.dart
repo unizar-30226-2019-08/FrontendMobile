@@ -49,7 +49,7 @@ class _RadialButtonState extends State<RadialButton>
   void share() {
     Share.share(Translations.of(context)
             .text('share_product', params: [widget.product.getName()]) +
-        'https://bookalo.es/product=' +
+        'https://bookalo.es/generic_product_view/?id=' +
         widget.product.getId().toString());
     //TODO: actualizar ruta del producto
     close();
@@ -101,18 +101,23 @@ class _RadialButtonState extends State<RadialButton>
           return Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              _buildExpandedBackground(expandedSize, hiddenSize),
+              _buildExpandedBackground(expandedSize, hiddenSize), 
               _buildFabCore(),
               _buildOption(
                   (isMarkedAsFavorite ? Icons.favorite : Icons.favorite_border),
                   math.pi,
                   markAsFavorite),
+<<<<<<< HEAD
               (widget.product.checkfForSale()
                   ? _buildOption(
                       Icons.chat_bubble_outline, -(math.pi / 2), share)
                   : Container()),
               _buildOption(Icons.share, 0.0, share),
               _buildOption(Icons.flag, math.pi / 2, report)
+=======
+              _buildOption(Icons.share, -(math.pi/2), share),
+              _buildOption(Icons.flag, 0.0, report)
+>>>>>>> master
             ],
           );
         },
