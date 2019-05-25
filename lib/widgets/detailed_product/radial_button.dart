@@ -107,17 +107,8 @@ class _RadialButtonState extends State<RadialButton>
                   (isMarkedAsFavorite ? Icons.favorite : Icons.favorite_border),
                   math.pi,
                   markAsFavorite),
-<<<<<<< HEAD
-              (widget.product.checkfForSale()
-                  ? _buildOption(
-                      Icons.chat_bubble_outline, -(math.pi / 2), share)
-                  : Container()),
-              _buildOption(Icons.share, 0.0, share),
-              _buildOption(Icons.flag, math.pi / 2, report)
-=======
               _buildOption(Icons.share, -(math.pi/2), share),
               _buildOption(Icons.flag, 0.0, report)
->>>>>>> master
             ],
           );
         },
