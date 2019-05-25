@@ -70,10 +70,11 @@ class ChatsRegistry extends Model {
         _chatMap[kind].replaceRange(index, index + 1, [updatingChat]);
       }
     });
-    _chatMap[kind].sort((c1, c2){
-      if(c1.lastMessage != null && c2.lastMessage != null){
-        return c2.getLastMessage.getTimestamp.compareTo(c1.getLastMessage.getTimestamp);
-      }else{
+    _chatMap[kind].sort((c1, c2) {
+      if (c1.lastMessage != null && c2.lastMessage != null) {
+        return c2.getLastMessage.getTimestamp
+            .compareTo(c1.getLastMessage.getTimestamp);
+      } else {
         return -1;
       }
     });
@@ -96,8 +97,9 @@ class ChatsRegistry extends Model {
     notifyListeners();
   }
 
-  void removePending(String kind, Chat chat){
-    _chatMap[kind].singleWhere((c) => c.getUID == chat.getUID).pendingMessages = 0;
+  void removePending(String kind, Chat chat) {
+    _chatMap[kind].singleWhere((c) => c.getUID == chat.getUID).pendingMessages =
+        0;
     notifyListeners();
   }
 
@@ -112,8 +114,16 @@ class ChatsRegistry extends Model {
     return false;
   }
 
-  void setReview(Review review, int chatUID){
-    _messagesMap[chatUID].singleWhere((message) => message.itsReview).review = review;
+  void setReview(Review review, int chatUID, String kind) {
+    if (kind == 'buyers') {
+      _messagesMap[chatUID]
+          .singleWhere((message) => message.itsReview)
+          .sellerReview = review;
+    } else {
+      _messagesMap[chatUID]
+          .singleWhere((message) => message.itsReview)
+          .buyerReview = review;
+    }
     notifyListeners();
   }
 }

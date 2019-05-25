@@ -12,9 +12,13 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
       json['hora'] == null ? null : DateTime.parse(json['hora'] as String),
       json['es_suyo'] as bool,
       json['es_valoracion'] as bool,
-      json['valoracion'] == null
+      json['valoracion_comprador'] == null
           ? null
-          : Review.fromJson(json['valoracion'] as Map<String, dynamic>));
+          : Review.fromJson(
+              json['valoracion_comprador'] as Map<String, dynamic>))
+    ..sellerReview = json['valoracion_vendedor'] == null
+        ? null
+        : Review.fromJson(json['valoracion_vendedor'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
@@ -22,5 +26,6 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'hora': instance.timestamp?.toIso8601String(),
       'es_suyo': instance.itsMe,
       'es_valoracion': instance.itsReview,
-      'valoracion': instance.review
+      'valoracion_comprador': instance.buyerReview,
+      'valoracion_vendedor': instance.sellerReview
     };

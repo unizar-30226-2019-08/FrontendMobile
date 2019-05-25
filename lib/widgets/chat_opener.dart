@@ -27,7 +27,7 @@ class _ChatOpenerState extends State<ChatOpener> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.product.checkfForSale()){
+    if (widget.product.checkfForSale()) {
       if (isLoading) {
         return BookaloProgressIndicator();
       } else {
@@ -39,7 +39,8 @@ class _ChatOpenerState extends State<ChatOpener> {
           ),
           onPressed: () async {
             setState(() => isLoading = true);
-            Chat chat = await createChat(widget.user, widget.product, context, seeErrorWith: context);
+            Chat chat = await createChat(widget.user, widget.product, context,
+                seeErrorWith: context);
             setState(() => isLoading = false);
             Navigator.push(
               context,
@@ -48,9 +49,10 @@ class _ChatOpenerState extends State<ChatOpener> {
           },
         );
       }
-    }else{
+    } else {
       return Chip(
-        label: Text(Translations.of(context).text("chat_finished"), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        label: Text(Translations.of(context).text("chat_finished"),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.pink,
       );
     }

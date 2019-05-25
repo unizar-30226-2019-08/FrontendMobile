@@ -44,6 +44,7 @@ class Bookalo extends StatefulWidget {
 }
 
 class _BookaloState extends State<Bookalo> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
 
   void incializeGeolocator() {
     var geolocator = Geolocator();
@@ -59,28 +60,30 @@ class _BookaloState extends State<Bookalo> {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        handleChatMessage(message, plugin, context);
+        handleChatMessage(message, plugin, context, navigatorKey);
       },
       onResume: (Map<String, dynamic> message) async {
-        handleChatMessage(message, plugin, context);
+        handleChatMessage(message, plugin, context, navigatorKey);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        handleChatMessage(message, plugin, context);
+        handleChatMessage(message, plugin, context, navigatorKey);
       },
     );
   }
 
   FlutterLocalNotificationsPlugin inicializeLocalNotifications() {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid = new AndroidInitializationSettings('notification_logo');
-    
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        new FlutterLocalNotificationsPlugin();
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('notification_logo');
+
     var initializationSettingsIOS = new IOSInitializationSettings(
-        onDidReceiveLocalNotification: (i, s1, s2, s3){});
-    
+        onDidReceiveLocalNotification: (i, s1, s2, s3) {});
+
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (s){});
+        onSelectNotification: (s) {});
     return flutterLocalNotificationsPlugin;
   }
 
@@ -92,11 +95,11 @@ class _BookaloState extends State<Bookalo> {
     incializeGeolocator();
   }
 
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Bookalo',
       theme: ThemeData(
         primarySwatch: Colors.pink,

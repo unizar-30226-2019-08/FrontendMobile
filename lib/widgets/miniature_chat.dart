@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clases relativas a la  miniatura de un chat
  * CREACIÓN:    14/03/2019
  */
+import 'package:bookalo/utils/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/objects/chats_registry.dart';
@@ -27,9 +28,10 @@ class MiniatureChat extends StatelessWidget {
   Widget buildSubtitle(BuildContext context) {
     if (chat.lastMessage != null) {
       String message;
-      if(chat.lastMessage.itsReview){
-        message = Translations.of(context).text("rate_user", params: [chat.getOtherUser.getName()]);
-      }else{
+      if (chat.lastMessage.itsReview) {
+        message = Translations.of(context)
+            .text("rate_user", params: [chat.getOtherUser.getName()]);
+      } else {
         message = chat.lastMessage.body;
       }
       if (message.length > 30) {
@@ -127,8 +129,9 @@ class MiniatureChat extends StatelessWidget {
               backgroundImage: NetworkImage(chat.getProduct.getImages()[0]),
             ),
       onTap: () {
-        ScopedModel.of<ChatsRegistry>(context).removePending(chat.imBuyer ? 'sellers' : 'buyers', chat);
-        //TODO: borrado de pendientes en HTTP
+        ScopedModel.of<ChatsRegistry>(context)
+            .removePending(chat.imBuyer ? 'sellers' : 'buyers', chat);
+        deletePending(chat.getUID);
         Navigator.push(
             context,
             MaterialPageRoute(

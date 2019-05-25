@@ -29,7 +29,6 @@ class _DetailedProductState extends State<OwnProduct> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     bool longTitle = widget.product.getName().length > 17;
     return Scaffold(
@@ -105,9 +104,7 @@ class _DetailedProductState extends State<OwnProduct> {
                     margin: EdgeInsets.symmetric(horizontal: 20.0),
                   ),
                 ),
-                (widget.product.tags.length > 0
-                ? Divider()
-                : Container()),
+                (widget.product.tags.length > 0 ? Divider() : Container()),
                 ISBNViewer(product: widget.product),
                 ProductInfo(widget.product, false, false),
                 Container(height: 30.0),
@@ -169,10 +166,10 @@ class _DetailedProductState extends State<OwnProduct> {
                                 "delete_explanation",
                                 params: [widget.product.getName()])));
                         if (action == ConfirmAction.ACCEPT) {
-                          if(await deleteProduct(widget.product.getId(), seeErrorWith: _scaffoldKey)){
-                              Navigator.of(context).pop();
+                          if (await deleteProduct(widget.product.getId(),
+                              seeErrorWith: _scaffoldKey)) {
+                            Navigator.of(context).pop();
                           }
-                          
                         }
                       },
                     ),

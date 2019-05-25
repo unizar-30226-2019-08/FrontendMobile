@@ -19,7 +19,8 @@ class UploadPosition extends StatefulWidget {
   final Function(bool) validate;
   final Function(LatLng) onPositionChange;
   final LatLng initialPosition;
-  const UploadPosition({Key key, this.validate, this.initialPosition, this.onPositionChange})
+  const UploadPosition(
+      {Key key, this.validate, this.initialPosition, this.onPositionChange})
       : super(key: key);
   @override
   _UploadPositionState createState() => _UploadPositionState();

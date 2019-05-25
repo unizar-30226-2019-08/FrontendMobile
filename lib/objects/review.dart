@@ -25,8 +25,8 @@ class Review {
   double stars;
   User ratedUser;
 
-  Review(this.ratedUser, this.reviewer, this.date, this.isSeller, this.product, this.review,
-      this.stars);
+  Review(this.ratedUser, this.reviewer, this.date, this.isSeller, this.product,
+      this.review, this.stars);
 
   void setIsSeller(bool isSeller) {
     this.isSeller = isSeller;

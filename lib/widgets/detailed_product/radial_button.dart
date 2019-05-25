@@ -29,7 +29,8 @@ class RadialButton extends StatefulWidget {
       this.product,
       this.sellerId,
       this.onFavorite,
-      this.wasMarkedAsFavorite, this.user})
+      this.wasMarkedAsFavorite,
+      this.user})
       : super(key: key);
 
   _RadialButtonState createState() => _RadialButtonState();
@@ -54,12 +55,11 @@ class _RadialButtonState extends State<RadialButton>
     close();
   }
 
-  void report(){
-    Navigator.push( context,
-        MaterialPageRoute(
-          builder: (context) => Report(
-              userToReport: widget.user
-            )),
+  void report() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Report(userToReport: widget.user)),
     );
   }
 

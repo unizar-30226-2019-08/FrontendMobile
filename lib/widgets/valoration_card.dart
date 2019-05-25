@@ -144,9 +144,13 @@ class _ValorationCardState extends State<ValorationCard> {
                                 !widget.chat.imBuyer,
                                 widget.chat.getProduct,
                                 _controller.text,
-                                _rating*2);
-                            await rateUser(widget.chat, review, seeErrorWith: context);
-                            ScopedModel.of<ChatsRegistry>(context).setReview(review, widget.chat.getUID);
+                                _rating * 2);
+                            await rateUser(widget.chat, review,
+                                seeErrorWith: context);
+                            ScopedModel.of<ChatsRegistry>(context).setReview(
+                                review,
+                                widget.chat.getUID,
+                                widget.chat.imBuyer ? "sellers" : "buyers");
                           }
                         },
                       ),
