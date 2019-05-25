@@ -157,13 +157,14 @@ class _ReportState extends State<Report> {
                                   groupValue > _value3) {
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                   content: Text(
-                                    Translations.of(context).text("seleccione_motivo"),
+                                    Translations.of(context)
+                                        .text("seleccione_motivo"),
                                     style: TextStyle(fontSize: 17.0),
                                   ),
                                   duration: Duration(seconds: 5),
                                   action: SnackBarAction(
-                                    label:
-                                        Translations.of(context).text("understand"),
+                                    label: Translations.of(context)
+                                        .text("understand"),
                                     onPressed: () {
                                       _scaffoldKey.currentState
                                           .hideCurrentSnackBar();
@@ -175,20 +176,31 @@ class _ReportState extends State<Report> {
                                     widget.userToReport,
                                     motivosReport[groupValue - 1],
                                     controllerComment.text,
-                                    seeErrorWith: _scaffoldKey); 
-                                if(resul){
-                                  await askConfirmation(context,"report_succes", "understand", "", Text(Translations.of(context).text("report_succes_text", params: [widget.userToReport.getName()])));
-                                  Navigator.pushReplacementNamed(context, '/buy_and_sell');
+                                    seeErrorWith: _scaffoldKey);
+                                if (resul) {
+                                  await askConfirmation(
+                                      context,
+                                      "report_succes",
+                                      "understand",
+                                      "",
+                                      Text(Translations.of(context)
+                                          .text("report_succes_text", params: [
+                                        widget.userToReport.getName()
+                                      ])));
+                                  Navigator.pushReplacementNamed(
+                                      context, '/buy_and_sell');
                                 }
                               } else {
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                  content: Text(Translations.of(context).text("write_comment"),
+                                  content: Text(
+                                    Translations.of(context)
+                                        .text("write_comment"),
                                     style: TextStyle(fontSize: 17.0),
                                   ),
                                   duration: Duration(seconds: 5),
                                   action: SnackBarAction(
-                                    label:
-                                        Translations.of(context).text("understand"),
+                                    label: Translations.of(context)
+                                        .text("understand"),
                                     onPressed: () {
                                       _scaffoldKey.currentState
                                           .hideCurrentSnackBar();

@@ -17,7 +17,8 @@ class SimpleNavbar extends StatefulWidget implements PreferredSizeWidget {
      *        navegación
      * Post:  ha construido el widget
      */
-  SimpleNavbar({Key key, this.preferredSize, this.title, this.iconData}) : super(key: key);
+  SimpleNavbar({Key key, this.preferredSize, this.title, this.iconData})
+      : super(key: key);
 
   @override
   final Size preferredSize;
@@ -39,9 +40,8 @@ class _SimpleNavbarState extends State<SimpleNavbar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(right: 10, top: 2),
-                child: Icon(widget.iconData, size: 40.0)
-              ),
+                  margin: EdgeInsets.only(right: 10, top: 2),
+                  child: Icon(widget.iconData, size: 40.0)),
               Text(
                 widget.title,
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w300),

@@ -4,7 +4,8 @@ import 'package:bookalo/translations.dart';
 
 enum ConfirmAction { CANCEL, ACCEPT }
 
-Future<ConfirmAction> askConfirmation(BuildContext context, String titleKey, String acceptKey, String cancelKey, Widget body) async {
+Future<ConfirmAction> askConfirmation(BuildContext context, String titleKey,
+    String acceptKey, String cancelKey, Widget body) async {
   return showDialog<ConfirmAction>(
     context: context,
     barrierDismissible: false,
@@ -15,20 +16,21 @@ Future<ConfirmAction> askConfirmation(BuildContext context, String titleKey, Str
           style: TextStyle(fontSize: 24),
         ),
         content: body,
-        actions: <Widget>[(cancelKey.length > 0) ?
-          FlatButton(
-            child: Text(
-              Translations.of(context).text(cancelKey),
-              style: TextStyle(
-                  color: Colors.pink,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15.0),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop(ConfirmAction.CANCEL);
-            },
-          )
-          : Container(),
+        actions: <Widget>[
+          (cancelKey.length > 0)
+              ? FlatButton(
+                  child: Text(
+                    Translations.of(context).text(cancelKey),
+                    style: TextStyle(
+                        color: Colors.pink,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15.0),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(ConfirmAction.CANCEL);
+                  },
+                )
+              : Container(),
           FlatButton(
             child: Text(
               Translations.of(context).text(acceptKey),
@@ -40,9 +42,9 @@ Future<ConfirmAction> askConfirmation(BuildContext context, String titleKey, Str
             onPressed: () {
               Navigator.of(context).pop(ConfirmAction.ACCEPT);
             },
-          )          
-          ],
-        );
-      },
-    );
-  }
+          )
+        ],
+      );
+    },
+  );
+}

@@ -29,7 +29,8 @@ class ReviewCard extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                  backgroundImage: NetworkImage(review.getReviewer.getPicture())),
+                  backgroundImage:
+                      NetworkImage(review.getReviewer.getPicture())),
               title: Text(review.getReviewer.getName(),
                   style: TextStyle(
                     color: Colors.black,
