@@ -54,6 +54,9 @@ class Chat {
   void setImBuyer(bool value) {
     this.imBuyer = value;
   }
+  bool checkForSale(){
+    return this.product.checkfForSale();
+  }
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
   Map<String, dynamic> toJson() => _$ChatToJson(this);
