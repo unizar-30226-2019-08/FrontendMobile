@@ -24,10 +24,13 @@ class Message {
   bool itsMe;
   @JsonKey(name: 'es_valoracion')
   bool itsReview;
-  @JsonKey(name: 'valoracion', nullable: true)
-  Review review;
+  @JsonKey(name: 'valoracion_comprador', nullable: true)
+  Review buyerReview;
+  @JsonKey(name: 'valoracion_vendedor', nullable: true)
+  Review sellerReview;
 
-  Message(this.body, this.timestamp, this.itsMe, this.itsReview, this.review);
+  Message(
+      this.body, this.timestamp, this.itsMe, this.itsReview, this.buyerReview);
 
   DateTime get getTimestamp => timestamp.toLocal();
 

@@ -3,6 +3,7 @@
  * DESCRIPCIÓN: clases relativas al la página de chats
  * CREACIÓN:    15/03/2019
  */
+import 'package:bookalo/objects/review.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:bookalo/widgets/navbars/chat_navbar.dart';
@@ -15,6 +16,7 @@ import 'package:bookalo/utils/http_utils.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
 import 'package:bookalo/widgets/valoration_card.dart';
 import 'package:bookalo/widgets/review_card.dart';
+import 'package:bookalo/widgets/confirmation_dialog.dart';
 
 /*
  *  CLASE:        Chat
@@ -29,6 +31,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  bool _closedChat = false;
   bool _endReached = false;
   bool _isLoading = false;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -38,7 +41,9 @@ class _ChatPageState extends State<ChatPage> {
     if (!_endReached) {
       if (!_isLoading) {
         _isLoading = true;
-        parseMessages(widget.chat.getUID, pageSize, 10, seeErrorWith: _scaffoldKey).then((newMessages) {
+        parseMessages(widget.chat.getUID, pageSize, 10,
+                seeErrorWith: _scaffoldKey)
+            .then((newMessages) {
           _isLoading = false;
           registry.appendMessage(widget.chat.imBuyer ? 'sellers' : 'buyers',
               widget.chat, newMessages);
@@ -52,46 +57,20 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void setClosed(BuildContext contextPadre) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(Translations.of(context).text("delete_sure")),
-            content: Text(Translations.of(context).text("sell_explanation",
-                params: [
-                  widget.chat.getProduct.getName(),
-                  widget.chat.getOtherUser.getName()
-                ])),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  Translations.of(context).text("ok_sold"),
-                  style: TextStyle(
-                      color: Colors.pink,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15.0),
-                ),
-                onPressed: () async {
-                  markAsSold(widget.chat.getUID, seeErrorWith: _scaffoldKey);
-                  Navigator.pop(context);
-                },
-              ),
-              FlatButton(
-                child: Text(
-                  Translations.of(context).text("cancel"),
-                  style: TextStyle(
-                      color: Colors.pink,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15.0),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+  void setClosed(BuildContext contextPadre) async {
+    ConfirmAction action = await askConfirmation(
+        contextPadre,
+        "delete_sure",
+        "ok_sold",
+        "cancel",
+        Text(Translations.of(context).text("sell_explanation", params: [
+          widget.chat.getProduct.getName(),
+          widget.chat.getOtherUser.getName()
+        ])));
+    if (action == ConfirmAction.ACCEPT) {
+      setState(() => _closedChat = true);
+      markAsSold(widget.chat.getUID, seeErrorWith: _scaffoldKey);
+    }
   }
 
   void _handleSumbit(String text) {
@@ -121,7 +100,9 @@ class _ChatPageState extends State<ChatPage> {
     double width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
-        //TODO: poner pendientes a cero y llamada HTTP
+        ScopedModel.of<ChatsRegistry>(context).removePending(
+            widget.chat.imBuyer ? 'sellers' : 'buyers', widget.chat);
+        deletePending(widget.chat.getUID);
         return true;
       },
       child: Scaffold(
@@ -133,7 +114,9 @@ class _ChatPageState extends State<ChatPage> {
           product: widget.chat.product,
         ),
         body: Column(children: <Widget>[
-          (!widget.chat.checkImBuyer && widget.chat.getProduct.checkfForSale()
+          (!widget.chat.checkImBuyer &&
+                  widget.chat.getProduct.checkfForSale() &&
+                  !_closedChat
               ? RaisedButton(
                   color: Colors.pink,
                   shape: RoundedRectangleBorder(
@@ -169,8 +152,11 @@ class _ChatPageState extends State<ChatPage> {
                           : widget.chat.getOtherUser,
                     );
                   } else {
-                    if (currentMessage.review != null) {
-                      return ReviewCard(review: currentMessage.review);
+                    Review review = (widget.chat.imBuyer
+                        ? currentMessage.buyerReview
+                        : currentMessage.sellerReview);
+                    if (review != null) {
+                      return ReviewCard(review: review);
                     } else {
                       return ValorationCard(chat: widget.chat);
                     }
@@ -189,7 +175,7 @@ class _ChatPageState extends State<ChatPage> {
           Container(height: 10),
           (widget.chat.getLastMessage != null &&
                   widget.chat.getLastMessage.itsReview &&
-                  widget.chat.getLastMessage.review == null
+                  widget.chat.getLastMessage.buyerReview == null
               ? Container()
               : Material(
                   elevation: 30,

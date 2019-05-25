@@ -59,20 +59,21 @@ class Product {
     this.isbn = '';
   }
 
-  Product clone(){
-    return Product(this.id,
-      this.name,
-      this.price,
-      this.isForSale,
-      this.images.toList(),
-      this.description,
-      this.includesShipping,
-      this.state,
-      this.favorites,
-      this.lat,
-      this.lng,
-      this.tags.toList(),
-      this.isbn);
+  Product clone() {
+    return Product(
+        this.id,
+        this.name,
+        this.price,
+        this.isForSale,
+        this.images.toList(),
+        this.description,
+        this.includesShipping,
+        this.state,
+        this.favorites,
+        this.lat,
+        this.lng,
+        this.tags.toList(),
+        this.isbn);
   }
 
   Product(
@@ -190,7 +191,7 @@ class Product {
     this.includesShipping = sendInclude;
   }
 
-  void setPosition(LatLng position){
+  void setPosition(LatLng position) {
     this.lat = position.latitude;
     this.lng = position.longitude;
   }
@@ -212,4 +213,3 @@ class Product {
   }
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
-

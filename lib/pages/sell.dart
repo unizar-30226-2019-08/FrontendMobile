@@ -36,7 +36,8 @@ class _SellState extends State<Sell> {
   Future<List<Widget>> fetchOwnProducts(currentSize, height) async {
     List<Widget> output = new List();
     if (!endReached) {
-      List<Product> fetchResult = await parseOwnProducts(currentSize, 10, seeErrorWith: context);
+      List<Product> fetchResult =
+          await parseOwnProducts(currentSize, 10, seeErrorWith: context);
       output.addAll(fetchResult
           .map((p) => MiniProduct(p, () {/*TODO: borrarlo de la lista*/})));
       endReached = fetchResult.length == 0;
@@ -65,8 +66,8 @@ class _SellState extends State<Sell> {
               icon: Icon(Icons.add),
               label: Text(Translations.of(context).text('upload_product')),
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => UploadProduct()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UploadProduct()));
               },
             )
           ],

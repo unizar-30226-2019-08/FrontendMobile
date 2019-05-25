@@ -163,14 +163,16 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
             : Container(),
         (widget.selectedTags.isEmpty)
             ? Row(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 20.0),
-                  child: Icon(MdiIcons.tagPlus, color: Colors.pink, size: 40.0)
-                ),
-                Expanded(child: Text(Translations.of(context).text("motivation_tags")))
-              ],
-            )
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(right: 20.0),
+                      child: Icon(MdiIcons.tagPlus,
+                          color: Colors.pink, size: 40.0)),
+                  Expanded(
+                      child: Text(
+                          Translations.of(context).text("motivation_tags")))
+                ],
+              )
             : Container(),
       ],
     );

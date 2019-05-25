@@ -29,31 +29,29 @@ class UploadTitle extends StatefulWidget {
   final Function(bool) includeSend;
   final Function(bool) valitedPage;
   final Product prod;
-  
-  const UploadTitle(
-      {Key key,
-      this.isbnInserted,
-      this.tittleInserted,
-      this.descriptionInserted,
-      this.prod,
-      this.valitedPage,
-      this.stateProductInserted,
-      this.includeSend,
-      this.priceInserted,
-      })
-      : super(key: key);
+
+  const UploadTitle({
+    Key key,
+    this.isbnInserted,
+    this.tittleInserted,
+    this.descriptionInserted,
+    this.prod,
+    this.valitedPage,
+    this.stateProductInserted,
+    this.includeSend,
+    this.priceInserted,
+  }) : super(key: key);
   @override
   _UploadTitleState createState() => _UploadTitleState();
 }
 
 class _UploadTitleState extends State<UploadTitle> {
-  String _isbn = "";
   String _value1 = "Nuevo";
   String _value2 = "Seminuevo";
   String _value3 = "Usado";
   var formKey = GlobalKey<FormState>();
   String groupValue;
-
+  String _isbn = "";
   String _sinEnvio = "Sin envio";
   String _conEnvio = "Con envio";
   bool titleIni = false,
@@ -100,7 +98,6 @@ class _UploadTitleState extends State<UploadTitle> {
   }
 
   Future barcodeScanning() async {
-
     try {
       String barcode = await BarcodeScanner.scan();
       if (isISBN(barcode, barcode.length)) {
@@ -135,9 +132,8 @@ class _UploadTitleState extends State<UploadTitle> {
               onChanged: () {
                 formKey.currentState.save();
                 setState(() {
-                  validatePage = formKey.currentState.validate() &&
-                      titleIni &&
-                      priceIni;
+                  validatePage =
+                      formKey.currentState.validate() && titleIni && priceIni;
                   widget.valitedPage(validatePage);
                 });
               },
@@ -152,12 +148,16 @@ class _UploadTitleState extends State<UploadTitle> {
                       Text(
                         Translations.of(context).text("isbn_scan"),
                         style: TextStyle(
-                            color: Colors.pink[600], fontWeight: FontWeight.w700),
+                            color: Colors.pink[600],
+                            fontWeight: FontWeight.w700),
                       ),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Icon(MdiIcons.barcodeScan, color: Colors.pink, size: 30,)
-                      )
+                          margin: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Icon(
+                            MdiIcons.barcodeScan,
+                            color: Colors.pink,
+                            size: 30,
+                          ))
                     ],
                   ),
                   onPressed: barcodeScanning,
@@ -210,8 +210,7 @@ class _UploadTitleState extends State<UploadTitle> {
                     if (title.length > 0) {
                       titleIni = true;
                     }
-                    if (titleIni &&
-                        title.length < 1) {
+                    if (titleIni && title.length < 1) {
                       //El nombre de articulo debe tener al menos 2 caracteres
                       return Translations.of(context).text("title_too_short");
                     }
