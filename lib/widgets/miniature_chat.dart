@@ -11,6 +11,7 @@ import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chat_page.dart';
+import 'package:bookalo/utils/http_utils.dart';
 
 /*
  *  CLASE:        MiniatureChat
@@ -93,52 +94,75 @@ class MiniatureChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-          backgroundImage: NetworkImage(chat.getOtherUser.getPicture())),
-      title: buildTitle(context),
-      subtitle: buildSubtitle(context),
-      isThreeLine: true,
-      enabled: true,
-      trailing: chat.numberOfPending > 0
-          ? Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(chat.getProduct.getImages()[0])),
-                ClipOval(
-                  child: Container(
-                    color: Colors.pink.withOpacity(0.7),
-                    height: 30.0, // height of the button
-                    width: 30.0, // width of the button
-                    child: Center(
-                      child: Text(
-                          chat.numberOfPending > 9
-                              ? '+9'
-                              : chat.numberOfPending.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)),
-                    ),
-                  ),
-                )
-              ],
-            )
-          : CircleAvatar(
-              backgroundImage: NetworkImage(chat.getProduct.getImages()[0]),
-            ),
-      onTap: () {
-        ScopedModel.of<ChatsRegistry>(context)
-            .removePending(chat.imBuyer ? 'sellers' : 'buyers', chat);
-        deletePending(chat.getUID);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChatPage(
-                      chat: chat,
-                    )));
+    return Dismissible(
+      key: Key(chat.getUID.toString()),
+      background: Container(
+        color: Colors.pink,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.delete, color: Colors.white, size: 40),
+            Text(
+              "Borrar chat",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.w300
+              ),)
+          ],
+        ),
+      ),
+      direction: DismissDirection.startToEnd,
+      onDismissed: (_) async {
+        await deleteChat(chat.getUID, seeErrorWith: context);
+        ScopedModel.of<ChatsRegistry>(context).removeChat(chat.getUID, chat.imBuyer ? 'sellers' : 'buyers');
       },
+      child: ListTile(
+        leading: CircleAvatar(
+            backgroundImage: NetworkImage(chat.getOtherUser.getPicture())),
+        title: buildTitle(context),
+        subtitle: buildSubtitle(context),
+        isThreeLine: true,
+        enabled: true,
+        trailing: chat.numberOfPending > 0
+            ? Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(chat.getProduct.getImages()[0])),
+                  ClipOval(
+                    child: Container(
+                      color: Colors.pink.withOpacity(0.7),
+                      height: 30.0, // height of the button
+                      width: 30.0, // width of the button
+                      child: Center(
+                        child: Text(
+                            chat.numberOfPending > 9
+                                ? '+9'
+                                : chat.numberOfPending.toString(),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500)),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            : CircleAvatar(
+                backgroundImage: NetworkImage(chat.getProduct.getImages()[0]),
+              ),
+        onTap: () {
+          ScopedModel.of<ChatsRegistry>(context)
+              .removePending(chat.imBuyer ? 'sellers' : 'buyers', chat);
+          deletePending(chat.getUID);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                        chat: chat,
+                      )));
+        },
+      ),
     );
   }
 }

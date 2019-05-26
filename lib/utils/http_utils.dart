@@ -616,3 +616,23 @@ void deletePending(int chatUID) async {
     print(e);
   }
 }
+
+Future<bool> deleteChat(int chatUID, {var seeErrorWith}) async {
+  try{
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    Map<String, String> body = {
+      'token': await firebaseUser.getIdToken(),
+      'idChat': chatUID.toString()
+    };
+    var response =  await http.post('https://bookalo.es/api/delete_chat',
+        headers: DEFAULT_HEADERS, body: body);
+    if (response.statusCode == OK_RESPONSE_CODE) {
+      return true;
+    } else if (seeErrorWith != null) {
+      showError(response.statusCode, seeErrorWith);
+    }        
+  }catch(e){
+    print(e);
+  }
+  return false;
+}
