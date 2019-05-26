@@ -71,12 +71,38 @@ class ChatsRegistry extends Model {
       }
     });
     _chatMap[kind].sort((c1, c2) {
-      if (c1.lastMessage != null && c2.lastMessage != null) {
-        return c2.getLastMessage.getTimestamp
-            .compareTo(c1.getLastMessage.getTimestamp);
-      } else {
-        return -1;
+      /*  venta = 0 si ambos son de misma condicion
+       *        = 3 si solo c1 en venta y con mensajes -> 1
+       *        = 1 si ambos en estan en venta o ninguno y solo c1 con mensajes -> 1
+       *        = 2 si c1 en venta y c2 no -> 1
+       *        = -1 si ambos en venta o ninguno y solo c2 con mensajes ->1
+       *        = -2 si c2 en venta y c1 no -> -1
+       *        = -3 si solo c2 en venta y cn mensajes -> 1
+      */
+      int venta = 0 ;
+      if(c1.checkForSale()){
+        venta += 2;
       }
+      if(c2.checkForSale()){
+        venta -= 2;
+      }
+      if (c1.lastMessage != null){
+        venta += 1;
+      } 
+      if(c2.lastMessage != null){
+        venta -= 1;
+      }
+     if(venta == 0){
+      if(c1.lastMessage == null){ //ninguno tienen mensajes -> iguales
+        return 0;
+      }
+      return c2.getLastMessage.getTimestamp
+            .compareTo(c1.getLastMessage.getTimestamp);
+     }else if(venta < 0){
+       return 1;
+     }else{
+       return -1;
+     }
     });
     notifyListeners();
   }
