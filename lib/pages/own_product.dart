@@ -178,7 +178,7 @@ class _DetailedProductState extends State<OwnProduct> {
                 Container(height: 20.0),
                 ProductMap(
                     position: widget.product.getPosition(),
-                    height: height / 5,
+                    height: height / 4,
                     expandible: true)
               ],
             ),

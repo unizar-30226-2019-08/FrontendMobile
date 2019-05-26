@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_localizations:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.0
+  flutter_launcher_icons: ^0.7.2
   share: ^0.6.0+1 
   flutter_range_slider: ^1.1.0
   autocomplete_textfield: ^1.6.4  
@@ -64,7 +64,7 @@ flutter:
 
 flutter_icons:
   image_path: "assets/images/bookalo_icon.png" 
-  #adaptive_icon_background: "#e91e63"
-  #adaptive_icon_foreground: "assets/images/bookalo_icon_adaptative.png"
+  adaptive_icon_background: "#e91e63"
+  adaptive_icon_foreground: "assets/images/bookalo_solo_logo.png"
   android: true 
 

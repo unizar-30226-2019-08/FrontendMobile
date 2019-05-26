@@ -47,7 +47,7 @@ class ProductView extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 30,
+                        fontSize: 28,
                       )),
                 ),
               ),
@@ -196,10 +196,10 @@ class ProductView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                    top: height / 20,
+                    top: height / 50,
                     right: width / 3,
                     child: Container(
-                      height: height / 2.9,
+                      height: height / 2.7,
                       width: width / 2,
                       child: priceCard(context),
                     ))
