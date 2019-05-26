@@ -152,4 +152,10 @@ class ChatsRegistry extends Model {
     }
     notifyListeners();
   }
+
+  void removeChat(int chatUID, String kind){
+    _chatMap[kind].removeWhere((c) => c.getUID == chatUID);
+    //TODO: llamada HTTP
+    notifyListeners();
+  }
 }
