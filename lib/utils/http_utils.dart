@@ -32,7 +32,7 @@ void showError(var error, var seeErrorWith) {
     content: Builder(builder: (context) {
       return Text(
         (error.toString().length < 5)
-            ? Translations.of(context).text("error_http") + error.toString()
+            ? Translations.of(context).text("error_http", params: [error.toString()])
             : error.toString(),
         style: TextStyle(fontSize: 17.0),
       );
@@ -356,6 +356,7 @@ Future<List<Message>> parseMessages(int chatUID, int currentIndex, int pageSize,
     (json.decode(utf8.decode(response.bodyBytes))['mensajes'] as List)
         .forEach((x) {
       Message newMessage = Message.fromJson(x);
+      newMessage.isSent = true;
       output.add(newMessage);
     });
   } catch (e) {
@@ -618,20 +619,20 @@ void deletePending(int chatUID) async {
 }
 
 Future<bool> deleteChat(int chatUID, {var seeErrorWith}) async {
-  try{
+  try {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     Map<String, String> body = {
       'token': await firebaseUser.getIdToken(),
       'idChat': chatUID.toString()
     };
-    var response =  await http.post('https://bookalo.es/api/delete_chat',
+    var response = await http.post('https://bookalo.es/api/delete_chat',
         headers: DEFAULT_HEADERS, body: body);
     if (response.statusCode == OK_RESPONSE_CODE) {
       return true;
     } else if (seeErrorWith != null) {
       showError(response.statusCode, seeErrorWith);
-    }        
-  }catch(e){
+    }
+  } catch (e) {
     print(e);
   }
   return false;

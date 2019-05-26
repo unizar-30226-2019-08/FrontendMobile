@@ -70,6 +70,11 @@ class ChatsRegistry extends Model {
         _chatMap[kind].replaceRange(index, index + 1, [updatingChat]);
       }
     });
+    sortChats(kind);
+    notifyListeners();
+  }
+
+  void sortChats(String kind) {
     _chatMap[kind].sort((c1, c2) {
       /*  venta = 0 si ambos son de misma condicion
        *        = 3 si solo c1 en venta y con mensajes -> 1
@@ -79,32 +84,32 @@ class ChatsRegistry extends Model {
        *        = -2 si c2 en venta y c1 no -> -1
        *        = -3 si solo c2 en venta y cn mensajes -> 1
       */
-      int venta = 0 ;
-      if(c1.checkForSale()){
+      int venta = 0;
+      if (c1.checkForSale()) {
         venta += 2;
       }
-      if(c2.checkForSale()){
+      if (c2.checkForSale()) {
         venta -= 2;
       }
-      if (c1.lastMessage != null){
+      if (c1.lastMessage != null) {
         venta += 1;
-      } 
-      if(c2.lastMessage != null){
+      }
+      if (c2.lastMessage != null) {
         venta -= 1;
       }
-     if(venta == 0){
-      if(c1.lastMessage == null){ //ninguno tienen mensajes -> iguales
-        return 0;
-      }
-      return c2.getLastMessage.getTimestamp
+      if (venta == 0) {
+        if (c1.lastMessage == null) {
+          //ninguno tienen mensajes -> iguales
+          return 0;
+        }
+        return c2.getLastMessage.getTimestamp
             .compareTo(c1.getLastMessage.getTimestamp);
-     }else if(venta < 0){
-       return 1;
-     }else{
-       return -1;
-     }
+      } else if (venta < 0) {
+        return 1;
+      } else {
+        return -1;
+      }
     });
-    notifyListeners();
   }
 
   List<Message> getMessages(int chatUID) {
@@ -153,9 +158,19 @@ class ChatsRegistry extends Model {
     notifyListeners();
   }
 
-  void removeChat(int chatUID, String kind){
+  void removeChat(int chatUID, String kind) {
     _chatMap[kind].removeWhere((c) => c.getUID == chatUID);
-    //TODO: llamada HTTP
+    notifyListeners();
+  }
+
+  void closeChat(int chatUID, String kind){
+    _chatMap[kind].singleWhere((c) => c.getUID == chatUID).product.isForSale = false;
+    sortChats(kind);
+    notifyListeners();
+  }
+
+  void markMessageAsSent(int chatUID){
+    _messagesMap[chatUID].first.markAsSent();
     notifyListeners();
   }
 }

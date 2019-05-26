@@ -49,7 +49,7 @@ android {
         applicationId "es.bookalo.bookalo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 23
+        versionCode 24
         versionName "0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk{

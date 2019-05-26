@@ -100,13 +100,13 @@ class _RadialButtonState extends State<RadialButton>
           return Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              _buildExpandedBackground(expandedSize, hiddenSize), 
+              _buildExpandedBackground(expandedSize, hiddenSize),
               _buildFabCore(),
               _buildOption(
                   (isMarkedAsFavorite ? Icons.favorite : Icons.favorite_border),
                   math.pi,
                   markAsFavorite),
-              _buildOption(Icons.share, -(math.pi/2), share),
+              _buildOption(Icons.share, -(math.pi / 2), share),
               _buildOption(Icons.flag, 0.0, report)
             ],
           );

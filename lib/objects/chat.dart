@@ -54,7 +54,8 @@ class Chat {
   void setImBuyer(bool value) {
     this.imBuyer = value;
   }
-  bool checkForSale(){
+
+  bool checkForSale() {
     return this.product.checkfForSale();
   }
 

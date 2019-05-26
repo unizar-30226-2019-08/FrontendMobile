@@ -118,24 +118,24 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
           ),
           title: Container(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(widget.user.getName(),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w300, fontSize: 38.0)),
-                  IconButton(
-                    icon: Icon(Icons.share, size: 30.0),
-                    onPressed: () {
-                      Share.share(Translations.of(context).text('share_profile',
-                              params: [widget.user.getName()]) +
-                          'https://bookalo.es/user=' +
-                          widget.user.getUID());
-                    },
-                  )
-                ],
-              ))),
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(widget.user.getName(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      TextStyle(fontWeight: FontWeight.w300, fontSize: 38.0)),
+              IconButton(
+                icon: Icon(Icons.share, size: 30.0),
+                onPressed: () {
+                  Share.share(Translations.of(context).text('share_profile',
+                          params: [widget.user.getName()]) +
+                      'https://bookalo.es/user=' +
+                      widget.user.getUID());
+                },
+              )
+            ],
+          ))),
     );
   }
 }

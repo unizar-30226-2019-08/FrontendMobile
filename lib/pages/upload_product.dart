@@ -208,8 +208,7 @@ class _UploadProduct extends State<UploadProduct> {
                         ),
                         duration: Duration(seconds: 3),
                         action: SnackBarAction(
-                          label: Translations.of(context).text(
-                              "understand"),
+                          label: Translations.of(context).text("understand"),
                           onPressed: () {
                             _scaffoldKey.currentState.hideCurrentSnackBar();
                           },
@@ -371,6 +370,4 @@ class _UploadProduct extends State<UploadProduct> {
     }
     return v;
   }
-
-
 }

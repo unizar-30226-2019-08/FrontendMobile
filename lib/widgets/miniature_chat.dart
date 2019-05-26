@@ -11,7 +11,6 @@ import 'package:bookalo/utils/dates_utils.dart';
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/pages/chat_page.dart';
-import 'package:bookalo/utils/http_utils.dart';
 
 /*
  *  CLASE:        MiniatureChat
@@ -102,19 +101,20 @@ class MiniatureChat extends StatelessWidget {
           children: <Widget>[
             Icon(Icons.delete, color: Colors.white, size: 40),
             Text(
-              "Borrar chat",
+              Translations.of(context).text("delete_chat"),
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w300
-              ),)
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w300),
+            )
           ],
         ),
       ),
       direction: DismissDirection.startToEnd,
       onDismissed: (_) async {
         await deleteChat(chat.getUID, seeErrorWith: context);
-        ScopedModel.of<ChatsRegistry>(context).removeChat(chat.getUID, chat.imBuyer ? 'sellers' : 'buyers');
+        ScopedModel.of<ChatsRegistry>(context)
+            .removeChat(chat.getUID, chat.imBuyer ? 'sellers' : 'buyers');
       },
       child: ListTile(
         leading: CircleAvatar(

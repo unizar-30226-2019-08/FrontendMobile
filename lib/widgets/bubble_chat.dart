@@ -25,9 +25,9 @@ class Bubble extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     final bg = message.itsMe ? Colors.pink[700] : Colors.pink[500];
-    final icon = Icons.done;
-    // ? Icons.done_all
-    // : Icons.done;
+    final icon = message.isSent
+      ? Icons.done_all
+      : Icons.done;
     final radius = message.itsMe
         ? BorderRadius.only(
             //si el mensaje es mio, se redondean todas las esquinas del bubble excepto la superior izq

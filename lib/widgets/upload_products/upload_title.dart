@@ -114,7 +114,7 @@ class _UploadTitleState extends State<UploadTitle> {
       }
     } on FormatException {
       setState(() =>
-          this._isbn = Translations.of(context).text('nothing_caputured'));
+          this._isbn = Translations.of(context).text('nothing_captured'));
     } catch (e) {
       setState(() => this._isbn = Translations.of(context)
           .text("unknow_error", params: [e.toString()]));

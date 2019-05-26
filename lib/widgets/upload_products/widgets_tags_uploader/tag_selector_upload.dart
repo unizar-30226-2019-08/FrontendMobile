@@ -103,18 +103,18 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
                     .contains(input.toLowerCase());
               },
               textSubmitted: (inputetx) {
-                const maxLong = 50;
-                if (inputetx.length > 0 && inputetx.length < maxLong) {
+                const MAX_TAG_LONG = 50;
+                if (inputetx.length > 0 && inputetx.length < MAX_TAG_LONG) {
                   setState(() {
                     widget.onInsertTag(inputetx);
                     showError = false;
                   });
                 } else {
-                  if (inputetx.length >= maxLong)
+                  if (inputetx.length >= MAX_TAG_LONG)
                     setState(() {
                       msgError = Translations.of(context).text(
                           "error_tag_tamanyo",
-                          params: [maxLong.toString()]);
+                          params: [MAX_TAG_LONG.toString()]);
                       showError = true;
                     });
                 }
@@ -151,16 +151,6 @@ class _TagsSelectorUplodState extends State<TagsSelectorUplod> {
             },
           ),
         ),
-        (widget.selectedTags.isEmpty)
-            ? Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
-                child: Text(
-                  Translations.of(context).text("no_tags"),
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontSize: 26),
-                ),
-              )
-            : Container(),
         (widget.selectedTags.isEmpty)
             ? Row(
                 children: <Widget>[

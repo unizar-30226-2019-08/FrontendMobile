@@ -44,7 +44,8 @@ class Bookalo extends StatefulWidget {
 }
 
 class _BookaloState extends State<Bookalo> {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
+  final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey(debugLabel: "Main Navigator");
 
   void incializeGeolocator() {
     var geolocator = Geolocator();

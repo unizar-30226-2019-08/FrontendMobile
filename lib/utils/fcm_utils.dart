@@ -13,28 +13,31 @@ import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/objects/message.dart';
 
-void handleChatMessage(Map<String, dynamic> message,
-    LN.FlutterLocalNotificationsPlugin plugin, BuildContext context, GlobalKey navigatorKey) async {
+void handleChatMessage(
+    Map<String, dynamic> message,
+    LN.FlutterLocalNotificationsPlugin plugin,
+    BuildContext context,
+    GlobalKey navigatorKey) async {
   ChatsRegistry registry = ScopedModel.of<ChatsRegistry>(context);
   try {
     Chat chat = Chat.fromJson(jsonDecode(message['data']['chat']));
     chat.setImBuyer(message['data']['soy_vendedor'] == 'false');
-    print(message['data']['soy_vendedor']);
-    registry.addChats(message['data']['soy_vendedor'] == 'true' ? 'buyers' : 'sellers', [chat]);
-    if(message['notification']['title'] == null){
+    registry.addChats(
+        message['data']['soy_vendedor'] == 'true' ? 'buyers' : 'sellers',
+        [chat]);
+    if (message['notification']['title'] == null) {
       Message newMessage =
           Message.fromJson(jsonDecode(message['data']['mensaje']));
       registry.addMessage(
           message['data']['soy_vendedor'] == 'false' ? 'sellers' : 'buyers',
           chat,
           newMessage);
-      if (!newMessage.itsMe) {
-      }
-    }else{
+      if (!newMessage.itsMe) {}
+    } else {
       Chat chat = Chat.fromJson(jsonDecode(message['data']['chat']));
       chat.setImBuyer(message['data']['soy_vendedor'] == 'false');
-      Navigator.push(navigatorKey.currentContext, MaterialPageRoute(
-          builder: (_) => ChatPage(chat: chat)));
+      Navigator.push(navigatorKey.currentContext,
+          MaterialPageRoute(builder: (_) => ChatPage(chat: chat)));
     }
   } catch (e) {
     print(e);

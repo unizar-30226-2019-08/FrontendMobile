@@ -25,8 +25,9 @@ class ISBNViewer extends StatelessWidget {
                     Container(height: 5),
                     Text(
                       parseISBN(product.getISBN()),
-                      style:
-                          TextStyle(fontSize: (sizeISBN == null) ? 35 : sizeISBN, fontWeight: FontWeight.w300),
+                      style: TextStyle(
+                          fontSize: (sizeISBN == null) ? 35 : sizeISBN,
+                          fontWeight: FontWeight.w300),
                     ),
                   ],
                 ),

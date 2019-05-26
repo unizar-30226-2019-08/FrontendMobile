@@ -28,13 +28,20 @@ class Message {
   Review buyerReview;
   @JsonKey(name: 'valoracion_vendedor', nullable: true)
   Review sellerReview;
+  bool isSent;
 
   Message(
-      this.body, this.timestamp, this.itsMe, this.itsReview, this.buyerReview);
+      this.body, this.timestamp, this.itsMe, this.itsReview, this.buyerReview){
+        isSent = false;
+      }
 
   DateTime get getTimestamp => timestamp.toLocal();
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
   Map<String, dynamic> toJson() => _$MessageToJson(this);
+
+  void markAsSent(){
+    this.isSent = true;
+  }
 }

@@ -31,11 +31,13 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  bool _closedChat = false;
   bool _endReached = false;
   bool _isLoading = false;
+  bool _closedChat;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   TextEditingController _textController;
+
 
   void fetchMessages(ChatsRegistry registry, int pageSize) async {
     if (!_endReached) {
@@ -68,6 +70,8 @@ class _ChatPageState extends State<ChatPage> {
           widget.chat.getOtherUser.getName()
         ])));
     if (action == ConfirmAction.ACCEPT) {
+      ScopedModel.of<ChatsRegistry>(context).closeChat(
+          widget.chat.getUID, widget.chat.imBuyer ? 'sellers' : 'buyers');
       setState(() => _closedChat = true);
       markAsSold(widget.chat.getUID, seeErrorWith: _scaffoldKey);
     }
@@ -76,12 +80,16 @@ class _ChatPageState extends State<ChatPage> {
   void _handleSumbit(String text) {
     if (text.length > 0) {
       _textController.clear();
-      sendMessage(widget.chat.getUID, text, seeErrorWith: _scaffoldKey);
       ScopedModel.of<ChatsRegistry>(context).addMessage(
           widget.chat.imBuyer ? 'sellers' : 'buyers',
           widget.chat,
           Message(text, DateTime.now(), true, false, null));
     }
+    sendMessage(widget.chat.getUID, text, seeErrorWith: _scaffoldKey).then((responseOK){
+      if(responseOK){
+        ScopedModel.of<ChatsRegistry>(context).markMessageAsSent(widget.chat.getUID);
+      }
+    });
   }
 
   @override
@@ -93,6 +101,7 @@ class _ChatPageState extends State<ChatPage> {
             .getMessages(widget.chat.getUID)
             .length);
     _textController = TextEditingController();
+    _closedChat = !widget.chat.getProduct.checkfForSale();
   }
 
   Widget build(BuildContext context) {
@@ -114,9 +123,7 @@ class _ChatPageState extends State<ChatPage> {
           product: widget.chat.product,
         ),
         body: Column(children: <Widget>[
-          (!widget.chat.checkImBuyer &&
-                  widget.chat.getProduct.checkfForSale() &&
-                  !_closedChat
+          (!widget.chat.checkImBuyer && !_closedChat
               ? RaisedButton(
                   color: Colors.pink,
                   shape: RoundedRectangleBorder(
@@ -173,39 +180,37 @@ class _ChatPageState extends State<ChatPage> {
             ));
           }),
           Container(height: 10),
-          (_closedChat
-              ? Container()
-              : Material(
-                  elevation: 30,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(5.0),
-                        width: width / 1.2,
-                        child: TextField(
-                          textInputAction: TextInputAction.send,
-                          controller: _textController,
-                          onSubmitted: (text) {
-                            _handleSumbit(text);
-                          },
-                          decoration: InputDecoration(
-                              hintText: Translations.of(context)
-                                  .text("message_hint")),
-                          autofocus: true,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 1,
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.send, size: 30.0, color: Colors.pink),
-                        onPressed: () {
-                          _handleSumbit(_textController.text);
-                        },
-                      )
-                    ],
+          Material(
+            elevation: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(5.0),
+                  width: width / 1.2,
+                  child: TextField(
+                    textInputAction: TextInputAction.send,
+                    controller: _textController,
+                    onSubmitted: (text) {
+                      _handleSumbit(text);
+                    },
+                    decoration: InputDecoration(
+                        hintText:
+                            Translations.of(context).text("message_hint")),
+                    autofocus: true,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 1,
                   ),
-                ))
+                ),
+                IconButton(
+                  icon: Icon(Icons.send, size: 30.0, color: Colors.pink),
+                  onPressed: () {
+                    _handleSumbit(_textController.text);
+                  },
+                )
+              ],
+            ),
+          )
         ]),
       ),
     );
