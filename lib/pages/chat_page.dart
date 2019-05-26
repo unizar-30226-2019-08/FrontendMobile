@@ -173,9 +173,7 @@ class _ChatPageState extends State<ChatPage> {
             ));
           }),
           Container(height: 10),
-          (widget.chat.getLastMessage != null &&
-                  widget.chat.getLastMessage.itsReview &&
-                  widget.chat.getLastMessage.buyerReview == null
+          (_closedChat
               ? Container()
               : Material(
                   elevation: 30,
