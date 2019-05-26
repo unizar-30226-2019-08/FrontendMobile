@@ -51,7 +51,6 @@ class _RadialButtonState extends State<RadialButton>
             .text('share_product', params: [widget.product.getName()]) +
         'https://bookalo.es/generic_product_view/?id=' +
         widget.product.getId().toString());
-    //TODO: actualizar ruta del producto
     close();
   }
 

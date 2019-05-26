@@ -182,7 +182,7 @@ class _UploadProduct extends State<UploadProduct> {
                           "check_product",
                           "ok_upload",
                           "cancel",
-                          ContentInfoConfirm(newProduct: newProduct)); //TODO: revisión del producto
+                          ContentInfoConfirm(newProduct: newProduct));
                       if (action == ConfirmAction.ACCEPT) {
                         bool result = await _uploading(contextButton);
                         if (result) {
@@ -318,7 +318,7 @@ class _UploadProduct extends State<UploadProduct> {
         context: context,
         builder: (BuildContext context) {
           return WillPopScope(
-              onWillPop: () {/* No dejar salir */},
+              onWillPop: () async => false,
               child: AlertDialog(
                 title: Text(
                   Translations.of(context).text("uploading_product"),

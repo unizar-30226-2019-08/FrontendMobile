@@ -1,5 +1,3 @@
-
-
 import 'package:bookalo/objects/product.dart';
 import 'package:bookalo/translations.dart';
 import 'package:bookalo/widgets/detailed_product/isbn_viewer.dart';
@@ -18,76 +16,52 @@ class ContentInfoConfirm extends StatefulWidget {
 
 class _ContentInfoConfirmState extends State<ContentInfoConfirm> {
   @override
-  Widget build(BuildContext context) {
-    bool longTitle = widget.newProduct.getName().length > 17;
-    double height = MediaQuery.of(context).size.height;
+  Widget build(BuildContext contexst) {
     return Container(
-        child: ListView(children: <Widget>[
-      Container(
-        height: (longTitle ? height / 6 : height / 8),
-        padding: EdgeInsets.only(top: height / 40),
-        child: Column(
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: Text(
-                    widget.newProduct.getName(),
-                    maxLines: 2,
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.w300),
-                  ),
-                ),
-              )
-            ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: Text(
-                    widget.newProduct.priceToString(),
-                    style:
-                        TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ],
-            )
-            //         ],
-            //       ),
-          ],
+      width: double.maxFinite,
+      child: ListView(children: <Widget>[
+        Text(
+          widget.newProduct.getName(),
+          maxLines: 4,
+          textAlign: TextAlign.left,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w300),
         ),
-      ),
-      Column(
-        children: <Widget>[
-          Divider(),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 4.0),
-            child: Text(
-              widget.newProduct.getDescription(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 8,
-              textAlign: TextAlign.justify,
-              style: TextStyle(fontSize: 14),
-            ),
+        Container(
+          margin: EdgeInsets.only(right: 10),
+          child: Text(
+            widget.newProduct.priceToString(),
+            style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w500),
           ),
-          Container(height: 10.0),
-          Divider(),
-          Center(
-            child: Container(
-              child: TagWraper(product: widget.newProduct),
-              margin: EdgeInsets.symmetric(horizontal: 20.0),
-            ),
+        ),
+        Divider(),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 4.0),
+          child: Text(
+            widget.newProduct.getDescription(),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 8,
+            textAlign: TextAlign.justify,
+            style: TextStyle(fontSize: 14),
           ),
-          (widget.newProduct.tags.length > 0 ? Divider() : Container()),
-          ISBNViewer(product: widget.newProduct, sizeISBN: 24,),
-          Container(height: 10.0),
-          productInfoConfirm(),
-        ],
-      ),
-    ]));
+        ),
+        Container(height: 10.0),
+        Divider(),
+        Center(
+          child: Container(
+            child: TagWraper(product: widget.newProduct),
+            margin: EdgeInsets.symmetric(horizontal: 20.0),
+          ),
+        ),
+        (widget.newProduct.tags.length > 0 ? Divider() : Container()),
+        ISBNViewer(
+          product: widget.newProduct,
+          sizeISBN: 24,
+        ),
+        Container(height: 10.0),
+        productInfoConfirm(),
+      ]),
+    );
   }
 
   Widget productInfoConfirm() {
@@ -117,7 +91,9 @@ class _ContentInfoConfirmState extends State<ContentInfoConfirm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(Translations.of(context).text(widget.newProduct.getState()),
+                      Text(
+                          Translations.of(context)
+                              .text(widget.newProduct.getState()),
                           textAlign: TextAlign.center,
                           style: TextStyle(fontWeight: FontWeight.w300)),
                       (widget.newProduct.getState().length < 7)
