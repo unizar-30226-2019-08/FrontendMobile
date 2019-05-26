@@ -62,48 +62,63 @@ class FeaturedProducts extends StatefulWidget {
 }
 
 class _FeaturedProductsState extends State<FeaturedProducts> {
-  bool featuredEndReached = false;
-  bool featuredFirstFecth = true;
+  bool _featuredEndReached = false;
+  bool _featuredFirstFecth = true;
+  bool _isLoading = false;
+  List<Widget> _list = [];
 
-  Future<List<Widget>> fetchUserProducts(currentSize, height) async {
+  void fetchUserProducts(currentSize, height) async {
     List<Widget> output = new List();
-    if (!featuredEndReached) {
-      List<ProductView> fetchResult = widget.isOwnProfile
-          ? await parseUserFavorites(currentSize, 10, seeErrorWith: context)
-          : await parseUserProducts(widget.user, currentSize, 10,
-              seeErrorWith: context);
-      featuredEndReached = fetchResult.length == 0;
-      output.addAll(fetchResult);
-      if (featuredEndReached) {
-        if (featuredFirstFecth) {
-          output.add(EmptyList(
-              iconData: widget.isOwnProfile
-                  ? Icons.favorite_border
-                  : Icons.remove_shopping_cart,
-              textKey: widget.isOwnProfile
-                  ? 'no_favorites_yes'
-                  : 'no_productos_uploaded'));
+    if (!_isLoading) {
+      _isLoading = true;
+      if (!_featuredEndReached) {
+        List<ProductView> fetchResult = widget.isOwnProfile
+            ? await parseUserFavorites(currentSize, 10, () {
+                setState(() {
+                  _list.clear();
+                  _featuredEndReached = false;
+                  _featuredFirstFecth = true;
+                });
+              }, seeErrorWith: context)
+            : await parseUserProducts(widget.user, currentSize, 10,
+                seeErrorWith: context);
+        _featuredEndReached = fetchResult.length == 0;
+        output.addAll(fetchResult);
+        _isLoading = false;
+        if (_featuredEndReached) {
+          if (_featuredFirstFecth) {
+            output.add(EmptyList(
+                iconData: widget.isOwnProfile
+                    ? Icons.favorite_border
+                    : Icons.remove_shopping_cart,
+                textKey: widget.isOwnProfile
+                    ? 'no_favorites_yes'
+                    : 'no_productos_uploaded'));
+          }
+        }
+        if (_featuredFirstFecth) {
+          _featuredFirstFecth = false;
         }
       }
-      if (featuredFirstFecth) {
-        featuredFirstFecth = false;
-      }
+      setState(() => _list.addAll(output));
     }
-    return output;
   }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    return Pagination<Widget>(
-      progress: Container(
-          margin: EdgeInsets.symmetric(vertical: height / 20),
-          child: BookaloProgressIndicator()),
-      pageBuilder: (currentSize) => (widget.isOwnProfile
-          ? fetchUserProducts(currentSize, height)
-          : fetchUserProducts(currentSize, height)),
-      itemBuilder: (index, item) {
-        return item;
+    return ListView.builder(
+      itemBuilder: (context, position) {
+        if (position < _list.length) {
+          return _list[position];
+        } else if (position == _list.length && !_featuredEndReached) {
+          fetchUserProducts(_list.length, height);
+          return Container(
+              margin: EdgeInsets.symmetric(vertical: 50.0),
+              child: BookaloProgressIndicator());
+        } else {
+          return null;
+        }
       },
     );
   }

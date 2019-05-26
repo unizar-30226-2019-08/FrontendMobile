@@ -7,16 +7,11 @@ import 'dart:convert';
 import 'package:bookalo/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    as LN;
 import 'package:bookalo/objects/chat.dart';
 import 'package:bookalo/objects/chats_registry.dart';
 import 'package:bookalo/objects/message.dart';
 
-void handleChatMessage(
-    Map<String, dynamic> message,
-    LN.FlutterLocalNotificationsPlugin plugin,
-    BuildContext context,
+void handleChatMessage(Map<String, dynamic> message, BuildContext context,
     GlobalKey navigatorKey) async {
   ChatsRegistry registry = ScopedModel.of<ChatsRegistry>(context);
   try {
@@ -32,7 +27,6 @@ void handleChatMessage(
           message['data']['soy_vendedor'] == 'false' ? 'sellers' : 'buyers',
           chat,
           newMessage);
-      if (!newMessage.itsMe) {}
     } else {
       Chat chat = Chat.fromJson(jsonDecode(message['data']['chat']));
       chat.setImBuyer(message['data']['soy_vendedor'] == 'false');
@@ -42,22 +36,4 @@ void handleChatMessage(
   } catch (e) {
     print(e);
   }
-}
-
-void displayNotification(
-    LN.FlutterLocalNotificationsPlugin plugin, Message message, Chat chat) {
-  var androidPlatformChannelSpecifics = LN.AndroidNotificationDetails(
-      'es.bookalo.bookalo', 'Bookalo', 'Bookalo messaging',
-      importance: LN.Importance.Max,
-      priority: LN.Priority.High,
-      ticker: 'ticker');
-  var iOSPlatformChannelSpecifics = LN.IOSNotificationDetails();
-  var platformChannelSpecifics = LN.NotificationDetails(
-      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-  plugin.show(
-      0,
-      chat.getOtherUser.getName() + ' (' + chat.getProduct.getName() + ')',
-      message.body,
-      platformChannelSpecifics,
-      payload: chat.getUID.toString());
 }

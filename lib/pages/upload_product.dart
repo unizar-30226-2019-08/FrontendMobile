@@ -193,7 +193,8 @@ class _UploadProduct extends State<UploadProduct> {
                               "",
                               Text(Translations.of(context)
                                   .text("upload_product_ok")));
-                          Navigator.pop(context);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/', (Route<dynamic> route) => false);
                         }
                       }
                     } else {

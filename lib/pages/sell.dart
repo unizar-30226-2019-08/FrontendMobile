@@ -5,7 +5,6 @@
  */
 import 'package:bookalo/objects/product.dart';
 import 'package:flutter/material.dart';
-import 'package:paging/paging.dart';
 import 'package:bookalo/widgets/mini_product.dart';
 import 'package:bookalo/widgets/empty_list.dart';
 import 'package:bookalo/widgets/animations/bookalo_progress.dart';
@@ -27,32 +26,46 @@ class Sell extends StatefulWidget {
 }
 
 class _SellState extends State<Sell> {
-  bool endReached = false;
-  bool firstFecth = true;
+  bool _endReached = false;
+  bool _firstFecth = true;
+  bool _isLoading = false;
+  List<Widget> _list;
+
+  @override
+  void initState() {
+    super.initState();
+    _list = [];
+  }
+
   /*
    * Pre:   pageNumber >=0 y pageSize > 0
    * Post:  devuelve una lista con pageSize MiniProduct
    */
-  Future<List<Widget>> fetchOwnProducts(currentSize, height) async {
-    List<Widget> output = new List();
-    if (!endReached) {
+  void fetchOwnProducts(currentSize, height) async {
+    if (!_isLoading) {
+      _isLoading = true;
+      List<Widget> output = new List();
       List<Product> fetchResult =
           await parseOwnProducts(currentSize, 10, seeErrorWith: context);
       output.addAll(fetchResult
-          .map((p) => MiniProduct(p, () {/*TODO: borrarlo de la lista*/})));
-      endReached = fetchResult.length == 0;
-      if (endReached) {
-        if (firstFecth) {
+          .map((p) => MiniProduct(p, () {
+            print("HEEEET");
+            setState(() => _list.clear());}
+          )));
+      _endReached = fetchResult.length == 0;
+      _isLoading = false;
+      if (_endReached) {
+        if (_firstFecth) {
           output.add(EmptyList(
               iconData: Icons.add_shopping_cart,
               textKey: "no_products_uploaded"));
         }
       }
-      if (firstFecth) {
-        firstFecth = false;
+      if (_firstFecth) {
+        _firstFecth = false;
       }
+      setState(() => _list.addAll(output));
     }
-    return output;
   }
 
   Widget build(BuildContext context) {
@@ -72,15 +85,20 @@ class _SellState extends State<Sell> {
             )
           ],
         ),
-        body: Pagination<Widget>(
-          scrollDirection: Axis.vertical,
-          progress: Container(
-              margin: EdgeInsets.symmetric(vertical: height / 20),
-              child: BookaloProgressIndicator()),
-          pageBuilder: (currentSize) => fetchOwnProducts(currentSize, height),
-          itemBuilder: (index, item) {
-            return item;
+        body: ListView.builder(
+          itemBuilder: (context, position) {
+            if (position < _list.length) {
+              return _list[position];
+            } else if (position == _list.length && !_endReached) {
+              fetchOwnProducts(_list.length, height);
+              return Container(
+                  margin: EdgeInsets.symmetric(vertical: 50.0),
+                  child: BookaloProgressIndicator());
+            } else {
+              return null;
+            }
           },
-        ));
+        )
+        );
   }
 }

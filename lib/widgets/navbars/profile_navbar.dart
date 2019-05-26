@@ -130,7 +130,7 @@ class _ProfileNavbarState extends State<ProfileNavbar> {
                 onPressed: () {
                   Share.share(Translations.of(context).text('share_profile',
                           params: [widget.user.getName()]) +
-                      'https://bookalo.es/user=' +
+                      'https://bookalo.es/api/get_user_profile/?uid=' +
                       widget.user.getUID());
                 },
               )

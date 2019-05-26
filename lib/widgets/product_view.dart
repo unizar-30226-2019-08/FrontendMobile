@@ -26,7 +26,8 @@ class ProductView extends StatelessWidget {
   final User _user;
   final bool itsMine;
   final bool isLiked;
-  ProductView(this._product, this._user, this.itsMine, this.isLiked);
+  final Function onUnFavorite;
+  ProductView(this._product, this._user, this.itsMine, this.isLiked, {this.onUnFavorite});
 
   /*
    * Pre:   ---
@@ -217,6 +218,7 @@ class ProductView extends StatelessWidget {
                       product: this._product,
                       user: this._user,
                       isLiked: this.isLiked,
+                      onUnFavorite: onUnFavorite,
                     )),
           );
         } else {

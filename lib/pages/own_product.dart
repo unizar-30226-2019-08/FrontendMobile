@@ -18,8 +18,9 @@ import 'package:bookalo/widgets/detailed_product/image_swipper.dart';
 import 'package:bookalo/translations.dart';
 
 class OwnProduct extends StatefulWidget {
+  final Function onDelete;
   final Product product;
-  OwnProduct({Key key, this.product}) : super(key: key);
+  OwnProduct({Key key, this.product, this.onDelete}) : super(key: key);
 
   @override
   _DetailedProductState createState() => _DetailedProductState();
@@ -168,6 +169,7 @@ class _DetailedProductState extends State<OwnProduct> {
                         if (action == ConfirmAction.ACCEPT) {
                           if (await deleteProduct(widget.product.getId(),
                               seeErrorWith: _scaffoldKey)) {
+                            widget.onDelete();
                             Navigator.of(context).pop();
                           }
                         }

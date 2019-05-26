@@ -59,7 +59,9 @@ flutter:
   uses-material-design: true
   assets:
     - locale/i18n_en.json
-    - locale/i18n_es.json  
+    - locale/i18n_es.json
+    - locale/i18n_de.json
+    - locale/i18n_fr.json        
     - assets/images/
 
 flutter_icons:

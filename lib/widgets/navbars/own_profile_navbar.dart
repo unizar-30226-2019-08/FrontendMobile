@@ -145,7 +145,7 @@ class _OwnProfileNavbarState extends State<OwnProfileNavbar> {
                                     ? snapshot.data.getName()
                                     : '---'
                               ]) +
-                              'https://bookalo.es/user=' +
+                              'https://bookalo.es/api/get_user_profile/?uid=' +
                               (snapshot.hasData
                                   ? snapshot.data.getUID()
                                   : '---'));

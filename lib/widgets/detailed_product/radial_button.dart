@@ -49,7 +49,7 @@ class _RadialButtonState extends State<RadialButton>
   void share() {
     Share.share(Translations.of(context)
             .text('share_product', params: [widget.product.getName()]) +
-        'https://bookalo.es/generic_product_view/?id=' +
+        'https://bookalo.es/api/generic_product_view/?id=' +
         widget.product.getId().toString());
     close();
   }

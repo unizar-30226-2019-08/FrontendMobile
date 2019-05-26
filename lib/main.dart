@@ -57,42 +57,25 @@ class _BookaloState extends State<Bookalo> {
     });
   }
 
-  void inicializeFCM(FlutterLocalNotificationsPlugin plugin) {
+  void inicializeFCM() {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        handleChatMessage(message, plugin, context, navigatorKey);
+        handleChatMessage(message, context, navigatorKey);
       },
       onResume: (Map<String, dynamic> message) async {
-        handleChatMessage(message, plugin, context, navigatorKey);
+        handleChatMessage(message, context, navigatorKey);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        handleChatMessage(message, plugin, context, navigatorKey);
+        handleChatMessage(message, context, navigatorKey);
       },
     );
-  }
-
-  FlutterLocalNotificationsPlugin inicializeLocalNotifications() {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        new FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings('notification_logo');
-
-    var initializationSettingsIOS = new IOSInitializationSettings(
-        onDidReceiveLocalNotification: (i, s1, s2, s3) {});
-
-    var initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (s) {});
-    return flutterLocalNotificationsPlugin;
   }
 
   @override
   void initState() {
     super.initState();
-    FlutterLocalNotificationsPlugin plugin = inicializeLocalNotifications();
-    inicializeFCM(plugin);
+    inicializeFCM();
     incializeGeolocator();
   }
 
@@ -112,8 +95,10 @@ class _BookaloState extends State<Bookalo> {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [
-        //const Locale('en', 'US'),
         const Locale('es', 'ES'),
+        const Locale('en', 'US'),
+        const Locale('fr', 'FR'),
+        const Locale('de', 'DE'),
       ],
       initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {

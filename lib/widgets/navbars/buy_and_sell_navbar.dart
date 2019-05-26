@@ -52,10 +52,7 @@ class _BuyAndSellNavbarState extends State<BuyAndSellNavbar> {
             Container(
               margin: EdgeInsets.only(top: topMargin * 0.7, right: width / 30),
               child: IconButton(
-                  icon: Icon(
-                      ScopedModel.of<ChatsRegistry>(context).areTherePending()
-                          ? Icons.message
-                          : Icons.chat,
+                  icon: Icon(Icons.chat,
                       color: Colors.white,
                       size: 35.0),
                   onPressed: () {

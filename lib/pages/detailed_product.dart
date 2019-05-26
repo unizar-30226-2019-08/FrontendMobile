@@ -23,7 +23,8 @@ class DetailedProduct extends StatefulWidget {
   final bool isLiked;
   final Product product;
   final User user;
-  DetailedProduct({Key key, this.product, this.user, this.isLiked})
+  final Function onUnFavorite;
+  DetailedProduct({Key key, this.product, this.user, this.isLiked, this.onUnFavorite})
       : super(key: key);
 
   @override
@@ -113,6 +114,9 @@ class _DetailedProductState extends State<DetailedProduct> {
                             onFavorite: () {
                               setState(() {
                                 isMarkedAsFavorite = !isMarkedAsFavorite;
+                                if(!isMarkedAsFavorite && widget.onUnFavorite != null){
+                                  widget.onUnFavorite();
+                                }
                               });
                             })),
                   ],

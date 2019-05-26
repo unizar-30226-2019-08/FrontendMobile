@@ -111,6 +111,7 @@ class MiniProduct extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => OwnProduct(
                     product: this._product,
+                    onDelete: this._onDelete,
                   )),
         );
       },

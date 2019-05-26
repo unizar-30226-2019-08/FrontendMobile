@@ -134,17 +134,6 @@ class ChatsRegistry extends Model {
     notifyListeners();
   }
 
-  bool areTherePending() {
-    _chatMap.values.forEach((list) {
-      list.forEach((chat) {
-        if (chat.numberOfPending > 0) {
-          return true;
-        }
-      });
-    });
-    return false;
-  }
-
   void setReview(Review review, int chatUID, String kind) {
     if (kind == 'buyers') {
       _messagesMap[chatUID]

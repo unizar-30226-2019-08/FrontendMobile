@@ -78,7 +78,7 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
   final bool isTest;
 
   @override
-  bool isSupported(Locale locale) => ['es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => ['es', 'en', 'de', 'fr'].contains(locale.languageCode);
 
   @override
   Future<Translations> load(Locale locale) async {

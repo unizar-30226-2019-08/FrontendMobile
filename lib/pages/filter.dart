@@ -76,14 +76,6 @@ class _FilterState extends State<Filter> {
                   height: height / 5, distanceRadius: _maxDistance * 1000),
               PriceSlider(),
               RatingSlider(),
-              Container(
-                margin: EdgeInsets.only(top: 20.0),
-                child: Center(
-                    child: Text(
-                  '434 productos disponibles',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
-                )),
-              ),
             ],
           ),
         ));

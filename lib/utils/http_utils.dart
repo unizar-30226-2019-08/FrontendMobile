@@ -173,7 +173,7 @@ Future<List<ProductView>> parseUserProducts(
   return output;
 }
 
-Future<List<ProductView>> parseUserFavorites(int currentIndex, int pageSize,
+Future<List<ProductView>> parseUserFavorites(int currentIndex, int pageSize, Function onUnFavorite,
     {var seeErrorWith}) async {
   List<ProductView> output = List();
   try {
@@ -194,7 +194,7 @@ Future<List<ProductView>> parseUserFavorites(int currentIndex, int pageSize,
         .forEach((x) {
       Product product = Product.fromJson(x['info_producto']);
       User owner = User.fromJson(x['vendido_por']);
-      output.add(ProductView(product, owner, false, true));
+      output.add(ProductView(product, owner, false, true, onUnFavorite: onUnFavorite,));
     });
   } catch (e) {
     print(e);
