@@ -149,7 +149,7 @@ class _DetailedProductState extends State<DetailedProduct> {
                 Center(child: UserProduct(widget.user, widget.product)),
                 ProductMap(
                     position: widget.product.getPosition(),
-                    height: height / 5,
+                    height: height / 4,
                     expandible: true)
               ],
             ),

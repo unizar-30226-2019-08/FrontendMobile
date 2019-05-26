@@ -132,8 +132,10 @@ class _OwnProfileNavbarState extends State<OwnProfileNavbar> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Text(snapshot.hasData ? snapshot.data.getName() : '---',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontWeight: FontWeight.w300, fontSize: 45.0)),
+                              fontWeight: FontWeight.w300, fontSize: 38.0)),
                       IconButton(
                         icon: Icon(Icons.share, size: 30.0),
                         onPressed: () {
