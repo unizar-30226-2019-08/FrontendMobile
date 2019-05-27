@@ -20,7 +20,9 @@ void handleChatMessage(Map<String, dynamic> message, BuildContext context,
     registry.addChats(
         message['data']['soy_vendedor'] == 'true' ? 'buyers' : 'sellers',
         [chat]);
-    if (message['notification']['title'] == null) {
+    print('NOTIFICACION:' + message.toString());
+    if ((message['notification'] as Map).values.length > 0 && message['notification']['title'] == null) {
+      print("TIPO 1");
       Message newMessage =
           Message.fromJson(jsonDecode(message['data']['mensaje']));
       registry.addMessage(
@@ -28,6 +30,7 @@ void handleChatMessage(Map<String, dynamic> message, BuildContext context,
           chat,
           newMessage);
     } else {
+      print("TIPO 2");
       Chat chat = Chat.fromJson(jsonDecode(message['data']['chat']));
       chat.setImBuyer(message['data']['soy_vendedor'] == 'false');
       Navigator.push(navigatorKey.currentContext,
