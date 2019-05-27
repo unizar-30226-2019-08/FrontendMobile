@@ -81,14 +81,17 @@ class _LoginState extends State<Login> {
       });
       try {
         await signInFirebase(provider);
+        
         LoginResult result = await completeLogin();
+        
         switch (result) {
           case LoginResult.completed:
+          //TODO: Acceder directamente
+           //Navigator.pushReplacementNamed(context, '/tutorial');
             Navigator.pushReplacementNamed(context, '/buy_and_sell');
             break;
           case LoginResult.first_time:
-            //TODO: mostrar algún tipo de bienvenida
-            Navigator.pushReplacementNamed(context, '/buy_and_sell');
+             Navigator.pushReplacementNamed(context, '/tutorial');
             break;
           default:
             _handleError(provider, result);
